@@ -1,0 +1,9 @@
+<grid [direction]="'row'" [template]="'max-content 1fr'" height="100vh" class="bg-white">
+    <board-top-bar [title]="'OrderBoard'" (onTabChange)="onTabChange($event)" width="100vw"></board-top-bar>
+    <grid [direction]="'row'" [template]="'max-content 1fr max-content'" height="100%" width="100%"
+        padding="0 0 1rem 0">
+        <board-search-bar />
+        <board-table [data]="data" />
+        <board-table-pagination (onDirectionChange)="onDirectionChange($event)" />
+    </grid>
+</grid>

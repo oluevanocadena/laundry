@@ -1,0 +1,20 @@
+[tuiButton],
+[tuiIconButton] {
+    font-weight: 500 !important;
+}
+
+[tuiButton][tuiRoundButton] {
+    border-radius: 50% !important;
+}
+
+[tuiButton][tuiRoundedButton] {
+    border-radius: 1rem !important;
+}
+
+[tuiIcons]:before{
+    font-size: 18px !important;
+    margin-left: 2px !important;
+}
+[tuiIcons]:after {
+    color: var(--primary) !important;
+}

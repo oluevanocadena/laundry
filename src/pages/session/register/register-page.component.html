@@ -1,0 +1,67 @@
+<grid [direction]="'column'" [align]="'center-center'" height="100vh" class="bg-spacial">
+    <grid [gap]="[40,24]" [direction]="'column'" [template]="'1fr'" [width]="isMobile ? '100%': '350px'" padding="2rem"
+        class="bg-white brdr-r-24">
+        <grid [direction]="'column'" [align]="'center-right'">
+            <img src="/logo_simple.svg" alt="logo" class="h-40" />
+        </grid>
+        <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
+            <span class="f-24 fw-600">
+                Register
+            </span>
+            <span class="f-03">
+                Let's to your account
+            </span>
+        </grid>
+
+        <form [formGroup]="formGroup">
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
+                <grid [direction]="'column'" [template]="'1fr'">
+                    <tui-pagination size="s" class="tui-space_top-4" [(index)]="step" [length]="2" />
+                </grid>
+                <tui-carousel [itemsCount]="1" [(index)]="step" [style.--tui-carousel-padding]="'0'">
+                    <grid *tuiItem [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
+                        <form-input [label]="'Full Name'" [type]="'text'" [placeholder]="'Full Name'"
+                            [formControlName]="'name'" />
+                        <form-input [label]="'Email'" [type]="'email'" [placeholder]="'Email'"
+                            [formControlName]="'email'" />
+                        <form-input [label]="'Phone'" [type]="'phone'" [placeholder]="'Phone'"
+                            [formControlName]="'phone'" />
+
+                        <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%"
+                            padding="1rem 0 0 0">
+                            <button tuiButton tuiButtonBlock [appearance]="'primary'" [size]="'m'"
+                                (click)="step=step+1">
+                                Continue
+                            </button>
+                        </grid>
+                    </grid>
+                    <grid *tuiItem [direction]="'column'" [align]="'center-center'" width="100%">
+                        <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%">
+                            <form-input [label]="'Password'" [type]="'password'" [placeholder]="'Password'"
+                                [formControlName]="'password'" />
+                            <form-input [label]="'Confirm Password'" [type]="'password'"
+                                [placeholder]="'Confirm Password'" [formControlName]="'confirmPassword'" />
+                            <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%"
+                                padding="1rem 0 0 0">
+                                <button tuiButton tuiButtonBlock [appearance]="'primary'" [size]="'m'"
+                                    (click)="register()">
+                                    Register
+                                </button>
+                            </grid>
+                        </grid>
+                    </grid>
+                </tui-carousel>
+            </grid>
+
+        </form>
+
+        <grid [direction]="'column'" [align]="'center-center'" [padding]="'2rem 0 0 0'">
+            <span class="f-03">
+                Already have an account?
+                <a [routerLink]="routes.Login" class="f-primary fw-600 link">
+                    Login
+                </a>
+            </span>
+        </grid>
+    </grid>
+</grid>

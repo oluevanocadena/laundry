@@ -1,0 +1,35 @@
+<grid [direction]="'column'" [template]="'1fr'" [align]="'center-center'" class="back-top">
+    <grid [direction]="'column'" [align]="'center-left'"
+        [padding]="isMobileOrTablet ? '1rem 2rem 2rem 2rem': '1rem 2rem 2rem 3rem'" [height]="'100%'">
+        <grid [direction]="'row'" [template]="'1fr max-content'" [gap]="[16,16]" [height]="'100%'">
+            <grid [direction]="'column'" [align]="'center-left'" [width]="isMobileOrTablet ? '100%': '70%'">
+                <grid [gap]="[24,16]" [direction]="'column'" [template]="'1fr'" [width]="'100%'">
+                    <img src="/assets/logo_color.svg" class="{{isMobileOrTablet ? 'h-24': 'h-50'}}" alt="Logo">
+                    <span class="f-white f-italic {{isMobileOrTablet ? 'f-24 f-lh-24':'f-36 f-lh-36'}}">
+                        CARROCERÍAS Y MAQUILADOS INDUSTRIALES
+                    </span>
+                </grid>
+            </grid>
+            <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
+                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'">
+                    <img src="assets/PAGINA1/PAGINA1/mip_banner_ic_telefono.svg" alt="Logo" class="h-18">
+                    <span class="f-13 f-white fw-200">
+                        55 6079 9830
+                    </span>
+                </grid>
+                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'">
+                    <img src="assets/PAGINA1/PAGINA1/mip_banner_ic_web.svg" alt="Logo" class="h-18">
+                    <span class="f-13 f-white fw-200">
+                        mantenimientoip.mx
+                    </span>
+                </grid>
+                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'">
+                    <img src="assets/PAGINA1/PAGINA1/mip_banner_ic_ubicacion.svg" alt="Logo" class="h-18">
+                    <span class="f-13 f-white fw-200">
+                        Av. El Polvoron #2, 54831 Santa Maria Huecatitla Méx.
+                    </span>
+                </grid>
+            </grid>
+        </grid>
+    </grid>
+</grid>

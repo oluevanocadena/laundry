@@ -1,0 +1,156 @@
+@for $i from $start through $end {
+  .f-#{$i} {
+    font-size: #{$i / 16}rem !important;
+  }
+}
+
+@for $i from 1 through 9 {
+  .f-0#{$i} {
+    color:var(--text-0#{$i});
+  }
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.f-primary-hover:hover {
+  color: var(--primary) !important
+}
+
+.f-primary {
+  color: var(--primary) !important
+}
+
+.f-secondary {
+  color: #707ead; // Secondary text
+}
+
+.f-white {
+  color: #ffffff; // White text
+}
+
+.f-error{
+  color: var(--error);
+}
+
+.f-success{
+  color: var(--success);
+}
+
+.f-warning{
+  color: var(--warning);
+}
+
+.f-warning-secondary{
+  color: var(--warning-secondary);
+}
+
+.f-info{
+  color: var(--info);
+}
+
+.f-italic {
+  font-style: italic;
+}
+
+.f-wrap {
+  white-space: wrap;
+  text-wrap: wrap;
+}
+
+.f-bullet-primary {
+  list-style-type: none;
+  /* Elimina las viñetas por defecto */
+  margin: 0;
+  padding: 0;
+
+  li {
+    position: relative;
+    font-size: 14px;
+    line-height: 15px;
+    padding-left: 20px;
+    margin: 0.75rem 0;
+  }
+
+  li.normal {
+    margin: 0 0 !important;
+  }
+
+  li::before {
+    content: '';
+    /* Crea una viñeta vacía */
+    position: absolute;
+    left: 0;
+    /* Posiciona la viñeta a la izquierda */
+    top: 50%;
+    transform: translateY(-50%);
+    /* Centra verticalmente la viñeta */
+    width: 8px;
+    /* Tamaño de la viñeta */
+    height: 8px;
+    /* Tamaño de la viñeta */
+    border-radius: 50%;
+    /* Forma circular */
+    background-color: var(--primary);
+    /* Color de la viñeta */
+  }
+}
+
+.fw-100 {
+  font-weight: 100;
+}
+
+.fw-200 {
+  font-weight: 200;
+}
+
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-800 {
+  font-weight: 800;
+}
+
+.fw-900 {
+  font-weight: 900;
+}
+
+.t-left {
+  text-align: left;
+}
+
+.t-center {
+  text-align: center;
+}
+
+.t-right {
+  text-align: right;
+}
+
+.t-none {
+  text-decoration: none;
+
+}

@@ -1,0 +1,57 @@
+// Background Colors
+.bg-primary {
+    background-color: #f68000; // Primary background
+}
+
+.bg-secondary {
+    background-color: #1a1919; // Secondary background
+}
+
+.bg-white {
+    background-color: #ffffff; // White background
+}
+
+.bg-black {
+    background-color: #000000; // Black background
+}
+
+@for $i from 1 through 9 {
+    .bg-0#{$i} {
+        background: var(--text-0#{$i});
+    }
+}
+
+.bg-spacial {
+    background: radial-gradient(circle, #e1e1e3, #f4f4f4);
+}
+
+// Optional: Text contrast for better readability
+.bg-primary,
+.bg-secondary,
+.bg-black {
+    color: #ffffff; // White text for dark backgrounds
+}
+
+.bg-white {
+    color: #000000; // Black text for light backgrounds
+}
+
+.brdr-primary {
+    border: 1px solid #f68000; // Primary border
+}
+
+.brdr-secondary {
+    border: 1px solid #1a1919; // Secondary border
+}
+
+.brdr-white {
+    border: 1px solid #ffffff; // White border
+}
+
+.brdr-left-primary {
+    border-left: 1px solid #f68000; // Primary left border
+}
+
+.brdr-left-primary-3 {
+    border-left: 3px solid #f68000; // Primary left border
+}

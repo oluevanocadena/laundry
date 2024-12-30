@@ -1,0 +1,17 @@
+
+/* You can add global styles to this file, and also import other style files */
+@import 'theme/styles/background.scss';
+@import 'theme/styles/spacing.scss';
+@import 'theme/styles/fonts.scss';
+@import 'theme/styles/display.scss';
+@import 'theme/styles/colors.scss';
+@import 'theme/styles/resets.scss';
+@import 'theme/taiga/button.scss';
+@import 'theme/taiga/segments.scss';
+@import 'theme/taiga/input.scss';
+@import 'theme/taiga/drawer.scss';
+
+body {
+    margin: 0;
+    padding: 0;
+}

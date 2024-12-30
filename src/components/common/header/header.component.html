@@ -1,0 +1,35 @@
+<grid [gap]="[16,16]" [direction]="'column'" [template]="'max-content 1fr'" [height]="'60px'" class="bg-black">
+    <grid [direction]="'column'" [align]="'center-left'" [padding]="'1rem'">
+        <img src="/assets/logo_color.svg" alt="logo" class="logo">
+    </grid>
+    <grid *ngIf="isMobileOrTablet === false" [direction]="'column'" [align]="'center-right'" [padding]="'1rem'">
+        <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
+            <span *ngFor="let item of menuOptions" [routerLink]="item.url" class="f-14 f-white pointer">
+                {{item.label}}
+            </span>
+        </grid>
+    </grid>
+    <grid *ngIf="isMobileOrTablet" [direction]="'column'" [align]="'center-right'">
+        <button size="l" tuiButton tuiIconButton type="button" [appearance]="'clear'" (click)="open.set(!open())">
+            <span class="material-symbols-outlined f-primary f-32">
+                menu
+            </span>
+        </button>
+
+    </grid>
+</grid>
+
+<tui-drawer *tuiPopup="open()" [overlay]="true" direction="right">
+    <grid [direction]="'column'" [align]="'center-right'">
+        <span tuiOption class="material-symbols-outlined f-black f-32 pointer" (click)="onClose()">
+            close
+        </span>
+    </grid>
+    <grid [direction]="'column'" [align]="'center-left'">
+        <tui-data-list>
+            <button *ngFor="let item of menuOptions" tuiOption type="button" (click)="onClickOption(item.url)">
+                {{ item.label }}
+            </button>
+        </tui-data-list>
+    </grid>
+</tui-drawer>

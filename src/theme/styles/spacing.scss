@@ -1,0 +1,60 @@
+// Generar clases de padding, height y width desde 4 hasta 80 (incremento de 1 en 1)
+
+$start: 4;
+$end: 80;
+
+// Generar clases de padding (.pdd-4, .pdd-5, ..., .pdd-80)
+@for $i from $start through $end {
+    .pdd-#{$i} {
+        padding: #{$i}px;
+    }
+}
+
+// Generar clases de height (.h-4, .h-5, ..., .h-80)
+@for $i from $start through $end {
+    .h-#{$i} {
+        height: #{$i}px;
+    }
+}
+
+// Generar clases de width (.w-4, .w-5, ..., .w-80)
+@for $i from $start through $end {
+    .w-#{$i} {
+        width: #{$i}px;
+    }
+}
+
+@for $i from $start through $end {
+    .brdr-radius-#{$i} {
+        border-radius: #{$i}px;
+    }
+}
+
+@for $i from $start through $end {
+    .f-lh-#{$i} {
+        line-height: #{$i}px;
+    }
+}
+
+// Generar clases de padding (.pdd-4, .pdd-5, ..., .pdd-80)
+@for $i from $start through $end {
+    .brdr-r-#{$i} {
+        border-radius: #{$i}px;
+    }
+}
+
+.vw-all {
+    width: 100vw;
+}
+
+.w-all {
+    width: 100%;
+}
+
+.h-all {
+    height: 100%;
+}
+
+.pdd-all {
+    padding: 100%;
+}

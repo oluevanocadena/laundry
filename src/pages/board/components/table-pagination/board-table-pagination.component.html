@@ -1,0 +1,10 @@
+<grid [direction]="'column'" [align]="'center-center'" width="100%" padding="0.5rem 0 0 0">
+    <grid [direction]="'column'" [gap]="[8,8]">
+        <button (click)="direction('back')" tuiButton tuiRoundButton tuiIconButton [size]="'m'" appearance="secondary">
+            <tui-icon icon="@tui.chevron-left" class="f-18 fw-600 f-02" />
+        </button>
+        <button (click)="direction('next')" tuiButton tuiRoundButton tuiIconButton [size]="'m'" appearance="secondary">
+            <tui-icon icon="@tui.chevron-right" class="f-18 fw-600 f-02" />
+        </button>
+    </grid>
+</grid>

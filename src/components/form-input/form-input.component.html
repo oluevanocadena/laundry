@@ -1,0 +1,24 @@
+<grid [gap]="[8, 24]" [direction]="'column'" [template]="'1fr'">
+    <span class="f-14">{{ label }}</span>
+    <tui-input *ngIf="type !== 'phone' && type !== 'password'" tuiTextfieldSize="m" [tuiTextfieldLabelOutside]="true">
+        <ng-container *ngIf="placeholder">
+            {{ placeholder }}
+        </ng-container>
+        <input tuiTextfieldLegacy [type]="type" autocomplete="new-password" [disabled]="disabled" [value]="value"
+            (input)="onInputChange($event)" />
+    </tui-input>
+    <tui-input-phone *ngIf="type === 'phone'" tuiTextfieldSize="m" [tuiTextfieldLabelOutside]="true"
+        [countryCode]="countryCode">
+        <ng-container *ngIf="placeholder">
+            {{ placeholder }}
+        </ng-container>
+        <input autocomplete="tel" tuiTextfieldLegacy autocomplete="new-password" [disabled]="disabled"
+            [value]="value" />
+    </tui-input-phone>
+
+    <tui-textfield *ngIf="type === 'password'" tuiTextfieldSize="m">
+        <input [attr.placeholder]="placeholder" tuiTextfield type="password" autocomplete="new-password"
+            [disabled]="disabled" [value]="value" />
+        <tui-icon tuiPassword />
+    </tui-textfield>
+</grid>

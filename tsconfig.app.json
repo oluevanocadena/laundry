@@ -15,6 +15,5 @@
   ],
   "include": [
     "src/**/*.d.ts",
-    "src/polyfills.server.ts"
   ]
 }

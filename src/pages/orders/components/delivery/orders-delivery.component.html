@@ -1,0 +1,87 @@
+<tui-accordion-item class="container" [open]="true">
+    <span class="f-16 fw-600 f-02 f-lh-14">
+        Delivery
+    </span>
+    <ng-template tuiAccordionItemContent>
+        <grid *ngIf="edition === false" [direction]="'row'" [gap]="[16,16]">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.user" class="f-18 fw-600 f-02" />
+                <a href="open" class="f-14 fw-400 f-02 f-lh-14 link">
+                    <span class="f-14 fw-400 f-02 f-lh-14">
+                        Oscar Isaac Hernandez
+                    </span>
+                </a>
+            </grid>
+
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.map-pin-house" class="f-18 f-02" />
+                <span class="f-14 fw-400 f-02 f-lh-16">
+                    Avenida de la reforma 233, Col. Centro, CDMX, México, 06000
+                </span>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+
+                <a href="https://goo.gl/maps/7ZC8Q6" target="_blank" class="f-14 fw-400 f-02 f-lh-14 link">
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                        <tui-icon icon="@tui.house" class="f-18 fw-600 f-02 f-primary" />
+                        Edit Address
+                    </grid>
+                </a>
+            </grid>
+        </grid>
+
+        <grid *ngIf="edition === true" [direction]="'row'" [gap]="[16,16]">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.user" class="f-18 fw-600 f-02" />
+                <a href="open" class="f-14 fw-400 f-02 f-lh-14 link">
+                    <span class="f-14 fw-400 f-02 f-lh-14">
+                        Oscar Isaac Hernandez
+                    </span>
+                </a>
+            </grid>
+            <form tuiGroup [orientation]="'vertical'" class="group" [collapsed]="true" [formGroup]="formGroup">
+                <grid [direction]="'column'" [template]="'1fr'">
+                    <label tuiBlock>
+                        <input formControlName="deliveryType" tuiRadio type="radio" value="oranges" />
+                        <grid [direction]="'row'" [gap]="[4,16]">
+                            <span class="f-14 fw-600 f-02 f-lh-14">
+                                Pick
+                            </span>
+                            <span class="f-13 fw-400 f-03 f-lh-16">
+                                Pick up the order at the store
+                            </span>
+                        </grid>
+                    </label>
+                    <label tuiBlock>
+                        <input formControlName="deliveryType" tuiRadio type="radio" value="apples" />
+                        <grid [direction]="'row'" [gap]="[4,16]">
+                            <span class="f-14 fw-600 f-02 f-lh-14">
+                                Delivery to the address
+                            </span>
+                            <span class="f-13 fw-400 f-03 f-lh-16">
+                                The fee will be calculated based on the distance
+                            </span>
+                        </grid>
+                    </label>
+                </grid>
+            </form>
+
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.map-pin-house" class="f-18 f-02" />
+                <span class="f-14 fw-400 f-02 f-lh-16">
+                    Avenida de la reforma 233, Col. Centro, CDMX, México, 06000
+                </span>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+
+                <a href="https://goo.gl/maps/7ZC8Q6" target="_blank" class="f-14 fw-400 f-02 f-lh-14 link">
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                        <tui-icon icon="@tui.house" class="f-18 fw-600 f-02 f-primary" />
+                        Edit Address
+                    </grid>
+                </a>
+            </grid>
+        </grid>
+
+    </ng-template>
+</tui-accordion-item>

@@ -9,28 +9,30 @@ import { UIModule } from '../../components/ui.module';
 import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ServicesModule } from '../../services/services.module';
+import { OrdersCollectPaymentComponent } from './components/collect-payment/orders-collect-payment.component';
+import { OrdersCustomerComponent } from './components/customer/orders-customer.component';
+import { OrdersDeliveryComponent } from './components/delivery/orders-delivery.component';
+import { OrdersHeaderComponent } from './components/header/orders-header.component';
+import { OrdersItemsComponent } from './components/items/orders-items.component';
 import { OrdersLaundryComponent } from './components/laundry/orders-laundry.component';
+import { OrdersNotesComponent } from './components/notes/orders-notes.component';
+import { OrdersSummaryComponent } from './components/summary/orders-summary.component';
 import { OrdersTopBarComponent } from './components/top-bar/orders-top-bar.component';
 import { OrdersDetailPageComponent } from './detail/order-detail-page.component';
 import { OrdersDraftPageComponent } from './draft/orders-draft-page.component';
-import { OrdersTotalSummaryComponent } from './components/total-summary/orders-total-summary.component';
-import { OrdersNotesComponent } from './components/notes/orders-notes.component';
-import { OrdersItemsComponent } from './components/items/orders-items.component';
-import { OrdersCustomerComponent } from './components/customer/orders-customer.component';
-import { OrdersHeaderComponent } from './components/header/orders-header.component';
-import { OrdersSummaryComponent } from './components/summary/orders-summary.component';
 
 const components: any[] = [
+  OrdersCollectPaymentComponent,
   OrdersCustomerComponent,
+  OrdersDeliveryComponent,
   OrdersDetailPageComponent,
   OrdersDraftPageComponent,
+  OrdersHeaderComponent,
   OrdersItemsComponent,
   OrdersLaundryComponent,
   OrdersNotesComponent,
-  OrdersTopBarComponent,
-  OrdersTotalSummaryComponent,
-  OrdersHeaderComponent,
   OrdersSummaryComponent,
+  OrdersTopBarComponent,
 ];
 
 @NgModule({

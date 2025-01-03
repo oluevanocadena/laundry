@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { OrdersTotalSummaryComponent } from "./orders-total-summary.component";
+import { OrdersDeliveryComponent } from "./orders-delivery.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-describe("OrdersTotalSummaryComponent", () => {
+describe("OrdersDeliveryComponent", () => {
 
-  let fixture: ComponentFixture<OrdersTotalSummaryComponent>;
-  let component: OrdersTotalSummaryComponent;
+  let fixture: ComponentFixture<OrdersDeliveryComponent>;
+  let component: OrdersDeliveryComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [OrdersTotalSummaryComponent]
+      declarations: [OrdersDeliveryComponent]
     });
 
-    fixture = TestBed.createComponent(OrdersTotalSummaryComponent);
+    fixture = TestBed.createComponent(OrdersDeliveryComponent);
     component = fixture.componentInstance;
 
   });

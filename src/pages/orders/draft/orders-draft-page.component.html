@@ -2,7 +2,7 @@
     <orders-top-bar [title]="'Draft Order'" (onTabChange)="onTabChange($event)" width="100vw" />
 
     <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content 1fr'" padding="1.5rem" height="100%">
-        <orders-header/>
+        <orders-header />
         <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr 300px'" height="100%">
             <grid [direction]="'row'" [gap]="[16,16]">
                 <orders-items />
@@ -12,6 +12,7 @@
             <grid [direction]="'row'" [gap]="[16,16]">
                 <orders-notes />
                 <orders-customer />
+                <orders-delivery [edition]="true"/>
             </grid>
         </grid>
     </grid>

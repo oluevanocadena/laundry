@@ -1,0 +1,18 @@
+<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
+    (nzOnCancel)="close()">
+
+    <ng-container *nzModalContent>
+        <grid [direction]="'column'" [template]="'1fr max-content'">
+            <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                <span class="f-01 fw-600 f-16">Check out</span>
+            </grid>
+            <grid [direction]="'column'" [align]="'center-right'">
+                <button (click)="close()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
+                    [size]="'s'">
+                    <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
+                </button>
+            </grid>
+        </grid>
+    </ng-container>
+
+</nz-modal>

@@ -1,19 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: "orders-summary",
+  selector: 'orders-summary',
   standalone: false,
-  templateUrl: "./orders-summary.component.html",
-  styleUrls: ["./orders-summary.component.scss"]
+  templateUrl: './orders-summary.component.html',
+  styleUrls: ['./orders-summary.component.scss'],
 })
-
 export class OrdersSummaryComponent implements OnInit {
-  
-  constructor() { 
+  //Flag Management
+  showCollectPaymentModal: boolean = false;
 
+  constructor() {}
+
+  /**
+   * UI Events
+   */
+
+  openCollectPayment() {
+    this.showCollectPaymentModal = true;
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 }

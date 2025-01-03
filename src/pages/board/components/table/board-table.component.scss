@@ -6,7 +6,7 @@ table {
     padding: 0rem;
     border-radius: 1rem;
     width: 100%;
-    border-spacing: 0 3px;
+    border-spacing: 0 4px;
     /* horizontal spacing, vertical spacing */
     border-collapse: separate;
 }
@@ -15,7 +15,10 @@ th {
     text-align: left;
     background-color: #fff;
     padding: 1rem;
-    line-height: 15px;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    color: var(--text-02);
 }
 
 th:first-child {

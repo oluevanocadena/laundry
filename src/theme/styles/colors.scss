@@ -1,16 +1,7 @@
-:root {
-    --tui-primary: #34abef;
-    --tui-background-accent-1: #34abef;
-    --tui-background-accent-1-hover: #2ca3e7;
-    --tui-background-accent-1-pressed: #2991ce;
-    --tui-status-warning: #ffa222;
-    --tui-status-warning-pale: #fff6eb;
-    --t-bg: #34abef;
-}
-
-*{
-    --primary: #1ea2ec;  
+* {
+    --primary: #02c7d0;
     --secondary: #f7f7f7;
+    --tertiary: #783bfe;
     --error: #f44336;
     --warning: #ffa222;
     --warning-secondary: #ff5f2d;
@@ -26,4 +17,16 @@
     --text-08: #ffffff;
     --text-09: #f7f7f7;
     --white: #ffffff;
-  }
+}
+
+:root {
+    --tui-primary: var(--primary);
+    --tui-background-accent-1: var(--primary);
+    // // more dark 10%
+    --tui-background-accent-1-hover: color-mix(in srgb, var(--primary), black 10%);
+    --tui-background-accent-1-pressed: color-mix(in srgb, var(--primary), black 20%);
+    --tui-status-warning: #ffa222;
+    --tui-status-warning-pale: #fff6eb;
+    --tui-text-action: var(--primary);
+    --t-bg: var(--primary);
+}

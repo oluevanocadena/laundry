@@ -16,10 +16,12 @@ import { OrdersHeaderComponent } from './components/header/orders-header.compone
 import { OrdersItemsComponent } from './components/items/orders-items.component';
 import { OrdersLaundryComponent } from './components/laundry/orders-laundry.component';
 import { OrdersNotesComponent } from './components/notes/orders-notes.component';
+import { OrdersSearchProductComponent } from './components/search-product/orders-search-product.component';
 import { OrdersSummaryComponent } from './components/summary/orders-summary.component';
 import { OrdersTopBarComponent } from './components/top-bar/orders-top-bar.component';
 import { OrdersDetailPageComponent } from './detail/order-detail-page.component';
 import { OrdersDraftPageComponent } from './draft/orders-draft-page.component';
+import { OrdersAdjustQuantityComponent } from './components/adjust-quantity/orders-adjust-quantity.component';
 
 const components: any[] = [
   OrdersCollectPaymentComponent,
@@ -31,8 +33,10 @@ const components: any[] = [
   OrdersItemsComponent,
   OrdersLaundryComponent,
   OrdersNotesComponent,
+  OrdersSearchProductComponent,
   OrdersSummaryComponent,
   OrdersTopBarComponent,
+  OrdersAdjustQuantityComponent,
 ];
 
 @NgModule({

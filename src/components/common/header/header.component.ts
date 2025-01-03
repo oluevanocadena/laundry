@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
 import { HelperPage } from '../helper.page';
 import { Router } from '@angular/router';
 
@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent extends HelperPage {
+
+
+  // Arrays
   menuOptions: MenuOptions[] = [
     { label: 'Inicio', url: this.routes.Home },
   ];

@@ -1,0 +1,61 @@
+<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
+    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '400px'">
+
+    <ng-container *nzModalContent>
+        <grid [direction]="'row'" [gap]="[24,16]" padding="0.5rem">
+            <grid [direction]="'column'" [template]="'1fr max-content'">
+                <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                    <span class="f-01 fw-600 f-16">
+                        {{item.name}}
+                    </span>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-right'">
+                    <button (click)="close()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
+                        [size]="'s'">
+                        <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
+                    </button>
+                </grid>
+            </grid>
+            <grid [direction]="'row'" [gap]="[16,16]" width="100%">
+
+                <form [formGroup]="formGroup" width="100%">
+                    <grid [gap]="[16,8]" [direction]="'column'" [template]="'max-content 50px max-content'"
+                        width="fit-content">
+                        <button (click)="sum(-1)" tuiButton tuiIconButton [size]="'m'" appearance="secondary">
+                            <tui-icon icon="@tui.minus" class="f-18 fw-600 f-02" />
+                        </button>
+                        <grid [direction]="'column'" [align]="'center-center'">
+                            <span class="f-20 fw-600 f-02 t-center">
+                                {{quantity}}
+                            </span>
+                        </grid>
+                        <button (click)="sum(1)" tuiButton tuiIconButton [size]="'m'" appearance="secondary">
+                            <tui-icon icon="@tui.plus" class="f-18 fw-600 f-02" />
+                        </button>
+                    </grid>
+                </form>
+                <span class="f-12 fw-400 f-03">
+                    Adjust the quantity of the item or delete it.
+                </span>
+            </grid>
+            <grid [direction]="'column'" [gap]="[16,16]" [template]="'1fr 1fr'" padding="1rem 0 0 0"
+                class="border-top-06">
+                <grid [direction]="'column'" [align]="'center-left'">
+                    <button (click)="deleteItem()" tuiButton [appearance]="'error'" [size]="'m'">
+                        <span class="f-12 fw-600 f-error">
+                            Delete
+                        </span>
+                    </button>
+                </grid>
+                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
+                    <button (click)="close()" tuiButton [appearance]="'outline'" [size]="'m'">
+                        Cancel
+                    </button>
+                    <button (click)="adjustQuantity()" tuiButton [appearance]="'primary'" [size]="'m'">
+                        Save
+                    </button>
+                </grid>
+            </grid>
+        </grid>
+    </ng-container>
+</nz-modal>

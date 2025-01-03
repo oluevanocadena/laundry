@@ -1,19 +1,29 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { HelperPage } from '../../../../components/common/helper.page';
 
 @Component({
-  selector: "orders-notes",
+  selector: 'orders-notes',
   standalone: false,
-  templateUrl: "./orders-notes.component.html",
-  styleUrls: ["./orders-notes.component.scss"]
+  templateUrl: './orders-notes.component.html',
+  styleUrls: ['./orders-notes.component.scss'],
 })
+export class OrdersNotesComponent extends HelperPage implements OnInit {
 
-export class OrdersNotesComponent implements OnInit {
-  
-  constructor() { 
+  //Input
+  @Input() edition: boolean = false;
 
+  //FormGroup
+  formGroup = new FormGroup({
+    notes: new FormControl(),
+  });
+
+  constructor() {
+    super();
   }
 
-  ngOnInit() {
-
-  }
+  /**
+   * Life cycle method
+   */
+  ngOnInit() {}
 }

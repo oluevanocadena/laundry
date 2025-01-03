@@ -1,14 +1,71 @@
-<grid [gap]="[16,16]" [direction]="'row'">
-    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" height="fit-content">
-        <span class="f-22 fw-600 f-01 f-lh-14">Order: 33349024</span>
-        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-            <tui-badge appearance="warning">
-                <span class="f-warning f-11 fw-500">Payment Pending</span>
-            </tui-badge>
-            <tui-badge appearance="error">
-                <span class="f-error f-11 fw-500"> Not processed </span>
-            </tui-badge>
+<grid [direction]="'column'" [template]="'1fr max-content'">
+    <grid [gap]="[16,16]" [direction]="'row'">
+        <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'"
+            height="fit-content">
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="fw-600 f-01"
+                    [ngClass]="{'f-20 f-lh-20': isMobileOrTablet, 'f-24 f-lh-24': !isMobileOrTablet}">
+                    Order: 33349024
+                </span>
+                <span class="f-12 fw-400 f-02 f-lh-14">January 12, 2021 at 12:00 PM</span>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-badge appearance="warning">
+                    <span class="f-warning f-11 fw-500">Payment Pending</span>
+                </tui-badge>
+                <tui-badge appearance="error">
+                    <span class="f-error f-11 fw-500"> Not processed </span>
+                </tui-badge>
+            </grid>
+        </grid>
+
+    </grid>
+
+    <grid *ngIf="edition === false" [direction]="'column'" [align]="'center-right'">
+        <button *ngIf="isMobile === false" tuiButton [appearance]="'primary'" [size]="'m'">
+            Save Order
+        </button>
+        <button *ngIf="isMobile === true" tuiButton tuiRoundButton tuiIconButton [appearance]="'primary'" [size]="'m'">
+            <tui-icon icon="@tui.check" class="f-18 fw-600 f-white" />
+        </button>
+    </grid>
+
+    <grid *ngIf="edition === true" [direction]="'column'" [align]="'center-right'">
+        <grid *ngIf="isMobile === false" [direction]="'column'" [template]="'1fr'" height="100%">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                <button tuiButton [appearance]="'secondary'" [size]="'m'">
+                    <span class="f-14">Print</span>
+                </button>
+                <button tuiButton appearance="outline" tuiChevron type="button" [size]="'m'" [tuiDropdown]="moreOptions"
+                    [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="showMoreOptions">
+                    <grid [direction]="'column'" [template]="'1fr'">
+                        <span class="f-13 fw-600 f-lh-13 t-left">More actions </span>
+                    </grid>
+                </button>
+            </grid>
+        </grid>
+        <grid *ngIf="isMobile" [direction]="'column'" [template]="'1fr'" height="100%">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                <button tuiButton [appearance]="'outline'" [size]="'m'">
+                    <tui-icon icon="@tui.printer" class="f-18 fw-600 f-02" />
+                </button>
+                <button tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'" [size]="'m'"
+                    [tuiDropdown]="moreOptions" [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="showMoreOptions">
+                    <tui-icon icon="@tui.ellipsis" class="f-18 fw-600 f-02" />
+                </button>
+            </grid>
         </grid>
     </grid>
-    <span class="f-12 fw-400 f-02 f-lh-14">January 12, 2021 at 12:00 PM</span>
 </grid>
+
+<ng-template #moreOptions>
+    <tui-data-list [style.width.rem]="12" [size]="'m'">
+        <tui-opt-group>
+            <tui-opt-group>
+                <button *ngFor="let option of actionTypes" tuiOption type="button" [value]="option">
+                    <span class="f-13 fw-600 f-lh-13 f-02">{{ option.name }}</span>
+                </button>
+            </tui-opt-group>
+        </tui-opt-group>
+    </tui-data-list>
+</ng-template>

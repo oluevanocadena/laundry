@@ -1,0 +1,79 @@
+<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
+    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
+
+    <ng-container *nzModalContent>
+        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
+            <grid [direction]="'column'" [template]="'1fr max-content'">
+                <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                    <span class="f-01 fw-600 f-16">
+                        Add Item Order
+                    </span>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-right'">
+                    <button (click)="close()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
+                        [size]="'s'">
+                        <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
+                    </button>
+                </grid>
+            </grid>
+
+            <grid [direction]="'column'" [align]="'center-center'" height="100%">
+                <tui-segmented [size]="'m'" (activeItemIndexChange)="onChangeTab($event)">
+                    <button type="button">
+                        <grid [gap]="[8,6]" [direction]="'column'" [align]="isMobile? 'center-center' :'center-left'">
+                            <span class="material-symbols-outlined fw-600 f-21">
+                                local_laundry_service
+                            </span>
+                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Laundry</span>
+                            <tui-badge-notification [size]="'m'" badgeStatus="primary">
+                                3
+                            </tui-badge-notification>
+                        </grid>
+                    </button>
+                    <button type="button" class="f-14">
+                        <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
+                            [align]="isMobile? 'center-center' :'center-left'">
+                            <span class="material-symbols-outlined fw-600 f-21">
+                                dry_cleaning
+                            </span>
+                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Dry Clean</span>
+                        </grid>
+                    </button>
+                    <button type="button" class="f-14">
+                        <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
+                            [align]="isMobile? 'center-center' :'center-left'">
+                            <span class="material-symbols-outlined fw-600 f-21">
+                                iron
+                            </span>
+                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Ironing</span>
+                        </grid>
+                    </button>
+                    <button type="button" class="f-14">
+                        <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
+                            [align]="isMobile? 'center-center' :'center-left'">
+                            <span class="material-symbols-outlined fw-600 f-21">
+                                note_stack
+                            </span>
+                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Others</span>
+                        </grid>
+                    </button>
+                </tui-segmented>
+            </grid>
+
+
+            <grid [direction]="'column'" [align]="'center-left'">
+                <span class="f-14 fw-400 f-03 f-lh-16">
+                    After selecting a product you can add it to the order
+                </span>
+            </grid>
+
+            <grid [direction]="'column'" [align]="'center-right'">
+                <button tuiButton [disabled]="canSave === false" (click)="addProduct()" [appearance]="'primary'"
+                    [size]="'m'">
+                    Add Item
+                </button>
+            </grid>
+        </grid>
+    </ng-container>
+
+</nz-modal>

@@ -29,29 +29,36 @@ export class HelperPage {
     if (this.browserService.isBrowser()) {
       this.widthWindow = window.innerWidth;
       this.heightWindow = window.innerHeight;
-      this.evaluateWidthDevice(this.widthWindow);
+      this.evaluateWidthDevice();
       this.checkDevice();
-    }    
+    }
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.widthWindow = event.target.innerWidth;
     this.heightWindow = event.target.innerHeight;
-    this.evaluateWidthDevice(this.widthWindow);
+    this.evaluateWidthDevice();
   }
 
   public checkDevice() {
-    const userAgent = window?.navigator.userAgent;
-    this.isAppleDevice =
-      /iPhone/.test(userAgent) ||
-      /iPad/.test(userAgent) ||
-      (/Safari/.test(userAgent) &&
-        !/Chrome/.test(userAgent) &&
-        !/Edge/.test(userAgent));
+    if (this.browserService.isBrowser()) {
+      // Detecta Safari en iOS
+      const isIOS =
+        /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      // Detecta específicamente Safari (excluye Chrome y otros navegadores)
+      const isSafari =
+        /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
+        !/(Chrome|CriOS|FxiOS|Edge)/.test(navigator.userAgent);
+
+      this.isAppleDevice = isIOS && isSafari;
+    }
   }
 
-  public evaluateWidthDevice(width: number) {
+  public evaluateWidthDevice() {
+    let width = this.widthWindow;
     if (this._lastWidth === width) return;
     this.isMobile = width <= 430;
     this.isMobileOrTablet = width < 769;

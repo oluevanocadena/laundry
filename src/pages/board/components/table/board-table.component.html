@@ -1,4 +1,4 @@
-<grid [direction]="'row'" [template]="'1fr'" [padding]="isMobile? '1rem 0.5rem': '0 1rem'" width="100%" height="100%">
+<grid [direction]="'row'" [template]="'1fr'" [padding]="isMobile? '1rem 0.75rem': '0 1rem'" width="100%" height="100%">
     <grid [direction]="'column'" [template]="'1fr'" padding="0.5rem" height="100%" class="bg-spacial brdr-r-24">
         <table *ngIf="!isMobile">
             <thead>
@@ -20,7 +20,7 @@
                         <board-table-customer [id]="item.customerId || 0" [name]="item.customerName || 'John Due'" />
                     </td>
                     <td>
-                        <board-table-due-date [date]="'12/12/2020'" [time]="'12:00 PM'" [status]="'Overdue'" />
+                        <board-table-due-date [date]="'12/12/2020'" [time]="'18:00'" [status]="'OnTime'" />
                     </td>
                     <td>
                         <board-table-order-status [status]="'Washing'" />
@@ -59,11 +59,11 @@
             <tbody>
                 <tr *ngFor="let item of data">
                     <td>
-                        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr 1fr'" height="100%">
+                        <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'" height="100%">
                             <board-table-id [id]="item.id || '80005581'" />
                             <board-table-customer [id]="item.customerId || 0"
                                 [name]="item.customerName || 'John Due'" />
-                            <board-table-due-date [date]="'12/12/2020'" [time]="'12:00 PM'" [status]="'Overdue'" />
+                            <board-table-due-date [date]="'12/12/2020'" [time]="'12:00 PM'" [status]="'OnTime'" />
                             <board-table-order-status [status]="'Washing'" />
                             <board-table-amount [amount]="120" [status]="'Paid'" />
                         </grid>

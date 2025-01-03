@@ -12,8 +12,8 @@ export class OrdersDeliveryComponent implements OnInit {
 
   //formGroup
   formGroup = new FormGroup({
-    receiverName: new FormControl(''),
-    deliveryType: new FormControl(''),
+    deliveryInstructions: new FormControl(''),
+    deliveryType: new FormControl<'pickup' | 'delivery'>('pickup'),
     deliveryDate: new FormControl(''),
     deliveryTime: new FormControl(''),
   });

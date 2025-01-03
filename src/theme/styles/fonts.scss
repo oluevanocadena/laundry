@@ -3,7 +3,7 @@ $end: 80;
 
 @for $i from $start through $end {
   .f-#{$i} {
-    font-size: #{$i}px;
+    font-size: #{$i}px !important;
   }
 }
 
@@ -28,6 +28,10 @@ $end: 80;
 
 .f-primary {
   color: var(--primary) !important
+}
+
+.f-tertiary {
+  color: var(--tertiary) !important
 }
 
 .f-secondary {

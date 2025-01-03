@@ -1,11 +1,6 @@
 <grid [gap]="isMobile ? [8,8] :[24,24]" [direction]="'column'" [template]="'max-content 1fr max-content'" height="100%"
-    width="100%" [padding]="isMobile? '1rem 0.5rem': '1rem'">
-    <grid [gap]="[1,6]" [direction]="'row'" [align]="'center-center'" height="100%">
-        <grid [direction]="'column'" [align]="'center-center'">
-            <img src="/logo_simple.svg" alt="logo" class="h-40" />
-        </grid>
-        <span class="f-16 fw-700 f-02 f-lh-14">Wofloo</span>
-    </grid>
+    width="100%" [padding]="isMobile? '1rem 0.75rem': '1rem'">
+    <logo />
     <grid [direction]="'column'" [template]="'1fr'" height="100%">
         <grid [direction]="'column'" [align]="'center-center'" height="100%">
             <tui-segmented [size]="'m'" (activeItemIndexChange)="onChangeTab($event)">
@@ -14,9 +9,9 @@
                         <span class="material-symbols-outlined fw-600 f-20">
                             flag
                         </span>
-                        <span *ngIf="!isMobileOrTablet" class="f-12 fw-500">New</span>
-                        <tui-badge-notification [size]="'m'" badgeStatus="primary">
-                            3
+                        <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">New</span>
+                        <tui-badge-notification [size]="'s'" badgeStatus="warning">
+                            {{3}}
                         </tui-badge-notification>
                     </grid>
                 </button>
@@ -26,7 +21,10 @@
                         <span class="material-symbols-outlined fw-600 f-20 icon-fill">
                             cycle
                         </span>
-                        <span *ngIf="!isMobileOrTablet" class="f-12 fw-500">Processing</span>
+                        <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Processing</span>
+                        <tui-badge-notification [size]="'s'" badgeStatus="info">
+                            +{{99}}
+                        </tui-badge-notification>
                     </grid>
                 </button>
                 <button type="button" class="f-13">
@@ -35,7 +33,10 @@
                         <span class="material-symbols-outlined fw-600 f-20">
                             package_2
                         </span>
-                        <span *ngIf="!isMobileOrTablet" class="f-12 fw-500">For delivery</span>
+                        <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">For delivery</span>
+                        <tui-badge-notification [size]="'s'" badgeStatus="success">
+                            {{30}}
+                        </tui-badge-notification>
                     </grid>
                 </button>
                 <button type="button" class="f-13">
@@ -44,7 +45,7 @@
                         <span class="material-symbols-outlined fw-600 f-20">
                             inventory_2
                         </span>
-                        <span *ngIf="!isMobileOrTablet" class="f-12 fw-500">Completed</span>
+                        <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Completed</span>
                     </grid>
                 </button>
             </tui-segmented>

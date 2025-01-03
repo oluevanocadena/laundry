@@ -11,10 +11,19 @@
     border-radius: 1rem !important;
 }
 
-[tuiIcons]:before{
+[tuiIcons]:before {
     font-size: 18px !important;
     margin-left: 2px !important;
 }
+
 [tuiIcons]:after {
     color: var(--primary) !important;
+}
+
+[tuiButton][data-size=m] {
+    font-size: 14px !important;
+}
+
+* {
+    --tui-height-m: 2.35rem;
 }

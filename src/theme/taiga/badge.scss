@@ -1,0 +1,27 @@
+tui-badge-notification[badgeStatus="primary"] {
+    background-color: var(--primary) !important;
+}
+
+tui-badge-notification[badgeStatus="secondary"] {
+    background-color: var(--secondary) !important;
+}
+
+tui-badge-notification[badgeStatus="success"] {
+    background-color: var(--success) !important;
+}
+
+tui-badge-notification[badgeStatus="warning"] {
+    background-color: var(--warning) !important;
+}
+
+tui-badge-notification[badgeStatus="error"] {
+    background-color: var(--error) !important;
+}
+
+tui-badge-notification[badgeStatus="info"] {
+    background-color: var(--info) !important;
+}
+
+tui-badge-notification[data-size=s] {
+    padding: 0 .25rem !important;
+}

@@ -10,18 +10,20 @@ import { DrawerMenuComponent } from './drawer-menu/drawer-menu.component';
 import { DrawerNoticationsComponent } from './drawer-notications/drawer-notications.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { LogoComponent } from './logo/logo.component';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
 import { TopBarButtonsComponent } from './top-bar-buttons/top-bar-buttons.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 const components = [
-  HeaderComponent,
-  FooterComponent,
   DrawerMenuComponent,
   DrawerNoticationsComponent,
+  FooterComponent,
+  HeaderComponent,
+  LogoComponent,
   ProfileMenuComponent,
-  TopBarComponent,
   TopBarButtonsComponent,
+  TopBarComponent,
 ];
 
 @NgModule({

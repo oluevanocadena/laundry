@@ -1,14 +1,14 @@
 <grid [gap]="[8,12]" [direction]="'column'" [align]="'center-left'" height="100%">
-    <tui-badge-notification *ngIf="!isMobileOrTablet" size="xs"></tui-badge-notification>
-    <grid [direction]="'row'" [gap]="[0,16]">
-        <grid [gap]="[0,4]" [direction]="isMobileOrTablet? 'row':'column'" height="100%">
-            <span class="f-13 f-lh-14 fw-600">{{date | dateFormat: 'DD/MM/YYYY' }}</span>
-            <span class="f-11 f-lh-14 f-02">{{time}}</span>
+    <tui-badge-notification *ngIf="!isMobileOrTablet" size="xs" badgeStatus="success" />
+    <grid [gap]="[8,4]" [direction]="'row'" [gap]="[0,16]">
+        <grid [gap]="[2,4]" [direction]="isMobileOrTablet? 'row':'column'" height="100%">
+            <span class="f-14 f-lh-16 fw-600">{{date | dateFormat: 'DD/MM/YYYY' }}</span>
+            <span class="f-12 f-lh-16 f-02">{{time}}</span>
         </grid>
         <grid [gap]="[8,4]" [direction]="'column'" [align]="'center-left'">
-            <tui-badge-notification *ngIf="isMobileOrTablet" size="xs"></tui-badge-notification>
-            <span class="f-11 f-lh-14 f-02 fw-500">
-                Overdue
+            <tui-badge-notification *ngIf="isMobileOrTablet" size="xs" badgeStatus="success" />
+            <span class="f-12 f-lh-14 f-02 fw-500 f-success">
+                {{status}}
             </span>
         </grid>
     </grid>

@@ -15,10 +15,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class FormInputComponent implements ControlValueAccessor {
-  @Input() label: string = 'Name';
+  @Input() label: string| undefined = undefined;
   @Input() placeholder: string = 'Enter value';
-  @Input() type: 'text' | 'email' | 'phone' | 'password' = 'text';
+  @Input() type: 'text' | 'email' | 'phone' | 'password' | 'textarea' = 'text';
   @Input() countryCode: string = '+52';
+  @Input() outerLabel: boolean = true;
 
   value: string = '';
   disabled = false;

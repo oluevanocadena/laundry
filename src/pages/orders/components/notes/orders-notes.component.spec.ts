@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { BoardProfileMenuComponent } from "./board-profile-menu.component";
+import { OrdersNotesComponent } from "./orders-notes.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-describe("BoardProfileMenuComponent", () => {
+describe("OrdersNotesComponent", () => {
 
-  let fixture: ComponentFixture<BoardProfileMenuComponent>;
-  let component: BoardProfileMenuComponent;
+  let fixture: ComponentFixture<OrdersNotesComponent>;
+  let component: OrdersNotesComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [BoardProfileMenuComponent]
+      declarations: [OrdersNotesComponent]
     });
 
-    fixture = TestBed.createComponent(BoardProfileMenuComponent);
+    fixture = TestBed.createComponent(OrdersNotesComponent);
     component = fixture.componentInstance;
 
   });

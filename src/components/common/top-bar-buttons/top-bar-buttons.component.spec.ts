@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { BoardTopBarComponent } from "./board-top-bar.component";
+import { TopBarButtonsComponent } from "./top-bar-buttons.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-describe("BoardTopBarComponent", () => {
+describe("TopBarButtonsComponent", () => {
 
-  let fixture: ComponentFixture<BoardTopBarComponent>;
-  let component: BoardTopBarComponent;
+  let fixture: ComponentFixture<TopBarButtonsComponent>;
+  let component: TopBarButtonsComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [BoardTopBarComponent]
+      declarations: [TopBarButtonsComponent]
     });
 
-    fixture = TestBed.createComponent(BoardTopBarComponent);
+    fixture = TestBed.createComponent(TopBarButtonsComponent);
     component = fixture.componentInstance;
 
   });

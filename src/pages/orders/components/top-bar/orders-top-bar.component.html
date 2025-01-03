@@ -1,0 +1,55 @@
+<grid [gap]="isMobile ? [8,8] :[24,24]" [direction]="'column'" [template]="'max-content 1fr max-content'" height="100%"
+    width="100%" [padding]="isMobile? '1rem 0.5rem': '1rem'">
+    <grid [gap]="[1,6]" [direction]="'row'" [align]="'center-center'" height="100%">
+        <grid [direction]="'column'" [align]="'center-center'">
+            <img src="/logo_simple.svg" alt="logo" class="h-40" />
+        </grid>
+        <span class="f-16 fw-700 f-02 f-lh-14">Wofloo</span>
+    </grid>
+    <grid [direction]="'column'" [template]="'1fr'" height="100%">
+        <grid [direction]="'column'" [align]="'center-center'" height="100%">
+            <tui-segmented [size]="'m'" (activeItemIndexChange)="onChangeTab($event)">
+                <button type="button">
+                    <grid [gap]="[8,6]" [direction]="'column'" [align]="isMobile? 'center-center' :'center-left'">
+                        <span class="material-symbols-outlined fw-600 f-21">
+                            local_laundry_service
+                        </span>
+                        <span *ngIf="!isMobileOrTablet" class="f-13 fw-500">Laundry</span>
+                        <tui-badge-notification [size]="'m'" badgeStatus="primary">
+                            3
+                        </tui-badge-notification>
+                    </grid>
+                </button>
+                <button type="button" class="f-13">
+                    <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
+                        [align]="isMobile? 'center-center' :'center-left'">
+                        <span class="material-symbols-outlined fw-600 f-21">
+                            dry_cleaning
+                        </span>
+                        <span *ngIf="!isMobileOrTablet" class="f-13 fw-500">Dry Clean</span>
+                    </grid>
+                </button>
+                <button type="button" class="f-13">
+                    <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
+                        [align]="isMobile? 'center-center' :'center-left'">
+                        <span class="material-symbols-outlined fw-600 f-21">
+                            iron
+                        </span>
+                        <span *ngIf="!isMobileOrTablet" class="f-13 fw-500">Ironing</span>
+                    </grid>
+                </button>
+                <button type="button" class="f-13">
+                    <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
+                        [align]="isMobile? 'center-center' :'center-left'">
+                        <span class="material-symbols-outlined fw-600 f-21">
+                            note_stack
+                        </span>
+                        <span *ngIf="!isMobileOrTablet" class="f-13 fw-500">Others</span>
+                    </grid>
+                </button>
+            </tui-segmented>
+        </grid>
+    </grid>
+
+    <top-bar-buttons />
+</grid>

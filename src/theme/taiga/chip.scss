@@ -1,0 +1,10 @@
+@use '../styles/colors.scss' as *;
+
+* {
+    --tui-status-info-pale: var(--info);
+
+}
+
+[tuiAppearance][data-appearance=info] {
+    color: var(--white) !important;
+}

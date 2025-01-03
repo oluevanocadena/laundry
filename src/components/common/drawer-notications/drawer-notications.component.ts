@@ -4,10 +4,10 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { HelperPage } from '../../../../components/common/helper.page';
+import { HelperPage } from '../helper.page';
 
 @Component({
-  selector: 'board-drawer-notications',
+  selector: 'drawer-notications',
   standalone: false,
   templateUrl: './drawer-notications.component.html',
   styleUrls: ['./drawer-notications.component.scss'],

@@ -1,15 +1,17 @@
 
-/* You can add global styles to this file, and also import other style files */
-@import 'theme/styles/background.scss';
-@import 'theme/styles/spacing.scss';
-@import 'theme/styles/fonts.scss';
-@import 'theme/styles/display.scss';
-@import 'theme/styles/colors.scss';
-@import 'theme/styles/resets.scss';
-@import 'theme/taiga/button.scss';
-@import 'theme/taiga/segments.scss';
-@import 'theme/taiga/input.scss';
-@import 'theme/taiga/drawer.scss';
+/* You can add global styles to this file, and also use other style files */
+@use 'theme/styles/background.scss';
+@use 'theme/styles/spacing.scss';
+@use 'theme/styles/fonts.scss';
+@use 'theme/styles/display.scss';
+@use 'theme/styles/colors.scss';
+@use 'theme/styles/resets.scss';
+@use 'theme/styles/borders.scss';
+@use 'theme/taiga/button.scss';
+@use 'theme/taiga/segments.scss';
+@use 'theme/taiga/input.scss';
+@use 'theme/taiga/drawer.scss';
+@use 'theme/taiga/chip.scss';
 
 body {
     margin: 0;

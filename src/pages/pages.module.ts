@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginModule } from './session/login.module';
 import { BoardModule } from './board/board.module';
 import { SettingsModule } from './settings/settings.module';
+import { OrdersModule } from './orders/orders.module';
+import { RouterModule } from '@angular/router';
 
 const components = [HomeComponent];
 
@@ -18,6 +20,7 @@ const components = [HomeComponent];
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     UIModule,
     UICommonModule,
     DirectivesModule,
@@ -26,6 +29,7 @@ const components = [HomeComponent];
     LoginModule,
     BoardModule,
     SettingsModule,
+    OrdersModule,
   ],
   declarations: components,
   exports: components,

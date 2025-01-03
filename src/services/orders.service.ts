@@ -11,32 +11,66 @@ import { HttpService } from './common/http.service';
 export class OrdersService {
   constructor(public http: HttpService) {}
 
-  getFakeCustomers() {
+  getFakeCustomers(): Promise<Order[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
           {
             id: '1',
-            name: 'John Doe',
-            email: 'aa@gmail.com',
-            phone: '1234567890',
-            address: '123 Main St',
-            city: 'Springfield',
-            state: 'IL',
-            zip: '62701',
+            customerId: '1',
+            orderDate: '2021-01-01',
+            orderTotal: 100,
+            orderItems: [
+              {
+                id: 1,
+                name: '8kg',
+                category: 'Laundry',
+                productId: 1,
+                quantity: 1,
+                price: 100,
+                tax: 10,
+                total: 110,
+              },
+            ],
+            addresses: [
+              {
+                id: '1',
+                street: '123 Main St',
+                city: 'Springfield',
+                state: 'IL',
+                zip: '62701',
+              },
+            ],
           },
           {
             id: '2',
-            name: 'Jane Doe',
-            email: 'asd@gmail.com',
-            phone: '1234567890',
-            address: '123 Main St',
-            city: 'Springfield',
-            state: 'IL',
-            zip: '62701',
+            customerId: '2',
+            orderDate: '2021-01-01',
+            orderTotal: 100,
+            orderItems: [
+              {
+                id: 1,
+                name: '8kg',
+                category: 'Laundry',
+                productId: 1,
+                quantity: 1,
+                price: 100,
+                tax: 10,
+                total: 110,
+              },
+            ],
+            addresses: [
+              {
+                id: '1',
+                street: '123 Main St',
+                city: 'Springfield',
+                state: 'IL',
+                zip: '62701',
+              },
+            ],
           },
         ]);
-      });
+      }, 1000);
     });
   }
 
@@ -80,10 +114,27 @@ export class OrdersService {
 
 export interface Order {
   id: string;
+  customerId: string;
+  orderDate: string;
+  orderTotal: number;
+  orderItems: OrderItem[];
+  addresses: Address[];
+}
+
+export interface OrderItem {
+  id: number;
   name: string;
-  email: string;
-  phone: string;
-  address: string;
+  category: 'Laundry'| 'Dry Cleaning' | 'Ironing' | 'Others';
+  quantity: number;
+  price: number;
+  total: number;
+  tax: number;
+  productId: number;
+}
+
+export interface Address {
+  id: string;
+  street: string;
   city: string;
   state: string;
   zip: string;

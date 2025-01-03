@@ -5,15 +5,15 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { HelperPage } from '../../../../components/common/helper.page';
+import { HelperPage } from '../helper.page';
 
 @Component({
-  selector: 'board-drawer-menu-options',
+  selector: 'drawer-menu-options',
   standalone: false,
-  templateUrl: './board-drawer-menu.component.html',
-  styleUrls: ['./board-drawer-menu.component.scss'],
+  templateUrl: './drawer-menu.component.html',
+  styleUrls: ['./drawer-menu.component.scss'],
 })
-export class BoardDrawerMenuComponent extends HelperPage {
+export class DrawerMenuComponent extends HelperPage {
   //Flag Management
 
   private _show: boolean = false;

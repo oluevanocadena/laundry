@@ -1,7 +1,7 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { routes } from '../../app/routes';
-
-declare var window: Window;
+import moment from 'moment';
+import { BrowserService } from '../../services/common/browser.service';
 
 @Component({
   template: '<ng-content></ng-content>',
@@ -18,20 +18,20 @@ export class HelperPage {
 
   isAppleDevice: boolean = false;
 
-  // public today = moment().format('YYYY-MM-DD');
+  public today = moment().format('YYYY-MM-DD');
 
   public widthWindow: number = 0;
   public heightWindow: number = 0;
 
   private _lastWidth: number = 0;
-
+  private browserService = inject(BrowserService);
   constructor() {
-    if (window) {
-      this.widthWindow = window?.innerWidth;
-      this.heightWindow = window?.innerHeight;
-      this.evaluateWidthDevice(window?.innerWidth);
-    }
-    this.checkDevice();
+    if (this.browserService.isBrowser()) {
+      this.widthWindow = window.innerWidth;
+      this.heightWindow = window.innerHeight;
+      this.evaluateWidthDevice(this.widthWindow);
+      this.checkDevice();
+    }    
   }
 
   @HostListener('window:resize', ['$event'])

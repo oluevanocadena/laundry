@@ -1,0 +1,20 @@
+<grid [direction]="'row'" [template]="'max-content 1fr'" height="100vh" class="bg-white">
+    <orders-top-bar [title]="'Draft Order'" (onTabChange)="onTabChange($event)" width="100vw" />
+
+    <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content 1fr'" padding="1.5rem" height="100%">
+        <orders-header/>
+        <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr 300px'" height="100%">
+            <grid [direction]="'row'" [gap]="[16,16]">
+                <orders-items />
+                <orders-summary />
+                <orders-laundry />
+            </grid>
+            <grid [direction]="'row'" [gap]="[16,16]">
+                <orders-notes />
+                <orders-customer />
+            </grid>
+        </grid>
+    </grid>
+
+
+</grid>

@@ -1,8 +1,10 @@
-<grid [gap]="[60,24]" padding="2rem">
-    <span class="f-24">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies.
-    </span>
-    <button tuiButton>
-        Button
-    </button>
+<grid [gap]="[16,16]" [direction]="'column'" [align]="'center-center'">
+    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
+        <span class="f-16">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies.
+        </span>
+        <button [routerLink]="routes.OrdersBoard" tuiButton [appearance]="'primary'" [size]="'m'">
+            Board
+        </button>
+    </grid>
 </grid>

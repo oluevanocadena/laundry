@@ -19,7 +19,8 @@
                         [attr.placeholder]="isMobile ? 'Search': 'Enter name or order ID to search'" tuiTextfield />
                 </tui-textfield>
                 <grid [gap]="[4,12]" [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button tuiButton tuiRoundButton tuiIconButton [appearance]="'primary'" [size]="'s'">
+                    <button [routerLink]="routes.OrderDraft" tuiButton tuiRoundButton tuiIconButton
+                        [appearance]="'primary'" [size]="'s'">
                         <tui-icon icon="@tui.plus" class="f-18 fw-600 f-white" />
                     </button>
                     <button *ngIf="isMobile" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"

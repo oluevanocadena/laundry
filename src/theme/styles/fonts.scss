@@ -1,6 +1,9 @@
+$start: 4;
+$end: 80;
+
 @for $i from $start through $end {
   .f-#{$i} {
-    font-size: #{$i / 16}rem !important;
+    font-size: #{$i}px;
   }
 }
 

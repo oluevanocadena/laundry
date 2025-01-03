@@ -1,0 +1,54 @@
+<tui-accordion-item class="container" [open]="true">
+    <span class="f-16 fw-600 f-02 f-lh-14">
+        Customer
+    </span>
+    <ng-template tuiAccordionItemContent>
+        <grid [direction]="'row'" [gap]="[16,16]">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.user" class="f-18 fw-600 f-02" />
+                <a href="open" class="f-14 fw-400 f-02 f-lh-14 link">
+                    <span class="f-14 fw-400 f-02 f-lh-14">
+                        Oscar Isaac Hernandez
+                    </span>
+                </a>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.shopping-bag" class="f-18 f-02" />
+                <span class="f-14 fw-400 f-02 f-lh-14">
+                    3 Orders
+                </span>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.phone" class="f-18 f-02" />
+                <span class="f-14 fw-400 f-02 f-lh-14">
+                    +52 55 1234 5678
+                </span>
+            </grid>
+
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.mail" class="f-18 f-02" />
+                <a href="mailto:asd@live.com" class="f-14 fw-400 f-02 f-lh-14 link">
+                    <span class="f-14 fw-400 f-02 f-lh-14">
+                        {{'asd@live.com'}}
+                    </span>
+                </a>
+            </grid>
+
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.map-pin-house" class="f-18 f-02" />
+                <span class="f-14 fw-400 f-02 f-lh-16">
+                    Avenida de la reforma 233, Col. Centro, CDMX, México, 06000
+                </span>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+
+                <a href="https://goo.gl/maps/7ZC8Q6" target="_blank" class="f-14 fw-400 f-02 f-lh-14 link">
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                        <tui-icon icon="@tui.map" class="f-18 fw-600 f-02 f-primary" />
+                        View Map
+                    </grid>
+                </a>
+            </grid>
+        </grid>
+    </ng-template>
+</tui-accordion-item>

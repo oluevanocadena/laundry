@@ -13,6 +13,7 @@ import {
   TuiTextfield,
 } from '@taiga-ui/core';
 import {
+  TuiAccordion,
   TuiAvatar,
   TuiBadge,
   TuiBadgeNotification,
@@ -48,6 +49,7 @@ import {
     TuiAppearance,
     TuiAvatar,
     TuiAutoColorPipe,
+    ...TuiAccordion,
     TuiBadge,
     TuiBadgeNotification,
     TuiButton,
@@ -81,6 +83,7 @@ import {
     TuiAppearance,
     TuiAvatar,
     TuiAutoColorPipe,
+    ...TuiAccordion,
     TuiBadge,
     TuiBadgeNotification,
     TuiButton,

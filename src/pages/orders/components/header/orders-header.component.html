@@ -1,0 +1,14 @@
+<grid [gap]="[16,16]" [direction]="'row'">
+    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" height="fit-content">
+        <span class="f-22 fw-600 f-01 f-lh-14">Order: 33349024</span>
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+            <tui-badge appearance="warning">
+                <span class="f-warning f-11 fw-500">Payment Pending</span>
+            </tui-badge>
+            <tui-badge appearance="error">
+                <span class="f-error f-11 fw-500"> Not processed </span>
+            </tui-badge>
+        </grid>
+    </grid>
+    <span class="f-12 fw-400 f-02 f-lh-14">January 12, 2021 at 12:00 PM</span>
+</grid>

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 import {
   OrderItemsStatusEnum,
+  OrderPaymentStatusEnum,
   OrderStatusEnum,
 } from '../../../services/order-status.service';
 
@@ -75,6 +76,23 @@ export class StatusBadgeComponent implements OnInit {
             break;
         }
         break;
+      case StatusTypeBadgeEnum.Payment:
+        // OrderPaymentStatusEnum
+        switch (this.statusId) {
+          case OrderPaymentStatusEnum.Pending:
+            status = 'warning';
+            break;
+          case OrderPaymentStatusEnum.Paid:
+            status = 'success';
+            break;
+          case OrderPaymentStatusEnum.Refunded:
+            status = 'error';
+            break;
+          default:
+            status = 'default';
+            break;
+        }
+        break;
       default:
         status = 'default';
         break;
@@ -92,12 +110,13 @@ export type StatusTypeBadge =
   | 'order'
   | 'payment'
   | 'refund'
-  | 'csutomer'
+  | 'customer'
   | 'orderItems';
+
 export enum StatusTypeBadgeEnum {
   Order = 'order',
   OrderItems = 'orderItems',
   Payment = 'payment',
   Refund = 'refund',
-  Customer = 'csutomer',
+  Customer = 'customer',
 }

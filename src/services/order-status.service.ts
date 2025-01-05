@@ -39,6 +39,14 @@ export class OrdersStatusService {
   }
 
   /**
+   * @description
+   * @returns {Observable<OrderPaymentStatus[]>}
+   */
+  getOrderPaymentStatuses() {
+    return this.http.get<OrderPaymentStatus[]>('orders');
+  }
+
+  /**
    * Fakes
    */
   getFakeOrderItemsStatuses(): Observable<OrderItemsStatus[]> {
@@ -58,6 +66,15 @@ export class OrdersStatusService {
       }, 1000);
     });
   }
+
+  getFakeOrderPaymentStatuses(): Observable<OrderPaymentStatus[]> {
+    return new Observable<OrderPaymentStatus[]>((observer) => {
+      setTimeout(() => {
+        observer.next(orderPaymentStatusesFake);
+        observer.complete();
+      }, 1000);
+    });
+  }
 }
 
 export interface OrderStatus {
@@ -67,6 +84,12 @@ export interface OrderStatus {
 }
 
 export interface OrderItemsStatus {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface OrderPaymentStatus {
   id: number;
   name: string;
   description: string;
@@ -128,6 +151,24 @@ const orderItemsStatusesFake: OrderItemsStatus[] = [
   },
 ];
 
+const orderPaymentStatusesFake: OrderPaymentStatus[] = [
+  {
+    id: 1,
+    name: 'Pending',
+    description: 'Pending',
+  },
+  {
+    id: 2,
+    name: 'Paid',
+    description: 'Paid',
+  },
+  {
+    id: 3,
+    name: 'Refunded',
+    description: 'Refunded',
+  },
+];
+
 export enum OrderStatusEnum {
   Draft = 1,
   Pending = 2,
@@ -142,4 +183,10 @@ export enum OrderItemsStatusEnum {
   Processing = 2,
   Completed = 3,
   Cancelled = 4,
+}
+
+export enum OrderPaymentStatusEnum {
+  Pending = 1,
+  Paid = 2,
+  Refunded = 3,
 }

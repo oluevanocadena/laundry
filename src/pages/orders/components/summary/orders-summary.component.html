@@ -1,9 +1,7 @@
 <tui-accordion-item class="container" [open]="true">
     <grid [gap]="[8,16]" [direction]="isMobile ? 'row': 'column'" [align]="'center-left'">
         <span class="f-16 fw-600 f-02 f-lh-14">Order Summary</span>
-        <tui-badge appearance="warning">
-            <span class="f-warning f-12 fw-500">Payment Pending</span>
-        </tui-badge>
+        <status-badge [label]="order?.statusPayment" [statusId]="order?.statusPaymentId" [type]="'payment'" />
     </grid>
 
     <ng-template tuiAccordionItemContent>
@@ -45,10 +43,12 @@
             </grid>
             <grid *ngIf="edition" [direction]="'column'" [template]="'1fr'" padding="1rem 0 0 0" class="border-top-06">
                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
-                    <button (click)="openCollectPayment()" tuiButton [appearance]="'outline'" [size]="'m'">
+                    <button (click)="openCollectPayment()" tuiButton [appearance]="'outline'"
+                        [disabled]="canAddDiscount=== false" [size]="'m'">
                         Add discount
                     </button>
-                    <button (click)="openCollectPayment()" tuiButton [appearance]="'primary'" [size]="'m'">
+                    <button (click)="openCollectPayment()" tuiButton [appearance]="'primary'"
+                        [disabled]="canPaid=== false" [size]="'m'">
                         Collect Payment
                     </button>
                 </grid>
@@ -57,4 +57,5 @@
     </ng-template>
 </tui-accordion-item>
 
-<orders-collect-payment [(show)]="showCollectPaymentModal" />
+<orders-collect-payment [(show)]="showCollectPaymentModal" [(order)]="order" />
+<orders-adjust-discount [(show)]="showAdjustDiscountModal" [(order)]="order" />

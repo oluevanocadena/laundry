@@ -24,9 +24,11 @@ import { OrdersTopBarComponent } from './components/top-bar/orders-top-bar.compo
 import { OrdersDetailPageComponent } from './detail/order-detail-page.component';
 import { OrdersDraftPageComponent } from './draft/orders-draft-page.component';
 import { OrdersSearchCustomerComponent } from './components/search-customer/orders-search-customer.component';
+import { OrdersAdjustDiscountComponent } from './components/adjust-discount/orders-adjust-discount.component';
 
 const components: any[] = [
   OrdersAdjustDeliveryComponent,
+  OrdersAdjustDiscountComponent,
   OrdersAdjustQuantityComponent,
   OrdersCollectPaymentComponent,
   OrdersCustomerComponent,
@@ -37,10 +39,10 @@ const components: any[] = [
   OrdersItemsComponent,
   OrdersLaundryComponent,
   OrdersNotesComponent,
+  OrdersSearchCustomerComponent,
   OrdersSearchProductComponent,
   OrdersSummaryComponent,
   OrdersTopBarComponent,
-  OrdersSearchCustomerComponent,
 ];
 
 @NgModule({

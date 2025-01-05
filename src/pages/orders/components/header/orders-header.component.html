@@ -4,7 +4,8 @@
             <grid [direction]="'row'" [gap]="[8,8]">
                 <span class="fw-600 f-01"
                     [ngClass]="{'f-20 f-lh-20': isMobileOrTablet, 'f-24 f-lh-24': !isMobileOrTablet}">
-                    Order: {{order?.number ?? ''}}
+                    Order:
+                    <label [ngClass]="{'skeleton': busy}">{{order?.number ?? '' }}</label>
                 </span>
                 <span class="f-14 fw-400 f-02 f-lh-14">
                     {{order!.orderDate | dateFormat: 'MMMM DD, yyyy [at] hh:mm A'}}

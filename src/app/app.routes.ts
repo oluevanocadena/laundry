@@ -14,7 +14,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'board', component: BoardPageComponent },
-  { path: 'orders/draft', component: OrdersDraftPageComponent },
+  { path: 'orders/draft', component: OrdersDraftPageComponent, pathMatch: 'full' },
   { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
   { path: 'orders/detail/:id', component: OrdersDetailPageComponent },
   { path: 'customers/draft', component: CustomersDraftComponent },

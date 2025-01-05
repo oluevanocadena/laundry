@@ -7,6 +7,7 @@ import {
 } from '../../../../services/settings.services';
 import { firstValueFrom } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { OrderPaymentStatusEnum } from '../../../../services/order-status.service';
 
 @Component({
   selector: 'orders-summary',
@@ -17,6 +18,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class OrdersSummaryComponent extends HelperPage implements OnInit {
   //Flag Management
   loading: boolean = false;
+  showAdjustDiscountModal: boolean = false;
   showCollectPaymentModal: boolean = false;
 
   //Input
@@ -26,6 +28,14 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
   private _order: Order | null = null;
   @Input() set order(value: Order) {
     this._order = value;
+    console.log(this._order);
+    if (
+      this.order !== null &&
+      this.order.total === 0 &&
+      this.order.statusPaymentId === OrderPaymentStatusEnum.Paid
+    ) {
+      this.order.statusPaymentId = OrderPaymentStatusEnum.Pending;
+    }
   }
   get order(): Order | null {
     return this._order;
@@ -71,6 +81,20 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
   /**
    * Getters
    */
+
+  get canPaid(): boolean {
+    return (
+      this.order?.statusPaymentId === OrderPaymentStatusEnum.Pending &&
+      this.order?.total > 0
+    );
+  }
+
+  get canAddDiscount(): boolean {
+    return (
+      this.order?.statusPaymentId === OrderPaymentStatusEnum.Pending &&
+      this.order?.total > 0
+    );
+  }
 
   /**
    * Life Cycle

@@ -6,6 +6,7 @@ import { Utils } from '../../../services/common/utils.service';
 import {
   OrderItemsStatus,
   OrderItemsStatusEnum,
+  OrderPaymentStatus,
   OrdersStatusService,
   OrderStatus,
   OrderStatusEnum,
@@ -33,11 +34,12 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
   //Arrays
   orderStatuses: OrderStatus[] = [];
   orderItemsStatuses: OrderItemsStatus[] = [];
+  orderPaymentStatuses: OrderPaymentStatus[] = [];
 
   constructor(
     public nzMessageService: NzMessageService,
     public ordersService: OrdersService,
-    public ordersStatusService: OrdersStatusService,
+    public ordersStatusService: OrdersStatusService
   ) {
     super();
   }
@@ -46,7 +48,7 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
    * APi Calls
    */
 
-  async load(): Promise<void> {
+  async load() {
     try {
       this.loading = true;
       this.orderStatuses = await firstValueFrom(
@@ -54,6 +56,9 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
       );
       this.orderItemsStatuses = await firstValueFrom(
         this.ordersStatusService.getFakeOrderItemsStatuses()
+      );
+      this.orderPaymentStatuses = await firstValueFrom(
+        this.ordersStatusService.getFakeOrderPaymentStatuses()
       );
       // Set status name's
       if (this.order !== null) {
@@ -63,6 +68,10 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
         this.order.statusItems =
           this.orderItemsStatuses.find((x) => x.id === this.order.statusItemsId)
             ?.name ?? '';
+        this.order.statusPayment =
+          this.orderPaymentStatuses.find(
+            (x) => x.id === this.order.statusPaymentId
+          )?.name ?? '';
       }
     } catch (error) {
       console.error(error);
@@ -91,11 +100,7 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
    * Life cycle method
    */
   ngOnInit() {
-    if (this.order) {
-      this.order.id = Utils.Text.newGuid();
-      this.order.statusId = OrderStatusEnum.Draft;
-      this.order.statusItemsId = OrderItemsStatusEnum.NotProccesed;
-      this.load();
-    }
+    console.log('OrdersDraftPageComponent: ngOnInit');
+    this.load();
   }
 }

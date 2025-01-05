@@ -6,6 +6,7 @@ import {
 } from '../../../../services/orders.service';
 import { AdjustQuantityEvent } from '../adjust-quantity/orders-adjust-quantity.component';
 import { HelperPage } from '../../../../components/common/helper.page';
+import { OrderPaymentStatusEnum } from '../../../../services/order-status.service';
 
 @Component({
   selector: 'orders-items',
@@ -59,7 +60,7 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
     }
     this.order = this.orderservice.calculateTotals(this.order as Order);
     this.orderChange.emit(this.order as Order);
-    console.log('Remove Item', item);
+    console.log('Remove Item', this.order);
   }
 
   onAdjustQuantity(event: AdjustQuantityEvent) {
@@ -89,12 +90,29 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
    * Getters
    */
 
+  get itemsCount() {
+    return (
+      this.order?.orderItems.filter((x) => x.isDeliveryFee === false).length ??
+      0
+    );
+  }
+
   get orderHaveItems() {
     return (
       this.order?.orderItems?.filter((x) => x.isDeliveryFee === false) ?? []
     ).length > 0
       ? true
       : false;
+  }
+
+  get isPendingPayment() {
+    return this.order?.statusPaymentId === OrderPaymentStatusEnum.Pending
+      ? true
+      : false;
+  }
+
+  get canModifyItems() {
+    return this.isPendingPayment === true && this.edition === true;
   }
 
   /**

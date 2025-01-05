@@ -3,7 +3,11 @@ import moment from 'moment';
 import { HttpService } from './common/http.service';
 import { Utils } from './common/utils.service';
 import { Address, Customer } from './customers.service';
-import { OrderItemsStatusEnum } from './order-status.service';
+import {
+  OrderItemsStatusEnum,
+  OrderPaymentStatusEnum,
+  OrderStatusEnum,
+} from './order-status.service';
 import { Observable } from 'rxjs';
 
 /**
@@ -25,6 +29,14 @@ export class OrdersService {
       );
       order.taxes = order.total - order.subtotal;
       order.totalItems = order.orderItems.length;
+    }
+    return order;
+  }
+
+  calculateDiscount(order: Order, discount: number): Order {
+    if (order) {
+      order.discount = discount;
+      order.total = order.total - discount;
     }
     return order;
   }
@@ -94,6 +106,8 @@ export interface Order {
   status: string;
   statusItems: string;
   statusItemsId: number;
+  statusPayment: string;
+  statusPaymentId: number;
   customerId: number;
   deliveryId?: number;
   orderDate: string;
@@ -105,6 +119,7 @@ export interface Order {
   totalItems: number;
   totalQuantity: number;
   notes?: string;
+  payment: Payment;
   customer: Customer;
   orderItems: OrderItem[];
   delivery: Delivery;
@@ -143,6 +158,16 @@ export interface Delivery {
   address: Address;
 }
 
+export interface Payment {
+  id: string;
+  method: PaymentMethods;
+  date: string;
+  transactionNumber: string;
+}
+
+export type PaymentMethods = 'cash' | 'card';
+export type DiscountTypes = 'percentage' | 'amount';
+
 const ordersFake: Order[] = [
   {
     id: Utils.Text.newGuid(),
@@ -152,6 +177,14 @@ const ordersFake: Order[] = [
     status: 'Draft',
     statusItems: 'Draft',
     statusItemsId: 1,
+    statusPayment: 'Payment Pending',
+    statusPaymentId: 1,
+    payment: {
+      id: Utils.Text.newGuid(),
+      method: 'cash',
+      date: '2021-01-01',
+      transactionNumber: '',
+    },
     orderDate: '2021-01-01',
     taxes: 10,
     discount: 0,
@@ -221,6 +254,14 @@ const ordersFake: Order[] = [
     status: 'In Progress',
     statusItems: 'Draft',
     statusItemsId: 1,
+    statusPayment: 'Payment Pending',
+    statusPaymentId: 1,
+    payment: {
+      id: Utils.Text.newGuid(),
+      method: 'cash',
+      date: '2021-01-01',
+      transactionNumber: '',
+    },
     orderDate: '2021-01-01',
     taxes: 10,
     discount: 0,
@@ -288,9 +329,17 @@ export const OrderEmpty: Order = {
   id: Utils.Text.newGuid(),
   number: Utils.Text.generateRandomHashtagNumber(),
   status: '',
-  statusId: 1,
+  statusId: OrderStatusEnum.Draft,
   statusItems: '',
-  statusItemsId: 1,
+  statusItemsId: OrderItemsStatusEnum.NotProccesed,
+  statusPayment: '',
+  statusPaymentId: OrderPaymentStatusEnum.Pending,
+  payment: {
+    id: Utils.Text.newGuid(),
+    method: 'cash',
+    date: moment().format('DD/MM/YYYY'),
+    transactionNumber: '',
+  },
   orderItems: [],
   total: 0,
   discount: 0,

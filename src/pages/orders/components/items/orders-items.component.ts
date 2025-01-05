@@ -46,8 +46,8 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
     if (orderItem !== null) {
       this.order?.orderItems.push(orderItem);
     }
+    this.order = this.orderservice.calculateTotals(this.order as Order);
     this.orderChange.emit(this.order as Order);
-    this.calculateTotals();
     console.log(orderItem);
   }
 
@@ -57,8 +57,8 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
         (i) => i.id !== item.id
       );
     }
+    this.order = this.orderservice.calculateTotals(this.order as Order);
     this.orderChange.emit(this.order as Order);
-    this.calculateTotals();
     console.log('Remove Item', item);
   }
 
@@ -72,23 +72,8 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
       this.removeItem(item);
     }
     this.showAdjustQuantity = false;
-    this.calculateTotals();
+    this.order = this.orderservice.calculateTotals(this.order as Order);
     this.orderChange.emit(this.order as Order);
-  }
-
-  calculateTotals() {
-    if (this.order) {
-      this.order.total = this.order.orderItems.reduce(
-        (acc, item) => acc + item.total,
-        0
-      );
-      this.order.subtotal = this.order.orderItems.reduce(
-        (acc, item) => acc + item.subtotal,
-        0
-      );
-      this.order.taxes = this.order.total - this.order.subtotal;
-      this.order.totalItems = this.order.orderItems.length;
-    }
   }
 
   openSearchProduct() {
@@ -98,6 +83,18 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
   openAdjustQuantity(item: OrderItem) {
     this.selectedItem = item;
     this.showAdjustQuantity = true;
+  }
+
+  /**
+   * Getters
+   */
+
+  get orderHaveItems() {
+    return (
+      this.order?.orderItems?.filter((x) => x.isDeliveryFee === false) ?? []
+    ).length > 0
+      ? true
+      : false;
   }
 
   /**

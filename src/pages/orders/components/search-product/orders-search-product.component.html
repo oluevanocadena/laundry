@@ -15,20 +15,22 @@
             <grid [direction]="'column'" [align]="'center-center'" height="100%">
                 <tui-segmented [size]="isMobileOrTablet? 'l':'m'" [(activeItemIndex)]="tabIndex"
                     (activeItemIndexChange)="onChangeTab($event)">
-                    <button *ngFor="let category of categories" type="button"
-                        [minWidth]="isMobileOrTablet? '60px': '100px'">
-                        <grid [gap]="[8,6]" [direction]="'column'" [align]="isMobile? 'center-center' :'center-left'">
-                            <span class="material-symbols-outlined fw-600"
-                                [ngClass]="{'f-26': isMobileOrTablet, 'f-22': !isMobileOrTablet}">
-                                {{category.icon}}
-                            </span>
-                            <span *ngIf="!isMobileOrTablet" padding="0.45rem 0.3rem 0 0" class="fw-500"
-                                [ngClass]="{'f-14': isMobileOrTablet, 'f-15': !isMobileOrTablet}">
-                                {{category.name}}
-                            </span>
-                            <!-- <tui-badge-notification [size]="'m'" badgeStatus="primary">3</tui-badge-notification> -->
-                        </grid>
-                    </button>
+                    <ng-container *ngFor="let category of categories">
+                        <button *ngIf="category.visible" type="button" [minWidth]="isMobileOrTablet? '60px': '100px'">
+                            <grid [gap]="[8,6]" [direction]="'column'"
+                                [align]="isMobile? 'center-center' :'center-left'">
+                                <span class="material-symbols-outlined fw-600"
+                                    [ngClass]="{'f-26': isMobileOrTablet, 'f-22': !isMobileOrTablet}">
+                                    {{category.icon}}
+                                </span>
+                                <span *ngIf="!isMobileOrTablet" padding="0.45rem 0.3rem 0 0" class="fw-500"
+                                    [ngClass]="{'f-14': isMobileOrTablet, 'f-15': !isMobileOrTablet}">
+                                    {{category.name}}
+                                </span>
+                                <!-- <tui-badge-notification [size]="'m'" badgeStatus="primary">3</tui-badge-notification> -->
+                            </grid>
+                        </button>
+                    </ng-container>
                 </tui-segmented>
             </grid>
 

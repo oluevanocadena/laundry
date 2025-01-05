@@ -30,6 +30,26 @@ export class OrdersStatusService {
     return this.http.get<OrderStatus[]>('orders');
   }
 
+  /**
+   * @description
+   * @returns {Observable<OrderItemsStatus[]>}
+   */
+  getOrderItemsStatuses() {
+    return this.http.get<OrderItemsStatus[]>('orders');
+  }
+
+  /**
+   * Fakes
+   */
+  getFakeOrderItemsStatuses(): Observable<OrderItemsStatus[]> {
+    return new Observable<OrderItemsStatus[]>((observer) => {
+      setTimeout(() => {
+        observer.next(orderItemsStatusesFake);
+        observer.complete();
+      }, 1000);
+    });
+  }
+
   getFakeOrderStatuses(): Observable<OrderStatus[]> {
     return new Observable<OrderStatus[]>((observer) => {
       setTimeout(() => {
@@ -41,6 +61,12 @@ export class OrdersStatusService {
 }
 
 export interface OrderStatus {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface OrderItemsStatus {
   id: number;
   name: string;
   description: string;
@@ -79,6 +105,29 @@ const orderStatusesFake: OrderStatus[] = [
   },
 ];
 
+const orderItemsStatusesFake: OrderItemsStatus[] = [
+  {
+    id: 1,
+    name: 'Not Proccesed',
+    description: 'Not Proccesed',
+  },
+  {
+    id: 2,
+    name: 'Processing',
+    description: 'Processing',
+  },
+  {
+    id: 3,
+    name: 'Completed',
+    description: 'Completed',
+  },
+  {
+    id: 4,
+    name: 'Cancelled',
+    description: 'Cancelled',
+  },
+];
+
 export enum OrderStatusEnum {
   Draft = 1,
   Pending = 2,
@@ -86,4 +135,11 @@ export enum OrderStatusEnum {
   Completed = 4,
   Cancelled = 5,
   Refunded = 6,
+}
+
+export enum OrderItemsStatusEnum {
+  NotProccesed = 1,
+  Processing = 2,
+  Completed = 3,
+  Cancelled = 4,
 }

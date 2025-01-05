@@ -1,5 +1,5 @@
-<tui-badge appearance="{{statusClassColor}}">
+<tui-badge *ngIf="!!label" appearance="{{statusClassColor}}">
     <span class="f-{{statusClassColor}} f-12 fw-500">
-        {{label ?? '' | capitalizeFirstLetter }}
+        {{label | capitalizeFirstLetter }}
     </span>
 </tui-badge>

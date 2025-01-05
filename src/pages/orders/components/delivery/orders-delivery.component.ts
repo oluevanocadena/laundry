@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Order } from '../../../../services/orders.service';
+import {
+  CustomerSettings,
+  SettingsService,
+} from '../../../../services/settings.services';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'orders-delivery',
@@ -10,6 +16,7 @@ import { Order } from '../../../../services/orders.service';
 })
 export class OrdersDeliveryComponent implements OnInit {
   //Flag Managment
+  loading: boolean = false;
   showAdjustDelivery: boolean = false;
 
   //Input
@@ -35,7 +42,31 @@ export class OrdersDeliveryComponent implements OnInit {
     deliveryType: new FormControl<'pickup' | 'delivery'>('pickup'),
   });
 
-  constructor() {}
+  //Models
+  customerSettings: CustomerSettings | null = null;
+
+  constructor(
+    public settingsService: SettingsService,
+    public nzMessageService: NzMessageService
+  ) {}
+
+  /**
+   * Api Calls
+   */
+
+  async load(): Promise<void> {
+    try {
+      this.loading = true;
+      this.customerSettings = await firstValueFrom(
+        this.settingsService.getSettingsFake(1)
+      );
+    } catch (error) {
+      console.error(error);
+      this.nzMessageService.error('Error loading data');
+    } finally {
+      this.loading = false;
+    }
+  }
 
   /**
    * UI Events
@@ -48,6 +79,14 @@ export class OrdersDeliveryComponent implements OnInit {
   /**
    * Geters
    */
+
+  get deliveryFee(): number {
+    return (
+      (this.order?.delivery?.fee ?? 0) +
+      (this.order?.delivery?.fee ?? 0) *
+        (this.customerSettings?.taxes?.taxRate ?? 0)
+    );
+  }
 
   get isDelivery() {
     return this.formGroup.get('deliveryType')?.value === 'delivery';

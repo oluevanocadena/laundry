@@ -2,8 +2,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { catchError, finalize, firstValueFrom, forkJoin } from 'rxjs';
+import { catchError, finalize, firstValueFrom } from 'rxjs';
 import { HelperTablePage } from '../../../../components/common/helper.table.page';
+import {
+  OrderItemsStatus,
+  OrderItemsStatusEnum,
+  OrdersStatusService,
+  OrderStatus,
+} from '../../../../services/order-status.service';
+import { OrderItem } from '../../../../services/orders.service';
 import {
   ProductCategory,
   ProductCategoryEnum,
@@ -14,7 +21,6 @@ import {
   CustomerSettings,
   SettingsService,
 } from '../../../../services/settings.services';
-import { OrderItem } from '../../../../services/orders.service';
 
 @Component({
   selector: 'orders-search-product',
@@ -55,6 +61,8 @@ export class OrdersSearchProductComponent
   //Arrays
   categories: ProductCategory[] = [];
   products: Product[] = [];
+  orderStatuses: OrderStatus[] = [];
+  orderItemsStatuses: OrderItemsStatus[] = [];
 
   //Models
   selectedCategory: ProductCategory | null = null;
@@ -67,10 +75,11 @@ export class OrdersSearchProductComponent
   tabIndex: number = 0;
 
   constructor(
-    public nzModalService: NzModalService,
     public nzMessageService: NzMessageService,
-    public productService: ProductService,
+    public nzModalService: NzModalService,
+    public ordersStatusService: OrdersStatusService,
     public productCategoryService: ProductCategoryService,
+    public productService: ProductService,
     public settingsService: SettingsService
   ) {
     super();
@@ -88,6 +97,13 @@ export class OrdersSearchProductComponent
       );
       this.customerSettings = await firstValueFrom(
         this.settingsService.getSettingsFake(1)
+      );
+
+      this.orderStatuses = await firstValueFrom(
+        this.ordersStatusService.getFakeOrderStatuses()
+      );
+      this.orderItemsStatuses = await firstValueFrom(
+        this.ordersStatusService.getFakeOrderItemsStatuses()
       );
 
       this.selectedCategory = this.categories[0];
@@ -145,6 +161,10 @@ export class OrdersSearchProductComponent
     switch (this.tabIndex) {
       case 0:
         orderItem = {
+          status:
+            this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
+              ?.name ?? '',
+          statusId: OrderItemsStatusEnum.NotProccesed,
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedCategory?.name ?? '',
@@ -154,11 +174,16 @@ export class OrdersSearchProductComponent
           tax: this.taxtOfLaundry,
           subtotal: this.totalLaundry - this.taxtOfLaundry,
           total: this.totalLaundry,
+          isDeliveryFee: false,
           id: 0,
         };
         break;
       case 1:
         orderItem = {
+          status:
+            this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
+              ?.name ?? '',
+          statusId: OrderItemsStatusEnum.NotProccesed,
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedDryCleaningProduct?.name ?? '',
@@ -168,11 +193,16 @@ export class OrdersSearchProductComponent
           tax: this.taxtOfSelectedDryCleaningProduct,
           subtotal: this.subTotalOfSelectedDryCleaningProduct,
           total: this.priceOfSelectedDryCleaningProduct,
+          isDeliveryFee: false,
           id: 0,
         };
         break;
       case 2:
         orderItem = {
+          status:
+            this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
+              ?.name ?? '',
+          statusId: OrderItemsStatusEnum.NotProccesed,
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedCategory?.name ?? '',
@@ -182,11 +212,16 @@ export class OrdersSearchProductComponent
           tax: this.taxtOfIroning,
           subtotal: this.totalIroning - this.taxtOfIroning,
           total: this.totalIroning,
+          isDeliveryFee: false,
           id: 0,
         };
         break;
       case 3:
         orderItem = {
+          status:
+            this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
+              ?.name ?? '',
+          statusId: OrderItemsStatusEnum.NotProccesed,
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedOtherProduct?.name ?? '',
@@ -196,6 +231,7 @@ export class OrdersSearchProductComponent
           tax: this.taxOfSelectedOtherProduct,
           subtotal: this.subTotalOfSelectedOtherProduct,
           total: this.priceOfSelectedOtherProduct,
+          isDeliveryFee: false,
           id: 0,
         };
         break;

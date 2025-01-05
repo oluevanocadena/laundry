@@ -6,20 +6,20 @@
         <tui-badge-notification *ngIf="order?.orderItems!.length > 0" [size]="'s'" badgeStatus="primary">
             {{ order?.orderItems?.length }}
         </tui-badge-notification>
-        <tui-badge appearance="error">
-            <span class="f-warning f-12 fw-500">Not processed</span>
-        </tui-badge>
+        <status-badge [label]="order?.statusItems" [statusId]="order?.statusItemsId" [type]="'orderItems'" />
     </grid>
 
     <ng-template tuiAccordionItemContent>
         <grid [direction]="'row'" [gap]="[16,16]">
-            <grid *ngIf="order?.orderItems && order?.orderItems!.length > 0" [direction]="'row'" [gap]="[16,16]">
+            <grid *ngIf="order?.orderItems && orderHaveItems" [direction]="'row'" [gap]="[16,16]">
                 <ng-container *ngFor="let item of order?.orderItems">
-                    <ng-container *ngTemplateOutlet="rowItemTemplate; context: { item: item}">
+                    <ng-container *ngIf="item.isDeliveryFee === false">
+                        <ng-container *ngTemplateOutlet="rowItemTemplate; context: { item: item}">
+                        </ng-container>
                     </ng-container>
                 </ng-container>
             </grid>
-            <grid *ngIf="order?.orderItems && order?.orderItems!.length === 0" [direction]="'row'" [gap]="[16,16]">
+            <grid *ngIf="order?.orderItems && orderHaveItems === false" [direction]="'row'" [gap]="[16,16]">
                 <grid [direction]="'column'" [align]="'center-left'" padding="0.5rem 0" height="100%">
                     <span class="f-15 fw-500 f-04 f-lh-17">
                         No product items added to the order yet,

@@ -4,7 +4,7 @@
             <grid [direction]="'row'" [gap]="[8,8]">
                 <span class="fw-600 f-01"
                     [ngClass]="{'f-20 f-lh-20': isMobileOrTablet, 'f-24 f-lh-24': !isMobileOrTablet}">
-                    Order: {{order?.id}}
+                    Order: {{order?.number ?? ''}}
                 </span>
                 <span class="f-14 fw-400 f-02 f-lh-14">
                     {{order!.orderDate | dateFormat: 'MMMM DD, yyyy [at] hh:mm A'}}
@@ -18,11 +18,11 @@
     </grid>
 
     <grid *ngIf="edition === false" [direction]="'column'" [align]="'center-right'">
-        <button *ngIf="isMobile === false" (click)="saveOrder()" tuiButton [appearance]="'primary'" [size]="'m'"
-            [disabled]="canSave === false">
+        <button *ngIf="isMobile === false" (click)="saveOrder()" tuiButton [loading]="busy" [appearance]="'primary'"
+            [size]="'m'" [disabled]="canSave === false">
             Save Order
         </button>
-        <button *ngIf="isMobile === true" (click)="saveOrder()" tuiButton tuiRoundButton tuiIconButton
+        <button *ngIf="isMobile === true" (click)="saveOrder()" tuiButton [loading]="busy" tuiRoundButton tuiIconButton
             [appearance]="'primary'" [size]="'m'" [disabled]="canSave === false">
             <tui-icon icon="@tui.check" class="f-18 fw-600 f-white" />
         </button>

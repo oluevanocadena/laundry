@@ -35,7 +35,7 @@
                                 <span class="f-15 fw-600 f-02 f-lh-17">
                                     {{ customerSettings?.delivery?.pricePerKm ?? 0 | numeralFormat: '$0,0.00'}} per Km
                                 </span>
-                                the total delivery fee will be
+                                the total delivery fee will be with taxes:
                                 <span class="f-15 fw-600 f-primary f-lh-17">
                                     {{ deliveryFee | numeralFormat: '$0,0.00'}}
                                     {{customerSettings?.general?.currency}}

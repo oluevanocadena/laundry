@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from './common/http.service';
-import { Address, Customer } from './customers.service';
 import moment from 'moment';
+import { HttpService } from './common/http.service';
+import { Utils } from './common/utils.service';
+import { Address, Customer } from './customers.service';
+import { OrderItemsStatusEnum } from './order-status.service';
+import { Observable } from 'rxjs';
 
 /**
  * @description
@@ -13,12 +16,25 @@ import moment from 'moment';
 export class OrdersService {
   constructor(public http: HttpService) {}
 
+  calculateTotals(order: Order): Order {
+    if (order) {
+      order.total = order.orderItems.reduce((acc, item) => acc + item.total, 0);
+      order.subtotal = order.orderItems.reduce(
+        (acc, item) => acc + item.subtotal,
+        0
+      );
+      order.taxes = order.total - order.subtotal;
+      order.totalItems = order.orderItems.length;
+    }
+    return order;
+  }
+
   /**
    * @description
    * @param {string} id
    * @returns {Observable<Order>}
    */
-  getCustomer(id: string) {
+  getOrder(id: string) {
     return this.http.get<Order>(`orders/${id}`);
   }
 
@@ -26,31 +42,43 @@ export class OrdersService {
    * @description
    * @returns {Observable<Order[]>}
    */
-  getCustomers() {
+  getOrders() {
     return this.http.get<Order[]>('orders');
   }
 
   /**
    * @description
-   * @param {Order} customer
+   * @param {Order} Order
    * @returns {Observable<Order>}
    */
-  createCustomer(customer: Order) {
-    return this.http.post<Order>('orders', customer);
+  createOrder(Order: Order) {
+    return this.http.post<any>('orders', Order);
   }
 
   /**
    * @description
    * @param {string} id
-   * @param {Order} customer
+   * @param {Order} Order
    * @returns {Observable<Order>}
    */
 
-  updateCustomer(id: string, customer: Order) {
-    return this.http.put<Order>(`orders/${id}`, customer);
+  updateOrder(id: string, Order: Order) {
+    return this.http.put<Order>(`orders/${id}`, Order);
   }
 
-  getFakeCustomers(): Promise<Order[]> {
+  /**
+   * Fakes
+   */
+  createFakeOrder(Order: Order): Observable<Order> {
+    return new Observable((observer) => {
+      setTimeout(() => {
+        observer.next(Order);
+        observer.complete();
+      }, 1000);
+    });
+  }
+
+  getFakeOrders(): Promise<Order[]> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(ordersFake);
@@ -60,9 +88,12 @@ export class OrdersService {
 }
 
 export interface Order {
-  id: number;
+  id: string;
+  number: string;
   statusId: number;
   status: string;
+  statusItems: string;
+  statusItemsId: number;
   customerId: number;
   deliveryId?: number;
   orderDate: string;
@@ -82,14 +113,24 @@ export interface Order {
 export interface OrderItem {
   id: number;
   name: string;
+  status: string;
+  statusId: number;
   categoryId: number;
-  category: 'Laundry' | 'Dry Cleaning' | 'Ironing' | 'Others' | string;
+  category:
+    | 'Laundry'
+    | 'Dry Cleaning'
+    | 'Ironing'
+    | 'Others'
+    | 'Delivery'
+    | string;
   quantity: number;
   price: number;
   total: number;
   tax: number;
   subtotal: number;
   productId: number;
+  isDeliveryFee: boolean;
+  oderId?: string;
 }
 
 export interface Delivery {
@@ -104,10 +145,13 @@ export interface Delivery {
 
 const ordersFake: Order[] = [
   {
-    id: 1,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     customerId: 1,
     statusId: 1,
     status: 'Draft',
+    statusItems: 'Draft',
+    statusItemsId: 1,
     orderDate: '2021-01-01',
     taxes: 10,
     discount: 0,
@@ -119,6 +163,8 @@ const ordersFake: Order[] = [
       {
         id: 1,
         name: '8kg',
+        status: 'Not Proccesed',
+        statusId: OrderItemsStatusEnum.NotProccesed,
         categoryId: 1,
         category: 'Laundry',
         productId: 1,
@@ -127,6 +173,7 @@ const ordersFake: Order[] = [
         tax: 10,
         subtotal: 110,
         total: 110,
+        isDeliveryFee: false,
       },
     ],
     delivery: {
@@ -167,10 +214,13 @@ const ordersFake: Order[] = [
     },
   },
   {
-    id: 2,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     customerId: 2,
     statusId: 2,
     status: 'In Progress',
+    statusItems: 'Draft',
+    statusItemsId: 1,
     orderDate: '2021-01-01',
     taxes: 10,
     discount: 0,
@@ -182,6 +232,8 @@ const ordersFake: Order[] = [
       {
         id: 2,
         name: '8kg',
+        status: 'Not Proccesed',
+        statusId: OrderItemsStatusEnum.NotProccesed,
         categoryId: 1,
         category: 'Laundry',
         productId: 1,
@@ -190,6 +242,7 @@ const ordersFake: Order[] = [
         tax: 10,
         subtotal: 110,
         total: 110,
+        isDeliveryFee: false,
       },
     ],
     delivery: {
@@ -232,9 +285,12 @@ const ordersFake: Order[] = [
 ];
 
 export const OrderEmpty: Order = {
-  id: 0,
-  status: 'draft',
+  id: Utils.Text.newGuid(),
+  number: Utils.Text.generateRandomHashtagNumber(),
+  status: '',
   statusId: 1,
+  statusItems: '',
+  statusItemsId: 1,
   orderItems: [],
   total: 0,
   discount: 0,

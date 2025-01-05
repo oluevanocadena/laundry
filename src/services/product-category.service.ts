@@ -28,21 +28,31 @@ export class ProductCategoryService {
           id: 1,
           name: 'Laundry',
           icon: 'local_laundry_service',
+          visible: true,
         },
         {
           id: 2,
           name: 'Dry Cleaning',
           icon: 'dry_cleaning',
+          visible: true,
         },
         {
           id: 3,
           name: 'Ironing',
           icon: 'iron',
+          visible: true,
         },
         {
           id: 4,
           name: 'Others',
           icon: 'note_stack',
+          visible: true,
+        },
+        {
+          id: 5,
+          name: 'Delivery',
+          icon: 'truck',
+          visible: false,
         },
       ]);
     });
@@ -51,8 +61,9 @@ export class ProductCategoryService {
 
 export interface ProductCategory {
   id: number;
-  name: 'Laundry' | 'Dry Cleaning' | 'Ironing' | 'Others';
-  icon: 'local_laundry_service' | 'dry_cleaning' | 'iron' | 'note_stack';
+  name: 'Laundry' | 'Dry Cleaning' | 'Ironing' | 'Others' | 'Delivery';
+  icon: 'local_laundry_service' | 'dry_cleaning' | 'iron' | 'note_stack' | 'truck';
+  visible: boolean;
 }
 
 

@@ -12,6 +12,33 @@ import { Observable, Observer } from 'rxjs';
 import moment from 'moment';
 import numeral from 'numeral';
 
+export const Utils = {
+  Text: {
+    newGuid(): string {
+      const hexDigits = '0123456789abcdef';
+      let s = '';
+      for (let i = 0; i < 36; i++) {
+        if (i === 8 || i === 13 || i === 18 || i === 23) {
+          s += '-';
+        } else if (i === 14) {
+          s += '4';
+        } else if (i === 19) {
+          s += hexDigits.substr((Math.random() * 4) | (0 + 8), 1);
+        } else {
+          s += hexDigits.substr(Math.random() * 16, 1);
+        }
+      }
+      return s?.toUpperCase();
+    },
+    generateRandomHashtagNumber(): string {
+      const prefix = '#';
+      const year = new Date().getFullYear().toString().slice(-2);
+      const random = Math.floor(Math.random() * 9000000) + 1000000; // número de 7 dígitos
+      return `${prefix}${year}${random}`;
+    },
+  },
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -495,27 +522,6 @@ export class UtilsService {
     form.controls[controlName].markAsPristine();
     form.controls[controlName].markAsUntouched();
     form.controls[controlName].updateValueAndValidity();
-  }
-
-  /**
-   * Generates a random GUID using the version 4 UUID algorithm.
-   * @returns {string} A string representing the generated GUID.
-   */
-  newGuid(): string {
-    const hexDigits = '0123456789abcdef';
-    let s = '';
-    for (let i = 0; i < 36; i++) {
-      if (i === 8 || i === 13 || i === 18 || i === 23) {
-        s += '-';
-      } else if (i === 14) {
-        s += '4';
-      } else if (i === 19) {
-        s += hexDigits.substr((Math.random() * 4) | (0 + 8), 1);
-      } else {
-        s += hexDigits.substr(Math.random() * 16, 1);
-      }
-    }
-    return s?.toUpperCase();
   }
 
   /**

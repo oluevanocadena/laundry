@@ -2,18 +2,20 @@
     <orders-top-bar [title]="'Draft Order'" width="100vw" />
 
     <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content max-content'" padding="1.5rem" height="100%">
-        <orders-header [edition]="false" />
+        <orders-header [edition]="false" [(order)]="order" />
 
-        <grid [gap]="[16,24]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 300px'"
+        <grid [gap]="[24,24]" [direction]="'column'"
+            [template]="isMobileOrTablet ? '1fr': isLargeDesktop? '1fr minmax(650px, 0.25fr)': '1fr 350px'"
             height="fit-content">
-            <grid [direction]="'row'" [gap]="[16,16]">
-                <orders-items [edition]="true" />
-                <orders-summary />
+            <grid [direction]="'row'" [gap]="[24,24]">
+                <orders-items [edition]="true" [(order)]="order" />
+                <orders-summary [edition]="true" [(order)]="order"
+                    [showDeliveryFee]="delivery.isDelivery && customer.hadCustomer" />
             </grid>
-            <grid [direction]="'row'" [gap]="[16,16]">
-                <orders-customer />
-                <orders-delivery [edition]="true" />
-                <orders-notes [edition]="true" />
+            <grid [direction]="'row'" [gap]="[24,24]">
+                <orders-customer #customer [edition]="true" [(order)]="order" />
+                <orders-delivery #delivery [edition]="true" [(order)]="order" />
+                <orders-notes [edition]="true" [(order)]="order" />
             </grid>
         </grid>
     </grid>

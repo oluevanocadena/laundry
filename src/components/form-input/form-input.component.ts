@@ -1,6 +1,8 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
+import { TuiDay, TuiTime } from '@taiga-ui/cdk';
+import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
+import { tuiCreateTimePeriods } from '@taiga-ui/kit';
 @Component({
   selector: 'form-input',
   standalone: false,
@@ -15,11 +17,26 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class FormInputComponent implements ControlValueAccessor {
-  @Input() label: string| undefined = undefined;
+  @Input() label: string | undefined = undefined;
   @Input() placeholder: string = 'Enter value';
-  @Input() type: 'text' | 'email' | 'phone' | 'password' | 'textarea' = 'text';
+  @Input() type:
+    | 'text'
+    | 'email'
+    | 'phone'
+    | 'password'
+    | 'textarea'
+    | 'date'
+    | 'time'
+    | 'number' = 'text';
   @Input() countryCode: string = '+52';
   @Input() outerLabel: boolean = true;
+  @Input() size: TuiSizeL | TuiSizeS = 'm';
+  @Input() min: number = 0;
+  @Input() max: number = 100;
+  @Input() step: number = 1;
+  @Input() postFix: string = '';
+  @Input() timeItems: TuiTime[] = [];
+  @Input() minDate: TuiDay = TuiDay.currentLocal().append({ day: 1 });
 
   value: string = '';
   disabled = false;
@@ -47,5 +64,18 @@ export class FormInputComponent implements ControlValueAccessor {
     let value = (event.target as any)?.value;
     this.value = value;
     this.onChange(value);
+  }
+
+  onNgModelChange(value: any): void {
+    this.value = value;
+    this.onChange(value);
+  }
+
+  /**
+   * Getters
+   */
+
+  get isEmailOrText() {
+    return this.type === 'email' || this.type === 'text';
   }
 }

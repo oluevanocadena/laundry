@@ -3,18 +3,31 @@
         <span class="f-16 fw-600 f-02 f-lh-14">
             Item Summary
         </span>
-        <tui-badge-notification *ngIf="items.length > 0" [size]="'s'" badgeStatus="primary">
-            {{ items.length }}
+        <tui-badge-notification *ngIf="order?.orderItems!.length > 0" [size]="'s'" badgeStatus="primary">
+            {{ order?.orderItems?.length }}
         </tui-badge-notification>
+        <tui-badge appearance="error">
+            <span class="f-warning f-12 fw-500">Not processed</span>
+        </tui-badge>
     </grid>
 
     <ng-template tuiAccordionItemContent>
         <grid [direction]="'row'" [gap]="[16,16]">
-            <grid [direction]="'row'" [gap]="[16,16]">
-                <ng-container *ngFor="let item of items">
+            <grid *ngIf="order?.orderItems && order?.orderItems!.length > 0" [direction]="'row'" [gap]="[16,16]">
+                <ng-container *ngFor="let item of order?.orderItems">
                     <ng-container *ngTemplateOutlet="rowItemTemplate; context: { item: item}">
                     </ng-container>
                 </ng-container>
+            </grid>
+            <grid *ngIf="order?.orderItems && order?.orderItems!.length === 0" [direction]="'row'" [gap]="[16,16]">
+                <grid [direction]="'column'" [align]="'center-left'" padding="0.5rem 0" height="100%">
+                    <span class="f-15 fw-500 f-04 f-lh-17">
+                        No product items added to the order yet,
+                        <a [href]="routes.CustomerDraft" target="_blank" class="fw-600 f-05 link">
+                            create a new product
+                        </a>
+                    </span>
+                </grid>
             </grid>
             <grid *ngIf="edition" [direction]="'column'" [template]="'1fr'" padding="1rem 0 0 0" class="border-top-06">
                 <grid [direction]="'column'" [align]="'center-right'">
@@ -30,24 +43,31 @@
 <ng-template #rowItemTemplate let-item="item">
     <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
         <grid [direction]="'column'" [template]="'1fr'" height="100%">
-            <span class="f-14 fw-600 f-01 f-lh-18">{{ item.name }}</span>
-            <span class="f-12 fw-400 f-03 f-lh-14">{{ item.category }}</span>
+            <span class="f-15 fw-600 f-01 f-lh-17">{{ item.name }}</span>
+            <span class="f-15 fw-400 f-03 f-lh-17">{{ item.category }}</span>
         </grid>
         <grid [gap]="[8,16]" [direction]="'column'" [align]="'center-right'">
 
-            <grid (click)="openAdjustQuantity(item)" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'"
-                padding="0.25rem 0.5rem" height="100%" class="border-06 brdr-r-8 pointer">
-                <span class="f-12 fw-600 f-02 f-lh-14">{{ item.quantity }}</span>
-                <span class="f-12 fw-600 f-02 f-lh-14">x</span>
-                <span class="f-12 fw-600 f-02 f-lh-14">{{ item.price | numeralFormat: '$0,0.00' }}</span>
+            <grid (click)="edition ? openAdjustQuantity(item) : null" [gap]="[8,8]" [direction]="'column'"
+                [align]="'center-right'" padding="0.125rem 0.5rem" height="100%" class="border-06 brdr-r-8"
+                [ngClass]="{'pointer': edition}">
+                <span class="f-15 fw-600 f-02 f-lh-17" [ngClass]="{'f-02': edition, 'f-04': !edition}">
+                    {{ item.quantity }}
+                </span>
+                <span class="f-15 fw-600 f-02 f-lh-17" [ngClass]="{'f-02': edition, 'f-04': !edition}">
+                    x
+                </span>
+                <span class="f-15 fw-600 f-02 f-lh-17" [ngClass]="{'f-02': edition, 'f-04': !edition}">
+                    {{ item.price | numeralFormat: '$0,0.00' }}
+                </span>
             </grid>
             <grid [direction]="'column'" [align]="'center-right'">
-                <span class="f-12 fw-600 f-02 f-lh-14">{{ item.total | numeralFormat: '$0,0.00' }}</span>
+                <span class="f-15 fw-600 f-02 f-lh-15">{{ item.total | numeralFormat: '$0,0.00' }}</span>
             </grid>
         </grid>
     </grid>
 </ng-template>
 
-<orders-search-product [(show)]="showSearchProduct" (onSelectProduct)="onSelectProduct($event)" />
+<orders-search-product [(show)]="showSearchProduct" (onSelectItem)="onSelectItem($event)" />
 <orders-adjust-quantity [(show)]="showAdjustQuantity" [item]="selectedItem"
     (onAdjustQuantity)="onAdjustQuantity($event)" />

@@ -1,8 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import {
-  ApplicationConfig,
-  provideZoneChangeDetection
-} from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import {
   provideClientHydration,
   withEventReplay,
@@ -12,7 +9,9 @@ import { provideRouter } from '@angular/router';
 import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { TUI_LANGUAGE, TUI_SPANISH_LANGUAGE } from '@taiga-ui/i18n';
 import { routes } from './app.routes';
+import { of } from 'rxjs';
 const ngZorroConfig: NzConfig = {
   modal: {
     nzDirection: 'ltr',
@@ -27,6 +26,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideNzConfig(ngZorroConfig),
+    {
+      provide: TUI_LANGUAGE,
+      useValue: of(TUI_SPANISH_LANGUAGE),
+    },
     NG_EVENT_PLUGINS,
     NzModalService,
   ],

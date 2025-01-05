@@ -9,13 +9,15 @@ import {
 
 @Directive({
   standalone: false,
-  selector: '[padding], [width], [minWidth], [height], [minHeight] [scroll]', // Selector para los atributos
+  selector: '[padding], [margin], [width], [minWidth], [height], [minHeight], [maxHeight], [scroll]', // Selector para los atributos
 })
 export class StyleDirective implements OnChanges {
   @Input() padding?: string;
+  @Input() margin?: string;
   @Input() width?: string;
   @Input() minWidth?: string;
   @Input() minHeight?: string;
+  @Input() maxHeight?: string;
   @Input() height?: string;
   @Input() scroll?: 'x' | 'y';
 
@@ -25,6 +27,9 @@ export class StyleDirective implements OnChanges {
     if (changes['padding']) {
       this.renderer.setStyle(this.el.nativeElement, 'padding', this.padding);
     }
+    if (changes['margin']) {
+      this.renderer.setStyle(this.el.nativeElement, 'margin', this.margin);
+    }
     if (changes['width']) {
       this.renderer.setStyle(this.el.nativeElement, 'width', this.width);
     }
@@ -33,6 +38,9 @@ export class StyleDirective implements OnChanges {
     }
     if (changes['minHeight']) {
       this.renderer.setStyle(this.el.nativeElement, 'minHeight', this.minHeight);
+    }
+    if (changes['maxHeight']) {
+      this.renderer.setStyle(this.el.nativeElement, 'maxHeight', this.maxHeight);
     }
     if (changes['height']) {
       this.renderer.setStyle(this.el.nativeElement, 'height', this.height);

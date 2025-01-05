@@ -1,0 +1,66 @@
+<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
+    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
+
+    <ng-container *nzModalContent>
+        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
+            <modal-title [title]="'Select customer'" (onClose)="close()" />
+
+            <!-- Dry Cleaning -->
+            <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem" class="border-bottom-06">
+                <ng-container *ngTemplateOutlet="searchProductTemplate; context: { controlName: 'selectedCustomer' }">
+                </ng-container>
+            </grid>
+
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr max-content'">
+                <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                    <span class="f-14 f-lh-16 fw-400 f-03 t-left">
+                        Will be assigned to the order the <span class="fw-500 f-primary">selected customer</span>.
+                    </span>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-right'">
+                    <button tuiButton [disabled]="canSave === false" (click)="assignCustomer()" [appearance]="'primary'"
+                        [size]="'m'">
+                        Assign Customer
+                    </button>
+                </grid>
+            </grid>
+        </grid>
+    </ng-container>
+
+</nz-modal>
+
+
+<ng-template #searchProductTemplate let-controlName="controlName">
+    <form [formGroup]="formGroup" width="100%">
+        <grid [direction]="'row'" [gap]="[24,16]" width="100%">
+            <grid [direction]="'column'" [align]="'center-center'" padding="0 1rem" width="100%">
+                <tui-textfield tuiInputRound iconStart="@tui.search" [tuiTextfieldSize]="'m'" width="100%">
+                    <input formControlName="search" [attr.placeholder]="isMobile ? 'Search': 'Search a customer'"
+                        tuiTextfield (ngModelChange)="searchCustomers()" />
+                </tui-textfield>
+            </grid>
+            <form [formGroup]="formGroup" tuiGroup [collapsed]="true" orientation="vertical"
+                [margin]="isMobile? '0 0.5rem': '0 1rem'" [width]="isMobile? 'calc(100% - 1rem)': 'calc(100% - 2rem)'"
+                maxHeight="400px" class="group scroll-v">
+                <label appearance="" tuiBlock *ngFor="let customer of customers">
+                    <input [formControlName]="controlName" tuiBlock type="radio" [value]="customer" />
+                    <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
+                        <grid [direction]="'row'" [gap]="[0,8]">
+                            <span class="f-16 fw-600 f-01 f-lh-17">
+                                {{customer.name}}
+                            </span>
+                            <span class="f-14 fw-400 f-03 f-lh-16">
+                                {{customer.fullAddress}}
+                            </span>
+                        </grid>
+                        <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                            <span class="f-15 fw-600 f-03">
+                                {{customer.totalOrders | numeralFormat: '0,0'}} orders
+                            </span>
+                        </grid>
+                    </grid>
+                </label>
+            </form>
+        </grid>
+    </form>
+</ng-template>

@@ -9,6 +9,8 @@ import { UIModule } from '../../components/ui.module';
 import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ServicesModule } from '../../services/services.module';
+import { OrdersAdjustDeliveryComponent } from './components/adjust-delivery/orders-adjust-delivery.component';
+import { OrdersAdjustQuantityComponent } from './components/adjust-quantity/orders-adjust-quantity.component';
 import { OrdersCollectPaymentComponent } from './components/collect-payment/orders-collect-payment.component';
 import { OrdersCustomerComponent } from './components/customer/orders-customer.component';
 import { OrdersDeliveryComponent } from './components/delivery/orders-delivery.component';
@@ -21,9 +23,11 @@ import { OrdersSummaryComponent } from './components/summary/orders-summary.comp
 import { OrdersTopBarComponent } from './components/top-bar/orders-top-bar.component';
 import { OrdersDetailPageComponent } from './detail/order-detail-page.component';
 import { OrdersDraftPageComponent } from './draft/orders-draft-page.component';
-import { OrdersAdjustQuantityComponent } from './components/adjust-quantity/orders-adjust-quantity.component';
+import { OrdersSearchCustomerComponent } from './components/search-customer/orders-search-customer.component';
 
 const components: any[] = [
+  OrdersAdjustDeliveryComponent,
+  OrdersAdjustQuantityComponent,
   OrdersCollectPaymentComponent,
   OrdersCustomerComponent,
   OrdersDeliveryComponent,
@@ -36,7 +40,7 @@ const components: any[] = [
   OrdersSearchProductComponent,
   OrdersSummaryComponent,
   OrdersTopBarComponent,
-  OrdersAdjustQuantityComponent,
+  OrdersSearchCustomerComponent,
 ];
 
 @NgModule({

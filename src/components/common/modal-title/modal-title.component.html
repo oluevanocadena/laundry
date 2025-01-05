@@ -1,0 +1,17 @@
+<grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'0 0 1rem 0'" class="border-bottom-06">
+    <grid [direction]="'column'" [align]="'center-left'" height="100%">
+        <grid [direction]="'column'" [template]="'1fr'">
+            <span class="f-01 fw-600 f-18" [ngClass]="{'f-lh-15': !!subtitle}">
+                {{title}}
+            </span>
+            <span *ngIf="!!subtitle" class="f-03 fw-600 f-15 f-lh-15">
+                {{subtitle}}
+            </span>
+        </grid>
+    </grid>
+    <grid [direction]="'column'" [align]="'center-right'">
+        <button (click)="close()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'" [size]="'s'">
+            <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
+        </button>
+    </grid>
+</grid>

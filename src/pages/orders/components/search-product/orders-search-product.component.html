@@ -2,78 +2,144 @@
     (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
 
     <ng-container *nzModalContent>
-        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
-            <grid [direction]="'column'" [template]="'1fr max-content'">
-                <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                    <span class="f-01 fw-600 f-16">
-                        Add Item Order
-                    </span>
-                </grid>
-                <grid [direction]="'column'" [align]="'center-right'">
-                    <button (click)="close()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
-                        [size]="'s'">
-                        <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
-                    </button>
-                </grid>
+        <grid [direction]="'row'" [gap]="[24,16]" padding="0.5rem">
+            <modal-title [title]="'Add Item Order'" (onClose)="close()" />
+            <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                <span class="f-15 f-lh-17 fw-400 f-03 t-left">
+                    <label class="f-02 fw-600">Select</label>
+                    a product to add to the order or
+                    <label class="f-02 fw-600">change</label>
+                    the quantity of the selected product.
+                </span>
             </grid>
-
             <grid [direction]="'column'" [align]="'center-center'" height="100%">
-                <tui-segmented [size]="'m'" (activeItemIndexChange)="onChangeTab($event)">
-                    <button type="button">
+                <tui-segmented [size]="isMobileOrTablet? 'l':'m'" [(activeItemIndex)]="tabIndex"
+                    (activeItemIndexChange)="onChangeTab($event)">
+                    <button *ngFor="let category of categories" type="button"
+                        [minWidth]="isMobileOrTablet? '60px': '100px'">
                         <grid [gap]="[8,6]" [direction]="'column'" [align]="isMobile? 'center-center' :'center-left'">
-                            <span class="material-symbols-outlined fw-600 f-21">
-                                local_laundry_service
+                            <span class="material-symbols-outlined fw-600"
+                                [ngClass]="{'f-26': isMobileOrTablet, 'f-22': !isMobileOrTablet}">
+                                {{category.icon}}
                             </span>
-                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Laundry</span>
-                            <tui-badge-notification [size]="'m'" badgeStatus="primary">
-                                3
-                            </tui-badge-notification>
-                        </grid>
-                    </button>
-                    <button type="button" class="f-14">
-                        <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
-                            [align]="isMobile? 'center-center' :'center-left'">
-                            <span class="material-symbols-outlined fw-600 f-21">
-                                dry_cleaning
+                            <span *ngIf="!isMobileOrTablet" padding="0.45rem 0.3rem 0 0" class="fw-500"
+                                [ngClass]="{'f-14': isMobileOrTablet, 'f-15': !isMobileOrTablet}">
+                                {{category.name}}
                             </span>
-                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Dry Clean</span>
-                        </grid>
-                    </button>
-                    <button type="button" class="f-14">
-                        <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
-                            [align]="isMobile? 'center-center' :'center-left'">
-                            <span class="material-symbols-outlined fw-600 f-21">
-                                iron
-                            </span>
-                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Ironing</span>
-                        </grid>
-                    </button>
-                    <button type="button" class="f-14">
-                        <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
-                            [align]="isMobile? 'center-center' :'center-left'">
-                            <span class="material-symbols-outlined fw-600 f-21">
-                                note_stack
-                            </span>
-                            <span *ngIf="!isMobileOrTablet" class="f-14 fw-500">Others</span>
+                            <!-- <tui-badge-notification [size]="'m'" badgeStatus="primary">3</tui-badge-notification> -->
                         </grid>
                     </button>
                 </tui-segmented>
             </grid>
 
-
-            <grid [direction]="'column'" [align]="'center-left'">
-                <span class="f-14 fw-400 f-03 f-lh-16">
-                    After selecting a product you can add it to the order
+            <!-- Laundry -->
+            <grid *ngIf="tabIndex + 1 === prodCatEnum.Laundry" [direction]="'row'" [gap]="[16,16]" width="100%"
+                padding="0 0 2.5rem 0" class="border-bottom-06">
+                <form [formGroup]="formGroup" width="100%">
+                    <grid [direction]="'column'" [template]="'1fr'">
+                        <form-input [label]="'Weight'" [type]="'number'" [placeholder]="'Weight'"
+                            formControlName="weight" [size]="'m'" [postFix]="'kg'" [min]="1" [max]="200" [step]="0.1" />
+                    </grid>
+                </form>
+                <span class="f-15 fw-400 f-03 t-left f-lh-17">
+                    The current price per kilogram is
+                    <label class="fw-500">
+                        {{(customerSettings?.products?.laundryKgPrice ?? 0) | numeralFormat: '$0,0.00'}}.
+                    </label>
+                    with a total of:
+                    <label class="fw-500">
+                        {{totalLaundry | numeralFormat: '$0,0.00'}}.
+                    </label>
+                    To modify the price, go to the
+                    <a [routerLink]="routes.Settings" target="_blank" class="link fw-600">settings</a> panel.
                 </span>
             </grid>
 
-            <grid [direction]="'column'" [align]="'center-right'">
-                <button tuiButton [disabled]="canSave === false" (click)="addProduct()" [appearance]="'primary'"
-                    [size]="'m'">
-                    Add Item
-                </button>
+            <!-- Dry Cleaning -->
+            <grid *ngIf="tabIndex+ 1 === prodCatEnum.DryCleaning" [direction]="'row'" [gap]="[16,16]" width="100%"
+                padding="0 0 2.5rem" class="border-bottom-06">
+                <ng-container
+                    *ngTemplateOutlet="searchProductTemplate; context: { controlName: 'selectedDryCleaningProduct' }">
+                </ng-container>
+            </grid>
+
+            <!-- Ironing -->
+            <grid *ngIf="tabIndex + 1 === prodCatEnum.Ironing" [direction]="'row'" [gap]="[16,16]" width="100%"
+                padding="0 0 2.5rem 0" class="border-bottom-06">
+                <form [formGroup]="formGroup" width="100%">
+                    <grid [direction]="'column'" [template]="'1fr'">
+                        <form-input [label]="'Ironing'" [type]="'number'" [placeholder]="'Pieces'"
+                            formControlName="ironing" [size]="'m'" [postFix]="'pieces'" [min]="1" [max]="200"
+                            [step]="1" />
+                    </grid>
+                </form>
+                <span class="f-15 fw-400 f-03 t-left f-lh-17">
+                    The current price per piece is
+                    <label class="fw-500">
+                        {{(customerSettings?.products?.ironingPiecePrice ?? 0) | numeralFormat: '$0,0.00'}}.
+                    </label>
+                    with a total of:
+                    <label class="fw-500">
+                        {{totalIroning | numeralFormat: '$0,0.00'}}.
+                    </label>
+                    To modify the price, go to the
+                    <a [routerLink]="routes.Settings" target="_blank" class="link fw-600">settings</a> panel.
+                </span>
+            </grid>
+
+            <!-- Others -->
+            <grid *ngIf="tabIndex + 1 === prodCatEnum.Others" [direction]="'row'" [gap]="[16,16]" width="100%"
+                padding="0 0 2.5rem" class="border-bottom-06">
+                <ng-container
+                    *ngTemplateOutlet="searchProductTemplate; context: { controlName: 'selectedOtherProduct' }">
+                </ng-container>
+            </grid>
+
+
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
+                <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                    <button tuiButton [disabled]="canSave === false" (click)="addProduct()" [appearance]="'primary'"
+                        [size]="'m'">
+                        Add Item
+                    </button>
+                </grid>
             </grid>
         </grid>
     </ng-container>
 
 </nz-modal>
+
+
+<ng-template #searchProductTemplate let-controlName="controlName">
+    <form [formGroup]="formGroup" width="100%">
+        <grid [direction]="'row'" [gap]="[16,16]" width="100%">
+            <grid [direction]="'column'" [align]="'center-center'" padding="0" width="100%">
+                <tui-textfield tuiInputRound iconStart="@tui.search" [tuiTextfieldSize]="'m'" width="100%">
+                    <input formControlName="search" [attr.placeholder]="isMobile ? 'Search': 'Search for a product'"
+                        tuiTextfield (ngModelChange)="searchProducts()" />
+                </tui-textfield>
+            </grid>
+            <form [formGroup]="formGroup" tuiGroup [collapsed]="true" orientation="vertical" margin="0"
+                width="calc(100% - 0rem)" maxHeight="350px" class="group scroll-v">
+                <label appearance="" tuiBlock *ngFor="let product of products">
+                    <input [formControlName]="controlName" tuiBlock type="radio" [value]="product" />
+                    <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
+                        <grid [direction]="'row'" [gap]="[0,8]">
+                            <span class="f-15 fw-600 f-01 f-lh-17">
+                                {{product.name}}
+                            </span>
+                            <span class="f-15 fw-400 f-03 f-lh-17">
+                                {{product.description}}
+                            </span>
+                        </grid>
+                        <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                            <span class="f-15 fw-600 f-03">
+                                {{product.price | numeralFormat: '$0,0.00'}}
+                            </span>
+                        </grid>
+                    </grid>
+                </label>
+            </form>
+        </grid>
+    </form>
+</ng-template>

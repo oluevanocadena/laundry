@@ -11,8 +11,8 @@
                 Type your notes here
             </span>
             <form [formGroup]="formGroup">
-                <form-input [label]="''" [type]="'textarea'" [placeholder]="'Type notes'"
-                    [formControlName]="'notes'" />
+                <form-input [label]="''" [type]="'textarea'" [placeholder]="'Type notes'" formControlName="notes"
+                    (ngModelChange)="onInputNotes()" />
             </form>
         </grid>
     </ng-template>

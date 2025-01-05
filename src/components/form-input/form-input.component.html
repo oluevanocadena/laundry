@@ -1,14 +1,13 @@
 <grid [gap]="[8, 24]" [direction]="'column'" [template]="'1fr'">
-    <span *ngIf="label" class="f-14">{{ label }}</span>
-    <tui-input *ngIf="type !== 'phone' && type !== 'password' && type !=='textarea'" tuiTextfieldSize="m"
-        [tuiTextfieldLabelOutside]="outerLabel">
+    <span *ngIf="label" class="f-15 fw-500 f-02">{{ label }}</span>
+    <tui-input *ngIf="isEmailOrText" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel">
         <ng-container *ngIf="placeholder">
             {{ placeholder }}
         </ng-container>
         <input tuiTextfieldLegacy [type]="type" autocomplete="new-password" [disabled]="disabled" [value]="value"
             (input)="onInputChange($event)" />
     </tui-input>
-    <tui-input-phone *ngIf="type === 'phone'" tuiTextfieldSize="m" [tuiTextfieldLabelOutside]="outerLabel"
+    <tui-input-phone *ngIf="type === 'phone'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
         [countryCode]="countryCode">
         <ng-container *ngIf="placeholder">
             {{ placeholder }}
@@ -17,14 +16,31 @@
             (input)="onInputChange($event)" />
     </tui-input-phone>
 
-    <tui-textfield *ngIf="type === 'password'" tuiTextfieldSize="m">
+    <tui-textfield *ngIf="type === 'password'" [tuiTextfieldSize]="size">
         <input [attr.placeholder]="placeholder" tuiTextfield type="password" autocomplete="new-password"
             [disabled]="disabled" [value]="value" (input)="onInputChange($event)" />
         <tui-icon tuiPassword />
     </tui-textfield>
 
     <tui-textarea *ngIf="type === 'textarea'" [tuiTextfieldLabelOutside]="outerLabel" tuiTextfieldSize="m"
-        [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+        [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
         {{ placeholder }}
     </tui-textarea>
+
+    <tui-input-number *ngIf="type === 'number'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+        [tuiTextfieldPostfix]="postFix" [min]="min" [max]="max" [step]="step" [(ngModel)]="value"
+        [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
+        {{ placeholder }}
+    </tui-input-number>
+
+    <tui-input-date *ngIf="type === 'date'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [min]="minDate"
+        [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
+        {{ placeholder }}
+    </tui-input-date>
+
+    <tui-input-time *ngIf="type === 'time'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+        [items]="timeItems" [strict]="true" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
+        (ngModelChange)="onNgModelChange($event)">
+        {{ placeholder }}
+    </tui-input-time>
 </grid>

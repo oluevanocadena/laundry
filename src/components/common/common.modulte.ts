@@ -11,9 +11,11 @@ import { DrawerNoticationsComponent } from './drawer-notications/drawer-noticati
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LogoComponent } from './logo/logo.component';
+import { ModalTitleComponent } from './modal-title/modal-title.component';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 import { TopBarButtonsComponent } from './top-bar-buttons/top-bar-buttons.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { StatusBadgeComponent } from './status-badge/status-badge.component';
 
 const components = [
   DrawerMenuComponent,
@@ -21,9 +23,11 @@ const components = [
   FooterComponent,
   HeaderComponent,
   LogoComponent,
+  ModalTitleComponent,
   ProfileMenuComponent,
   TopBarButtonsComponent,
   TopBarComponent,
+  StatusBadgeComponent,
 ];
 
 @NgModule({

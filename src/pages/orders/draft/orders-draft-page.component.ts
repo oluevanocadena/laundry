@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HelperPage } from '../../../components/common/helper.page';
+import {
+  Order,
+  OrderEmpty,
+  OrderItem,
+  OrdersService,
+} from '../../../services/orders.service';
+import moment from 'moment';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-orders-draft-page',
@@ -8,7 +16,13 @@ import { HelperPage } from '../../../components/common/helper.page';
   styleUrls: ['./orders-draft-page.component.scss'],
 })
 export class OrdersDraftPageComponent extends HelperPage implements OnInit {
-  constructor() {
+  //Models
+  order: Order = OrderEmpty;
+
+  constructor(
+    public ordersService: OrdersService,
+    public nzMessageService: NzMessageService
+  ) {
     super();
   }
 
@@ -16,9 +30,17 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
    * UI Events
    */
 
-  onTabChange(index: number) {
-    console.log('Change tab:', index);
+  itemsChange(items: OrderItem[]) {
+    if (this.order !== null) {
+      this.order.orderItems = items;
+    }
+    console.log('Items Change:', items);
   }
+
+  /**
+   * Getters
+   */
+  
 
   /**
    * Life cycle method

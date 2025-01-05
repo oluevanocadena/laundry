@@ -1,3 +1,12 @@
+* {
+
+    --font: "Anek Devanagari", serif !important;
+    --tui-font-text: var(--font);
+    --tui-font-heading: var(--font);
+    --t-group-margin: -0px;
+}
+
+
 h1,
 h2,
 h3,
@@ -56,18 +65,54 @@ section,
 main,
 body,
 html {
-    font-family: "Inter", serif;
+    font-family: var(--font);
     font-optical-sizing: auto;
-    font-style: normal;
     color: var(--text-01);
 }
-p{
+
+p {
     margin: 0;
 }
+
+span:not(.material-symbols-outlined):not(.material-symbols-filled):not(.icon) {
+    padding-top: 0.3rem;
+}
+
 .icon-fill {
     font-variation-settings: 'FILL' 1
 }
 
-*{
-    --t-group-margin: -0px;    
+
+
+// Scroll
+
+*::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: #DFE9EB;
+}
+
+*::-webkit-scrollbar-track:hover {
+    background-color: #b8c0c2a6;
+}
+
+*::-webkit-scrollbar-track:active {
+    background-color: #d0d5d6c9;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: #02c6d070;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #02c6d07a;
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: #02c6d0;
 }

@@ -1,11 +1,12 @@
 
 /* You can add global styles to this file, and also use other style files */
+@use 'theme/styles/resets.scss';
+
 @use 'theme/styles/background.scss';
 @use 'theme/styles/spacing.scss';
 @use 'theme/styles/fonts.scss';
 @use 'theme/styles/display.scss';
 @use 'theme/styles/colors.scss';
-@use 'theme/styles/resets.scss';
 @use 'theme/styles/borders.scss';
 @use 'theme/taiga/button.scss';
 @use 'theme/taiga/segments.scss';

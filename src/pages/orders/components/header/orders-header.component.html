@@ -1,31 +1,29 @@
 <grid [direction]="'column'" [template]="'1fr max-content'">
     <grid [gap]="[16,16]" [direction]="'row'">
-        <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'"
-            height="fit-content">
+        <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'" height="fit-content">
             <grid [direction]="'row'" [gap]="[8,8]">
                 <span class="fw-600 f-01"
                     [ngClass]="{'f-20 f-lh-20': isMobileOrTablet, 'f-24 f-lh-24': !isMobileOrTablet}">
-                    Order: 33349024
+                    Order: {{order?.id}}
                 </span>
-                <span class="f-12 fw-400 f-02 f-lh-14">January 12, 2021 at 12:00 PM</span>
+                <span class="f-14 fw-400 f-02 f-lh-14">
+                    {{order!.orderDate | dateFormat: 'MMMM DD, yyyy [at] hh:mm A'}}
+                </span>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <tui-badge appearance="warning">
-                    <span class="f-warning f-11 fw-500">Payment Pending</span>
-                </tui-badge>
-                <tui-badge appearance="error">
-                    <span class="f-error f-11 fw-500"> Not processed </span>
-                </tui-badge>
+                <status-badge [label]="order?.status" [statusId]="order?.statusId" [type]="'order'" />
             </grid>
         </grid>
 
     </grid>
 
     <grid *ngIf="edition === false" [direction]="'column'" [align]="'center-right'">
-        <button *ngIf="isMobile === false" tuiButton [appearance]="'primary'" [size]="'m'">
+        <button *ngIf="isMobile === false" (click)="saveOrder()" tuiButton [appearance]="'primary'" [size]="'m'"
+            [disabled]="canSave === false">
             Save Order
         </button>
-        <button *ngIf="isMobile === true" tuiButton tuiRoundButton tuiIconButton [appearance]="'primary'" [size]="'m'">
+        <button *ngIf="isMobile === true" (click)="saveOrder()" tuiButton tuiRoundButton tuiIconButton
+            [appearance]="'primary'" [size]="'m'" [disabled]="canSave === false">
             <tui-icon icon="@tui.check" class="f-18 fw-600 f-white" />
         </button>
     </grid>

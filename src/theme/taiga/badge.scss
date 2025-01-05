@@ -25,3 +25,33 @@ tui-badge-notification[badgeStatus="info"] {
 tui-badge-notification[data-size=s] {
     padding: 0 .25rem !important;
 }
+
+tui-badge,
+[tuiBadge] {
+    padding-top: 2px !important;
+    border-radius: 0.5rem !important;
+}
+
+tui-badge[data-appearance=warning],
+[tuiBadge][data-appearance=warning] {
+    border: 1px solid var(--warning) !important;
+}
+
+tui-badge[data-appearance=error],
+[tuiBadge][data-appearance=error] {
+    border: 1px solid var(--error) !important;
+}
+
+tui-badge[data-appearance=success],
+[tuiBadge][data-appearance=success] {
+    border: 1px solid var(--success) !important;
+}
+
+tui-badge[data-appearance=info],
+[tuiBadge][data-appearance=info] {
+    border: 1px solid var(--info) !important;
+}
+
+tui-badge[data-size=l] > span {
+    padding-top: 0.12rem !important;
+}

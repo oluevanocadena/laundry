@@ -1,0 +1,79 @@
+<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
+    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
+
+    <ng-container *nzModalContent>
+        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
+            <modal-title [title]="'Adjust Delivery'" (onClose)="close()" />
+
+            <grid [direction]="'row'" [gap]="[24,16]" padding="0 0 1rem 0">
+                <grid [direction]="'row'" [gap]="[8,16]">
+                    <span class="f-15 fw-500 f-02 f-lh-14">Delivery Address</span>
+                    <grid [direction]="'column'" [template]="'1fr max-content'">
+                        <grid [gap]="[4,12]" [direction]="'column'" [align]="'center-left'" height="100%">
+                            <tui-icon icon="@tui.house" class="f-20 f-02" />
+                            <span class="f-16 fw-400 f-03 f-lh-16">
+                                Avenida de la reforma 233, Col. Centro, CDMX, México, 06000 &nbsp;
+                            </span>
+                        </grid>
+                        <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                            <button (click)="openEditionCustomerAddress()" tuiButton tuiIconButton
+                                [appearance]="'secondary'" [size]="'s'">
+                                <tui-icon icon="@tui.pencil" class="f-16 fw-600 f-02" />
+                            </button>
+                        </grid>
+                    </grid>
+                </grid>
+                <form [formGroup]="formGroup">
+                    <grid [direction]="'row'" [gap]="[16,16]">
+                        <grid [direction]="'column'" [align]="'center-left'">
+                            <span class="f-15 fw-400 f-02 f-lh-16">
+                                The current distance to this customer is
+                                <span class="f-15 fw-600 f-02 f-lh-17">
+                                    {{ order?.delivery?.distanceKm ?? 0 | numeralFormat: '0,0.0'}} km
+                                </span>
+                                and the delivery price is
+                                <span class="f-15 fw-600 f-02 f-lh-17">
+                                    {{ customerSettings?.delivery?.pricePerKm ?? 0 | numeralFormat: '$0,0.00'}} per Km
+                                </span>
+                                the total delivery fee will be
+                                <span class="f-15 fw-600 f-primary f-lh-17">
+                                    {{ deliveryFee | numeralFormat: '$0,0.00'}}
+                                    {{customerSettings?.general?.currency}}
+                                </span>
+                            </span>
+                        </grid>
+                        <form-input [label]="'Distance'" [type]="'number'" [placeholder]="'Distance on kilometers'"
+                            formControlName="distanceKm" [size]="'m'" [postFix]="'km'" [min]="1" [max]="200"
+                            [step]="1" />
+                        <form-input [label]="'Indications'" [type]="'textarea'"
+                            [placeholder]="'Type the delivery indications'" formControlName="deliveryInstructions" />
+                        <tui-root style="border-image:none">
+                            <ng-container ngProjectAs="tuiOverDialogs">
+                                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                                    <form-input [label]="'Estimated Date'" [type]="'date'" [placeholder]="'Choose date'"
+                                        formControlName="deliveryDate" />
+                                    <form-input [label]="'Estimated Time'" [type]="'time'" [placeholder]="'Choose time'"
+                                        formControlName="deliveryTime" [timeItems]="timeItems.slice()" />
+                                </grid>
+                            </ng-container>
+                        </tui-root>
+                    </grid>
+                </form>
+            </grid>
+            <grid [direction]="'column'" [template]="'1fr max-content'" padding="1rem 0 0rem 0 " class="border-top-06">
+                <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                    <span class="f-15 fw-500 f-04 f-lh-16">
+                        After save the changes, the distance of the address will be updated.
+                    </span>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                    <button (click)="saveDelivery()" tuiButton [disabled]="canSave === false" [appearance]="'primary'"
+                        [size]="'m'">
+                        Save Changes
+                    </button>
+                </grid>
+            </grid>
+
+        </grid>
+    </ng-container>
+</nz-modal>

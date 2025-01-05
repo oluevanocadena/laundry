@@ -11,11 +11,6 @@
     border-radius: 1rem !important;
 }
 
-[tuiIcons]:before {
-    font-size: 18px !important;
-    margin-left: 2px !important;
-}
-
 [tuiIcons]:after {
     color: var(--primary) !important;
 }
@@ -24,6 +19,17 @@
     font-size: 14px !important;
 }
 
-* {
-    --tui-height-m: 2.35rem;
+[tuiButton]:not([tuiIcon]):not([tuiIconButton]) {
+    padding-top: 4px !important;
+    font-family: var(--font) !important;
+}
+
+[tuiButton][data-size=m]:not([tuiIcon]):not([tuiIconButton]) {
+    height: 2.35rem !important;
+}
+
+//yes are icons
+[tuiButton][data-size="m"][tuiIconButton] {
+    height: 2.15rem !important;
+    width: 2.15rem !important;
 }

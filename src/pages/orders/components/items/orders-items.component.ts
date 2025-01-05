@@ -1,6 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { OrderItem, OrdersService } from '../../../../services/orders.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Order,
+  OrderItem,
+  OrdersService,
+} from '../../../../services/orders.service';
 import { AdjustQuantityEvent } from '../adjust-quantity/orders-adjust-quantity.component';
+import { HelperPage } from '../../../../components/common/helper.page';
 
 @Component({
   selector: 'orders-items',
@@ -8,7 +13,17 @@ import { AdjustQuantityEvent } from '../adjust-quantity/orders-adjust-quantity.c
   templateUrl: './orders-items.component.html',
   styleUrls: ['./orders-items.component.scss'],
 })
-export class OrdersItemsComponent implements OnInit {
+export class OrdersItemsComponent extends HelperPage implements OnInit {
+  //Input
+  private _order: Order | null = null;
+  @Input() set order(value: Order) {
+    this._order = value;
+  }
+  get order(): Order | null {
+    return this._order;
+  }
+  @Output() orderChange: EventEmitter<Order> = new EventEmitter<Order>();
+
   //Flag Management
   showSearchProduct: boolean = false;
   showAdjustQuantity: boolean = false;
@@ -18,60 +33,32 @@ export class OrdersItemsComponent implements OnInit {
 
   //Input
   @Input() edition: boolean = false;
-  @Input() items: OrderItem[] = [
-    {
-      id: 1,
-      name: 'Product 1',
-      quantity: 1,
-      price: 100,
-      tax: 10,
-      total: 100,
-      category: 'Dry Cleaning',
-      productId: 1,
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      quantity: 2,
-      price: 200,
-      tax: 20,
-      total: 400,
-      category: 'Laundry',
-      productId: 2,
-    },
-    {
-      id: 3,
-      name: 'Product 3',
-      quantity: 3,
-      price: 300,
-      tax: 30,
-      total: 900,
-      category: 'Dry Cleaning',
-      productId: 3,
-    },
-  ];
 
-  constructor(public orderservice: OrdersService) {}
+  constructor(public orderservice: OrdersService) {
+    super();
+  }
 
   /**
    * UI Events
    */
-  onSelectProduct(product: any) {
+  onSelectItem(orderItem: OrderItem | null) {
     this.showSearchProduct = false;
-    console.log(product);
-  }
-
-  openSearchProduct() {
-    this.showSearchProduct = true;
-  }
-
-  openAdjustQuantity(item: OrderItem) {
-    this.selectedItem = item;
-    this.showAdjustQuantity = true;
+    if (orderItem !== null) {
+      this.order?.orderItems.push(orderItem);
+    }
+    this.orderChange.emit(this.order as Order);
+    this.calculateTotals();
+    console.log(orderItem);
   }
 
   removeItem(item: OrderItem) {
-    this.items = this.items.filter((i) => i.id !== item.id);
+    if (this.order) {
+      this.order.orderItems = this.order.orderItems.filter(
+        (i) => i.id !== item.id
+      );
+    }
+    this.orderChange.emit(this.order as Order);
+    this.calculateTotals();
     console.log('Remove Item', item);
   }
 
@@ -85,6 +72,32 @@ export class OrdersItemsComponent implements OnInit {
       this.removeItem(item);
     }
     this.showAdjustQuantity = false;
+    this.calculateTotals();
+    this.orderChange.emit(this.order as Order);
+  }
+
+  calculateTotals() {
+    if (this.order) {
+      this.order.total = this.order.orderItems.reduce(
+        (acc, item) => acc + item.total,
+        0
+      );
+      this.order.subtotal = this.order.orderItems.reduce(
+        (acc, item) => acc + item.subtotal,
+        0
+      );
+      this.order.taxes = this.order.total - this.order.subtotal;
+      this.order.totalItems = this.order.orderItems.length;
+    }
+  }
+
+  openSearchProduct() {
+    this.showSearchProduct = true;
+  }
+
+  openAdjustQuantity(item: OrderItem) {
+    this.selectedItem = item;
+    this.showAdjustQuantity = true;
   }
 
   /**

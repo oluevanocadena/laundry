@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperPage } from '../../../../components/common/helper.page';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { OrderItem } from '../../../../services/orders.service';
+import { ProductCategoryEnum } from '../../../../services/product-category.service';
 
 @Component({
   selector: 'orders-adjust-quantity',
@@ -25,17 +27,17 @@ export class OrdersAdjustQuantityComponent
     new EventEmitter<AdjustQuantityEvent>();
 
   //Item
-  private _item: any = {};
-  @Input() set item(value: any) {
+  private _item: OrderItem | null = null;
+  @Input() set item(value: OrderItem) {
     this._item = value;
     if (value?.quantity) {
       this.formGroup.controls['quantity'].patchValue(value?.quantity);
     }
   }
-  get item() {
+  get item(): OrderItem | null {
     return this._item;
   }
-  @Output() itemChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() itemChange: EventEmitter<OrderItem> = new EventEmitter<OrderItem>();
 
   //formGroup
   formGroup = new FormGroup({
@@ -82,6 +84,10 @@ export class OrdersAdjustQuantityComponent
    */
   get quantity() {
     return this.formGroup.controls['quantity']?.value || 0;
+  }
+
+  get isLaundry() {
+    return this.item?.categoryId === ProductCategoryEnum.Laundry;
   }
 
   /**

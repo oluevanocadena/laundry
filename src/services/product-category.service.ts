@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './common/http.service';
+import { Observable } from 'rxjs';
 
 /**
  * @description
@@ -18,9 +19,46 @@ export class ProductCategoryService {
   getCategories() {
     return this.http.get<ProductCategory[]>('order-categories');
   }
+
+  //Fake gets
+  getCategoriesFake() {
+    return new Observable<ProductCategory[]>((observer) => {
+      observer.next([
+        {
+          id: 1,
+          name: 'Laundry',
+          icon: 'local_laundry_service',
+        },
+        {
+          id: 2,
+          name: 'Dry Cleaning',
+          icon: 'dry_cleaning',
+        },
+        {
+          id: 3,
+          name: 'Ironing',
+          icon: 'iron',
+        },
+        {
+          id: 4,
+          name: 'Others',
+          icon: 'note_stack',
+        },
+      ]);
+    });
+  }
 }
 
 export interface ProductCategory {
-  id: string;
-  name: string;
+  id: number;
+  name: 'Laundry' | 'Dry Cleaning' | 'Ironing' | 'Others';
+  icon: 'local_laundry_service' | 'dry_cleaning' | 'iron' | 'note_stack';
+}
+
+
+export enum ProductCategoryEnum {
+  Laundry = 1,
+  DryCleaning = 2,
+  Ironing = 3,
+  Others = 4,
 }

@@ -2,31 +2,27 @@
     (nzOnCancel)="close()">
 
     <ng-container *nzModalContent>
-        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
-            <grid [direction]="'column'" [template]="'1fr max-content'">
-                <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                    <span class="f-01 fw-600 f-16">
-                        Collect Payment Method
-                    </span>
-                </grid>
-                <grid [direction]="'column'" [align]="'center-right'">
-                    <button (click)="close()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
-                        [size]="'s'">
-                        <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
-                    </button>
-                </grid>
+        <grid [direction]="'row'" [gap]="[24,16]" padding="0.5rem">
+            <modal-title [title]="'Collect Payment Method'" (onClose)="close()" />
+            <grid [direction]="'column'" [align]="'center-left'">
+                <span class="f-15 fw-400 f-03 f-lh-17">
+                    Select a
+                    <label class="fw-500 f-01">
+                        payment method
+                    </label> or register the voucher.
+                </span>
             </grid>
             <form tuiGroup [orientation]="'vertical'" class="group" [collapsed]="false" [formGroup]="formGroup">
                 <label tuiBlock>
                     <input formControlName="paymentMethod" tuiRadio type="radio" value="cash" />
-                    <grid [direction]="'row'" [gap]="[4,16]">
+                    <grid [direction]="'row'" [gap]="[0,16]">
                         <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
                             <tui-icon icon="@tui.dollar-sign" class="f-16 f-02" />
-                            <span class="f-14 fw-600 f-02 f-lh-14">
+                            <span class="f-15 fw-600 f-02 f-lh-17">
                                 Cash
                             </span>
                         </grid>
-                        <span class="f-13 fw-400 f-03 f-lh-16">
+                        <span class="f-15 fw-400 f-04 f-lh-17">
                             The total amount will be paid in cash
                             <span class="fw-600">
                                 {{ 100 | numeralFormat: '$0,0.00'}}
@@ -36,16 +32,16 @@
                 </label>
                 <label tuiBlock>
                     <input formControlName="paymentMethod" tuiRadio type="radio" value="card" />
-                    <grid [gap]="[8,8]" [direction]="'row'">
+                    <grid [gap]="[0,8]" [direction]="'row'">
                         <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
                             <tui-icon icon="@tui.credit-card" class="f-16 f-02" />
-                            <span class="f-14 fw-600 f-02 f-lh-14">
+                            <span class="f-15 fw-600 f-02 f-lh-17">
                                 Card
                             </span>
                         </grid>
                         <grid [direction]="'row'" [gap]="[16,16]">
                             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                                <span class="f-13 fw-400 f-02 f-lh-16">
+                                <span class="f-15 fw-400 f-04 f-lh-17">
                                     Register the last 4 digits of your card
                                 </span>
                             </grid>
@@ -57,14 +53,20 @@
                     </grid>
                 </label>
             </form>
-
             <grid [direction]="'column'" [align]="'center-left'">
-                <span class="f-13 fw-400 f-03 f-lh-16">
-                    After selecting the payment method, click on the "Collect Payment" button to complete the order.
+                <span class="f-15 fw-400 f-03 f-lh-17">
+                    Click on the
+                    <label class="fw-500 f-01">
+                        Collect Payment
+                    </label>
+                    button to update the order status to
+                    <label class="fw-500 f-01">
+                        Paid
+                    </label>.
                 </span>
             </grid>
 
-            <grid [direction]="'column'" [align]="'center-right'">
+            <grid [direction]="'column'" [align]="'center-right'" padding="1rem 0 0 0" class="border-top-06">
                 <button tuiButton [disabled]="canSave === false" (click)="collectPayment()" [appearance]="'primary'"
                     [size]="'m'">
                     Collect Payment

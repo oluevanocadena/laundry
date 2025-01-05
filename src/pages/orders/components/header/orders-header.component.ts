@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperPage } from '../../../../components/common/helper.page';
+import { Order } from '../../../../services/orders.service';
 
 @Component({
   selector: 'orders-header',
@@ -10,6 +11,16 @@ import { HelperPage } from '../../../../components/common/helper.page';
 export class OrdersHeaderComponent extends HelperPage implements OnInit {
   // Inputs
   @Input() edition: boolean = false;
+
+  //Input
+  private _order: Order | null = null;
+  @Input() set order(value: Order) {
+    this._order = value;
+  }
+  get order(): Order | null {
+    return this._order;
+  }
+  @Output() orderChange: EventEmitter<Order> = new EventEmitter<Order>();
 
   //Flag Management
   showMoreOptions: boolean = false;
@@ -33,6 +44,32 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   constructor() {
     super();
   }
+
+  /**
+   * UI Events
+   */
+
+  saveOrder() {
+    if (this.order !== null) {
+      console.log('Save Order:', this.order);
+    }
+  }
+
+  /**
+   * Getters
+   */
+  get canSave(): boolean {
+    return (
+      this.order !== null &&
+      this.order.orderItems?.length > 0 &&
+      this.order?.customer !== null &&
+      this.order?.customer.id > 0
+    );
+  }
+
+  /**
+   * Life cycle method
+   */
 
   ngOnInit() {}
 }

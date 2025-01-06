@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HelperPage } from '../helper.page';
 
 @Component({
@@ -11,6 +11,8 @@ export class TopBarButtonsComponent extends HelperPage implements OnInit {
   //Flag Management
   showShortMenu: boolean = false;
   showNotifications: boolean = false;
+
+  @Input() loading: boolean = false;
 
   constructor() {
     super();

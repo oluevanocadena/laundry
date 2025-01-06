@@ -12,6 +12,8 @@ import { BoardModule } from './board/board.module';
 import { SettingsModule } from './settings/settings.module';
 import { OrdersModule } from './orders/orders.module';
 import { RouterModule } from '@angular/router';
+import { CustomersModule } from './customers/customers.module';
+import { ProductsModule } from './products/products.module';
 
 const components = [HomeComponent];
 
@@ -30,6 +32,8 @@ const components = [HomeComponent];
     BoardModule,
     SettingsModule,
     OrdersModule,
+    CustomersModule,
+    ProductsModule,
   ],
   declarations: components,
   exports: components,

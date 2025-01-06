@@ -6,17 +6,15 @@ import {
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {
-  provideRouter,
-  withDebugTracing,
-  withRouterConfig,
+  provideRouter
 } from '@angular/router';
 import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
-import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { TUI_LANGUAGE, TUI_SPANISH_LANGUAGE } from '@taiga-ui/i18n';
-import { routes } from './app.routes';
+import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
+import { MenuService, NzIsMenuInsideDropDownToken, NzMenuModule, NzSubmenuService } from 'ng-zorro-antd/menu';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { of } from 'rxjs';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { routes } from './app.routes';
 const ngZorroConfig: NzConfig = {
   modal: {
     nzDirection: 'ltr',
@@ -36,6 +34,9 @@ export const appConfig: ApplicationConfig = {
       useValue: of(TUI_SPANISH_LANGUAGE),
     },
     NG_EVENT_PLUGINS,
+    { provide: NzIsMenuInsideDropDownToken, useValue: false },
+    MenuService,
+    NzMenuModule,    
     NzModalService,
   ],
 };

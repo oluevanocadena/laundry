@@ -12,6 +12,7 @@
                 </span>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <tui-loader *ngIf="loading" />
                 <status-badge [label]="order?.status" [statusId]="order?.statusId" [type]="'order'" />
             </grid>
         </grid>
@@ -19,12 +20,12 @@
     </grid>
 
     <grid *ngIf="edition === false" [direction]="'column'" [align]="'center-right'">
-        <button *ngIf="isMobile === false" (click)="saveOrder()" tuiButton [loading]="busy" [appearance]="'primary'"
-            [size]="'m'" [disabled]="canSave === false">
+        <button *ngIf="isMobile === false" (click)="saveOrder()" tuiButton [tuiSkeleton]="loading" [loading]="busy"
+            [appearance]="'primary'" [size]="'m'" [disabled]="canSave === false">
             Save Order
         </button>
-        <button *ngIf="isMobile === true" (click)="saveOrder()" tuiButton [loading]="busy" tuiRoundButton tuiIconButton
-            [appearance]="'primary'" [size]="'m'" [disabled]="canSave === false">
+        <button *ngIf="isMobile === true" (click)="saveOrder()" tuiButton [tuiSkeleton]="loading" [loading]="busy"
+            tuiRoundButton tuiIconButton [appearance]="'primary'" [size]="'m'" [disabled]="canSave === false">
             <tui-icon icon="@tui.check" class="f-18 fw-600 f-white" />
         </button>
     </grid>

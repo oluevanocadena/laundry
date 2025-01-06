@@ -8,11 +8,9 @@ import { HelperPage } from '../../../../components/common/helper.page';
   styleUrls: ['./orders-top-bar.component.scss'],
 })
 export class OrdersTopBarComponent extends HelperPage {
-
-
-  // Properties
+  // Inputs
+  @Input() loading: boolean = false;
   @Input() title: string = '';
-  
 
   constructor() {
     super();

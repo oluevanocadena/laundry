@@ -1,14 +1,12 @@
-import { TuiRoot } from '@taiga-ui/core';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UIModule } from '../components/ui.module';
-import { PagesModule } from '../pages/pages.module';
-import { DirectivesModule } from '../directives/directives.module';
+import { TuiRoot } from '@taiga-ui/core';
 import { UICommonModule } from '../components/common/common.modulte';
-import { TUIModule } from '../components/tui.module';
 import { NgZorroModule } from '../components/ng-zorro.module';
-import { TuiLanguageSwitcherService } from '@taiga-ui/i18n/utils';
-import { FormControl } from '@angular/forms';
+import { TUIModule } from '../components/tui.module';
+import { UIModule } from '../components/ui.module';
+import { DirectivesModule } from '../directives/directives.module';
+import { PagesModule } from '../pages/pages.module';
 import { SettingsService } from '../services/settings.services';
 @Component({
   selector: 'app-root',

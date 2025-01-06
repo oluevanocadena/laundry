@@ -12,7 +12,6 @@ export class TopBarComponent extends HelperPage {
 
   // Properties
   @Input() title: string = '';
-  @Output() onTabChange: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {
     super();
@@ -22,10 +21,6 @@ export class TopBarComponent extends HelperPage {
    * UI Events
    */
 
-
-  onChangeTab(index: number) {
-    this.onTabChange.emit(index);
-  }
 
   /**
    * Lifecycle

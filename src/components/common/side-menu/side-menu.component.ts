@@ -1,23 +1,33 @@
-import { Component, OnInit } from "@angular/core";
-import { HelperPage } from "../helper.page";
+import { Component, HostListener, OnInit } from '@angular/core';
+import { HelperPage } from '../helper.page';
 
 @Component({
-  selector: "side-menu",
+  selector: 'side-menu',
   standalone: false,
-  templateUrl: "./side-menu.component.html",
-  styleUrls: ["./side-menu.component.scss"]
+  templateUrl: './side-menu.component.html',
+  styleUrls: ['./side-menu.component.scss'],
 })
-
 export class SideMenuComponent extends HelperPage implements OnInit {
-
   //Flag Management
   collapsed: boolean = false;
-  
-  constructor() { 
+
+  constructor() {
     super();
   }
 
-  ngOnInit() {
-
+  @HostListener('window:resize', ['$event'])
+  override onResize(event: any) {
+    super.onResize(event);
+    this.collapsed = this.isMobileOrTablet;
   }
+
+  /**
+   * UI Events
+   */
+
+  toggleMenu() {
+    this.collapsed = !this.collapsed;
+  }
+
+  ngOnInit() {}
 }

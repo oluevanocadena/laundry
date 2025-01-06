@@ -9,9 +9,9 @@ import { UIModule } from '../../components/ui.module';
 import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ServicesModule } from '../../services/services.module';
-import { CustomersPageComponent } from './customers-page.component';
+import { ProductsPageComponent } from './products-page.component';
 
-const components: any[] = [CustomersPageComponent];
+const components: any[] = [ProductsPageComponent];
 
 @NgModule({
   imports: [
@@ -30,4 +30,4 @@ const components: any[] = [CustomersPageComponent];
   declarations: components,
   exports: components,
 })
-export class CustomersModule {}
+export class ProductsModule {}

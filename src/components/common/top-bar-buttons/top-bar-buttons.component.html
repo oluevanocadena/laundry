@@ -5,10 +5,10 @@
         </button>
     </grid>
     <grid *ngIf="isMobile === false" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-        <button (click)="openMenu()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'" [size]="'m'">
+        <button (click)="openMenu()" [tuiSkeleton]="loading" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'" [size]="'m'">
             <tui-icon icon="@tui.menu" class="f-18 fw-600 f-02" />
         </button>
-        <button (click)="openNotifications()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
+        <button (click)="openNotifications()" [tuiSkeleton]="loading" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
             [size]="'m'">
             <tui-icon icon="@tui.bell" class="f-18 fw-600 f-02" />
         </button>

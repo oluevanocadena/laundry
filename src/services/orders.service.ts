@@ -115,10 +115,11 @@ export class OrdersService {
     });
   }
 
-  getFakeOrders(): Promise<Order[]> {
-    return new Promise((resolve) => {
+  getFakeOrders(): Observable<Order[]> {
+    return new Observable((observer) => {
       setTimeout(() => {
-        resolve(ordersFake);
+        observer.next(ordersFake);
+        observer.complete();
       }, 1000);
     });
   }

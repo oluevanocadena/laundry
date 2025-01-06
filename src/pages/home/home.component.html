@@ -1,10 +1,6 @@
-<grid [gap]="[16,16]" [direction]="'column'" [align]="'center-center'">
-    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
-        <span class="f-16">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies.
-        </span>
-        <button [routerLink]="routes.OrdersBoard" tuiButton [appearance]="'primary'" [size]="'m'">
-            Board
-        </button>
+<grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'" padding="1rem" width="100%">
+    <top-bar width="100%" />
+    <grid [direction]="'column'" [template]="'max-content'">
+        <button [routerLink]="routes.Orders" tuiButton [appearance]="'primary'" [size]="'m'">Go to Orders</button>
     </grid>
 </grid>

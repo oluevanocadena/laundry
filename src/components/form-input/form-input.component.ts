@@ -36,7 +36,7 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() step: number = 1;
   @Input() postFix: string = '';
   @Input() timeItems: TuiTime[] = [];
-  @Input() minDate: TuiDay = TuiDay.currentLocal().append({ day: 1 });
+  @Input() minDate: TuiDay | null = TuiDay.currentLocal().append({ day: 1 });
 
   value: string = '';
   disabled = false;

@@ -18,6 +18,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
 
   // Inputs
   @Input() edition: boolean = false;
+  @Input() loading: boolean = false;
 
   //Input
   private _order: Order | null = null;

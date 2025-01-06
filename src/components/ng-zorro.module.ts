@@ -5,13 +5,16 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+
 let MODULES = [
   NzAlertModule,
   NzButtonModule,
-  NzSegmentedModule,
   NzDrawerModule,
-  NzModalModule,
+  NzDropDownModule,
   NzMenuModule,
+  NzModalModule,
+  NzSegmentedModule,
 ];
 
 @NgModule({

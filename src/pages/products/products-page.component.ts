@@ -3,20 +3,16 @@ import { HelperPage } from '../../components/common/helper.page';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
 import moment from 'moment';
-import { Order, OrdersService } from '../../services/orders.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'app-orders-page',
+  selector: 'app-products-page',
   standalone: false,
-  templateUrl: './orders-page.component.html',
-  styleUrls: ['./orders-page.component.scss'],
+  templateUrl: './products-page.component.html',
+  styleUrls: ['./products-page.component.scss'],
 })
-export class OrdersPageComponent extends HelperPage implements OnInit {
+export class ProductsPageComponent extends HelperPage implements OnInit {
   //Flag Management
-  showFilterOptions: boolean = false;
-  loading: boolean = false;
+  protected showFilterOptions: boolean = false;
 
   //Index
   indexTab: number = 0;
@@ -34,30 +30,9 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
 
   //Arrays
   orderTypes = ['All', 'Unprocessed', 'UnPaid', 'Completed', 'Cancelled'];
-  orders: Order[] = [];
 
-  constructor(
-    public ordersService: OrdersService,
-    public nzMessageService: NzMessageService
-  ) {
+  constructor() {
     super();
-  }
-
-  /**
-   * APi Calls
-   */
-  load() {
-    this.loading = true;
-    this.ordersService
-      .getFakeOrders()
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe((res) => {
-        this.orders = res;
-      });
   }
 
   /**
@@ -84,7 +59,5 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
    * Lifecycle
    */
 
-  ngOnInit() {
-    this.load();
-  }
+  ngOnInit() {}
 }

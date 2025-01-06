@@ -1,3 +1,7 @@
+.ant-menu {
+    background: transparent !important;
+}
+
 .ant-menu-inline .ant-menu-item::after,
 .ant-menu-vertical .ant-menu-item::after,
 .ant-menu-vertical-left .ant-menu-item::after,
@@ -10,18 +14,83 @@
 
     // gradint use var(--primary) to color-mix(in srgb, var(--primary), black 10%)
     background: linear-gradient(to top,
-            color-mix(in srgb, var(--primary), 70% #fff),
-            color-mix(in srgb, var(--primary), 90% #fff),
-            color-mix(in srgb, var(--primary), 100% #fff),
-            color-mix(in srgb, var(--primary), 100% #fff)) !important;
+            color-mix(in srgb, var(--primary), 90% #ffffff83),
+            color-mix(in srgb, var(--primary), 98% #ffffff83),
+            color-mix(in srgb, var(--primary), 100% #ffffff83),
+            color-mix(in srgb, var(--primary), 100% #ffffff83)) !important;
 }
 
-.ant-menu:not(.ant-menu-horizontal).ant-menu-item-selected {
-    span {
-        color: var(--primary) !important;
+.ant-menu-item:active,
+.ant-menu-submenu-title:active,
+.ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+    background: transparent !important;
+    color: var(--primary) !important;
+}
+
+.ant-menu-light .ant-menu-item-active,
+.ant-menu-light .ant-menu-item:hover,
+.ant-menu-light .ant-menu-submenu-active,
+.ant-menu-light .ant-menu-submenu-title:hover,
+.ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open {
+    background: transparent !important;
+    color: var(--primary) !important;
+}
+
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-active,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-open,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-selected,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item:hover,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-active,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-open,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-selected,
+.ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu:hover,
+.ant-menu-submenu:hover>.ant-menu-submenu-title>.ant-menu-submenu-arrow,
+.ant-menu-submenu:hover>.ant-menu-submenu-title>.ant-menu-submenu-expand-icon,
+.ant-menu-vertical .ant-menu-submenu-selected,
+.ant-menu-vertical-left .ant-menu-submenu-selected,
+.ant-menu-vertical-right .ant-menu-submenu-selected {
+    color: var(--primary) !important;
+}
+
+.ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
+    border-right: none !important;
+}
+
+.ant-menu-inline.ant-menu-root .ant-menu-item,
+.ant-menu-inline.ant-menu-root .ant-menu-submenu-title {
+    padding: 0rem 0.35rem !important;
+    margin: 0;
+}
+
+.ant-menu-submenu:hover {
+    .ant-menu-submenu-title {
+
+        .menu-item-icon,
+        .menu-item-label {
+            color: var(--primary) !important;
+        }
     }
 }
 
-.ant-menu{
-    background: transparent !important;
+.ant-menu-item:hover {
+    .ant-menu-title-content {
+
+        .menu-item-icon,
+        .menu-item-label {
+            color: var(--primary) !important;
+        }
+    }
+}
+
+.ant-menu-item.ant-menu-item-selected {
+    .ant-menu-title-content {
+
+        .menu-item-icon,
+        .menu-item-label {
+            color: var(--primary) !important;
+        }
+
+    }
 }

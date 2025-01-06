@@ -3,9 +3,13 @@
     --font: "Anek Devanagari", serif !important;
     --tui-font-text: var(--font);
     --tui-font-heading: var(--font);
+    --tui-font-text-s: normal 0.94rem/1.25rem var(--tui-font-text);
     --t-group-margin: -0px;
 }
 
+tui-opt-group:before {
+    font-size: 13px !important;
+}
 
 h1,
 h2,

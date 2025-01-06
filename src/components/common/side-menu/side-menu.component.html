@@ -1,28 +1,33 @@
-<grid [direction]="'row'" [template]="'max-content 1fr'" padding="1rem" height="100vh" class="bg-07">
-    <grid [direction]="'column'" [align]="'center-left'" height="fit-content">
-        <logo [direction]="'horizontal'" />
+<grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content 1fr'" padding="1rem" height="100vh"
+    [width]="collapsed ? '60px':'225px'" class="bg-07">
+    <grid [gap]="[16,0]" [direction]="'column'" [template]="collapsed ? '1fr' :'1fr max-content'">
+        <grid [direction]="'column'" [align]="'center-left'" height="fit-content">
+            <logo [direction]="'horizontal'" [mode]="collapsed ? 'single' : 'double'" />
+        </grid>
+        <grid *ngIf="isMobileOrTablet === false" [direction]="'column'" [align]="'center-center'" [height]="'100%'">
+            <button (click)="toggleMenu()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'xs'">
+                <tui-icon icon="@tui.{{collapsed ? 'chevrons-right':'chevrons-left'}}" class="f-18 fw-600 f-04" />
+            </button>
+        </grid>
     </grid>
     <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%">
         <menu [collapsed]="collapsed" width="100%">
-            <menu-item [collapsed]="collapsed" [icon]="'home'" [label]="'Home'" [urlBase]="routes.Orders" [level]="0">
-                <menu-item [collapsed]="collapsed" [label]="'Flota patrimonio'" [urlBase]="routes.Orders"
-                    [isGroup]="true" [level]="1">
-                    <menu-item [collapsed]="collapsed" [label]="'Carga masiva'" [urlBase]="routes.Orders"
-                        [link]="routes.Orders" [level]="2" [bold]="true">
-                    </menu-item>
-                </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'home'" [label]="'Home'" [urlBase]="routes.Home" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'shopping-bag'" [label]="'Orders'" [urlBase]="routes.Orders"
+                [link]="routes.Orders" [isGroup]="false" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'users'" [label]="'Customers'" [urlBase]="routes.Customers"
+                [link]="routes.Customers" [isGroup]="false" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'shirt'" [label]="'Products'" [urlBase]="routes.Products"
+                [link]="routes.Products" [isGroup]="false" [level]="0">
             </menu-item>
         </menu>
         <menu [collapsed]="collapsed">
             <!-- Inventario -->
-            <menu-item [collapsed]="collapsed" [icon]="'icon-inventario'" [label]="'Home'" [urlBase]="routes.Orders"
+            <menu-item [collapsed]="collapsed" [icon]="'bolt'" [label]="'Settings'" [urlBase]="routes.Settings"
                 [level]="0">
-                <menu-item [collapsed]="collapsed" [label]="'Flota patrimonio'" [urlBase]="routes.Orders"
-                    [isGroup]="true" [level]="1">
-                    <menu-item [collapsed]="collapsed" [label]="'Carga masiva'" [urlBase]="routes.Orders"
-                        [link]="routes.Orders" [level]="2" [bold]="true">
-                    </menu-item>
-                </menu-item>
             </menu-item>
         </menu>
     </grid>

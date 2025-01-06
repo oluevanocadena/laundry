@@ -1,8 +1,9 @@
 <grid [direction]="'row'" [template]="'max-content 1fr'" height="100vh" class="bg-white">
-    <orders-top-bar [title]="'Draft Order'" width="100vw" />
+    <orders-top-bar [title]="'Draft Order'" [loading]="loading" width="100vw" />
 
-    <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content max-content'" padding="1.5rem" height="100%">
-        <orders-header [edition]="false" [(order)]="order" />
+    <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content max-content'"
+        [padding]="isMobile ? '1.5rem 1rem':'1.5rem'" height="100%">
+        <orders-header [edition]="false" [loading]="loading" [(order)]="order" />
 
         <grid [gap]="[24,24]" [direction]="'column'"
             [template]="isMobileOrTablet ? '1fr': isLargeDesktop? '1fr minmax(650px, 0.25fr)': '1fr 350px'"

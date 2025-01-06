@@ -9,6 +9,7 @@ import { HelperPage } from '../helper.page';
 })
 export class LogoComponent extends HelperPage implements OnInit {
   @Input() direction: 'vertical' | 'horizontal' = 'vertical';
+  @Input() mode: 'single' | 'double' = 'double';
 
   constructor() {
     super();

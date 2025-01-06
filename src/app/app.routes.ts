@@ -9,6 +9,8 @@ import { OrdersDetailPageComponent } from '../pages/orders/detail/order-detail-p
 import { CustomersDraftComponent } from '../pages/customers/draft/customers-draft.component';
 import { CustomersDetailComponent } from '../pages/customers/detail/customers-detail.component';
 import { OrdersPageComponent } from '../pages/orders/orders-page.component';
+import { CustomersPageComponent } from '../pages/customers/customers-page.component';
+import { ProductsPageComponent } from '../pages/products/products-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,9 +21,11 @@ export const routes: Routes = [
   { path: 'orders/draft', component: OrdersDraftPageComponent },
   { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
   { path: 'orders/detail/:id', component: OrdersDetailPageComponent },
+  { path: 'customers', component: CustomersPageComponent },
   { path: 'customers/draft', component: CustomersDraftComponent },
   { path: 'customers/edit/:id', component: CustomersDraftComponent },
   { path: 'customers/detail/:id', component: CustomersDetailComponent },
+  { path: 'products', component: ProductsPageComponent },
   { path: 'settings', component: SettingsPageComponent },
   { path: '**', redirectTo: '' },
 ];

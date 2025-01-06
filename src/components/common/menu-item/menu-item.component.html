@@ -1,5 +1,6 @@
 <ng-container *ngIf="hasNgContent">
-    <li nz-submenu [nzTitle]="template" [nzOpen]="isOpen">
+    <li nz-submenu [nzTitle]="template" [nzOpen]="isOpen" [tuiHint]="collapsed ? badgeHint : null"
+        tuiHintDirection="right">
         <ul>
             <ng-content></ng-content>
         </ul>
@@ -7,21 +8,26 @@
 </ng-container>
 
 <ng-container *ngIf="hasNgContent === false">
-    <li nz-menu-item [nzSelected]="isOpen && isGroup === false" [routerLink]="link">
+    <li nz-menu-item [nzSelected]="isOpen && isGroup === false" [routerLink]="link"
+        [tuiHint]="collapsed ? badgeHint : null" tuiHintDirection="right">
         <ng-container *ngTemplateOutlet="template"></ng-container>
     </li>
 </ng-container>
 
 <ng-template #template>
-    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'">
-        <tui-icon *ngIf="icon" icon="@tui.{{icon}}" class="f-18 fw-600" />
-        <span *ngIf="!collapsed" class="f-01" [ngClass]="{ 
+    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+        <tui-icon *ngIf="icon" icon="@tui.{{icon}}" class="menu-item-icon f-18 fw-600" />
+        <span *ngIf="!collapsed" padding="0.3rem 0 0 0" class="menu-item-label f-15 f-lh-24" [ngClass]="{ 
                 'fw-400':!bold, 
-                'fw-600': bold, 
-                'f-14 f-lh-28': !isGroup && hasNgContent, 
-                'f-12 f-lh-24': isGroup || !hasNgContent
+                'fw-500': bold, 
             }">
             {{label}}
         </span>
     </grid>
+</ng-template>
+
+<ng-template #badgeHint>
+    <span class="fw-500 f-15 f-white" padding="0.75rem 0 0 0">
+        {{label}}
+    </span>
 </ng-template>

@@ -1,59 +1,9 @@
-<grid [gap]="isMobile ? [8,8] :[24,24]" [direction]="'column'" [template]="'max-content 1fr max-content'" height="100%"
-    width="100%" [padding]="isMobile? '0.5rem 0.75rem': '0.5rem 1.5rem'">
-    <logo />
-    <grid [direction]="'column'" [template]="'1fr'" height="100%">
-        <grid [direction]="'column'" [align]="'center-center'" height="100%">
-            <tui-segmented [size]="'m'" (activeItemIndexChange)="onChangeTab($event)">
-                <button type="button">
-                    <grid [gap]="[8,6]" [direction]="'column'" [align]="isMobile? 'center-center' :'center-left'">
-                        <span class="material-symbols-outlined fw-600 f-20">
-                            flag
-                        </span>
-                        <span *ngIf="!isMobileOrTablet" padding="0.35rem 0.25rem 0 0" class="f-14 fw-500">New</span>
-                        <tui-badge-notification [size]="'s'" badgeStatus="warning">
-                            {{3}}
-                        </tui-badge-notification>
-                    </grid>
-                </button>
-                <button type="button" class="f-13">
-                    <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
-                        [align]="isMobile? 'center-center' :'center-left'">
-                        <span class="material-symbols-outlined fw-600 f-20 icon-fill">
-                            cycle
-                        </span>
-                        <span *ngIf="!isMobileOrTablet" padding="0.35rem 0.25rem 0 0"
-                            class="f-14 fw-500">Processing</span>
-                        <tui-badge-notification [size]="'s'" badgeStatus="info">
-                            +{{99}}
-                        </tui-badge-notification>
-                    </grid>
-                </button>
-                <button type="button" class="f-13">
-                    <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
-                        [align]="isMobile? 'center-center' :'center-left'">
-                        <span class="material-symbols-outlined fw-600 f-20">
-                            package_2
-                        </span>
-                        <span *ngIf="!isMobileOrTablet" padding="0.35rem 0.25rem 0 0" class="f-14 fw-500">For
-                            delivery</span>
-                        <tui-badge-notification [size]="'s'" badgeStatus="success">
-                            {{30}}
-                        </tui-badge-notification>
-                    </grid>
-                </button>
-                <button type="button" class="f-13">
-                    <grid [gap]="[8,4]" [direction]="'column'" minWidth="1.5rem"
-                        [align]="isMobile? 'center-center' :'center-left'">
-                        <span class="material-symbols-outlined fw-600 f-20">
-                            inventory_2
-                        </span>
-                        <span *ngIf="!isMobileOrTablet" padding="0.35rem 0.25rem 0 0"
-                            class="f-14 fw-500">Completed</span>
-                    </grid>
-                </button>
-            </tui-segmented>
-        </grid>
+<grid [gap]="isMobileOrTablet ? [8,8] :[24,24]" [direction]="'column'"
+    [template]="!isMobileOrTablet ? '1fr ':'1fr max-content'" height="100%" width="100%">
+    <grid *ngIf="isMobileOrTablet" [direction]="'column'" [align]="'center-left'" height="100%">
+        <logo />
     </grid>
-
-    <top-bar-buttons />
+    <grid [direction]="'column'" [align]="'center-right'" height="100%">
+        <top-bar-buttons />
+    </grid>
 </grid>

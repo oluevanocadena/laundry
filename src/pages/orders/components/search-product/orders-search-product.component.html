@@ -78,7 +78,8 @@
                 <span class="f-15 fw-400 f-03 t-left f-lh-17">
                     The current price per piece is
                     <label class="fw-500">
-                        {{(settingsService.settings.value?.products?.ironingPiecePrice ?? 0) | numeralFormat: '$0,0.00'}}.
+                        {{(settingsService.settings.value?.products?.ironingPiecePrice ?? 0) | numeralFormat:
+                        '$0,0.00'}}.
                     </label>
                     with a total of:
                     <label class="fw-500">
@@ -122,7 +123,7 @@
                 </tui-textfield>
             </grid>
             <form [formGroup]="formGroup" tuiGroup [collapsed]="true" orientation="vertical" margin="0"
-                width="calc(100% - 0rem)" maxHeight="350px" class="group scroll-v">
+                width="calc(100% - 0rem)" [maxHeight]="isMobileOrTablet ? '200px':'400px'" class="group scroll-v">
                 <label appearance="" tuiBlock *ngFor="let product of products">
                     <input [formControlName]="controlName" tuiBlock type="radio" [value]="product" />
                     <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">

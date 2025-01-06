@@ -25,6 +25,7 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
   @Input() showDeliveryFee: boolean = false;
   @Input() edition: boolean = false;
 
+  // Order
   private _order: Order | null = null;
   @Input() set order(value: Order) {
     this._order = value;
@@ -42,9 +43,6 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
   }
   @Output() orderChange: EventEmitter<Order> = new EventEmitter<Order>();
 
-  //Models
-  customerSettings: CustomerSettings | null = null;
-
   constructor(
     public settingsService: SettingsService,
     public nzMessageService: NzMessageService
@@ -56,19 +54,6 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
    * Api Calls
    */
 
-  async load(): Promise<void> {
-    try {
-      this.loading = true;
-      this.customerSettings = await firstValueFrom(
-        this.settingsService.getSettingsFake(1)
-      );
-    } catch (error) {
-      console.error(error);
-      this.nzMessageService.error('Error loading data');
-    } finally {
-      this.loading = false;
-    }
-  }
 
   /**
    * UI Events
@@ -76,6 +61,10 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
 
   openCollectPayment() {
     this.showCollectPaymentModal = true;
+  }
+
+  openDiscount() {
+    this.showAdjustDiscountModal = true;
   }
 
   /**
@@ -100,6 +89,5 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
    * Life Cycle
    */
   ngOnInit() {
-    this.load();
   }
 }

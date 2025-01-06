@@ -66,7 +66,6 @@ export class OrdersSearchProductComponent
 
   //Models
   selectedCategory: ProductCategory | null = null;
-  customerSettings: CustomerSettings | null = null;
 
   //Enums
   prodCatEnum = ProductCategoryEnum;
@@ -95,10 +94,6 @@ export class OrdersSearchProductComponent
       this.categories = await firstValueFrom(
         this.productCategoryService.getCategoriesFake()
       );
-      this.customerSettings = await firstValueFrom(
-        this.settingsService.getSettingsFake(1)
-      );
-
       this.orderStatuses = await firstValueFrom(
         this.ordersStatusService.getFakeOrderStatuses()
       );
@@ -168,9 +163,10 @@ export class OrdersSearchProductComponent
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedCategory?.name ?? '',
-          productId: this.selectedCategory?.id ?? 0,
+          productId: 'laundry',
           quantity: this.weight ?? 0,
-          price: this.customerSettings?.products.laundryKgPrice ?? 0,
+          price:
+            this.settingsService.settings.value?.products.laundryKgPrice ?? 0,
           tax: this.taxtOfLaundry,
           subtotal: this.totalLaundry - this.taxtOfLaundry,
           total: this.totalLaundry,
@@ -187,7 +183,7 @@ export class OrdersSearchProductComponent
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedDryCleaningProduct?.name ?? '',
-          productId: this.selectedDryCleaningProduct?.id ?? 0,
+          productId: this.selectedDryCleaningProduct?.id ?? '',
           quantity: 1,
           price: this.priceOfSelectedDryCleaningProduct,
           tax: this.taxtOfSelectedDryCleaningProduct,
@@ -206,9 +202,11 @@ export class OrdersSearchProductComponent
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedCategory?.name ?? '',
-          productId: this.selectedCategory?.id ?? 0,
+          productId: 'ironing',
           quantity: this.ironing ?? 0,
-          price: this.customerSettings?.products.ironingPiecePrice ?? 0,
+          price:
+            this.settingsService.settings.value?.products.ironingPiecePrice ??
+            0,
           tax: this.taxtOfIroning,
           subtotal: this.totalIroning - this.taxtOfIroning,
           total: this.totalIroning,
@@ -225,7 +223,7 @@ export class OrdersSearchProductComponent
           categoryId: this.selectedCategory?.id ?? 0,
           category: this.selectedCategory?.name ?? '',
           name: this.selectedOtherProduct?.name ?? '',
-          productId: this.selectedOtherProduct?.id ?? 0,
+          productId: this.selectedOtherProduct?.id ?? '',
           quantity: 1,
           price: this.priceOfSelectedOtherProduct,
           tax: this.taxOfSelectedOtherProduct,
@@ -308,7 +306,8 @@ export class OrdersSearchProductComponent
 
   get totalLaundry() {
     let total = 0;
-    let price = this.customerSettings?.products.laundryKgPrice ?? 0;
+    let price =
+      this.settingsService.settings.value?.products.laundryKgPrice ?? 0;
     if (this.weight) {
       total = this.weight * price;
     }
@@ -317,7 +316,8 @@ export class OrdersSearchProductComponent
 
   get totalIroning() {
     let total = 0;
-    let price = this.customerSettings?.products.ironingPiecePrice ?? 0;
+    let price =
+      this.settingsService.settings.value?.products.ironingPiecePrice ?? 0;
     if (this.ironing) {
       total = this.ironing * price;
     }
@@ -326,22 +326,24 @@ export class OrdersSearchProductComponent
 
   get taxtOfLaundry() {
     let total = 0;
-    let price = this.customerSettings?.products.laundryKgPrice ?? 0;
-    total = price * (this.customerSettings?.taxes.taxRate ?? 0);
+    let price =
+      this.settingsService.settings.value?.products.laundryKgPrice ?? 0;
+    total = price * (this.settingsService.settings.value?.taxes.taxRate ?? 0);
     return total;
   }
 
   get taxtOfIroning() {
     let total = 0;
-    let price = this.customerSettings?.products.ironingPiecePrice ?? 0;
-    total = price * (this.customerSettings?.taxes.taxRate ?? 0);
+    let price =
+      this.settingsService.settings.value?.products.ironingPiecePrice ?? 0;
+    total = price * (this.settingsService.settings.value?.taxes.taxRate ?? 0);
     return total;
   }
 
   get taxtOfSelectedDryCleaningProduct() {
     let total = 0;
     let price = this.selectedDryCleaningProduct?.price ?? 0;
-    total = price * (this.customerSettings?.taxes.taxRate ?? 0);
+    total = price * (this.settingsService.settings.value?.taxes.taxRate ?? 0);
     return total;
   }
 
@@ -359,7 +361,7 @@ export class OrdersSearchProductComponent
   get taxOfSelectedOtherProduct() {
     let total = 0;
     let price = this.selectedOtherProduct?.price ?? 0;
-    total = price * (this.customerSettings?.taxes.taxRate ?? 0);
+    total = price * (this.settingsService.settings.value?.taxes.taxRate ?? 0);
     return total;
   }
 

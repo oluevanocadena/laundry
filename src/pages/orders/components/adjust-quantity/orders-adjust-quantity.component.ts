@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperPage } from '../../../../components/common/helper.page';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { OrderItem } from '../../../../services/orders.service';
+import {
+  Order,
+  OrderItem,
+  OrdersService,
+} from '../../../../services/orders.service';
 import { ProductCategoryEnum } from '../../../../services/product-category.service';
 
 @Component({
@@ -23,8 +27,6 @@ export class OrdersAdjustQuantityComponent
     return this._show;
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onAdjustQuantity: EventEmitter<AdjustQuantityEvent> =
-    new EventEmitter<AdjustQuantityEvent>();
 
   //Item
   private _item: OrderItem | null = null;
@@ -39,12 +41,26 @@ export class OrdersAdjustQuantityComponent
   }
   @Output() itemChange: EventEmitter<OrderItem> = new EventEmitter<OrderItem>();
 
+  //Index
+  @Input() indexItem: number | null = null;
+
+  //Order
+  private _order: Order | null = null;
+  @Input() set order(value: Order | null) {
+    this._order = value;
+  }
+  get order(): Order | null {
+    return this._order;
+  }
+  @Output() orderChange: EventEmitter<Order | null> =
+    new EventEmitter<Order | null>();
+
   //formGroup
   formGroup = new FormGroup({
     quantity: new FormControl(1, [Validators.required]),
   });
 
-  constructor() {
+  constructor(public orderservice: OrdersService) {
     super();
   }
 
@@ -53,30 +69,40 @@ export class OrdersAdjustQuantityComponent
    */
 
   close() {
+    this.show = false;
     this.showChange.emit(false);
   }
 
   sum(quantity: number) {
-    if (this.formGroup.controls['quantity'].value) {
-      this.formGroup.controls['quantity'].patchValue(
-        parseInt(this.formGroup.controls['quantity'].value?.toString()) +
-          quantity
-      );
+    if (this.quantity > 0) {
+      this.formGroup.controls['quantity'].patchValue(this.quantity + quantity);
     }
   }
 
   adjustQuantity() {
-    this.onAdjustQuantity.emit({
-      item: this.item,
-      quantity: this.formGroup.controls['quantity'].value || 0,
-    });
+    if (this.order !== null && this.indexItem !== null) {
+      let item = this.order.orderItems[this.indexItem];
+      item.quantity = this.quantity;
+      item.total = item.price * item.quantity;
+      this.order.orderItems = this.order.orderItems.filter(
+        (x) => x.id !== item.id
+      );
+      this.order.orderItems.push(item);
+      this.order = this.orderservice.calculateTotals(this.order as Order);
+      this.orderChange.emit(this.order as Order);
+      this.close();
+    }
   }
 
   deleteItem() {
-    this.onAdjustQuantity.emit({
-      item: this.item,
-      quantity: 0,
-    });
+    if (this.order !== null && this.indexItem !== null) {
+      this.order.orderItems = this.order.orderItems.filter(
+        (x, index) => index !== this.indexItem
+      );
+      this.order = this.orderservice.calculateTotals(this.order as Order);
+      this.orderChange.emit(this.order as Order);
+      this.close();
+    }
   }
 
   /**
@@ -86,8 +112,16 @@ export class OrdersAdjustQuantityComponent
     return this.formGroup.controls['quantity']?.value || 0;
   }
 
+  get adjustedQuantity() {
+    return this.isLaundry || this.isIroning ? 0.1 : 1;
+  }
+
   get isLaundry() {
     return this.item?.categoryId === ProductCategoryEnum.Laundry;
+  }
+
+  get isIroning() {
+    return this.item?.categoryId === ProductCategoryEnum.Ironing;
   }
 
   /**

@@ -42,9 +42,6 @@ export class OrdersDeliveryComponent implements OnInit {
     deliveryType: new FormControl<'pickup' | 'delivery'>('pickup'),
   });
 
-  //Models
-  customerSettings: CustomerSettings | null = null;
-
   constructor(
     public settingsService: SettingsService,
     public nzMessageService: NzMessageService
@@ -57,9 +54,6 @@ export class OrdersDeliveryComponent implements OnInit {
   async load(): Promise<void> {
     try {
       this.loading = true;
-      this.customerSettings = await firstValueFrom(
-        this.settingsService.getSettingsFake(1)
-      );
     } catch (error) {
       console.error(error);
       this.nzMessageService.error('Error loading data');
@@ -79,14 +73,6 @@ export class OrdersDeliveryComponent implements OnInit {
   /**
    * Geters
    */
-
-  get deliveryFee(): number {
-    return (
-      (this.order?.delivery?.fee ?? 0) +
-      (this.order?.delivery?.fee ?? 0) *
-        (this.customerSettings?.taxes?.taxRate ?? 0)
-    );
-  }
 
   get isDelivery() {
     return this.formGroup.get('deliveryType')?.value === 'delivery';

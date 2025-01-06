@@ -8,5 +8,8 @@ export const routes = {
   Customers: '/customers',
   CustomerDraft: '/customers/draft',
   CustomerDetails: '/customers/detail/:id',
+  Products : '/products',
+  ProductDraft: '/products/draft',
+  ProductDetails: '/products/detail/:id',
   Settings: '/settings',
 };

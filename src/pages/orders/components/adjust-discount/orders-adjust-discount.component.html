@@ -3,65 +3,61 @@
 
     <ng-container *nzModalContent>
         <grid [direction]="'row'" [gap]="[24,16]" padding="0.5rem">
-            <modal-title [title]="'Collect Payment Method'" (onClose)="close()" />
+            <modal-title [title]="'Apply Discount'" (onClose)="close()" />
             <grid [direction]="'column'" [align]="'center-left'">
                 <span class="f-15 fw-400 f-03 f-lh-17">
-                    Select a
+                    Select the
                     <label class="fw-500 f-01">
-                        payment method
-                    </label> or register the voucher.
+                        discount type
+                    </label> to apply to the order.
                 </span>
             </grid>
-            <form tuiGroup [orientation]="'vertical'" class="group" [collapsed]="false" [formGroup]="formGroup">
+            <form tuiGroup [orientation]="'horizontal'" class="group" [collapsed]="false" [formGroup]="formGroup">
                 <label tuiBlock>
-                    <input formControlName="paymentMethod" tuiRadio type="radio" value="cash" />
+                    <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()" [value]="DiscountTypesEnum.Amount" />
                     <grid [direction]="'row'" [gap]="[0,16]">
                         <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
                             <tui-icon icon="@tui.dollar-sign" class="f-16 f-02" />
                             <span class="f-15 fw-600 f-02 f-lh-17">
-                                Cash
+                                Amount
                             </span>
                         </grid>
                         <span class="f-15 fw-400 f-04 f-lh-17">
-                            The total amount will be paid in cash
-                            <span class="fw-600">
-                                {{ order?.total ?? 0 | numeralFormat: '$0,0.00'}}
-                            </span>
+                            Is the amount you want to discount from the order.
                         </span>
                     </grid>
                 </label>
                 <label tuiBlock>
-                    <input formControlName="paymentMethod" tuiRadio type="radio" value="card" />
+                    <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
+                        [value]="DiscountTypesEnum.Percentage" />
                     <grid [gap]="[0,8]" [direction]="'row'">
                         <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
-                            <tui-icon icon="@tui.credit-card" class="f-16 f-02" />
+                            <tui-icon icon="@tui.percent" class="f-16 f-02" />
                             <span class="f-15 fw-600 f-02 f-lh-17">
-                                Card
+                                Percentage
                             </span>
                         </grid>
-                        <grid [direction]="'row'" [gap]="[16,16]">
-                            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                                <span class="f-15 fw-400 f-04 f-lh-17">
-                                    Register the last 4 digits of your card
-                                </span>
-                            </grid>
-                        </grid>
-                        <grid [direction]="'row'" [gap]="[16,16]">
-                            <form-input [label]="'Voucher Transaction Number'" [type]="'phone'" [countryCode]="''"
-                                [placeholder]="'Voucher Transaction Number'" [formControlName]="'transactionNumber'" />
-                        </grid>
+                        <span class="f-15 fw-400 f-04 f-lh-17">
+                            Percentage value to discount from the order.
+                        </span>
                     </grid>
                 </label>
             </form>
+            <grid [direction]="'row'" [gap]="[16,16]">
+                <form [formGroup]="formGroup">
+                    <form-input [label]="placeholder" [type]="'number'" [placeholder]="placeholder" [min]="0"
+                        [max]="maxNumber" [step]="stepIncrement" [formControlName]="'amount'" [postFix]="postFixText" />
+                </form>
+            </grid>
             <grid [direction]="'column'" [align]="'center-left'">
                 <span class="f-15 fw-400 f-03 f-lh-17">
                     Click on the
                     <label class="fw-500 f-01">
-                        Collect Payment
+                        Apply Discount
                     </label>
-                    button to update the order status to
+                    button to update the
                     <label class="fw-500 f-01">
-                        Paid
+                        discount total
                     </label>.
                 </span>
             </grid>
@@ -69,7 +65,7 @@
             <grid [direction]="'column'" [align]="'center-right'" padding="1rem 0 0 0" class="border-top-06">
                 <button tuiButton [disabled]="canSave === false" (click)="applyDiscount()" [appearance]="'primary'"
                     [size]="'m'">
-                    Collect Payment
+                    Apply Discount
                 </button>
             </grid>
         </grid>

@@ -73,9 +73,6 @@ export class OrdersAdjustDeliveryComponent
     distanceKm: new FormControl<number>(0, Validators.required),
   });
 
-  //Models
-  customerSettings: CustomerSettings | undefined;
-
   constructor(
     public settingsService: SettingsService,
     public orderservice: OrdersService,
@@ -91,9 +88,6 @@ export class OrdersAdjustDeliveryComponent
   async load(): Promise<void> {
     try {
       this.loading = true;
-      this.customerSettings = await firstValueFrom(
-        this.settingsService.getSettingsFake(1)
-      );
       this.orderItemsStatuses = await firstValueFrom(
         this.ordersStatusService.getFakeOrderItemsStatuses()
       );
@@ -115,8 +109,8 @@ export class OrdersAdjustDeliveryComponent
         this.setDeliveryFeeOrderItem();
         this.order.customer.address.distanceKm = this.distance;
         this.order.delivery!.distanceKm = this.distance;
-        this.order.deliveryFee = this.deliveryFeeWitoutTax;
-        this.order.delivery.fee = this.deliveryFeeWitoutTax;
+        this.order.deliveryFee = this.deliveryFee;
+        this.order.delivery.fee = this.deliveryFee;
         this.order.delivery.indications = this.indications;
         this.order.delivery.date = this.estimatedDeliveryDate;
         this.order.delivery.estimatedDate = this.estimatedDeliveryDate;
@@ -148,7 +142,7 @@ export class OrdersAdjustDeliveryComponent
           )?.name ?? '',
         statusId: OrderItemsStatusEnum.NotProccesed,
         categoryId: 5,
-        productId: 0,
+        productId: undefined,
         oderId: this.order?.id ?? Utils.Text.newGuid(),
       };
       this.order.orderItems.push(item);
@@ -198,7 +192,10 @@ export class OrdersAdjustDeliveryComponent
   }
 
   get deliveryFee() {
-    return (this.customerSettings?.delivery.pricePerKm ?? 0) * this.distance;
+    return (
+      (this.settingsService.settings.value?.delivery.pricePerKm ?? 0) *
+      this.distance
+    );
   }
 
   get deliveryFeeOrderItem() {
@@ -210,7 +207,10 @@ export class OrdersAdjustDeliveryComponent
   }
 
   get deliveryFeeWitoutTax() {
-    return this.deliveryFee / (1 + (this.customerSettings?.taxes.taxRate ?? 0));
+    return (
+      this.deliveryFee /
+      (1 + (this.settingsService.settings.value?.taxes.taxRate ?? 0))
+    );
   }
 
   get canSave() {

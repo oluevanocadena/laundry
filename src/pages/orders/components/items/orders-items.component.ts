@@ -23,7 +23,8 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
   get order(): Order | null {
     return this._order;
   }
-  @Output() orderChange: EventEmitter<Order> = new EventEmitter<Order>();
+  @Output() orderChange: EventEmitter<Order | null> =
+    new EventEmitter<Order | null>();
 
   //Flag Management
   showSearchProduct: boolean = false;
@@ -31,6 +32,9 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
 
   //Models
   selectedItem: any = {};
+
+  //index
+  indexItem: number = 0;
 
   //Input
   @Input() edition: boolean = false;
@@ -45,34 +49,30 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
   onSelectItem(orderItem: OrderItem | null) {
     this.showSearchProduct = false;
     if (orderItem !== null) {
-      this.order?.orderItems.push(orderItem);
+      let existProduct: boolean =
+        (this.order?.orderItems.filter(
+          (x) => x?.productId === orderItem?.productId
+        )?.length ?? 0) > 0;
+      if (existProduct === false) {
+        this.order?.orderItems.push(orderItem);
+      } else {
+        let index = this.order?.orderItems.findIndex(
+          (x) => x.productId === orderItem.productId
+        );
+        if (index !== -1) {
+          if (this.order && index !== undefined && index !== -1) {
+            this.order.orderItems[index].quantity += orderItem.quantity;
+          }
+        }
+      }
     }
     this.order = this.orderservice.calculateTotals(this.order as Order);
     this.orderChange.emit(this.order as Order);
-    console.log(orderItem);
+    console.log('On Add item', this.order);
   }
 
-  removeItem(item: OrderItem) {
-    if (this.order) {
-      this.order.orderItems = this.order.orderItems.filter(
-        (i) => i.id !== item.id
-      );
-    }
-    this.order = this.orderservice.calculateTotals(this.order as Order);
-    this.orderChange.emit(this.order as Order);
-    console.log('Remove Item', this.order);
-  }
-
-  onAdjustQuantity(event: AdjustQuantityEvent) {
-    let item = event.item;
-    let quantity = event.quantity;
-    if (quantity > 0) {
-      item.quantity = quantity;
-      item.total = item.price * item.quantity;
-    } else {
-      this.removeItem(item);
-    }
-    this.showAdjustQuantity = false;
+  removeItem(index: number) {
+    this.order?.orderItems.splice(index, 1);
     this.order = this.orderservice.calculateTotals(this.order as Order);
     this.orderChange.emit(this.order as Order);
   }
@@ -81,9 +81,11 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
     this.showSearchProduct = true;
   }
 
-  openAdjustQuantity(item: OrderItem) {
+  openAdjustQuantity(item: OrderItem, index: number) {
     this.selectedItem = item;
+    this.indexItem = index;
     this.showAdjustQuantity = true;
+    console.log('item', item, 'index', index);
   }
 
   /**

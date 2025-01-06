@@ -9,6 +9,7 @@ import {
   OrderStatusEnum,
 } from './order-status.service';
 import { Observable } from 'rxjs';
+import { SettingsService } from './settings.services';
 
 /**
  * @description
@@ -18,27 +19,51 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class OrdersService {
-  constructor(public http: HttpService) {}
+  constructor(
+    public http: HttpService,
+    public settingsService: SettingsService
+  ) {}
 
   calculateTotals(order: Order): Order {
     if (order) {
-      order.total = order.orderItems.reduce((acc, item) => acc + item.total, 0);
-      order.subtotal = order.orderItems.reduce(
-        (acc, item) => acc + item.subtotal,
-        0
-      );
-      order.taxes = order.total - order.subtotal;
-      order.totalItems = order.orderItems.length;
+      this.sumItems(order);
     }
     return order;
   }
 
-  calculateDiscount(order: Order, discount: number): Order {
-    if (order) {
-      order.discount = discount;
-      order.total = order.total - discount;
-    }
-    return order;
+  public sumItems(order: Order) {
+    order.totalItems = order.orderItems.length;
+
+    // Procesar los items
+    order.orderItems.forEach((item) => {
+      const taxRate = this.settingsService.settings.value?.taxes.taxRate || 0;
+
+      // El precio ya incluye IVA, así que primero lo desglosamos
+      const priceWithTax = item.price;
+      const priceWithoutTax = priceWithTax / (1 + taxRate);
+
+      // Calcular subtotal sin IVA (precio sin IVA * cantidad)
+      const subtotal = priceWithoutTax * item.quantity;
+
+      // Si hay descuento, aplicarlo proporcionalmente
+      if (order.discount > 0) {
+        const discountPart = order.discount / order.orderItems.length;
+        item.subtotal = subtotal - discountPart;
+      } else {
+        item.subtotal = subtotal;
+      }
+
+      // Calcular IVA sobre el subtotal (después de descuento si existe)
+      item.tax = item.subtotal * taxRate;
+
+      // El total es subtotal + IVA
+      item.total = item.subtotal + item.tax;
+    });
+
+    // Calcular totales de la orden
+    order.subtotal = order.orderItems.reduce((a, item) => a + item.subtotal, 0);
+    order.taxes = order.orderItems.reduce((a, item) => a + item.tax, 0);
+    order.total = order.orderItems.reduce((a, item) => a + item.total, 0);
   }
 
   /**
@@ -111,6 +136,8 @@ export interface Order {
   customerId: number;
   deliveryId?: number;
   orderDate: string;
+  discountType?: DiscountTypes;
+  discountAmount?: number;
   discount: number;
   taxes: number;
   subtotal: number;
@@ -143,7 +170,7 @@ export interface OrderItem {
   total: number;
   tax: number;
   subtotal: number;
-  productId: number;
+  productId?: string;
   isDeliveryFee: boolean;
   oderId?: string;
 }
@@ -167,6 +194,15 @@ export interface Payment {
 
 export type PaymentMethods = 'cash' | 'card';
 export type DiscountTypes = 'percentage' | 'amount';
+
+export enum PaymentMethodsEnum {
+  Cash = 'cash',
+  Card = 'card',
+}
+export enum DiscountTypesEnum {
+  Percentage = 'percentage',
+  Amount = 'amount',
+}
 
 const ordersFake: Order[] = [
   {
@@ -200,7 +236,7 @@ const ordersFake: Order[] = [
         statusId: OrderItemsStatusEnum.NotProccesed,
         categoryId: 1,
         category: 'Laundry',
-        productId: 1,
+        productId: Utils.Text.newGuid(),
         quantity: 1,
         price: 100,
         tax: 10,
@@ -277,7 +313,7 @@ const ordersFake: Order[] = [
         statusId: OrderItemsStatusEnum.NotProccesed,
         categoryId: 1,
         category: 'Laundry',
-        productId: 1,
+        productId: Utils.Text.newGuid(),
         quantity: 1,
         price: 100,
         tax: 10,

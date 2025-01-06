@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './common/http.service';
 import { Observable } from 'rxjs';
+import { Utils } from './common/utils.service';
 
 /**
  * @description
@@ -53,7 +54,7 @@ export class ProductService {
 }
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   description: string;
@@ -65,7 +66,7 @@ export interface Product {
 
 const productsFake = [
   {
-    id: 1,
+    id: Utils.Text.newGuid(),
     name: 'Product 1',
     price: 100,
     description: 'Description 1',
@@ -75,7 +76,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 2,
+    id: Utils.Text.newGuid(),
     name: 'Product 2',
     price: 200,
     description: 'Description 2',
@@ -85,7 +86,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 3,
+    id: Utils.Text.newGuid(),
     name: 'Product 3',
     price: 300,
     description: 'Description 3',
@@ -95,7 +96,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 4,
+    id: Utils.Text.newGuid(),
     name: 'Shirt',
     price: 400,
     description: 'Shirt service description',
@@ -105,7 +106,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 4,
+    id: Utils.Text.newGuid(),
     name: 'Shirt',
     price: 400,
     description: 'Shirt service description',
@@ -115,7 +116,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 4,
+    id: Utils.Text.newGuid(),
     name: 'Shirt g',
     price: 400,
     description: 'Shirt service description',
@@ -125,7 +126,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 4,
+    id: Utils.Text.newGuid(),
     name: 'Shirt a',
     price: 400,
     description: 'Shirt service description',
@@ -135,7 +136,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 41,
+    id: Utils.Text.newGuid(),
     name: 'Shirt b',
     price: 150,
     description: 'Shirt service description',
@@ -145,7 +146,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 40,
+    id: Utils.Text.newGuid(),
     name: 'Shirt',
     price: 250,
     description: 'Shirt service description',
@@ -155,7 +156,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 5,
+    id: Utils.Text.newGuid(),
     name: 'Product 5',
     price: 500,
     description: 'Description 5',
@@ -165,7 +166,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 6,
+    id: Utils.Text.newGuid(),
     name: 'Product 6',
     price: 600,
     description: 'Description 6',
@@ -175,7 +176,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 7,
+    id: Utils.Text.newGuid(),
     name: 'Product 7',
     price: 700,
     description: 'Description 7',
@@ -185,7 +186,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 8,
+    id: Utils.Text.newGuid(),
     name: 'Product 8',
     price: 800,
     description: 'Description 8',
@@ -195,7 +196,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 9,
+    id: Utils.Text.newGuid(),
     name: 'Product 9',
     price: 900,
     description: 'Description 9',
@@ -205,7 +206,7 @@ const productsFake = [
     rating: 4,
   },
   {
-    id: 10,
+    id: Utils.Text.newGuid(),
     name: 'Product 10',
     price: 1000,
     description: 'Description 10',

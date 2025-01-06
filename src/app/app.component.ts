@@ -9,6 +9,7 @@ import { TUIModule } from '../components/tui.module';
 import { NgZorroModule } from '../components/ng-zorro.module';
 import { TuiLanguageSwitcherService } from '@taiga-ui/i18n/utils';
 import { FormControl } from '@angular/forms';
+import { SettingsService } from '../services/settings.services';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,7 +28,8 @@ import { FormControl } from '@angular/forms';
 })
 export class AppComponent {
   // protected readonly switcher = inject(TuiLanguageSwitcherService);
-  constructor() {
+  constructor(public settingsService: SettingsService) {
+    this.settingsService.initSettings('a').subscribe();
     // this.language.setValue('spanish');
     // this.switcher.setLanguage('spanish');
   }

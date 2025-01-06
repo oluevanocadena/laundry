@@ -6,6 +6,14 @@ import moment from 'moment';
 import { Order, OrdersService } from '../../services/orders.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { finalize } from 'rxjs';
+import {
+  TableOptionItemSelectEvent,
+  TableOptionsItem,
+} from '../../components/common/table-options/table-options.component';
+import {
+  TableSegmentsItem,
+  TableSegmentsItemEvent,
+} from '../../components/common/table-segments/table-segments.component';
 
 @Component({
   selector: 'app-orders-page',
@@ -29,11 +37,24 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
     date: new FormControl(
       TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate())
     ),
-    orderType: new FormControl('All'),
   });
 
   //Arrays
-  orderTypes = ['All', 'Unprocessed', 'UnPaid', 'Completed', 'Cancelled'];
+
+  //Arrays
+  options: TableOptionsItem[] = [
+    { label: 'Edit', icon: 'pencil', id: 1 },
+    { label: 'View', icon: 'arrow-up-right', id: 2 },
+    { label: 'Cancel', icon: 'ban', id: 3 },
+  ];
+  //'All', 'Unprocessed', 'UnPaid', 'Completed', 'Cancelled'
+  optionsSegments: TableSegmentsItem[] = [
+    { id: 1, label: 'All' },
+    { id: 2, label: 'Unprocessed' },
+    { id: 3, label: 'UnPaid' },
+    { id: 4, label: 'Completed' },
+    { id: 5, label: 'Cancelled' },
+  ];
   orders: Order[] = [];
 
   constructor(
@@ -64,21 +85,21 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
    * UI Events
    */
 
-  onChangeTab(index: number) {
-    this.onTabChange.emit(index);
+  onSegmentChange(event: TableSegmentsItemEvent) {
+    console.log('event', event);
   }
 
-  onSelectFilter(option: string) {
-    this.formGroup.get('orderType')?.setValue(option);
-    this.showFilterOptions = false;
+  onSelectOption(event: TableOptionItemSelectEvent) {
+    console.log('event', event);
+  }
+
+  export() {
+    console.log('Export');
   }
 
   /**
    * Getters
    */
-  get orderType() {
-    return this.formGroup.get('orderType')?.value ?? '';
-  }
 
   /**
    * Lifecycle

@@ -18,16 +18,21 @@ th:last-child {
 th {
     padding: 0.5rem 1rem 0.125rem 1rem !important;
     background-color: var(--table-color) !important;
-    color: var(--text-03) !important;
-    font-weight: 500 !important;
+    color: var(--text-02) !important;
+    font-weight: 400 !important;
 }
 
-tr:last-child td {
+tr:last-child td:first-child {
     border-bottom-left-radius: 12px;
 }
 
-tr:first-child td {
-    border-top-left-radius: 12px;
+tr:last-child>td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+td {
+    color: var(--text-01) !important;
+    font-weight: 500 !important;
 }
 
 td:first-child {

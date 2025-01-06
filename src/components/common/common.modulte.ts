@@ -19,6 +19,8 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
 import { StatusBadgeComponent } from './status-badge/status-badge.component';
 import { TopBarButtonsComponent } from './top-bar-buttons/top-bar-buttons.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { TableOptionsComponent } from './table-options/table-options.component';
+import { TableSegmentsComponent } from './table-segments/table-segments.component';
 
 const components = [
   DrawerMenuComponent,
@@ -32,6 +34,8 @@ const components = [
   ProfileMenuComponent,
   SideMenuComponent,
   StatusBadgeComponent,
+  TableOptionsComponent,
+  TableSegmentsComponent,
   TopBarButtonsComponent,
   TopBarComponent,
 ];

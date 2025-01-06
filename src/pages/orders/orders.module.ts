@@ -28,7 +28,6 @@ import { OrdersDraftPageComponent } from './draft/orders-draft-page.component';
 import { OrdersPageComponent } from './orders-page.component';
 
 const components: any[] = [
-  OrdersPageComponent,
   OrdersAdjustDeliveryComponent,
   OrdersAdjustDiscountComponent,
   OrdersAdjustQuantityComponent,
@@ -41,6 +40,7 @@ const components: any[] = [
   OrdersItemsComponent,
   OrdersLaundryComponent,
   OrdersNotesComponent,
+  OrdersPageComponent,
   OrdersSearchCustomerComponent,
   OrdersSearchProductComponent,
   OrdersSummaryComponent,

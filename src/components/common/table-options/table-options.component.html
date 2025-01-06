@@ -1,0 +1,23 @@
+<grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'">
+    <button [tuiDropdown]="profileMenu" [tuiDropdownMaxHeight]="maxHeight" [(tuiDropdownOpen)]="show" tuiButton
+        [attr.tuiRoundButton]="rounded? true: null" tuiIconButton [appearance]="'secondary'" [size]="buttonSize">
+        <tui-icon icon="@tui.ellipsis" class="f-18 fw-600 f-02" />
+    </button>
+    <ng-template #profileMenu>
+        <tui-data-list minWidth="" [width]="'fit-content'" [size]="'m'">
+            <tui-opt-group>
+                <tui-opt-group [label]="groupName">
+                    <button *ngFor="let option of options" (click)="onClickOption(option)" tuiOption type="button"
+                        [value]="option">
+                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                            <tui-icon icon="@tui.{{option.icon}}" class="f-18 fw-600 f-02" />
+                            <span class="f-14 fw-600 f-lh-16 f-02">
+                                {{ option.label }}
+                            </span>
+                        </grid>
+                    </button>
+                </tui-opt-group>
+            </tui-opt-group>
+        </tui-data-list>
+    </ng-template>
+</grid>

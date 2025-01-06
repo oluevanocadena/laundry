@@ -1,5 +1,5 @@
 <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content 1fr'" padding="1rem" height="100vh"
-    [width]="collapsed ? '60px':'225px'" class="bg-07">
+    [width]="collapsed ? '60px': isDesktopOrLaptop ? '200px': '250px'" class="bg-07">
     <grid [gap]="[16,0]" [direction]="'column'" [template]="collapsed ? '1fr' :'1fr max-content'">
         <grid [direction]="'column'" [align]="'center-left'" height="fit-content">
             <logo [direction]="'horizontal'" [mode]="collapsed ? 'single' : 'double'" />

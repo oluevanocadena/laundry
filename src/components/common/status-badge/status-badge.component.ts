@@ -16,6 +16,7 @@ export class StatusBadgeComponent implements OnInit {
   @Input() label?: string = '';
   @Input() statusId?: number = 0;
   @Input() type: StatusTypeBadge = 'order';
+  @Input() size: 'm' | 's' | 'l' | 'xl' = 'l';
 
   constructor() {}
 
@@ -108,10 +109,10 @@ export class StatusBadgeComponent implements OnInit {
 
 export type StatusTypeBadge =
   | 'order'
+  | 'orderItems'
   | 'payment'
-  | 'refund'
-  | 'customer'
-  | 'orderItems';
+  | 'delivery'
+  | 'customer';
 
 export enum StatusTypeBadgeEnum {
   Order = 'order',

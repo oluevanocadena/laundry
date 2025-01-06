@@ -8,13 +8,15 @@ import { OrdersDraftPageComponent } from '../pages/orders/draft/orders-draft-pag
 import { OrdersDetailPageComponent } from '../pages/orders/detail/order-detail-page.component';
 import { CustomersDraftComponent } from '../pages/customers/draft/customers-draft.component';
 import { CustomersDetailComponent } from '../pages/customers/detail/customers-detail.component';
+import { OrdersPageComponent } from '../pages/orders/orders-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'board', component: BoardPageComponent },
-  { path: 'orders/draft', component: OrdersDraftPageComponent, pathMatch: 'full' },
+  { path: 'orders', component: OrdersPageComponent },
+  { path: 'orders/draft', component: OrdersDraftPageComponent },
   { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
   { path: 'orders/detail/:id', component: OrdersDetailPageComponent },
   { path: 'customers/draft', component: CustomersDraftComponent },

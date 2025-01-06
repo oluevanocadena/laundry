@@ -1,0 +1,27 @@
+<ng-container *ngIf="hasNgContent">
+    <li nz-submenu [nzTitle]="template" [nzOpen]="isOpen">
+        <ul>
+            <ng-content></ng-content>
+        </ul>
+    </li>
+</ng-container>
+
+<ng-container *ngIf="hasNgContent === false">
+    <li nz-menu-item [nzSelected]="isOpen && isGroup === false" [routerLink]="link">
+        <ng-container *ngTemplateOutlet="template"></ng-container>
+    </li>
+</ng-container>
+
+<ng-template #template>
+    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'">
+        <tui-icon *ngIf="icon" icon="@tui.{{icon}}" class="f-18 fw-600" />
+        <span *ngIf="!collapsed" class="f-01" [ngClass]="{ 
+                'fw-400':!bold, 
+                'fw-600': bold, 
+                'f-14 f-lh-28': !isGroup && hasNgContent, 
+                'f-12 f-lh-24': isGroup || !hasNgContent
+            }">
+            {{label}}
+        </span>
+    </grid>
+</ng-template>

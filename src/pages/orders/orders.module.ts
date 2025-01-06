@@ -10,6 +10,7 @@ import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ServicesModule } from '../../services/services.module';
 import { OrdersAdjustDeliveryComponent } from './components/adjust-delivery/orders-adjust-delivery.component';
+import { OrdersAdjustDiscountComponent } from './components/adjust-discount/orders-adjust-discount.component';
 import { OrdersAdjustQuantityComponent } from './components/adjust-quantity/orders-adjust-quantity.component';
 import { OrdersCollectPaymentComponent } from './components/collect-payment/orders-collect-payment.component';
 import { OrdersCustomerComponent } from './components/customer/orders-customer.component';
@@ -18,15 +19,16 @@ import { OrdersHeaderComponent } from './components/header/orders-header.compone
 import { OrdersItemsComponent } from './components/items/orders-items.component';
 import { OrdersLaundryComponent } from './components/laundry/orders-laundry.component';
 import { OrdersNotesComponent } from './components/notes/orders-notes.component';
+import { OrdersSearchCustomerComponent } from './components/search-customer/orders-search-customer.component';
 import { OrdersSearchProductComponent } from './components/search-product/orders-search-product.component';
 import { OrdersSummaryComponent } from './components/summary/orders-summary.component';
 import { OrdersTopBarComponent } from './components/top-bar/orders-top-bar.component';
 import { OrdersDetailPageComponent } from './detail/order-detail-page.component';
 import { OrdersDraftPageComponent } from './draft/orders-draft-page.component';
-import { OrdersSearchCustomerComponent } from './components/search-customer/orders-search-customer.component';
-import { OrdersAdjustDiscountComponent } from './components/adjust-discount/orders-adjust-discount.component';
+import { OrdersPageComponent } from './orders-page.component';
 
 const components: any[] = [
+  OrdersPageComponent,
   OrdersAdjustDeliveryComponent,
   OrdersAdjustDiscountComponent,
   OrdersAdjustQuantityComponent,

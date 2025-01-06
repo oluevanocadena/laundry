@@ -1,17 +1,17 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-
+import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 let MODULES = [
   NzAlertModule,
   NzButtonModule,
   NzSegmentedModule,
   NzDrawerModule,
   NzModalModule,
+  NzMenuModule,
 ];
 
 @NgModule({

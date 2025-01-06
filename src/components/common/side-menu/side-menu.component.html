@@ -1,0 +1,29 @@
+<grid [direction]="'row'" [template]="'max-content 1fr'" padding="1rem" height="100vh" class="bg-07">
+    <grid [direction]="'column'" [align]="'center-left'" height="fit-content">
+        <logo [direction]="'horizontal'" />
+    </grid>
+    <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%">
+        <menu [collapsed]="collapsed" width="100%">
+            <menu-item [collapsed]="collapsed" [icon]="'home'" [label]="'Home'" [urlBase]="routes.Orders" [level]="0">
+                <menu-item [collapsed]="collapsed" [label]="'Flota patrimonio'" [urlBase]="routes.Orders"
+                    [isGroup]="true" [level]="1">
+                    <menu-item [collapsed]="collapsed" [label]="'Carga masiva'" [urlBase]="routes.Orders"
+                        [link]="routes.Orders" [level]="2" [bold]="true">
+                    </menu-item>
+                </menu-item>
+            </menu-item>
+        </menu>
+        <menu [collapsed]="collapsed">
+            <!-- Inventario -->
+            <menu-item [collapsed]="collapsed" [icon]="'icon-inventario'" [label]="'Home'" [urlBase]="routes.Orders"
+                [level]="0">
+                <menu-item [collapsed]="collapsed" [label]="'Flota patrimonio'" [urlBase]="routes.Orders"
+                    [isGroup]="true" [level]="1">
+                    <menu-item [collapsed]="collapsed" [label]="'Carga masiva'" [urlBase]="routes.Orders"
+                        [link]="routes.Orders" [level]="2" [bold]="true">
+                    </menu-item>
+                </menu-item>
+            </menu-item>
+        </menu>
+    </grid>
+</grid>

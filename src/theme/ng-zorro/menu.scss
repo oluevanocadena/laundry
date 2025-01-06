@@ -1,0 +1,27 @@
+.ant-menu-inline .ant-menu-item::after,
+.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after {
+    border-right: none !important;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    border-radius: 0.5rem !important;
+
+    // gradint use var(--primary) to color-mix(in srgb, var(--primary), black 10%)
+    background: linear-gradient(to top,
+            color-mix(in srgb, var(--primary), 70% #fff),
+            color-mix(in srgb, var(--primary), 90% #fff),
+            color-mix(in srgb, var(--primary), 100% #fff),
+            color-mix(in srgb, var(--primary), 100% #fff)) !important;
+}
+
+.ant-menu:not(.ant-menu-horizontal).ant-menu-item-selected {
+    span {
+        color: var(--primary) !important;
+    }
+}
+
+.ant-menu{
+    background: transparent !important;
+}

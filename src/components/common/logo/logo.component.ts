@@ -1,20 +1,18 @@
-import { Component, OnInit } from "@angular/core";
-import { HelperPage } from "../helper.page";
+import { Component, Input, OnInit } from '@angular/core';
+import { HelperPage } from '../helper.page';
 
 @Component({
-  selector: "logo",
+  selector: 'logo',
   standalone: false,
-  templateUrl: "./logo.component.html",
-  styleUrls: ["./logo.component.scss"]
+  templateUrl: './logo.component.html',
+  styleUrls: ['./logo.component.scss'],
 })
-
 export class LogoComponent extends HelperPage implements OnInit {
-  
-  constructor() { 
+  @Input() direction: 'vertical' | 'horizontal' = 'vertical';
+
+  constructor() {
     super();
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 }

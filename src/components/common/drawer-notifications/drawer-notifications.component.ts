@@ -7,12 +7,12 @@ import {
 import { HelperPage } from '../helper.page';
 
 @Component({
-  selector: 'drawer-notications',
+  selector: 'drawer-notifications',
   standalone: false,
-  templateUrl: './drawer-notications.component.html',
-  styleUrls: ['./drawer-notications.component.scss'],
+  templateUrl: './drawer-notifications.component.html',
+  styleUrls: ['./drawer-notifications.component.scss'],
 })
-export class DrawerNoticationsComponent extends HelperPage {
+export class DrawerNotificationsComponent extends HelperPage {
   //Flag Management
 
   private _show: boolean = false;
@@ -26,11 +26,14 @@ export class DrawerNoticationsComponent extends HelperPage {
 
   //Arrays
   notifications: INotifications[] = [
-    { id: 1, label: 'Lorem Ipsum', readed: true },
-    { id: 2, label: 'Lorem Ipsum', readed: true },
-    { id: 3, label: 'Lorem Ipsum', readed: true },
+    { id: 1, label: 'Lorem Ipsum', readed: false },
+    { id: 2, label: 'Lorem Ipsum', readed: false },
+    { id: 3, label: 'Lorem Ipsum', readed: false },
     { id: 4, label: 'Lorem Ipsum', readed: true },
     { id: 5, label: 'Lorem Ipsum', readed: true },
+    { id: 6, label: 'Lorem Ipsum', readed: true },
+    { id: 7, label: 'Lorem Ipsum', readed: true },
+    { id: 8, label: 'Lorem Ipsum', readed: true },
   ];
 
   constructor() {

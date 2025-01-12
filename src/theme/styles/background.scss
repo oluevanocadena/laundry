@@ -4,8 +4,13 @@
 }
 
 .bg-secondary {
-    background-color: #1a1919; // Secondary background
+    background-color: var(--secondary); // Secondary background
 }
+
+.bg-secondary-hover:hover {
+    background-color: var(--secondary); // Secondary background
+}
+
 
 .bg-white {
     background-color: #ffffff; // White background

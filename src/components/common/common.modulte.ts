@@ -9,7 +9,7 @@ import { TUIModule } from '../tui.module';
 import { UIModule } from '../ui.module';
 import { ButtonResponsiveComponent } from './button-responsive/button-responsive.component';
 import { DrawerMenuComponent } from './drawer-menu/drawer-menu.component';
-import { DrawerNoticationsComponent } from './drawer-notications/drawer-notications.component';
+import { DrawerNotificationsComponent } from './drawer-notifications/drawer-notifications.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LogoComponent } from './logo/logo.component';
@@ -30,7 +30,7 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 const components = [
   ButtonResponsiveComponent,
   DrawerMenuComponent,
-  DrawerNoticationsComponent,
+  DrawerNotificationsComponent,
   FooterComponent,
   HeaderComponent,
   LogoComponent,

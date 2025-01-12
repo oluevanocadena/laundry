@@ -1,0 +1,77 @@
+<nz-drawer [nzClosable]="false" [(nzVisible)]="show" nzPlacement="right" [nzTitle]="undefined"
+    (nzOnClose)="closeShortMenu()" [nzWidth]="isMobile ? '100%' : '350px'">
+    <ng-container *nzDrawerContent>
+        <grid [direction]="'row'" [gap]="[16,16]" [template]="'1fr'" height="100%">
+            <grid [gap]="[16,16]" [direction]="'row'" [template]="'max-content 1fr'" height="100%" width="100%">
+                <grid [direction]="'column'" [template]="'1fr max-content'">
+                    <grid [direction]="'column'" [align]="'center-left'">
+                        <span class="f-18 fw-600 f-02">
+                            Notifications
+                        </span>
+                    </grid>
+                    <grid [direction]="'column'" [align]="'center-right'">
+                        <button (click)="closeShortMenu()" tuiButton tuiRoundButton tuiIconButton
+                            [appearance]="'secondary'" [size]="'s'">
+                            <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
+                        </button>
+                    </grid>
+                </grid>
+                <grid [direction]="'column'" [align]="'top-left'" height="100%">
+                    <grid [gap]="[0,8]" [direction]="'row'" [template]="'1fr'" width="100%" height="100%"
+                        class="scroll-v">
+                        <ng-container *ngFor="let notification of notifications">
+                            <ng-container *ngTemplateOutlet="notificationOrder; context: { item: notification }">
+                            </ng-container>
+                        </ng-container>
+                    </grid>
+                </grid>
+            </grid>
+        </grid>
+    </ng-container>
+</nz-drawer>
+
+<ng-template #notificationOrder let-item="item">
+    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr'" padding="0.75rem 0 1rem"
+        class="border-bottom-06 pointer bg-secondary-hover">
+        <grid [gap]="[8,8]" [direction]="'column'" [template]="'max-content 1fr'">
+            <tui-avatar src="@tui.shopping-bag" [size]="'s'" class="f-info" />
+            <grid [gap]="[8,0]" [direction]="'column'" [template]="'1fr'">
+                <grid [direction]="'column'" [template]="'1fr'">
+                    <grid [direction]="'column'" [template]="'1fr max-content'">
+                        <span class="f-16 f-lh-16 fw-500 f-01">
+                            New order
+                        </span>
+                        <grid [gap]="[4,4]" [direction]="'column'" [align]="'center-right'">
+                            <span class="material-symbols-outlined f-info f-13 icon-fill">
+                                fiber_manual_record
+                            </span>
+                            <span class="f-13 f-lh-15 f-04">
+                                {{ '10 mins ago' }}
+                            </span>
+                        </grid>
+                    </grid>
+                    <span class="f-14 f-lh-16 fw-400 f-03">
+                        Review the order #000015 from John Doe
+                    </span>
+                </grid>
+                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                    <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                        <button tuiButton [appearance]="'secondary'" [size]="'xs'">
+                            <span class="f-02 f-13" padding="0">
+                                Decline
+                            </span>
+                        </button>
+                    </grid>
+                    <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                        <button tuiButton [appearance]="'primary'" [size]="'xs'">
+                            <span class="f-white f-13" padding="0">
+                                Open
+                            </span>
+                        </button>
+                    </grid>
+                </grid>
+            </grid>
+        </grid>
+
+    </grid>
+</ng-template>

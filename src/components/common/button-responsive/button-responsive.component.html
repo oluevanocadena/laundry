@@ -1,0 +1,11 @@
+<button (click)="onClick()" [loading]="loading" [disabled]="disabled || loading" tuiButton
+    [attr.tuiIconButton]="isMobile ? true: null" [appearance]="appearance" [size]="size">
+    <grid [gap]="[4,4]" [direction]="'column'" [align]="'center-left'">
+        <tui-icon *ngIf="isMobile" icon="@tui.{{icon}}" class="fw-600 f-03"
+            [ngClass]="{'f-15': !isMobile, 'f-17': isMobile, 'f-white': appearance === 'primary', 'f-03': appearance !== 'primary'}" />
+        <span *ngIf="!isMobile" class="f-15 fw-500"
+            [ngClass]="{'f-white': appearance === 'primary', 'f-03': appearance !== 'primary'}">
+            {{label}}
+        </span>
+    </grid>
+</button>

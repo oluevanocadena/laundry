@@ -34,7 +34,9 @@
                                 and the delivery price is
                                 <span class="f-15 fw-600 f-02 f-lh-17">
                                     {{ settingsService.settings.value?.delivery?.pricePerKm ?? 0 | numeralFormat:
-                                    '$0,0.00'}} per Km
+                                    '$0,0.00'}}
+                                    {{settingsService.settings.value?.general?.currency}}
+                                    per Km
                                 </span>
                                 the total delivery fee will be with taxes:
                                 <span class="f-15 fw-600 f-primary f-lh-17">
@@ -48,7 +50,7 @@
                             [step]="1" />
                         <form-input [label]="'Indications'" [type]="'textarea'"
                             [placeholder]="'Type the delivery indications'" formControlName="deliveryInstructions" />
-                        <tui-root style="border-image:none">
+                        <tui-root>
                             <ng-container ngProjectAs="tuiOverDialogs">
                                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
                                     <form-input [label]="'Estimated Date'" [type]="'date'" [placeholder]="'Choose date'"

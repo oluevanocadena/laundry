@@ -6,7 +6,6 @@ import {
   Output,
 } from '@angular/core';
 import { HelperPage } from '../helper.page';
-
 @Component({
   selector: 'drawer-menu-options',
   standalone: false,
@@ -14,6 +13,8 @@ import { HelperPage } from '../helper.page';
   styleUrls: ['./drawer-menu.component.scss'],
 })
 export class DrawerMenuComponent extends HelperPage {
+  
+
   //Flag Management
 
   private _show: boolean = false;

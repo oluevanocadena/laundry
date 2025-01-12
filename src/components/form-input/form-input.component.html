@@ -37,10 +37,19 @@
         [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
         {{ placeholder }}
     </tui-input-date>
+    <tui-input-date-range *ngIf="type === 'date-range'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+        [min]="minDate" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
+        (ngModelChange)="onNgModelChange($event)">
+        {{ placeholder }}
+    </tui-input-date-range>
 
     <tui-input-time *ngIf="type === 'time'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
         [items]="timeItems" [strict]="true" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
         (ngModelChange)="onNgModelChange($event)">
         {{ placeholder }}
     </tui-input-time>
+    <tui-textfield *ngIf="type === 'search'" iconStart="@tui.search" [tuiTextfieldSize]="size"
+        [tuiTextfieldLabelOutside]="true">
+        <input [attr.placeholder]="placeholder" tuiTextfield [value]="value" (input)="onInputChange($event)" />
+    </tui-textfield>
 </grid>

@@ -1,0 +1,29 @@
+<grid [direction]="'column'" [align]="'top-left'" height="100%">
+    <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%" width="100%">
+        <menu width="100%">
+            <menu-item [collapsed]="collapsed" [icon]="'home'" [label]="'Home'" [urlBase]="routes.Home" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'shopping-bag'" [label]="'Orders'" [urlBase]="routes.Orders"
+                [link]="routes.Orders" [isGroup]="false" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'users'" [label]="'Customers'" [urlBase]="routes.Customers"
+                [link]="routes.Customers" [isGroup]="false" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'shirt'" [label]="'Products'" [urlBase]="routes.Products"
+                [link]="routes.Products" [isGroup]="false" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'store'" [label]="'Locations'" [urlBase]="routes.Locations"
+                [link]="routes.Locations" [isGroup]="false" [level]="0">
+            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'user-round'" [label]="'Users'" [urlBase]="routes.Locations"
+                [link]="routes.Locations" [isGroup]="false" [level]="0">
+            </menu-item>
+        </menu>
+        <menu>
+            <!-- Settings -->
+            <menu-item [collapsed]="collapsed" [icon]="'bolt'" [label]="'Settings'" [urlBase]="routes.Settings"
+                [level]="0">
+            </menu-item>
+        </menu>
+    </grid>
+</grid>

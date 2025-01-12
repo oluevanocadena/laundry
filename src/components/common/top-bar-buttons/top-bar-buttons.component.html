@@ -1,15 +1,11 @@
 <grid [direction]="'column'" [template]="'1fr'" height="100%">
-    <grid *ngIf="isMobile === true" [align]="'center-right'" height="100%">
-        <button (click)="openMenu()" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'" [size]="'m'">
+    <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-right'" height="100%">
+        <button *ngIf="isMobileOrTablet === true" (click)="openMenu()" tuiButton tuiRoundButton tuiIconButton
+            [appearance]="'secondary'" [size]="'m'">
             <tui-icon icon="@tui.menu" class="f-18 fw-600 f-02" />
         </button>
-    </grid>
-    <grid *ngIf="isMobile === false" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-        <button (click)="openMenu()" [tuiSkeleton]="loading" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'" [size]="'m'">
-            <tui-icon icon="@tui.menu" class="f-18 fw-600 f-02" />
-        </button>
-        <button (click)="openNotifications()" [tuiSkeleton]="loading" tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'"
-            [size]="'m'">
+        <button *ngIf="isMobileOrTablet === false" (click)="openNotifications()" [tuiSkeleton]="loading" tuiButton tuiRoundButton tuiIconButton
+            [appearance]="'secondary'" [size]="'m'">
             <tui-icon icon="@tui.bell" class="f-18 fw-600 f-02" />
         </button>
         <profile-menu />

@@ -13,12 +13,21 @@ export class ProfileMenuComponent implements OnInit {
   //Arrays
   options: UIOptionProfileMenu[] = [
     { id: 1, label: 'Profile' },
-    { id: 1, label: 'Settings' },
-    { id: 1, label: 'About' },
     { id: 1, label: 'Logout' },
   ];
 
   constructor() {}
+
+  /**
+   * Getters
+   */
+  get name() {
+    return 'Oscar Luevano';
+  }
+
+  /**
+   * Life Cycle
+   */
 
   ngOnInit() {}
 }

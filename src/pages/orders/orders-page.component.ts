@@ -1,11 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { HelperPage } from '../../components/common/helper.page';
-import { FormControl, FormGroup } from '@angular/forms';
-import { TuiDay } from '@taiga-ui/cdk';
-import moment from 'moment';
-import { Order, OrdersService } from '../../services/orders.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { finalize } from 'rxjs';
+import { HelperPage } from '../../components/common/helper.page';
+import { SearchModalEvent } from '../../components/common/modal-search/modal-search.component';
 import {
   TableOptionItemSelectEvent,
   TableOptionsItem,
@@ -14,6 +11,8 @@ import {
   TableSegmentsItem,
   TableSegmentsItemEvent,
 } from '../../components/common/table-segments/table-segments.component';
+import { OrderStatusEnum } from '../../services/order-status.service';
+import { Order, OrdersService } from '../../services/orders.service';
 
 @Component({
   selector: 'app-orders-page',
@@ -23,7 +22,8 @@ import {
 })
 export class OrdersPageComponent extends HelperPage implements OnInit {
   //Flag Management
-  showFilterOptions: boolean = false;
+  showSort: boolean = false;
+  showSearch: boolean = false;
   loading: boolean = false;
 
   //Index
@@ -32,12 +32,6 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
   // Outputs
   @Output() onTabChange: EventEmitter<number> = new EventEmitter<number>();
 
-  //FormGroup
-  formGroup = new FormGroup({
-    date: new FormControl(
-      TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate())
-    ),
-  });
 
   //Arrays
 
@@ -49,11 +43,13 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
   ];
   //'All', 'Unprocessed', 'UnPaid', 'Completed', 'Cancelled'
   optionsSegments: TableSegmentsItem[] = [
-    { id: 1, label: 'All' },
-    { id: 2, label: 'Unprocessed' },
-    { id: 3, label: 'UnPaid' },
-    { id: 4, label: 'Completed' },
-    { id: 5, label: 'Cancelled' },
+    { id: 0, label: 'All' },
+    { id: OrderStatusEnum.Draft, label: 'Draft' },
+    { id: OrderStatusEnum.Pending, label: 'Unprocessed' },
+    { id: OrderStatusEnum.Processing, label: 'Processing' },
+    { id: OrderStatusEnum.Completed, label: 'Completed' },
+    { id: OrderStatusEnum.Cancelled, label: 'Cancelled' },
+    { id: OrderStatusEnum.Refunded, label: 'Refunded' },
   ];
   orders: Order[] = [];
 
@@ -84,6 +80,21 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
   /**
    * UI Events
    */
+  openSearchModal() {
+    this.showSearch = true;
+  }
+
+  openSortModal() {
+    this.showSort = true;
+  }
+
+  onSearch(value: SearchModalEvent) {
+    console.log('value', value);
+  }
+
+  onSort(value: string) {
+    console.log('value', value);
+  }
 
   onSegmentChange(event: TableSegmentsItemEvent) {
     console.log('event', event);

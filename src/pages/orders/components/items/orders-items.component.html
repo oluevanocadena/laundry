@@ -4,7 +4,9 @@
             Item Summary
         </span>
         <tui-badge *ngIf="orderHaveItems" appearance="info" [size]="'m'">
-            {{ itemsCount }}
+            <span class="f-15 fw-600 f-lh-17 f-info">
+                {{ itemsCount }}
+            </span>
         </tui-badge>
         <status-badge *ngIf="orderHaveItems && edition === false" [label]="order?.statusItems"
             [statusId]="order?.statusItemsId" [type]="'orderItems'" />

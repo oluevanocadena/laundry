@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { HelperPage } from '../helper.page';
 
 @Component({
@@ -9,7 +9,7 @@ import { HelperPage } from '../helper.page';
 })
 export class SideMenuComponent extends HelperPage implements OnInit {
   //Flag Management
-  collapsed: boolean = false;
+  @Input() collapsed: boolean = false;
 
   constructor() {
     super();

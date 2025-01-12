@@ -2,6 +2,7 @@ import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { routes } from '../../app/routes';
 import moment from 'moment';
 import { BrowserService } from '../../services/common/browser.service';
+import { system } from '../../environments/environment';
 
 @Component({
   template: '<ng-content></ng-content>',
@@ -9,7 +10,8 @@ import { BrowserService } from '../../services/common/browser.service';
 })
 export class HelperPage {
   routes = routes;
-
+  //Environment
+  system = system;
   isMobile: boolean = false;
   isMobileOrTablet: boolean = false;
   isDesktopOrLaptop: boolean = false;

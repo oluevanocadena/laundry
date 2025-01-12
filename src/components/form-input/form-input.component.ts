@@ -1,8 +1,14 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  forwardRef,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
-import { tuiCreateTimePeriods } from '@taiga-ui/kit';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 @Component({
   selector: 'form-input',
   standalone: false,
@@ -26,7 +32,9 @@ export class FormInputComponent implements ControlValueAccessor {
     | 'password'
     | 'textarea'
     | 'date'
+    | 'date-range'
     | 'time'
+    | 'search'
     | 'number' = 'text';
   @Input() countryCode: string = '+52';
   @Input() outerLabel: boolean = true;
@@ -37,12 +45,32 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() postFix: string = '';
   @Input() timeItems: TuiTime[] = [];
   @Input() minDate: TuiDay | null = TuiDay.currentLocal().append({ day: 1 });
+  @Input() debounce: number = 300;
+  //Outputs
+  @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
 
   value: string = '';
   disabled = false;
 
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
   private onChange = (value: string) => {};
   private onTouched = () => {};
+
+  constructor() {}
+
+  setupSearchDebounce(): void {
+    this.searchSubject
+      .pipe(
+        debounceTime(this.debounce),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((value) => {
+        this.onSearch.emit(value);
+      });
+  }
 
   writeValue(value: string): void {
     this.value = value || '';
@@ -64,6 +92,9 @@ export class FormInputComponent implements ControlValueAccessor {
     let value = (event.target as any)?.value;
     this.value = value;
     this.onChange(value);
+    if (this.type === 'search') {
+      this.searchSubject.next(value);
+    }
   }
 
   onNgModelChange(value: any): void {
@@ -77,5 +108,20 @@ export class FormInputComponent implements ControlValueAccessor {
 
   get isEmailOrText() {
     return this.type === 'email' || this.type === 'text';
+  }
+
+  /**
+   * lifecycle
+   */
+
+  ngOnInit() {
+    if (this.type === 'search') {
+      this.setupSearchDebounce();
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy$?.next();
+    this.destroy$?.complete();
   }
 }

@@ -1,16 +1,18 @@
-<button [tuiDropdown]="profileMenu" [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="show" tuiButton tuiRoundButton
-    tuiIconButton [appearance]="'primary'" [size]="'m'">
+<!-- <button tuiButton tuiRoundButton tuiIconButton [appearance]="'primary'" [size]="'m'">
     <span class="material-symbols-outlined fw-600 f-18 icon-fill f-white">
         person
     </span>
-</button>
+</button> -->
+
+<tui-avatar [src]="name | tuiInitials" [size]="'m'" [style.background]="name | tuiAutoColor" [tuiDropdown]="profileMenu"
+    [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="show" class="pointer"/>
 
 <ng-template #profileMenu>
     <tui-data-list [style.width.rem]="12" [size]="'m'">
         <tui-opt-group>
             <tui-opt-group>
                 <button *ngFor="let option of options" tuiOption type="button" [value]="option">
-                    <span class="f-13 fw-600 f-lh-13 f-02">{{ option.label }}</span>
+                    <span class="f-14 fw-500 f-lh-13 f-02">{{ option.label }}</span>
                 </button>
             </tui-opt-group>
         </tui-opt-group>

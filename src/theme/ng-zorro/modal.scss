@@ -9,3 +9,11 @@
 .ant-message-notice-content {
     border-radius: 12px !important;
 }
+
+tui-root{
+    border-image:none !important;
+}
+
+tui-dropdown{
+    z-index: 1 !important;
+}

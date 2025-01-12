@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperPage } from '../../../../components/common/helper.page';
-import { Order, OrderEmpty, OrdersService } from '../../../../services/orders.service';
+import {
+  Order,
+  OrderEmpty,
+  OrdersService,
+} from '../../../../services/orders.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -74,12 +78,16 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
             this.order = OrderEmpty;
             this.orderChange.emit(this.order);
             this.nzMessageService.success('Order saved successfully');
-            this.router.navigate([this.routes.OrdersBoard]);
+            this.router.navigate([this.routes.Orders]);
           } else {
             this.nzMessageService.error('Error saving order');
           }
         });
     }
+  }
+
+  onBack() {
+    this.router.navigate([this.routes.Orders]);
   }
 
   /**

@@ -1,0 +1,29 @@
+<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
+    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
+
+    <ng-container *nzModalContent>
+        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
+            <modal-title [title]="'Sort'" (onClose)="close()" />
+
+            <!-- Dry Cleaning -->
+            <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem" class="border-bottom-06">
+                Content here
+            </grid>
+
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr max-content'">
+                <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                    <span class="f-14 f-lh-16 fw-400 f-03 t-left">
+                        Will be assigned to the order the <span class="fw-500 f-primary">selected customer</span>.
+                    </span>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-right'">
+                    <button tuiButton [disabled]="canContinue === false" (click)="onSortClick()"
+                        [appearance]="'primary'" [size]="'m'">
+                        Assign Customer
+                    </button>
+                </grid>
+            </grid>
+        </grid>
+    </ng-container>
+
+</nz-modal>

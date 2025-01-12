@@ -1,7 +1,7 @@
-<tui-segmented *ngIf="isMobileOrTablet === false" [size]="'m'" [(activeItemIndex)]="indexTab"
+<tui-segmented *ngIf="isMobileOrTablet === false" [size]="'s'" [(activeItemIndex)]="indexTab"
     (activeItemIndexChange)="onChangeTab($event)" width="fit-content">
     <button *ngFor="let option of options;let i= index" type="button" minWidth="3.5rem">
-        <span class="f-15 lttr-01" [ngClass]="{'fw-600 f-primary': indexTab === i}">
+        <span class="f-14 lttr-01" [ngClass]="{'fw-600 f-primary': indexTab === i}">
             {{option.label}}
         </span>
     </button>

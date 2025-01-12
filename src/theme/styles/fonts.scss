@@ -17,9 +17,15 @@ $end: 80;
   color: var(--primary);
   text-decoration: none;
   cursor: pointer;
+
   &:hover {
     text-decoration: underline;
   }
+}
+
+.link-hover:hover {
+  color: var(--primary);
+  text-decoration: underline;
 }
 
 .f-primary-hover:hover {
@@ -42,23 +48,23 @@ $end: 80;
   color: #ffffff; // White text
 }
 
-.f-error{
+.f-error {
   color: var(--error);
 }
 
-.f-success{
+.f-success {
   color: var(--success);
 }
 
-.f-warning{
+.f-warning {
   color: var(--warning);
 }
 
-.f-warning-secondary{
+.f-warning-secondary {
   color: var(--warning-secondary);
 }
 
-.f-info{
+.f-info {
   color: var(--info);
 }
 

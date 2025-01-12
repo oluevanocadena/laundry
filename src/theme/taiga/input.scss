@@ -12,6 +12,14 @@ tui-textfield[tuiIcons]:before {
     margin-left: 2px !important;
 }
 
+tui-textfield[iconstart] input{
+    padding-top: 0.525rem !important;
+}
+
+.t-input.t-input_template {
+    padding-top: 0.525rem !important;
+}
+
 
 tui-primitive-textfield.t-textfield[data-size=m] {
     font: var(--tui-font-text-m) ! important;

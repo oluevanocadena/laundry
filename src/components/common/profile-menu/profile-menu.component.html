@@ -3,9 +3,8 @@
         person
     </span>
 </button> -->
-
-<tui-avatar [src]="name | tuiInitials" [size]="'m'" [style.background]="name | tuiAutoColor" [tuiDropdown]="profileMenu"
-    [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="show" class="pointer"/>
+<tui-avatar [src]="name | tuiInitials" [size]="'m'" [style.background]="name | tuiAutoColor"
+        [tuiDropdown]="profileMenu" [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="show" class="pointer" />
 
 <ng-template #profileMenu>
     <tui-data-list [style.width.rem]="12" [size]="'m'">

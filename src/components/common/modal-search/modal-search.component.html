@@ -2,29 +2,33 @@
     (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
 
     <ng-container *nzModalContent>
-        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
+        <grid [direction]="'row'" [gap]="[16,16]" padding="0 0.5rem">
             <modal-title [title]="'Search'" (onClose)="close()" />
 
             <!-- Dry Cleaning -->
-            <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem" class="border-bottom-06">
-                <tui-root>
-                    <form [formGroup]="formGroup" width="auto">
-                        <grid [direction]="'row'" [gap]="[16,16]">
-                            <form-input [label]="'Search'" [type]="'search'" [size]="isMobile ? 's' : 'm'"
-                                [placeholder]="'Search'" formControlName="search" />
-                            <form-input [label]="'Date Range'" [type]="'date-range'" [size]="isMobile ? 's' : 'm'"
-                                [placeholder]="'Choose date'" formControlName="date" [minDate]="null" />
-                        </grid>
-                    </form>
-                </tui-root>
-            </grid>
-
-            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr max-content'">
+            <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0.5rem 0 2rem" class="border-bottom-06">
+                <form [formGroup]="formGroup" width="auto">
+                    <grid [direction]="'row'" [gap]="[16,16]">
+                        <form-input [label]="'Key Word Search'" [type]="'search'" [size]="isMobile ? 's' : 'm'"
+                            [placeholder]="'Search'" formControlName="search" />
+                        <form-input [label]="'Date Range'" [type]="'date-range'" [size]="isMobile ? 's' : 'm'"
+                            [placeholder]="'Choose date'" formControlName="date" [minDate]="null" />
+                    </grid>
+                </form>
                 <grid [direction]="'column'" [align]="'center-left'" height="100%">
                     <span class="f-14 f-lh-16 fw-400 f-03 t-left">
-                        Click on the button to <b>apply</b> the search filters
+                        You current filter is
+                        <span class="fw-600 f-01">
+                            {{ fromNowText }}
+                        </span> and the key word
+                        <span class="fw-600 f-01">
+                            {{ search || 'empty' }}
+                        </span>
                     </span>
                 </grid>
+            </grid>
+
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
                 <grid [direction]="'column'" [align]="'center-right'">
                     <button tuiButton [disabled]="canContinue === false" (click)="onSearchClick()"
                         [appearance]="'primary'" [size]="'m'">

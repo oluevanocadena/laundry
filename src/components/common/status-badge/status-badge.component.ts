@@ -5,6 +5,10 @@ import {
   OrderPaymentStatusEnum,
   OrderStatusEnum,
 } from '../../../services/order-status.service';
+import {
+  CustomerMarketingSubscriptionEnum,
+  CustomerStatusEnum,
+} from '../../../services/customers-status.service';
 
 @Component({
   selector: 'status-badge',
@@ -94,6 +98,37 @@ export class StatusBadgeComponent implements OnInit {
             break;
         }
         break;
+      case StatusTypeBadgeEnum.Customer:
+        // CustomerStatusEnum
+        switch (this.statusId) {
+          case CustomerStatusEnum.Draft:
+            status = 'warning';
+            break;
+          case CustomerStatusEnum.Active:
+            status = 'success';
+            break;
+          case CustomerStatusEnum.Inactive:
+            status = 'error';
+            break;
+          default:
+            status = 'info';
+            break;
+        }
+        break;
+      case StatusTypeBadgeEnum.CustomerMarketing:
+        // CustomerMarketingSubscriptionEnum
+        switch (this.statusId) {
+          case CustomerMarketingSubscriptionEnum.Subscribed:
+            status = 'success';
+            break;
+          case CustomerMarketingSubscriptionEnum.Unsubscribed:
+            status = 'error';
+            break;
+          default:
+            status = 'info';
+            break;
+        }
+        break;
       default:
         status = 'default';
         break;
@@ -112,7 +147,8 @@ export type StatusTypeBadge =
   | 'orderItems'
   | 'payment'
   | 'delivery'
-  | 'customer';
+  | 'customer'
+  | 'customer-marketing';
 
 export enum StatusTypeBadgeEnum {
   Order = 'order',
@@ -120,4 +156,5 @@ export enum StatusTypeBadgeEnum {
   Payment = 'payment',
   Refund = 'refund',
   Customer = 'customer',
+  CustomerMarketing = 'customer-marketing',
 }

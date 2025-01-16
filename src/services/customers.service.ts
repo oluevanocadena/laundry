@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './common/http.service';
 import { Observable } from 'rxjs';
+import {
+  CustomerMarketingSubscriptionEnum,
+  CustomerStatusEnum,
+} from './customers-status.service';
+import { Utils } from './common/utils.service';
+import moment from 'moment';
 
 /**
  * @description
@@ -49,37 +55,59 @@ export class CustomersService {
     return this.http.put<Customer>(`customers/${id}`, customer);
   }
 
+  /**
+   * Fakes
+   */
+  createFakeCustomer(customer: Customer): Observable<Customer> {
+    return new Observable<Customer>((observer) => {
+      setTimeout(() => {
+        observer.next(customer);
+        observer.complete();
+      }, 1000);
+    });
+  }
+
   getCustomersFake(
     page: number,
     take: number,
     search?: string
   ): Observable<Customer[]> {
     return new Observable<Customer[]>((observer) => {
-      let filtered = customersFake.filter((customer) =>
-        search && search.trim() !== ''
-          ? customer.name?.includes(search) ||
-            customer.email?.includes(search) ||
-            customer.phone?.includes(search) ||
-            customer.fullAddress?.includes(search) ||
-            customer.id?.toString().includes(search)
-          : true
-      );
-      filtered = filtered.slice((page - 1) * take, (page - 1) * take + take);
-      observer.next(filtered);
-      observer.complete();
+      setTimeout(() => {
+        let filtered = customersFake.filter((customer) =>
+          search && search.trim() !== ''
+            ? customer.name?.includes(search) ||
+              customer.email?.includes(search) ||
+              customer.phone?.includes(search) ||
+              customer.fullAddress?.includes(search) ||
+              customer.id?.toString().includes(search)
+            : true
+        );
+        filtered = filtered.slice((page - 1) * take, (page - 1) * take + take);
+        observer.next(filtered);
+        observer.complete();
+      }, 1000);
     });
   }
 }
 
 export interface Customer {
-  id: number;
+  id: string;
+  number: string;
   name: string;
+  createdAt: string;
   email: string;
   phone: string;
   fullAddress: string;
   totalOrders: number;
+  spentAmount?: number;
   latitude?: number;
   longitude?: number;
+  statusMarketingId: CustomerMarketingSubscriptionEnum;
+  statusMarketing: string;
+  statusId: CustomerStatusEnum;
+  status: string;
+  notes?: string;
   address: Address;
 }
 
@@ -97,7 +125,8 @@ export interface Address {
 
 const customersFake: Customer[] = [
   {
-    id: 1,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     name: 'Jane Doe',
     email: 'asd@gmail.com',
     phone: '1234567890',
@@ -113,9 +142,15 @@ const customersFake: Customer[] = [
     fullAddress:
       'Ceylan 541, Col. Industrial Vallejo, Azcapotzalco, 02300 Ciudad de México, CDMX',
     totalOrders: 0,
+    createdAt: '2021-01-01',
+    statusMarketingId: CustomerMarketingSubscriptionEnum.Subscribed,
+    statusMarketing: 'Subscribed',
+    statusId: CustomerStatusEnum.Active,
+    status: 'Active',
   },
   {
-    id: 2,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     name: 'John Doe',
     email: 'asd@gmail.com',
     phone: '1234567890',
@@ -130,9 +165,15 @@ const customersFake: Customer[] = [
     },
     fullAddress: '123 Main St, Springfield, IL 62701',
     totalOrders: 0,
+    createdAt: '2021-01-01',
+    statusMarketingId: CustomerMarketingSubscriptionEnum.Subscribed,
+    statusMarketing: 'Subscribed',
+    statusId: CustomerStatusEnum.Active,
+    status: 'Active',
   },
   {
-    id: 3,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     name: 'Oscar Luevano',
     email: 'asd@gmail.com',
     phone: '1234567890',
@@ -147,9 +188,15 @@ const customersFake: Customer[] = [
     },
     fullAddress: '123 Main St, Springfield, IL 62701',
     totalOrders: 0,
+    createdAt: '2021-01-01',
+    statusMarketingId: CustomerMarketingSubscriptionEnum.Subscribed,
+    statusMarketing: 'Subscribed',
+    statusId: CustomerStatusEnum.Active,
+    status: 'Active',
   },
   {
-    id: 4,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     name: 'Miguel Luevano',
     email: 'asd@gmail.com',
     phone: '1234567890',
@@ -164,9 +211,15 @@ const customersFake: Customer[] = [
     },
     fullAddress: '123 Main St, Springfield, IL 62701',
     totalOrders: 0,
+    createdAt: '2021-01-01',
+    statusMarketingId: CustomerMarketingSubscriptionEnum.Subscribed,
+    statusMarketing: 'Subscribed',
+    statusId: CustomerStatusEnum.Active,
+    status: 'Active',
   },
   {
-    id: 5,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     name: 'Lety Callejas',
     email: 'asd@gmail.com',
     phone: '1234567890',
@@ -181,5 +234,34 @@ const customersFake: Customer[] = [
     },
     fullAddress: '123 Main St, Springfield, IL 62701',
     totalOrders: 0,
+    createdAt: '2021-01-01',
+    statusMarketingId: CustomerMarketingSubscriptionEnum.Subscribed,
+    statusMarketing: 'Subscribed',
+    statusId: CustomerStatusEnum.Inactive,
+    status: 'Inactive',
   },
 ];
+
+export const CustomerEmpty: Customer = {
+  id: Utils.Text.newGuid(),
+  number: Utils.Text.generateRandomHashtagNumber(),
+  name: '',
+  email: '',
+  phone: '',
+  address: {
+    id: 0,
+    street: '',
+    externalNumber: '',
+    suburb: '',
+    city: '',
+    state: '',
+    zip: '',
+  },
+  fullAddress: '',
+  totalOrders: 0,
+  createdAt: moment().format('YYYY-MM-DD'),
+  statusMarketingId: CustomerMarketingSubscriptionEnum.Subscribed,
+  statusMarketing: 'Subscribed',
+  statusId: CustomerStatusEnum.Draft,
+  status: 'Draft',
+};

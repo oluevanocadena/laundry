@@ -29,12 +29,6 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
   //Index
   indexTab: number = 0;
 
-  // Outputs
-  @Output() onTabChange: EventEmitter<number> = new EventEmitter<number>();
-
-
-  //Arrays
-
   //Arrays
   options: TableOptionsItem[] = [
     { label: 'Edit', icon: 'pencil', id: 1 },

@@ -3,6 +3,22 @@ import { HelperPage } from '../../components/common/helper.page';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
 import moment from 'moment';
+import {
+  TableOptionItemSelectEvent,
+  TableOptionsItem,
+} from '../../components/common/table-options/table-options.component';
+import { SearchModalEvent } from '../../components/common/modal-search/modal-search.component';
+import {
+  TableSegmentsItem,
+  TableSegmentsItemEvent,
+} from '../../components/common/table-segments/table-segments.component';
+import {
+  Customer,
+  CustomersService,
+} from '../../services/customers.service';
+import { OrderStatusEnum } from '../../services/order-status.service';
+import { finalize } from 'rxjs';
+import { CustomerStatusEnum } from '../../services/customers-status.service';
 
 @Component({
   selector: 'app-customers-page',
@@ -12,10 +28,19 @@ import moment from 'moment';
 })
 export class CustomersPageComponent extends HelperPage implements OnInit {
   //Flag Management
-  protected showFilterOptions: boolean = false;
+  showSort: boolean = false;
+  showSearch: boolean = false;
+  loading: boolean = false;
 
   //Index
   indexTab: number = 0;
+
+  //Arrays
+  options: TableOptionsItem[] = [
+    { label: 'Edit', icon: 'pencil', id: 1 },
+    { label: 'View', icon: 'arrow-up-right', id: 2 },
+    { label: 'Inactive', icon: 'ban', id: 3 },
+  ];
 
   // Outputs
   @Output() onTabChange: EventEmitter<number> = new EventEmitter<number>();
@@ -29,23 +54,63 @@ export class CustomersPageComponent extends HelperPage implements OnInit {
   });
 
   //Arrays
-  orderTypes = ['All', 'Unprocessed', 'UnPaid', 'Completed', 'Cancelled'];
+  optionsSegments: TableSegmentsItem[] = [
+    { id: 0, label: 'All' },
+    { id: CustomerStatusEnum.Active, label: 'Active' },
+    { id: CustomerStatusEnum.Inactive, label: 'Inactive' },
+  ];
+  customers: Customer[] = [];
 
-  constructor() {
+  constructor(public customersService: CustomersService) {
     super();
+  }
+
+  /**
+   * APi Calls
+   */
+  load() {
+    this.loading = true;
+    this.customersService
+      .getCustomersFake(1, 10, '')
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe((res) => {
+        this.customers = res;
+      });
   }
 
   /**
    * UI Events
    */
-
-  onChangeTab(index: number) {
-    this.onTabChange.emit(index);
+  openSearchModal() {
+    this.showSearch = true;
   }
 
-  onSelectFilter(option: string) {
-    this.formGroup.get('orderType')?.setValue(option);
-    this.showFilterOptions = false;
+  openSortModal() {
+    this.showSort = true;
+  }
+
+  onSearch(value: SearchModalEvent) {
+    console.log('value', value);
+  }
+
+  onSort(value: string) {
+    console.log('value', value);
+  }
+
+  onSegmentChange(event: TableSegmentsItemEvent) {
+    console.log('event', event);
+  }
+
+  onSelectOption(event: TableOptionItemSelectEvent) {
+    console.log('event', event);
+  }
+
+  export() {
+    console.log('Export');
   }
 
   /**
@@ -59,5 +124,15 @@ export class CustomersPageComponent extends HelperPage implements OnInit {
    * Lifecycle
    */
 
-  ngOnInit() {}
+  /**
+   * Getters
+   */
+
+  /**
+   * Lifecycle
+   */
+
+  ngOnInit() {
+    this.load();
+  }
 }

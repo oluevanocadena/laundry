@@ -15,6 +15,7 @@ export class ButtonResponsiveComponent extends HelperPage implements OnInit {
   @Input() size: "m" | "l" | "xl" | "s" | "xs" = "m";
   @Input() label: string = '';
   @Input() appearance: TuiAppearanceOptions['appearance'] = 'outline';
+  @Input() link: string = '';
 
   constructor() {
     super();

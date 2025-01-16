@@ -1,0 +1,13 @@
+<grid [gap]="isMobile ? [8,8] :[24,24]" [direction]="'column'" [template]="'max-content 1fr max-content'" height="100%"
+    width="100%" [padding]="isMobile? '0.5rem 0.75rem': '0.5rem 1.5rem'">
+    <logo />
+    <grid [direction]="'column'" [template]="'1fr'" height="100%">
+        <grid [direction]="'column'" [align]="'center-center'" height="100%">
+            <span class="fw-600 f-01" [ngClass]="{'f-20 f-lh-20': isMobileOrTablet, 'f-24 f-lh-24': !isMobileOrTablet}">
+                {{ title }}
+            </span>
+        </grid>
+    </grid>
+
+    <top-bar-buttons [loading]="loading" />
+</grid>

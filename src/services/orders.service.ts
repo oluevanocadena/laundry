@@ -10,6 +10,7 @@ import {
 } from './order-status.service';
 import { Observable } from 'rxjs';
 import { SettingsService } from './settings.services';
+import { CustomerStatusEnum } from './customers-status.service';
 
 /**
  * @description
@@ -136,7 +137,7 @@ export interface Order {
   statusPaymentId: number;
   customerId: number;
   deliveryId?: number;
-  orderDate: string;
+  createdAt: string;
   discountType?: DiscountTypes;
   discountAmount?: number;
   discount: number;
@@ -219,10 +220,10 @@ const ordersFake: Order[] = [
     payment: {
       id: Utils.Text.newGuid(),
       method: 'cash',
-      date: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
       transactionNumber: '',
     },
-    orderDate: '2025-01-05',
+    createdAt: moment().format('DD/MM/YYYY'),
     taxes: 10,
     discount: 0,
     subtotal: 100,
@@ -231,7 +232,7 @@ const ordersFake: Order[] = [
     totalQuantity: 1,
     orderItems: [
       {
-        id: 1,
+        id: 0,
         name: '8kg',
         status: 'Not Proccesed',
         statusId: OrderItemsStatusEnum.NotProccesed,
@@ -249,8 +250,8 @@ const ordersFake: Order[] = [
     delivery: {
       fee: 10,
       distanceKm: 5,
-      date: '2025-01-05',
-      estimatedDate: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
+      estimatedDate: moment().format('DD/MM/YYYY'),
       address: {
         id: 1,
         distanceKm: 5,
@@ -264,11 +265,17 @@ const ordersFake: Order[] = [
       },
     },
     customer: {
-      id: 1,
+      id: Utils.Text.newGuid(),
+      number: Utils.Text.generateRandomHashtagNumber(),
       name: 'John Doe',
       email: 'asd@asd.com',
       phone: '1234567890',
       totalOrders: 1,
+      createdAt: '2021-01-01',
+      statusMarketingId: 1,
+      statusMarketing: 'Subscribed',
+      statusId: CustomerStatusEnum.Active,
+      status: 'Active',
       fullAddress: '123 Main St, Springfield, IL, 62701',
       address: {
         id: 1,
@@ -296,10 +303,10 @@ const ordersFake: Order[] = [
     payment: {
       id: Utils.Text.newGuid(),
       method: 'cash',
-      date: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
       transactionNumber: '',
     },
-    orderDate: '2025-01-05',
+    createdAt: moment().format('DD/MM/YYYY'),
     taxes: 10,
     discount: 0,
     subtotal: 100,
@@ -326,8 +333,8 @@ const ordersFake: Order[] = [
     delivery: {
       fee: 10,
       distanceKm: 5,
-      date: '2025-01-05',
-      estimatedDate: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
+      estimatedDate: moment().format('DD/MM/YYYY'),
       address: {
         id: 2,
         distanceKm: 5,
@@ -341,12 +348,18 @@ const ordersFake: Order[] = [
       },
     },
     customer: {
-      id: 1,
+      id: Utils.Text.newGuid(),
+      number: Utils.Text.generateRandomHashtagNumber(),
       name: 'Miguel Luevano',
       email: 'asd@asd.com',
       phone: '1234567890',
       totalOrders: 1,
       fullAddress: '123 Main St, Springfield, IL, 62701',
+      createdAt: '2021-01-01',
+      statusMarketingId: 1,
+      statusMarketing: 'Subscribed',
+      statusId: CustomerStatusEnum.Active,
+      status: 'Active',
       address: {
         id: 1,
         distanceKm: 5,
@@ -373,10 +386,10 @@ const ordersFake: Order[] = [
     payment: {
       id: Utils.Text.newGuid(),
       method: 'cash',
-      date: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
       transactionNumber: '',
     },
-    orderDate: '2025-01-05',
+    createdAt: moment().format('DD/MM/YYYY'),
     taxes: 10,
     discount: 0,
     subtotal: 100,
@@ -403,8 +416,8 @@ const ordersFake: Order[] = [
     delivery: {
       fee: 10,
       distanceKm: 5,
-      date: '2025-01-05',
-      estimatedDate: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
+      estimatedDate: moment().format('DD/MM/YYYY'),
       address: {
         id: 3,
         distanceKm: 5,
@@ -418,11 +431,17 @@ const ordersFake: Order[] = [
       },
     },
     customer: {
-      id: 1,
+      id: Utils.Text.newGuid(),
+      number: Utils.Text.generateRandomHashtagNumber(),
       name: 'Oscar Luevano',
       email: 'asd@asd.com',
       phone: '1234567890',
       totalOrders: 1,
+      createdAt: moment().format('DD/MM/YYYY'),
+      statusMarketingId: 1,
+      statusMarketing: 'Subscribed',
+      statusId: CustomerStatusEnum.Active,
+      status: 'Active',
       fullAddress: '123 Main St, Springfield, IL, 62701',
       address: {
         id: 1,
@@ -450,10 +469,10 @@ const ordersFake: Order[] = [
     payment: {
       id: Utils.Text.newGuid(),
       method: 'cash',
-      date: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
       transactionNumber: '',
     },
-    orderDate: '2025-01-05',
+    createdAt: moment().format('DD/MM/YYYY'),
     taxes: 10,
     discount: 0,
     subtotal: 100,
@@ -480,8 +499,8 @@ const ordersFake: Order[] = [
     delivery: {
       fee: 10,
       distanceKm: 5,
-      date: '2025-01-05',
-      estimatedDate: '2025-01-05',
+      date: moment().format('DD/MM/YYYY'),
+      estimatedDate: moment().format('DD/MM/YYYY'),
       address: {
         id: 3,
         distanceKm: 5,
@@ -495,12 +514,18 @@ const ordersFake: Order[] = [
       },
     },
     customer: {
-      id: 1,
+      id: Utils.Text.newGuid(),
+      number: Utils.Text.generateRandomHashtagNumber(),
       name: 'Oscar Luevano',
       email: 'asd@asd.com',
       phone: '1234567890',
       totalOrders: 1,
       fullAddress: '123 Main St, Springfield, IL, 62701',
+      createdAt: '2021-01-01',
+      statusMarketingId: 1,
+      statusMarketing: 'Subscribed',
+      statusId: CustomerStatusEnum.Active,
+      status: 'Active',
       address: {
         id: 1,
         distanceKm: 5,
@@ -539,7 +564,7 @@ export const OrderEmpty: Order = {
   totalItems: 0,
   totalQuantity: 0,
   customerId: 0,
-  orderDate: moment().format('DD/MM/YYYY'),
+  createdAt: moment().format('DD/MM/YYYY'),
   delivery: {
     address: {
       id: 0,
@@ -558,12 +583,18 @@ export const OrderEmpty: Order = {
     distanceKm: 0,
   },
   customer: {
-    id: 0,
+    id: Utils.Text.newGuid(),
+    number: Utils.Text.generateRandomHashtagNumber(),
     name: '',
     email: '',
     phone: '',
     totalOrders: 0,
     fullAddress: '',
+    createdAt: moment().format('DD/MM/YYYY'),
+    statusMarketingId: 1,
+    statusMarketing: 'Subscribed',
+    statusId: CustomerStatusEnum.Active,
+    status: 'Active',
     address: {
       id: 0,
       distanceKm: 0,

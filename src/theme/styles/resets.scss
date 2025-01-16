@@ -95,6 +95,13 @@ span:not(.material-symbols-outlined):not(.material-symbols-filled):not(.icon) {
     width: 8px;
 }
 
+@media (max-width: 768px) {
+    *::-webkit-scrollbar {
+        height: 4px;
+        width: 4px;
+    }
+}
+
 *::-webkit-scrollbar-track {
     border-radius: 6px;
     background-color: #DFE9EB;

@@ -1,0 +1,31 @@
+<tui-accordion-item class="container" [open]="true">
+    <grid [gap]="[8,16]" [direction]="isMobile ? 'row': 'column'" [align]="'center-left'">
+        <span class="f-16 fw-600 f-02 f-lh-14">Address</span>
+    </grid>
+
+    <ng-template tuiAccordionItemContent>
+        <form [formGroup]="formGroup">
+            <grid [direction]="'row'" [gap]="[16,16]">
+                <form-input [label]="'Street'" [type]="'text'" [placeholder]="'Street'" [formControlName]="'street'" />
+                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <form-input [label]="'External Number'" [type]="'text'" [placeholder]="'External Number'"
+                        [formControlName]="'externalNumber'" />
+                    <form-input [label]="'Internal Number'" [type]="'text'" [placeholder]="'Internal Number'"
+                        [formControlName]="'internalNumber'" />
+                </grid>
+                <form-input [label]="'Municipality'" [type]="'text'" [placeholder]="'Municipality'"
+                    [formControlName]="'municipality'" />
+                <form-input [label]="'State'" [type]="'text'" [placeholder]="'State'" [formControlName]="'state'" />
+                <form-input [label]="'Country'" [type]="'text'" [placeholder]="'Country'"
+                    [formControlName]="'country'" />
+
+                <grid>
+                    <span class="f-14  f-lh-16 f-03">
+                        You should ask for the customer's email and phone number to keep them informed about their
+                        order.
+                    </span>
+                </grid>
+            </grid>
+        </form>
+    </ng-template>
+</tui-accordion-item>

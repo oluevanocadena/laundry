@@ -5,62 +5,116 @@
         <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'">
             <grid [direction]="'column'" [template]="'1fr max-content'">
                 <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'" height="100%">
-                    <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                        <span class="fw-600 f-01"
-                            [ngClass]="{'f-24 f-lh-20': isMobileOrTablet, 'f-26 f-lh-24': !isMobileOrTablet}">
-                            Customers
-                        </span>
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-left'" height="100%">
+                        <tui-icon icon="@tui.users" class="f-24 f-01" />
+                        <grid [gap]="[0,0]" [direction]="'column'" [template]="'1fr'">
+                            <span class="fw-600 f-01" padding="0.25rem 0 0 0"
+                                [ngClass]="{'f-24 f-lh-20': isMobileOrTablet, 'f-26 f-lh-20': !isMobileOrTablet}">
+                                Customers
+                            </span>
+                            <span class="f-14 f-lh-16 f-03">
+                                As a store owner, you can view and manage all your customers here.
+                            </span>
+                        </grid>
                     </grid>
                 </grid>
-                <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button [routerLink]="routes.OrderDraft" tuiButton [appearance]="'primary'" [size]="'m'">
-                        Create Order
-                    </button>
+                <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-right'" height="100%">
+                    <button-responsive [label]="'Export'" [icon]="'download'" [loading]="loading" [disabled]="loading"
+                        [appearance]="'secondary'" (onClick)="export()" />
+                    <button-responsive [link]="routes.CustomerDraft" [label]="'Create Customer'" [icon]="'plus'"
+                        [loading]="loading" [disabled]="loading" [appearance]="'primary'" />
                 </grid>
             </grid>
             <grid [gap]="[16,24]" [direction]="'column'" [template]="'max-content 1fr'" height="100%" width="100%">
-                <tui-segmented *ngIf="isMobile === false" [size]="'m'" [(activeItemIndex)]="indexTab"
-                    (activeItemIndexChange)="onChangeTab($event)" width="fit-content">
-                    <button *ngFor="let orderType of orderTypes;let i= index" type="button" minWidth="3.5rem">
-                        <span class="f-14 lttr-01" [ngClass]="{'fw-600 f-primary': indexTab === i}">
-                            {{orderType}}
-                        </span>
+                <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                    <table-segments [options]="optionsSegments" [loading]="loading"
+                        (onTabChange)="onSegmentChange($event)" />
+                </grid>
+                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                    <button (click)="openSearchModal()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'m'">
+                        <tui-icon icon="@tui.calendar-search" class="f-17 fw-600 f-04" />
                     </button>
-                </tui-segmented>
+                    <!-- <button (click)="openSortModal()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'m'">
+                        <tui-icon icon="@tui.arrow-down-up" class="f-17 fw-600 f-04" />
+                    </button> -->
 
-                <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                    <form [formGroup]="formGroup" width="150px">
-                        <form-input [label]="undefined" [type]="'date'" [size]="isMobile ? 's' : 'm'"
-                            [placeholder]="'Choose date'" formControlName="date" [minDate]="null" />
-                    </form>
                 </grid>
-                <grid *ngIf="isMobile === true" [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button tuiButton appearance="secondary" tuiChevron type="button" [size]="'m'"
-                        [tuiDropdown]="contentCustomerTypes" [tuiDropdownMaxHeight]="500"
-                        [(tuiDropdownOpen)]="showFilterOptions">
-                        <span class="f-15 fw-600 f-lh-18 t-left">
-                            {{orderType}}
-                        </span>
-                    </button>
-                </grid>
+
+            </grid>
+
+            <grid [direction]="'column'" [template]="'1fr'" width="100%" class="scroll-h">
+                <table tuiTable [size]="'s'" [minWidth]="isLargeDesktop ? '100%' : '980px'">
+                    <thead>
+                        <tr>
+                            <th tuiTh width="100px">Date</th>
+                            <th tuiTh>Name</th>
+                            <th tuiTh>Email</th>
+                            <th tuiTh width="120px">Marketing</th>
+                            <th tuiTh>Amount Spent</th>
+                            <th tuiTh>Orders</th>
+                            <th tuiTh width="80px">Status</th>
+                            <th tuiTh>
+                                <p class="f-14 f-lh-14 f-02 t-center" width="100%">
+                                    Actions
+                                </p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody tuiTbody>
+                        <tr *ngIf="loading">
+                            <td tuiTd colspan="9">
+                                <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                        <tui-loader [size]="'m'" />
+                                        Loading...
+                                    </grid>
+                                </grid>
+                            </td>
+                        </tr>
+                        <tr *ngIf="loading === false && customers.length === 0">
+                            <td tuiTd colspan="9">
+                                <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
+                                        <tui-icon icon="@tui.inbox" class="f-24 f-03" />
+                                        <span class="fw-400 f-03">No items found</span>
+                                    </grid>
+                                </grid>
+                            </td>
+                        </tr>
+                        <ng-container *ngIf="loading === false">
+                            <tr *ngFor="let item of customers; let i = index">
+                                <td tuiTd>{{item.createdAt | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
+                                <td tuiTd>{{item.name}}</td>
+                                <td tuiTd>{{item.email}}</td>
+                                <td tuiTd>
+                                    <status-badge [label]="item?.statusMarketing" [statusId]="item?.statusMarketingId"
+                                        [type]="'customer-marketing'" [size]="'m'" />
+                                </td>
+                                <td tuiTd>{{item.spentAmount || 0 | numeralFormat: '$0,0.00'}}</td>
+                                <td tuiTd>
+                                    {{item.totalOrders}}
+                                    {{item.totalOrders > 1 ? 'orders' : 'order'}}
+                                </td>
+                                <td tuiTd>
+                                    <grid [direction]="'column'" [align]="'center-center'" width="100%">
+                                        <status-badge [label]="item?.status" [statusId]="item?.statusId"
+                                            [type]="'customer'" [size]="'m'" />
+                                    </grid>
+                                </td>
+                                <td tuiTd>
+                                    <table-options [item]="item" [options]="options"
+                                        (onSelect)="onSelectOption($event)" />
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+
             </grid>
         </grid>
 
     </grid>
 </grid>
 
-<ng-template #contentCustomerTypes>
-    <tui-data-list [style.width.rem]="12" [size]="'m'">
-        <tui-opt-group>
-            <tui-opt-group label="Order Types">
-                <button *ngFor="let option of orderTypes" (click)="onSelectFilter(option)" tuiOption type="button"
-                    [value]="option">
-                    <span class="f-15  f-lh-13"
-                        [ngClass]="{'fw-600 f-primary': orderType ===option, 'fw-500 f-02': orderType !== option}">
-                        {{ option }}
-                    </span>
-                </button>
-            </tui-opt-group>
-        </tui-opt-group>
-    </tui-data-list>
-</ng-template>
+<modal-search #search [(show)]="showSearch" (onSearch)="onSearch($event)" />
+<modal-sort [(show)]="showSort" (onSort)="onSort($event)" />

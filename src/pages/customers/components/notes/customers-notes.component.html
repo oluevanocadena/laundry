@@ -1,0 +1,19 @@
+<tui-accordion-item class="container" [open]="true">
+    <span class="f-16 fw-600 f-02 f-lh-14">Notes</span>
+    <ng-template tuiAccordionItemContent>
+        <grid *ngIf="edition === false" [direction]="'row'" [gap]="[8,16]">
+            <span class="f-14 fw-400 f-02 f-lh-16">
+                This is the notes section. You can add a note to the customer's profile.
+            </span>
+        </grid>
+        <grid *ngIf="edition === true" [direction]="'row'" [gap]="[8,16]">
+            <span class="f-14 fw-400 f-04 f-lh-16">
+                Type your notes here
+            </span>
+            <form [formGroup]="formGroup">
+                <form-input [label]="''" [type]="'textarea'" [placeholder]="'Type notes'" formControlName="notes"
+                    (ngModelChange)="onInputNotes()" />
+            </form>
+        </grid>
+    </ng-template>
+</tui-accordion-item>

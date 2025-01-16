@@ -70,7 +70,7 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
   get hadCustomer(): boolean {
     return this.order &&
       this.order?.customer !== null &&
-      this.order.customer.id > 0
+      this.order.customer.id?.trim() !== ''
       ? true
       : false;
   }

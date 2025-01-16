@@ -8,25 +8,28 @@
                     </button>
                     <span class="fw-600 f-01"
                         [ngClass]="{'f-20 f-lh-20': isMobileOrTablet, 'f-24 f-lh-24': !isMobileOrTablet}">
-                        Order:
-                        <label [ngClass]="{'skeleton': busy}">{{order?.number ?? '' }}</label>
+                        Customer:
+                        <label [ngClass]="{'skeleton': busy}">
+                            {{customer?.number ?? '' }}
+                        </label>
                     </span>
                 </grid>
                 <span class="f-14 fw-400 f-02 f-lh-14">
-                    {{order?.createdAt || '' | dateFormat: 'MMMM DD, yyyy [at] hh:mm A'}}
+                    {{customer?.createdAt || '' | dateFormat: 'MMMM DD, yyyy [at] hh:mm A'}}
                 </span>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
                 <tui-loader *ngIf="loading" />
-                <status-badge [label]="order?.status" [statusId]="order?.statusId" [type]="'order'" />
+                <status-badge *ngIf="!loading" [label]="customer?.status" [statusId]="customer?.statusId"
+                    [type]="'customer'" />
             </grid>
         </grid>
 
     </grid>
 
     <grid *ngIf="edition === false" [direction]="'column'" [align]="'center-right'">
-        <button-responsive [label]="'Save Order'" [icon]="'check'" [loading]="busy" [disabled]="canSave === false"
-            (click)="saveOrder()" [appearance]="'primary'" [size]="'m'" />
+        <button-responsive [label]="'Save Customer'" [icon]="'check'" [loading]="busy" [disabled]="canSave === false"
+            (click)="saveCustomer()" [appearance]="'primary'" [size]="'m'" />
     </grid>
 
     <grid *ngIf="edition === true" [direction]="'column'" [align]="'center-right'">

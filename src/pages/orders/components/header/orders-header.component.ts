@@ -105,7 +105,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
       this.order !== null &&
       this.orderHadOrderItems &&
       this.order?.customer !== null &&
-      this.order?.customer.id > 0
+      this.order?.customer.id?.trim() !== ''
     );
   }
 

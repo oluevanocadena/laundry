@@ -1,7 +1,8 @@
-<grid [gap]="isMobileOrTablet ? [8,8] :[24,24]" [direction]="'column'"
-    [template]="!isMobileOrTablet ? '1fr ':'1fr max-content'" height="100%" width="100%">
-    <grid *ngIf="isMobileOrTablet" [direction]="'column'" [align]="'center-left'" height="100%">
+<grid [gap]="isMobileOrTablet ? [8,8] :[24,24]" [direction]="'column'" padding="0.5rem 1rem"
+    [template]="'max-content 1fr'" height="100%" width="100%" class="bg-01 brdr-bottom">
+    <grid [gap]="[0,16]" [direction]="'column'" [align]="'center-left'" height="100%">
         <logo />
+        <top-bar-organization />
     </grid>
     <grid [direction]="'column'" [align]="'center-right'" height="100%">
         <top-bar-buttons />

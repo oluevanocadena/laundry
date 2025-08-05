@@ -1,19 +1,17 @@
-<!-- <button tuiButton tuiRoundButton tuiIconButton [appearance]="'primary'" [size]="'m'">
-    <span class="material-symbols-outlined fw-600 f-18 icon-fill f-white">
-        person
-    </span>
-</button> -->
-<tui-avatar [src]="name | tuiInitials" [size]="'m'" [style.background]="name | tuiAutoColor"
-        [tuiDropdown]="profileMenu" [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="show" class="pointer" />
+<nz-avatar nzText="U" nzGap="8" style="color:#deddff; background-color:#6763f5;" class="pointer" nz-dropdown
+    nzTrigger="click" [nzDropdownMenu]="menu" />
 
-<ng-template #profileMenu>
-    <tui-data-list [style.width.rem]="12" [size]="'m'">
-        <tui-opt-group>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <grid class="bg-01 brdr brdr-radius-8">
+        <tui-data-list [style.width.rem]="12" [size]="'s'">
             <tui-opt-group>
-                <button *ngFor="let option of options" tuiOption type="button" [value]="option">
-                    <span class="f-14 fw-500 f-lh-13 f-02">{{ option.label }}</span>
-                </button>
+                <tui-opt-group>
+                    <button *ngFor="let option of options" tuiOption type="button" [value]="option">
+                        <span class="f-14 fw-500 f-lh-13 f-02">{{ option.label }}</span>
+                    </button>
+                </tui-opt-group>
             </tui-opt-group>
-        </tui-opt-group>
-    </tui-data-list>
-</ng-template>
+        </tui-data-list>
+    </grid>
+
+</nz-dropdown-menu>

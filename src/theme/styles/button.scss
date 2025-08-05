@@ -1,0 +1,104 @@
+button {
+    cursor: pointer;
+    border-radius: .375rem;
+    font-weight: 500;
+    font-size: 14px;
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+
+    &[small] {
+        padding: 0.365rem 0.75rem 0.125rem !important;
+        font-size: 13px;
+    }
+
+    &[icon] {
+        border-radius: 8px;
+        padding: 0.3rem 0.5rem 0.2rem !important;
+    }
+
+    &[flex] {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        tui-icon {
+            top: -2px !important;
+        }
+    }
+
+    &[flat] {
+        background-color: transparent;
+        border: 1px solid transparent;
+        color: var(--text-01);
+
+        &:hover {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-01);
+        }
+
+    }
+
+    &[outline] {
+        background-color: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-01);
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        padding: 0.55rem 0.75rem 0.45rem;
+
+
+        &:hover,
+        &:active {
+            background-color: var(--background-04);
+            border-color: var(--text-06);
+        }
+    }
+
+
+    &[primary] {
+        background-color: var(--primary-hsl);
+        border: 1px solid var(--primary);
+        color: var(--text-01);
+
+        &:hover {
+            background-color: var(--primary-hsl-hover);
+        }
+
+        &:active {
+            background-color: var(--primary-hsl-pressed);
+        }
+    }
+
+    &[prefix] {
+        border-radius: 8px 0 0 8px;
+        border-right: none;
+
+        &[small] {
+            border-radius: 12px 0 0 12px;
+        }
+    }
+
+    &[suffix] {
+        border-radius: 0 8px 8px 0;
+        border-left: none;
+
+        &[small] {
+            border-radius: 0 12px 12px 0;
+        }
+    }
+
+    &[middle] {
+        border-radius: 0 !important;
+    }
+
+
+    &[rounded] {
+        border-radius: 16px;
+    }
+}

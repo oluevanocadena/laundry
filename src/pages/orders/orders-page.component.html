@@ -1,124 +1,128 @@
-<grid [direction]="'column'" [template]="isMobileOrTablet ? '1fr':'max-content 1fr'">
-    <side-menu *ngIf="isMobileOrTablet === false" />
-    <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'" padding="1rem 1.5rem" width="100%">
+<grid [direction]="'column'" [template]="'1fr'" class="bg-01">
+    <grid [gap]="[0,24]" width="100%">
         <top-bar width="100%" />
-        <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'">
-            <grid [direction]="'column'" [template]="'1fr max-content'">
-                <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'" height="100%">
-                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-left'" height="100%">
-                        <tui-icon icon="@tui.shopping-bag" class="f-24 f-01" />
-                        <grid [gap]="[0,0]" [direction]="'column'" [template]="'1fr'">
-                            <span class="fw-600 f-01" padding="0.25rem 0 0 0"
-                                [ngClass]="{'f-24 f-lh-20': isMobileOrTablet, 'f-26 f-lh-20': !isMobileOrTablet}">
-                                Orders:
-                                <span class="fw-400 f-01 pointer link-hover">
-                                    All Locations
+        <grid [direction]="'column'" [template]="'max-content 1fr'">
+            <side-menu *ngIf="isMobileOrTablet === false" />
+            <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'" padding="1rem 1.5rem">
+                <grid [direction]="'column'" [template]="'1fr max-content'">
+                    <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'" height="100%">
+                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-left'" height="100%">
+                            <tui-icon icon="@tui.shopping-bag" class="f-24 f-01" />
+                            <grid [gap]="[0,0]" [direction]="'column'" [template]="'1fr'">
+                                <span class="fw-600 f-01" padding="0.25rem 0 0 0"
+                                    [ngClass]="{'f-24 f-lh-20': isMobileOrTablet, 'f-26 f-lh-20': !isMobileOrTablet}">
+                                    Orders:
+                                    <span class="fw-400 f-01 pointer link-hover">
+                                        All Locations
+                                    </span>
                                 </span>
-                            </span>
-                            <span class="f-14 f-lh-8 f-03">
-                                {{ search.fromNowText }}
-                            </span>
+                                <span class="f-14 f-lh-8 f-03">
+                                    {{ search.fromNowText }}
+                                </span>
+                            </grid>
                         </grid>
                     </grid>
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-right'" height="100%">
+                        <button-responsive [label]="'Export'" [icon]="'download'" [loading]="loading"
+                            [disabled]="loading" [appearance]="'secondary'" (onClick)="export()" />
+                        <button-responsive [routerLink]="routes.OrderDraft" [label]="'Create Order'" [icon]="'plus'"
+                            [loading]="loading" [disabled]="loading" [appearance]="'primary'" />
+                    </grid>
                 </grid>
-                <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-right'" height="100%">
-                    <button-responsive [label]="'Export'" [icon]="'download'" [loading]="loading" [disabled]="loading"
-                        [appearance]="'secondary'" (onClick)="export()" />
-                    <button-responsive [routerLink]="routes.OrderDraft" [label]="'Create Order'" [icon]="'plus'"
-                        [loading]="loading" [disabled]="loading" [appearance]="'primary'" />
-                </grid>
-            </grid>
-            <grid [gap]="[16,24]" [direction]="'column'" [template]="'max-content 1fr'" height="100%" width="100%">
-                <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                    <table-segments [options]="optionsSegments" [loading]="loading"
-                        (onTabChange)="onSegmentChange($event)" />
-                </grid>
-                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button (click)="openSearchModal()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'m'">
-                        <tui-icon icon="@tui.calendar-search" class="f-17 fw-600 f-04" />
-                    </button>
-                    <!-- <button (click)="openSortModal()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'m'">
-                        <tui-icon icon="@tui.arrow-down-up" class="f-17 fw-600 f-04" />
-                    </button> -->
+                <grid [gap]="[16,24]" [direction]="'column'" [template]="'max-content 1fr'" height="100%" width="100%">
+                    <grid [direction]="'column'" [align]="'center-left'" height="100%">
+                        <table-segments [options]="optionsSegments" [loading]="loading"
+                            (onTabChange)="onSegmentChange($event)" />
+                    </grid>
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                        <button (click)="openSearchModal()" tuiButton tuiIconButton [appearance]="'outline'"
+                            [size]="'m'">
+                            <tui-icon icon="@tui.calendar-search" class="f-17 fw-600 f-04" />
+                        </button>
+                        <!-- <button (click)="openSortModal()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'m'">
+                            <tui-icon icon="@tui.arrow-down-up" class="f-17 fw-600 f-04" />
+                        </button> -->
+
+                    </grid>
 
                 </grid>
 
-            </grid>
-
-            <grid [direction]="'column'" [template]="'1fr'" width="100%" class="scroll-h">
-                <table tuiTable [size]="'s'" [minWidth]="isLargeDesktop ? '100%' : '980px'">
-                    <thead>
-                        <tr>
-                            <th tuiTh>Order ID</th>
-                            <th tuiTh width="120px">Date</th>
-                            <th tuiTh>Customer</th>
-                            <th tuiTh>Total</th>
-                            <th tuiTh>Order Status</th>
-                            <th tuiTh>Payment Status</th>
-                            <th tuiTh>Delivery Status</th>
-                            <th tuiTh>Items</th>
-                            <th tuiTh>
-                                <p class="f-14 f-lh-14 f-02 t-center" width="100%">
-                                    Actions
-                                </p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody tuiTbody>
-                        <tr *ngIf="loading">
-                            <td tuiTd colspan="9">
-                                <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
-                                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
-                                        <tui-loader [size]="'m'" />
-                                        Loading...
+                <grid [direction]="'column'" [template]="'1fr'" width="100%" class="scroll-h">
+                    <table tuiTable [size]="'s'" [minWidth]="isLargeDesktop ? '100%' : '980px'">
+                        <thead>
+                            <tr>
+                                <th tuiTh>Order ID</th>
+                                <th tuiTh width="120px">Date</th>
+                                <th tuiTh>Customer</th>
+                                <th tuiTh>Total</th>
+                                <th tuiTh>Order Status</th>
+                                <th tuiTh>Payment Status</th>
+                                <th tuiTh>Delivery Status</th>
+                                <th tuiTh>Items</th>
+                                <th tuiTh>
+                                    <p class="f-14 f-lh-14 f-02 t-center" width="100%">
+                                        Actions
+                                    </p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody tuiTbody>
+                            <tr *ngIf="loading">
+                                <td tuiTd colspan="9">
+                                    <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                        <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                            <tui-loader [size]="'m'" />
+                                            Loading...
+                                        </grid>
                                     </grid>
-                                </grid>
-                            </td>
-                        </tr>
-                        <tr *ngIf="loading === false && orders.length === 0">
-                            <td tuiTd colspan="9">
-                                <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
-                                    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
-                                        <tui-icon icon="@tui.inbox" class="f-24 f-03" />
-                                        <span class="fw-400 f-03">No items found</span>
-                                    </grid>
-                                </grid>
-                            </td>
-                        </tr>
-                        <ng-container *ngIf="loading === false">
-                            <tr *ngFor="let item of orders; let i = index">
-                                <td tuiTd>{{item.number}}</td>
-                                <td tuiTd>{{item.createdAt | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
-                                <td tuiTd>{{item.customer.name}}</td>
-                                <td tuiTd>{{item.total | numeralFormat: '$0,0.00'}}</td>
-                                <td tuiTd>
-                                    <status-badge [label]="item?.status" [statusId]="item?.statusId" [type]="'order'"
-                                        [size]="'m'" />
-                                </td>
-                                <td tuiTd>
-                                    <status-badge [label]="item?.statusPayment" [statusId]="item?.statusPaymentId"
-                                        [type]="'payment'" [size]="'m'" />
-                                </td>
-                                <td tuiTd>
-                                    <status-badge [label]="item?.statusItems" [statusId]="item?.statusItemsId"
-                                        [type]="'orderItems'" [size]="'m'" />
-                                </td>
-                                <td tuiTd>
-                                    {{item.totalItems| numeralFormat: '0,0'}}
-                                    {{item.totalItems > 1 ? 'items' : 'item'}}
-                                </td>
-                                <td tuiTd>
-                                    <table-options [item]="item" [options]="options"
-                                        (onSelect)="onSelectOption($event)" />
                                 </td>
                             </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                            <tr *ngIf="loading === false && orders.length === 0">
+                                <td tuiTd colspan="9">
+                                    <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                        <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'"
+                                            class="f-15">
+                                            <tui-icon icon="@tui.inbox" class="f-24 f-03" />
+                                            <span class="fw-400 f-03">No items found</span>
+                                        </grid>
+                                    </grid>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="loading === false">
+                                <tr *ngFor="let item of orders; let i = index">
+                                    <td tuiTd>{{item.number}}</td>
+                                    <td tuiTd>{{item.createdAt | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
+                                    <td tuiTd>{{item.customer.name}}</td>
+                                    <td tuiTd>{{item.total | numeralFormat: '$0,0.00'}}</td>
+                                    <td tuiTd>
+                                        <status-badge [label]="item?.status" [statusId]="item?.statusId"
+                                            [type]="'order'" [size]="'m'" />
+                                    </td>
+                                    <td tuiTd>
+                                        <status-badge [label]="item?.statusPayment" [statusId]="item?.statusPaymentId"
+                                            [type]="'payment'" [size]="'m'" />
+                                    </td>
+                                    <td tuiTd>
+                                        <status-badge [label]="item?.statusItems" [statusId]="item?.statusItemsId"
+                                            [type]="'orderItems'" [size]="'m'" />
+                                    </td>
+                                    <td tuiTd>
+                                        {{item.totalItems| numeralFormat: '0,0'}}
+                                        {{item.totalItems > 1 ? 'items' : 'item'}}
+                                    </td>
+                                    <td tuiTd>
+                                        <table-options [item]="item" [options]="options"
+                                            (onSelect)="onSelectOption($event)" />
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
 
+                </grid>
             </grid>
-        </grid>
 
+        </grid>
     </grid>
 </grid>
 

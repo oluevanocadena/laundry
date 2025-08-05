@@ -1,20 +1,26 @@
 import { NgModule } from '@angular/core';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 let MODULES = [
   NzAlertModule,
+  NzAvatarModule,
   NzButtonModule,
+  NzCheckboxModule,
   NzDrawerModule,
   NzDropDownModule,
   NzMenuModule,
   NzModalModule,
   NzSegmentedModule,
+  NzSelectModule,
 ];
 
 @NgModule({

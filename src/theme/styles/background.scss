@@ -22,7 +22,7 @@
 
 @for $i from 1 through 9 {
     .bg-0#{$i} {
-        background: var(--text-0#{$i});
+        background: var(--background-0#{$i});
     }
 }
 

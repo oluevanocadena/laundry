@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HelperPage } from '../helper.page';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'top-bar',
@@ -8,7 +9,10 @@ import { HelperPage } from '../helper.page';
   styleUrls: ['./top-bar.component.scss'],
 })
 export class TopBarComponent extends HelperPage {
-  
+  //form
+  form = new FormGroup({
+    search: new FormControl(''),
+  });
 
   // Properties
   @Input() title: string = '';
@@ -20,7 +24,6 @@ export class TopBarComponent extends HelperPage {
   /**
    * UI Events
    */
-
 
   /**
    * Lifecycle

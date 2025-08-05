@@ -26,6 +26,7 @@ import { TableOptionsComponent } from './table-options/table-options.component';
 import { TableSegmentsComponent } from './table-segments/table-segments.component';
 import { TopBarButtonsComponent } from './top-bar-buttons/top-bar-buttons.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { TopBarOrganizationComponent } from './top-bar-organization/top-bar-organization.component';
 
 const components = [
   ButtonResponsiveComponent,
@@ -47,6 +48,7 @@ const components = [
   TableSegmentsComponent,
   TopBarButtonsComponent,
   TopBarComponent,
+  TopBarOrganizationComponent,
 ];
 
 @NgModule({

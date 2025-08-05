@@ -2,6 +2,10 @@
     background: transparent !important;
 }
 
+.ant-menu-inline .ant-menu-item {
+    height: 32px !important;
+}
+
 .ant-menu-inline .ant-menu-item::after,
 .ant-menu-vertical .ant-menu-item::after,
 .ant-menu-vertical-left .ant-menu-item::after,
@@ -10,21 +14,17 @@
 }
 
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    border-radius: 0.5rem !important;
+    border-radius: 5px !important;
 
     // gradint use var(--primary) to color-mix(in srgb, var(--primary), black 10%)
-    background: linear-gradient(to top,
-            color-mix(in srgb, var(--primary), 90% #ffffff83),
-            color-mix(in srgb, var(--primary), 98% #ffffff83),
-            color-mix(in srgb, var(--primary), 100% #ffffff83),
-            color-mix(in srgb, var(--primary), 100% #ffffff83)) !important;
+    background: #313131 !important;
 }
 
 .ant-menu-item:active,
 .ant-menu-submenu-title:active,
 .ant-picker-time-panel-column>li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
     background: transparent !important;
-    color: var(--primary) !important;
+    color: var(--text-01) !important;
 }
 
 .ant-menu-light .ant-menu-item-active,
@@ -33,7 +33,7 @@
 .ant-menu-light .ant-menu-submenu-title:hover,
 .ant-menu-light .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open {
     background: transparent !important;
-    color: var(--primary) !important;
+    color: var(--text-01) !important;
 }
 
 .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-active,
@@ -49,7 +49,7 @@
 .ant-menu-vertical .ant-menu-submenu-selected,
 .ant-menu-vertical-left .ant-menu-submenu-selected,
 .ant-menu-vertical-right .ant-menu-submenu-selected {
-    color: var(--primary) !important;
+    color: var(--text-01) !important;
 }
 
 .ant-menu-inline,
@@ -66,12 +66,18 @@
 
 .ant-menu-submenu:hover {
     .ant-menu-submenu-title {
-
+        .menu-item-icon {
+            font-weight: 100 !important;
+        }
         .menu-item-icon,
         .menu-item-label {
-            color: var(--primary) !important;
+            color: var(--text-01) !important;
         }
     }
+}
+
+.ant-menu-title-content {
+    padding: 0.05rem 0 0 0 !important;
 }
 
 .ant-menu-item:hover {
@@ -79,7 +85,7 @@
 
         .menu-item-icon,
         .menu-item-label {
-            color: var(--primary) !important;
+            color: var(--text-01) !important;
         }
     }
 }
@@ -89,7 +95,8 @@
 
         .menu-item-icon,
         .menu-item-label {
-            color: var(--primary) !important;
+            color: var(--text-01) !important;
+            font-weight: 500 !important;
         }
 
     }

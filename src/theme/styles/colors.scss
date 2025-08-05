@@ -1,5 +1,8 @@
 * {
-    --primary: #018bfc;
+    --primary: #6664f5;
+    --primary-hsl: #6664f596; 
+    --primary-hsl-hover: #6664f5bd;
+    --primary-hsl-pressed: #7876ff71;
     --secondary: #f7f7f7;
     --tertiary: #783bfe;
     --error: #f44336;
@@ -7,15 +10,24 @@
     --warning-secondary: #ff5f2d;
     --success: #1ab07a;
     --info: #169deb;
-    --text-01: #20202a;
-    --text-02: #4a4a4a;
-    --text-03: #6b6b6b;
-    --text-04: #8c8c8c;
+    --text-01: #f0f0f0;
+    --text-02: #f1f1f1;
+    --text-03: #e4e4e4;
+    --text-04: #dcdcdc;
     --text-05: #bcbcbc;
-    --text-06: #dcdcdc;
-    --text-07: #f7f7f7;
-    --text-08: #ffffff;
-    --text-09: #f7f7f7;
+    --text-06: #8c8c8c;
+    --text-07: #6b6b6b;
+    --text-08: #4a4a4a;
+    --text-09: #20202a;
+    --background-01: #171717;
+    --background-02: #1f1f1f;
+    --background-03: #212121;
+    --background-04: #313131;
+    --background-05: #4a4a4a;
+    --background-06: #6b6b6b;
+    --background-07: #8c8c8c;
+
+    --border: hsl(0deg 0% 18% / 1);
     --white: #ffffff;
 }
 
@@ -27,7 +39,7 @@
     --tui-background-accent-1-pressed: color-mix(in srgb, var(--primary), black 20%);
     --tui-status-warning: var(--warning);
     --tui-status-warning-pale: #fffcf8;
-    --tui-status-positive-pale: #effbf2;
+    --tui-status-positive-pale: #3ace5f27;
     --tui-status-info-pale: #eef6fe;
     --tui-text-action: var(--primary);
     --t-bg: var(--primary);

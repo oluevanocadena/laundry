@@ -1,13 +1,26 @@
 <grid [direction]="'column'" [template]="'1fr'" height="100%">
-    <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-right'" height="100%">
+    <grid [gap]="[8,16]" [direction]="'column'" [align]="'top-right'" height="100%">
         <button *ngIf="isMobileOrTablet === true" (click)="openMenu()" tuiButton tuiRoundButton tuiIconButton
-            [appearance]="'secondary'" [size]="'m'">
-            <tui-icon icon="@tui.menu" class="f-18 fw-600 f-02" />
+            [appearance]="'flat'" [size]="'s'">
+            <tui-icon icon="@tui.menu" class="f-18 fw-600 f-04" />
         </button>
-        <button *ngIf="isMobileOrTablet === false" (click)="openNotifications()" [tuiSkeleton]="loading" tuiButton tuiRoundButton tuiIconButton
-            [appearance]="'secondary'" [size]="'m'">
-            <tui-icon icon="@tui.bell" class="f-18 fw-600 f-02" />
+        <button outline small rounded>
+            Feddback
         </button>
+        <grid [direction]="'column'" [align]="'center-left'">
+            <button outline rounded small icon prefix (click)="openNotifications()">
+                <tui-icon icon="@tui.info" class="f-16 f-06" />
+            </button>
+            <button outline rounded small icon middle (click)="openNotifications()">
+                <tui-icon icon="@tui.inbox" class="f-16 f-06" />
+            </button>
+            <button outline rounded small icon suffix (click)="openNotifications()">
+                <tui-icon icon="@tui.bug" class="f-16 f-06" />
+            </button>
+        </grid>
+        <grid [direction]="'column'" [align]="'center-center'" [height]="'100%'">
+            <grid [height]="'24px'" class="border-left-05">&nbsp;</grid>
+        </grid>
         <profile-menu />
     </grid>
 </grid>

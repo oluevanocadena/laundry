@@ -1,68 +1,56 @@
-<grid [direction]="'column'" [template]="isMobileOrTablet ? '1fr':'max-content 1fr'">
-    <side-menu *ngIf="isMobileOrTablet === false" />
-    <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'" padding="1rem 1.5rem" width="100%">
-        <top-bar width="100%" />
-        <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'">
-            <grid [direction]="'column'" [template]="'1fr max-content'">
-                <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'" height="100%">
-                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-left'" height="100%">
-                        <tui-icon icon="@tui.users" class="f-24 f-01" />
-                        <grid [gap]="[0,0]" [direction]="'column'" [template]="'1fr'">
-                            <span class="fw-600 f-01" padding="0.25rem 0 0 0"
-                                [ngClass]="{'f-24 f-lh-20': isMobileOrTablet, 'f-26 f-lh-20': !isMobileOrTablet}">
-                                Customers
-                            </span>
-                            <span class="f-14 f-lh-16 f-03">
-                                As a store owner, you can view and manage all your customers here.
-                            </span>
-                        </grid>
-                    </grid>
-                </grid>
-                <grid [gap]="[8,8]" [direction]="'column'" [align]="'top-right'" height="100%">
-                    <button-responsive [label]="'Export'" [icon]="'download'" [loading]="loading" [disabled]="loading"
-                        [appearance]="'secondary'" (onClick)="export()" />
-                    <button-responsive [link]="routes.CustomerDraft" [label]="'Create Customer'" [icon]="'plus'"
-                        [loading]="loading" [disabled]="loading" [appearance]="'primary'" />
-                </grid>
+<grid [gap]="[0,24]" [direction]="'column'" [template]="'1fr'" width="100%" class="bg-01">
+    <top-bar width="100%" />
+    <grid [direction]="'column'" [template]="'max-content 1fr'">
+        <side-menu *ngIf="isMobileOrTablet === false" />
+        <grid [gap]="[0,24]" [direction]="'row'" [height]="'calc(100vh - 49px)'"
+            [template]="'max-content max-content 1fr max-content'">
+            <grid [direction]="'column'" [padding]="'1rem'">
+                <span class="fw-500 f-01 f-24" padding="0.25rem 0 0 0">
+                    Clientes
+                </span>
             </grid>
-            <grid [gap]="[16,24]" [direction]="'column'" [template]="'max-content 1fr'" height="100%" width="100%">
-                <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                    <table-segments [options]="optionsSegments" [loading]="loading"
-                        (onTabChange)="onSegmentChange($event)" />
+
+            <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
+                class="wrap brdr-top bg-02" padding="0.5rem 1rem">
+                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                    <nz-select ngModel="all" [width]="'150px'">
+                        <nz-option nzValue="all" nzLabel="Todos los clientes"></nz-option>
+                        <nz-option nzValue="active" nzLabel="Clientes activos"></nz-option>
+                        <nz-option nzValue="disabled" nzLabel="Clientes inactivos" nzDisabled></nz-option>
+                    </nz-select>
+                    <button outline small flex>
+                        <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
+                        Columnas
+                    </button>
+                    <button outline small flex>
+                        <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
+                        Ordenado por email
+                    </button>
                 </grid>
                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button (click)="openSearchModal()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'m'">
-                        <tui-icon icon="@tui.calendar-search" class="f-17 fw-600 f-04" />
+                    <button primary small [routerLink]="routes.CustomerDraft">
+                        Crear cliente
                     </button>
-                    <!-- <button (click)="openSortModal()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'m'">
-                        <tui-icon icon="@tui.arrow-down-up" class="f-17 fw-600 f-04" />
-                    </button> -->
-
                 </grid>
-
             </grid>
 
-            <grid [direction]="'column'" [template]="'1fr'" width="100%" class="scroll-h">
-                <table tuiTable [size]="'s'" [minWidth]="isLargeDesktop ? '100%' : '980px'">
+            <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%" class="scroll-h scroll-v bg-02 baseline">
+                <table>
                     <thead>
                         <tr>
-                            <th tuiTh width="100px">Date</th>
-                            <th tuiTh>Name</th>
-                            <th tuiTh>Email</th>
-                            <th tuiTh width="120px">Marketing</th>
-                            <th tuiTh>Amount Spent</th>
-                            <th tuiTh>Orders</th>
-                            <th tuiTh width="80px">Status</th>
-                            <th tuiTh>
-                                <p class="f-14 f-lh-14 f-02 t-center" width="100%">
-                                    Actions
-                                </p>
-                            </th>
+                            <th> </th>
+                            <th width="100px">Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th width="120px">Marketing</th>
+                            <th>Amount Spent</th>
+                            <th>Orders</th>
+                            <th width="80px">Status</th>
                         </tr>
                     </thead>
-                    <tbody tuiTbody>
+                    <tbody>
                         <tr *ngIf="loading">
-                            <td tuiTd colspan="9">
+                            <td colspan="9">
                                 <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                     <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
                                         <tui-loader [size]="'m'" />
@@ -72,7 +60,7 @@
                             </td>
                         </tr>
                         <tr *ngIf="loading === false && customers.length === 0">
-                            <td tuiTd colspan="9">
+                            <td colspan="9">
                                 <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                     <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
                                         <tui-icon icon="@tui.inbox" class="f-24 f-03" />
@@ -83,37 +71,53 @@
                         </tr>
                         <ng-container *ngIf="loading === false">
                             <tr *ngFor="let item of customers; let i = index">
-                                <td tuiTd>{{item.createdAt | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
-                                <td tuiTd>{{item.name}}</td>
-                                <td tuiTd>{{item.email}}</td>
-                                <td tuiTd>
+                                <td>
+                                    <label nz-checkbox></label>
+                                </td>
+                                <td>{{item.createdAt | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.email}}</td>
+                                <td>
                                     <status-badge [label]="item?.statusMarketing" [statusId]="item?.statusMarketingId"
                                         [type]="'customer-marketing'" [size]="'m'" />
                                 </td>
-                                <td tuiTd>{{item.spentAmount || 0 | numeralFormat: '$0,0.00'}}</td>
-                                <td tuiTd>
+                                <td>{{item.spentAmount || 0 | numeralFormat: '$0,0.00'}}</td>
+                                <td>
                                     {{item.totalOrders}}
                                     {{item.totalOrders > 1 ? 'orders' : 'order'}}
                                 </td>
-                                <td tuiTd>
+                                <td>
                                     <grid [direction]="'column'" [align]="'center-center'" width="100%">
                                         <status-badge [label]="item?.status" [statusId]="item?.statusId"
                                             [type]="'customer'" [size]="'m'" />
                                     </grid>
                                 </td>
-                                <td tuiTd>
-                                    <table-options [item]="item" [options]="options"
-                                        (onSelect)="onSelectOption($event)" />
-                                </td>
                             </tr>
                         </ng-container>
                     </tbody>
                 </table>
+            </grid>
 
+            <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
+                <grid [direction]="'column'" [align]="'center-left'">
+                    <button outline small flex prefix>
+                        <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
+                    </button>
+                    <button outline small flex suffix> 
+                        <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
+                    </button>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-right'">
+                    <button outline small flex>
+                        <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
+                        Actualizar
+                    </button>
+                </grid>
             </grid>
         </grid>
 
     </grid>
+
 </grid>
 
 <modal-search #search [(show)]="showSearch" (onSearch)="onSearch($event)" />

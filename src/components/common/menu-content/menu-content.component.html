@@ -1,29 +1,37 @@
-<grid [direction]="'column'" [align]="'top-left'" height="100%">
+<grid [direction]="'column'" [align]="'top-left'" height="calc(100vh - 59px)">
     <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%" width="100%">
         <menu width="100%">
-            <menu-item [collapsed]="collapsed" [icon]="'home'" [label]="'Home'" [urlBase]="routes.Home" [level]="0">
-            </menu-item>
-            <menu-item [collapsed]="collapsed" [icon]="'shopping-bag'" [label]="'Orders'" [urlBase]="routes.Orders"
-                [link]="routes.Orders" [isGroup]="false" [level]="0">
-            </menu-item>
-            <menu-item [collapsed]="collapsed" [icon]="'users'" [label]="'Customers'" [urlBase]="routes.Customers"
-                [link]="routes.Customers" [isGroup]="false" [level]="0">
-            </menu-item>
-            <menu-item [collapsed]="collapsed" [icon]="'shirt'" [label]="'Products'" [urlBase]="routes.Products"
-                [link]="routes.Products" [isGroup]="false" [level]="0">
-            </menu-item>
-            <menu-item [collapsed]="collapsed" [icon]="'store'" [label]="'Locations'" [urlBase]="routes.Locations"
-                [link]="routes.Locations" [isGroup]="false" [level]="0">
-            </menu-item>
-            <menu-item [collapsed]="collapsed" [icon]="'user-round'" [label]="'Users'" [urlBase]="routes.Locations"
-                [link]="routes.Locations" [isGroup]="false" [level]="0">
-            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'house'" [label]="'Inicio'" [urlBase]="routes.Home"
+                [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'shopping-bag'" [label]="'Pedidos'" [urlBase]="routes.Orders"
+                [link]="routes.Orders" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'user-pen'" [label]="'Clientes'" [urlBase]="routes.Customers"
+                [link]="routes.Customers" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'bell'" [label]="'Notificaciones'" [urlBase]="routes.Products"
+                [link]="routes.Products" [isGroup]="false" [level]="0" />
+
+            <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
+
+            <menu-item [collapsed]="collapsed" [icon]="'shirt'" [label]="'Productos'" [urlBase]="routes.Products"
+                [link]="routes.Products" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'warehouse'" [label]="'Sucursales'" [urlBase]="routes.Locations"
+                [link]="routes.Locations" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'user-round'" [label]="'Usuarios'" [urlBase]="routes.Locations"
+                [link]="routes.Locations" [isGroup]="false" [level]="0" />
+
+            <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
+
+            <menu-item [collapsed]="collapsed" [icon]="'chart-line'" [label]="'Reportes'" [urlBase]="routes.Products"
+                [link]="routes.Products" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'headset'" [label]="'Soporte'" [urlBase]="routes.Locations"
+                [link]="routes.Locations" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'settings'" [label]="'Configuración'"
+                [urlBase]="routes.Locations" [link]="routes.Locations" [isGroup]="false" [level]="0" />
         </menu>
         <menu>
             <!-- Settings -->
-            <menu-item [collapsed]="collapsed" [icon]="'bolt'" [label]="'Settings'" [urlBase]="routes.Settings"
-                [level]="0">
-            </menu-item>
+            <menu-item [collapsed]="collapsed" [icon]="'panel-left-open'" [label]="'Configuración'"
+                [urlBase]="routes.Settings" [level]="0" />
         </menu>
     </grid>
 </grid>

@@ -1,8 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Customer } from '../../../../services/customers.service';
-import { HelperPage } from '../../../../components/common/helper.page';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
 import { CustomersDraftFacade } from '../../../../bussiness/customers/controllers/customers.draft.facade';
+import { HelperPage } from '../../../../components/common/helper.page';
 
 @Component({
   selector: 'customers-address',

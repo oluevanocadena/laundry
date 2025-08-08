@@ -1,9 +1,4 @@
-import {
-	Component,
-	ContentChildren,
-	Input,
-	QueryList
-} from '@angular/core';
+import { Component, ContentChildren, Input, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -20,6 +15,7 @@ export class MenuItemComponent {
   @Input() isGroup: boolean = false;
   @Input() bold: boolean = false;
   @Input() collapsed: boolean = false;
+  @Input() iconType: 'tui' | 'google' = 'tui';
 
   private _level: number = 0;
   @Input() set level(value: number) {

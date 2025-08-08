@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { UIModule } from '../components/ui.module';
-import { StyleDirective } from './directives';
+import { ShowLoaderDirective, StyleDirective } from './directives';
 
-const directives = [StyleDirective];
+const directives = [StyleDirective, ShowLoaderDirective];
 
 @NgModule({
   imports: [CommonModule, UIModule],

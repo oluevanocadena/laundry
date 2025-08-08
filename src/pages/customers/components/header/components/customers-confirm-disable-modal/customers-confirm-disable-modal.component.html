@@ -1,0 +1,48 @@
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'"
+    [confirmStyle]="disabled ? 'success' : 'warning'" (onConfirm)="confirm()" (onClose)="close()">
+    <span title>
+        {{ disabled ? 'Habilitar cliente' : 'Inhabilitar cliente' }}
+    </span>
+    <grid [gap]="[0,16]" body>
+        <grid [gap]="[16,16]" [direction]="'column'" [template]="'max-content 1fr'" [padding]="'1rem 1.5rem'"
+            class="brdr-bottom bg-00">
+            <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]" [padding]="'0.25rem 0 0 0'">
+                <tui-icon [icon]="disabled ? '@tui.check' : '@tui.info'"
+                    [class]="disabled ? 'f-18 f-01 f-success' : 'f-18 f-01 f-warning'" />
+            </grid>
+            <grid [gap]="[0,8]" [direction]="'row'">
+                <span class="f-15 f-lh-16 f-01 fw-600 t-left">
+                    {{ disabled ?
+                    'Estás a punto de habilitar este cliente nuevamente.' :
+                    'Estás a punto de deshabilitar este cliente.' }}
+                </span>
+                <span class="f-14 f-lh-16 f-05 fw-400 t-left">
+                    {{ disabled ?
+                    'Habilitar un cliente permitirá que se muestre en la lista de clientes.' :
+                    'Deshabilitar un cliente impedirá que se muestre en la lista de clientes.' }}
+                </span>
+            </grid>
+        </grid>
+        <grid [gap]="[8,8]" [padding]="'0.75rem 1.5rem'">
+            <grid [direction]="'row'" [width]="'100%'" [padding]="'0.5rem 1rem'" class="bg-02 brdr-radius-6 brdr">
+                <span class="f-14 f-lh-16 f-04 fw-500 t-left">
+                    {{ disabled ?
+                    'Se habilitará el cliente nuevamente ahora mismo. 🫡' :
+                    'No se eliminará ningún dato del cliente, solo se impedirá crear nuevos pedidos por ahora. 🤔' }}
+                </span>
+                <span class="f-14 f-lh-16 f-07 fw-400 t-left">
+                    {{ disabled ?
+                    'Si deseas que el cliente pueda crear pedidos nuevamente, puedes habilitarlo ahora.' :
+                    'Si deseas que el cliente no pueda crear pedidos por ahora, puedes deshabilitarlo ahora y
+                    habilitarlo nuevamente cuando lo desees.'
+                    }}
+                </span>
+            </grid>
+            <span class="f-14 f-04 fw-400 t-left">
+                {{ disabled ?
+                'Por favor, confirma que deseas habilitar este cliente.' :
+                'Por favor, confirma que deseas deshabilitar este cliente.' }}
+            </span>
+        </grid>
+    </grid>
+</modal>

@@ -43,20 +43,20 @@
             <tui-icon icon="@tui.user" class="f-18 fw-600 f-02" />
             <a [href]="customerDetailUrl" target="_blank" class="f-15 fw-400 f-02 f-lh-14 link">
                 <span class="f-15 fw-400 f-02 f-lh-14">
-                    {{order?.customer?.name}}
+                    {{order?.customer?.FullName}}
                 </span>
             </a>
         </grid>
         <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
             <tui-icon icon="@tui.shopping-bag" class="f-18 f-02" />
             <span class="f-15 fw-400 f-02 f-lh-14">
-                {{order?.customer?.totalOrders}} Orders
+                {{order?.customer?.TotalOrders || 0 | numeralFormat: '0,0'}} Orders
             </span>
         </grid>
         <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
             <tui-icon icon="@tui.phone" class="f-18 f-02" />
             <span class="f-15 fw-400 f-02 f-lh-14">
-                {{order?.customer?.phone}}
+                {{order?.customer?.Phone}}
             </span>
         </grid>
 
@@ -64,7 +64,7 @@
             <tui-icon icon="@tui.mail" class="f-18 f-02" />
             <a href="mailto:asd@live.com" class="f-15 fw-400 f-02 f-lh-14 link">
                 <span class="f-15 fw-400 f-02 f-lh-14">
-                    {{order?.customer?.email}}
+                    {{order?.customer?.Email}}
                 </span>
             </a>
         </grid>
@@ -72,7 +72,7 @@
         <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
             <tui-icon icon="@tui.map-pin-house" class="f-18 f-02" />
             <span class="f-15 fw-400 f-02 f-lh-16">
-                {{order?.customer?.fullAddress}}
+                {{order?.customer?.Address}}
             </span>
         </grid>
         <grid [direction]="'column'" [template]="'1fr max-content'">

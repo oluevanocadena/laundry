@@ -21,49 +21,70 @@ export class CustomersApiService {
     this.client = createClient(supabase.url, supabase.key);
   }
 
-  async getCustomers() {
-    console.log('🚩 fetching customers');
+  private async executeWithBusy<T>(
+    callback: () => Promise<T>,
+    message?: string
+  ): Promise<T | null> {
+    console.log(`🚩 ${message || 'Executing operation'}`);
     this.busy.value = true;
     try {
-      const { data, error } = await this.client.from(this.table).select('*');
-      if (error) throw error;
-      this.customers.value = data;
-      console.log('🚩 customers fetched', this.customers.value);
+      const result = await callback();
+      return result;
     } catch (error) {
-      console.error('Error fetching customers:', error);
+      console.error('⛔ Error:', error);
+      return null;
     } finally {
       this.busy.value = false;
-      console.log('Finalizado');
     }
   }
 
-  async getCustomerDraft() {
-    try {
+  async getCustomers() {
+    await this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(this.table)
         .select('*')
-        .eq('StatusCreationId', CustomerCreationStatusEnum.Draft);
+        .eq('Deleted', false);
       if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error getting customer draft:', error);
-      throw error;
-    }
+      this.customers.value = data;
+    }, 'fetching customers');
   }
 
   async saveCustomer(customer: Customer) {
-    this.busy.value = true;
-    try {
+    this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(this.table)
         .upsert(customer);
       if (error) throw error;
-      return data;
-    } catch (error) {
-      console.error('Error saving customer:', error);
-      throw error;
-    } finally {
-      this.busy.value = false;
-    }
+    }, 'saving customer');
+  }
+
+  async deleteCustomer(id: string) {
+    this.executeWithBusy(async () => {
+      const { error } = await this.client
+        .from(this.table)
+        .update({ Deleted: true })
+        .eq('id', id);
+      if (error) throw error;
+    }, 'deleting customer');
+  }
+
+  async disableCustomer(id: string) {
+    this.executeWithBusy(async () => {
+      const { error } = await this.client
+        .from(this.table)
+        .update({ Disabled: true })
+        .eq('id', id);
+      if (error) throw error;
+    }, 'disabling customer');
+  }
+
+  async enableCustomer(id: string) {
+    this.executeWithBusy(async () => {
+      const { error } = await this.client
+        .from(this.table)
+        .update({ Disabled: false })
+        .eq('id', id);
+      if (error) throw error;
+    }, 'enabling customer');
   }
 }

@@ -107,7 +107,7 @@ export class OrdersAdjustDeliveryComponent
     if (this.canSave) {
       if (this.order !== null) {
         this.setDeliveryFeeOrderItem();
-        this.order.customer.address.distanceKm = this.distance;
+        // this.order.customer.address.distanceKm = this.distance;
         this.order.delivery!.distanceKm = this.distance;
         this.order.deliveryFee = this.deliveryFee;
         this.order.delivery.fee = this.deliveryFee;

@@ -1,0 +1,29 @@
+<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
+    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
+
+    <ng-container *nzModalContent>
+        <grid [direction]="'row'" [gap]="[0,0]" [padding]="'0rem'">
+            <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'0.75rem 1.5rem'"
+                class="brdr-bottom">
+                <span class="f-16 f-03 fw-600 t-left">
+                    <ng-content select="[title]"></ng-content>
+                </span>
+                <grid [direction]="'column'" [align]="'center-right'" [height]="'100%'">
+                    <tui-icon icon="@tui.x" class="f-16 fw-100 f-07 pointer" (click)="close()" />
+                </grid>
+            </grid>
+            <grid [direction]="'column'" [template]="'1fr'" [width]="'100%'">
+                <ng-content select="[body]"></ng-content>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr 1fr'" [padding]="'1rem 1.5rem'"
+                class="brdr-top">
+                <button outline medium full (click)="close()">
+                    {{closeLabel}}
+                </button>
+                <button #buttonConfirm medium full (click)="confirm()">
+                    {{confirmLabel}}
+                </button>
+            </grid>
+        </grid>
+    </ng-container>
+</nz-modal>

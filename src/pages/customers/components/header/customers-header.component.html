@@ -12,27 +12,56 @@
                             :{{customerNumber }}
                         </label>
                     </span>
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
+                        <tui-loader *ngIf="busy" />
+                        <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
+                            [appearance]="'warning'" />
+                        <status-badge *ngIf="!busy" [label]="customerStatus" [size]="'s'"
+                            [appearance]="customerStatusAppearance" />
+                    </grid>
                 </grid>
                 <span class="f-13 fw-400 f-06 f-lh-13">
                     {{dateCreated | dateFormat: 'DD/MM/yyyy [a las] hh:mm A' }}
                 </span>
-            </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
-                <tui-loader *ngIf="busy" />
-                <status-badge *ngIf="!busy" [label]="customerStatus" [size]="'s'"
-                    [statusId]="facade.customer.value?.StatusCreationId" [type]="'customer-status-creation'" />
             </grid>
         </grid>
 
     </grid>
 
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
-        <button (click)="saveCustomer()" [disabled]="canSave === false" outline small primary>
+        <button (click)="saveCustomer()" [disabled]="busy || canSave === false" [showLoader]="busy" outline small
+            primary>
             Guardar
         </button>
-        <button outline small icon>
+        <button *ngIf="facade.edition === true" outline small icon [disabled]="busy" [showLoader]="busy" nz-dropdown
+            nzTrigger="click" [nzDropdownMenu]="menu">
             <tui-icon icon="@tui.ellipsis-vertical" class="f-16 f-01" />
         </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <grid [gap]="[2,8]" [direction]="'row'" [padding]="'0.5rem'" class="bg-02 brdr-radius-6 shadow-01">
+                <span class="f-12 f-03 fw-300" [padding]="'0.5rem 0 0.5rem 0.5rem'">
+                    Acciones
+                </span>
+                <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.showDeleteModal = true">
+                    <tui-icon icon="@tui.trash" class="f-12 fw-100 f-error" />
+                    Eliminar
+                </button>
+                <button *ngIf="facade.customer.value?.Disabled === false" flat small flex [width]="'100%'"
+                    class="f-13 f-03" (click)="facade.showDisabledModal = true">
+                    <tui-icon icon="@tui.lock" class="f-12 fw-100 f-warning" />
+                    Inhabilitar
+                </button>
+                <button *ngIf="facade.customer.value?.Disabled === true" flat small flex [width]="'100%'"
+                    class="f-13 f-03" (click)="facade.showDisabledModal = true">
+                    <tui-icon icon="@tui.check" class="f-12 fw-100 f-success" />
+                    Habilitar
+                </button>
+            </grid>
+        </nz-dropdown-menu>
     </grid>
 
 </grid>
+
+<customers-confirm-delete-modal [(show)]="facade.showDeleteModal" (onConfirm)="facade.onDelete()" />
+<customers-confirm-disable-modal [(show)]="facade.showDisabledModal" (onConfirm)="facade.onDisable()"
+    [disabled]="facade.customer.value?.Disabled || false" />

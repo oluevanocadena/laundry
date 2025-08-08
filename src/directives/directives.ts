@@ -6,6 +6,9 @@ import {
   Renderer2,
   SimpleChanges,
   HostListener,
+  EmbeddedViewRef,
+  TemplateRef,
+  ViewContainerRef,
 } from '@angular/core';
 
 @Directive({
@@ -58,6 +61,48 @@ export class StyleDirective implements OnChanges {
     if (changes['scroll']) {
       const overflow = this.scroll === 'x' ? 'auto hidden' : 'hidden auto';
       this.renderer.setStyle(this.el.nativeElement, 'overflow', overflow);
+    }
+  }
+}
+
+@Directive({
+  standalone: false,
+  selector: '[showLoader]',
+})
+export class ShowLoaderDirective implements OnChanges {
+  @Input('showLoader') isLoading = false;
+
+  private originalContent: string | null = null;
+  private loaderEl: HTMLElement | null = null;
+
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isLoading']) {
+      this.toggleLoader(this.isLoading);
+    }
+  }
+
+  private toggleLoader(show: boolean): void {
+    const element = this.el.nativeElement;
+
+    if (show) {
+      if (!this.originalContent) {
+        this.originalContent = element.innerHTML;
+      }
+
+      // Crea el loader
+      this.loaderEl = this.renderer.createElement('span');
+      this.renderer.addClass(this.loaderEl, 'loader');
+      this.renderer.setStyle(this.loaderEl, 'vertical-align', 'middle');
+
+      this.renderer.setProperty(element, 'innerHTML', '');
+      this.renderer.appendChild(element, this.loaderEl);
+    } else {
+      if (this.originalContent !== null) {
+        this.renderer.setProperty(element, 'innerHTML', this.originalContent);
+        this.originalContent = null;
+      }
     }
   }
 }

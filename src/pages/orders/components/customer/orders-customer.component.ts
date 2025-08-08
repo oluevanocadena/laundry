@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Order } from '../../../../services/orders.service';
 import { HelperPage } from '../../../../components/common/helper.page';
-import { Customer } from '../../../../services/customers.service';
+import { Order } from '../../../../services/orders.service';
+import { Customer } from '../../../../bussiness/customers/customers.interfaces';
 
 @Component({
   selector: 'orders-customer',
@@ -47,8 +47,8 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
   onSelectCustomer(customer: Customer | null) {
     if (this.order && customer) {
       this.order.customer = customer;
-      this.order.delivery.address = customer.address;
-      this.order.delivery.distanceKm = customer.address.distanceKm ?? 0;
+      // this.order.delivery.address = customer.Address;
+      // this.order.delivery.distanceKm = customer.address.distanceKm ?? 0;
       this.order = { ...this.order };
       this.orderChange.emit(this.order);
     }
@@ -60,9 +60,9 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
    */
 
   get googleUrlMap(): string {
-    return this.order?.customer?.fullAddress
+    return this.order?.customer?.Address
       ? `https://www.google.com/maps/search/${encodeURIComponent(
-          this.order?.customer?.fullAddress
+          this.order?.customer?.Address
         )}`
       : '';
   }

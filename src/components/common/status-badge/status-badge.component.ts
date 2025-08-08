@@ -1,15 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 import {
+  CustomerMarketingSubscriptionEnum
+} from '../../../services/customers-status.service';
+import {
   OrderItemsStatusEnum,
   OrderPaymentStatusEnum,
   OrderStatusEnum,
 } from '../../../services/order-status.service';
-import {
-  CustomerCreationStatusEnum,
-  CustomerMarketingSubscriptionEnum,
-  CustomerStatusEnum,
-} from '../../../services/customers-status.service';
 
 @Component({
   selector: 'status-badge',
@@ -22,6 +20,7 @@ export class StatusBadgeComponent implements OnInit {
   @Input() statusId?: number = 0;
   @Input() type: StatusTypeBadge = 'order';
   @Input() size: 'm' | 's' | 'l' | 'xl' = 'l';
+  @Input() appearance: TuiAppearanceOptions['appearance'] = 'warning';
 
   constructor() {}
 
@@ -98,33 +97,7 @@ export class StatusBadgeComponent implements OnInit {
             status = 'default';
             break;
         }
-        break;
-      case StatusTypeBadgeEnum.CustomerStatusCreation:
-        switch (this.statusId) {
-          case CustomerCreationStatusEnum.Draft:
-            status = 'warning';
-            break;
-          case CustomerCreationStatusEnum.Active:
-            status = 'success';
-            break;
-          default:
-            status = 'warning';
-            break;
-        }
-        break;
-      case StatusTypeBadgeEnum.Customer:
-        // CustomerStatusEnum
-        switch (this.statusId) {
-          case CustomerStatusEnum.Active:
-            status = 'success';
-            break;
-          case CustomerStatusEnum.Inactive:
-            status = 'error';
-            break;
-          default:
-            status = 'info';
-            break;
-        }
+        break;  
         break;
       case StatusTypeBadgeEnum.CustomerMarketing:
         // CustomerMarketingSubscriptionEnum
@@ -157,8 +130,7 @@ export type StatusTypeBadge =
   | 'order'
   | 'orderItems'
   | 'payment'
-  | 'delivery'
-  | 'customer'
+  | 'delivery' 
   | 'customer-marketing'
   | 'customer-status-creation';
 
@@ -169,5 +141,4 @@ export enum StatusTypeBadgeEnum {
   Refund = 'refund',
   Customer = 'customer',
   CustomerMarketing = 'customer-marketing',
-  CustomerStatusCreation = 'customer-status-creation',
 }

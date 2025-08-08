@@ -16,7 +16,10 @@
 
 <ng-template #template>
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-        <tui-icon *ngIf="icon" icon="@tui.{{icon}}" class="menu-item-icon f-16 f-06 fw-100" />
+        <tui-icon *ngIf="icon && iconType === 'tui'" icon="@tui.{{icon}}" class="menu-item-icon f-16 f-06 fw-100" />
+        <span *ngIf="icon && iconType === 'google'" class="material-symbols-outlined menu-item-icon left-3px f-22 f-06 fw-300">
+            {{icon}}
+        </span>
         <span *ngIf="!collapsed" padding="0.3rem 0 0 0" class="menu-item-label f-15 f-lh-24 f-06" [ngClass]="{ 
                 'fw-400':!bold, 
                 'fw-500': bold, 

@@ -3,10 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { catchError, finalize } from 'rxjs';
 import { HelperTablePage } from '../../../../components/common/helper.table.page';
-import {
-  Customer,
-  CustomersService,
-} from '../../../../services/customers.service';
+import { Customer } from '../../../../bussiness/customers/customers.interfaces';
+import { CustomersApiService } from '../../../../bussiness/customers/customers.api.service';
 
 @Component({
   selector: 'orders-search-customer',
@@ -43,7 +41,7 @@ export class OrdersSearchCustomerComponent
   });
 
   constructor(
-    public customersService: CustomersService,
+    public customersApi: CustomersApiService,
     public nzMessageService: NzMessageService
   ) {
     super();
@@ -54,23 +52,23 @@ export class OrdersSearchCustomerComponent
    */
 
   searchCustomers() {
-    this.loading = true;
-    this.customersService
-      .getCustomersFake(this.page, this.pageSize, this.search)
-      .pipe(
-        catchError((error) => {
-          this.nzMessageService.error('Error loading products');
-          return [];
-        }),
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe((customers) => {
-        this.formGroup.controls['selectedCustomer'].setValue(null);
-        this.customers = customers;
-        console.log('customers', customers);
-      });
+    // this.loading = true;
+    // this.customersService
+    //   .getCustomersFake(this.page, this.pageSize, this.search)
+    //   .pipe(
+    //     catchError((error) => {
+    //       this.nzMessageService.error('Error loading products');
+    //       return [];
+    //     }),
+    //     finalize(() => {
+    //       this.loading = false;
+    //     })
+    //   )
+    //   .subscribe((customers) => {
+    //     this.formGroup.controls['selectedCustomer'].setValue(null);
+    //     this.customers = customers;
+    //     console.log('customers', customers);
+    //   });
   }
 
   /**

@@ -1,53 +1,34 @@
-<grid [direction]="'column'" [template]="isMobileOrTablet ? '1fr':'max-content 1fr'">
-    <side-menu *ngIf="isMobileOrTablet === false" />
-    <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'" padding="1rem 1.5rem" width="100%">
-        <top-bar width="100%" />
-        <grid [gap]="[24,24]" [direction]="'column'" [template]="'1fr'">
-            <grid [direction]="'column'" [template]="'1fr max-content'">
-                <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'" height="100%">
-                    <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                        <span class="fw-600 f-01"
-                            [ngClass]="{'f-24 f-lh-20': isMobileOrTablet, 'f-26 f-lh-24': !isMobileOrTablet}">
-                            Products
-                        </span>
-                    </grid>
-                </grid>
-                <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button [routerLink]="routes.OrderDraft" tuiButton [appearance]="'primary'" [size]="'m'">
-                        Create Order
-                    </button>
-                </grid>
+<layout>
+    <grid [gap]="[0,24]" [direction]="'row'" [height]="'calc(100vh - 49px)'"
+        [template]="'max-content max-content 1fr max-content'">
+        <grid [direction]="'column'" [padding]="'1rem'">
+            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+                Productos
+            </span>
+        </grid>
+        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
+            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <button outline small flex>
+                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
+                    Ordenado por fecha de creación
+                </button>
+                <button outline small flex>
+                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
+                    Columnas
+                </button>
             </grid>
-            <grid [gap]="[16,24]" [direction]="'column'" [template]="'max-content 1fr'" height="100%" width="100%">
-                <tui-segmented *ngIf="isMobile === false" [size]="'m'" [(activeItemIndex)]="indexTab"
-                    (activeItemIndexChange)="onChangeTab($event)" width="fit-content">
-                    <button *ngFor="let orderType of orderTypes;let i= index" type="button" minWidth="3.5rem">
-                        <span class="f-14 lttr-01" [ngClass]="{'fw-600 f-primary': indexTab === i}">
-                            {{orderType}}
-                        </span>
-                    </button>
-                </tui-segmented>
-
-                <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                    <form [formGroup]="formGroup" width="150px">
-                        <form-input [label]="undefined" [type]="'date'" [size]="isMobile ? 's' : 'm'"
-                            [placeholder]="'Choose date'" formControlName="date" [minDate]="null" />
-                    </form>
-                </grid>
-                <grid *ngIf="isMobile === true" [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button tuiButton appearance="secondary" tuiChevron type="button" [size]="'m'"
-                        [tuiDropdown]="contentCustomerTypes" [tuiDropdownMaxHeight]="500"
-                        [(tuiDropdownOpen)]="showFilterOptions">
-                        <span class="f-15 fw-600 f-lh-18 t-left">
-                            {{orderType}}
-                        </span>
-                    </button>
-                </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                <button primary small>
+                    Crear producto
+                </button>
             </grid>
         </grid>
-
     </grid>
-</grid>
+
+
+
+</layout>
 
 <ng-template #contentCustomerTypes>
     <tui-data-list [style.width.rem]="12" [size]="'m'">

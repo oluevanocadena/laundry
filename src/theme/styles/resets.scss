@@ -19,7 +19,7 @@ h5,
 h6,
 p,
 a,
-span,
+span:not(.material-symbols-outlined),
 div,
 li,
 ul,
@@ -126,4 +126,26 @@ span:not(.material-symbols-outlined):not(.material-symbols-filled):not(.icon) {
 
 *::-webkit-scrollbar-thumb:active {
     background-color: #4d4d4d;
+}
+
+.loader {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #eae1ea;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    margin-bottom: 0.15rem;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

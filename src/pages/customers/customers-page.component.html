@@ -86,8 +86,8 @@
                             </td>
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
-                                    <status-badge [label]="item?.Status ? 'Activo' : 'Inactivo'" [type]="'customer'"
-                                        [statusId]="item?.Status ? 1 : 0" [size]="'m'" />
+                                    <status-badge [label]="item?.Disabled ? 'Inactivo' : 'Activo'"
+                                        [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
                                 </grid>
                             </td>
                         </tr>

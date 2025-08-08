@@ -20,7 +20,7 @@
     background-color: #000000; // Black background
 }
 
-@for $i from 1 through 9 {
+@for $i from 0 through 9 {
     .bg-0#{$i} {
         background: var(--background-0#{$i});
     }

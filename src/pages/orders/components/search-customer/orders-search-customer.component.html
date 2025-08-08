@@ -47,15 +47,15 @@
                     <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
                         <grid [direction]="'row'" [gap]="[0,8]">
                             <span class="f-16 fw-600 f-01 f-lh-17">
-                                {{customer.name}}
+                                {{customer.FullName}}
                             </span>
                             <span class="f-14 fw-400 f-03 f-lh-16">
-                                {{customer.fullAddress}}
+                                {{customer.Address}}
                             </span>
                         </grid>
                         <grid [direction]="'column'" [align]="'center-right'" height="100%">
                             <span class="f-15 fw-600 f-03">
-                                {{customer.totalOrders | numeralFormat: '0,0'}} orders
+                                {{customer.TotalOrders || 0 | numeralFormat: '0,0'}} orders
                             </span>
                         </grid>
                     </grid>

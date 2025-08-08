@@ -95,11 +95,7 @@ const customerMarketingStatusesFake: CustomerMarketingStatus[] = [
     description: 'Unsubscribed',
   },
 ];
-
-export enum CustomerStatusEnum { 
-  Active = 1,
-  Inactive = 2,
-}
+ 
 
 export enum CustomerCreationStatusEnum {
   Draft = 1,

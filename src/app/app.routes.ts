@@ -1,31 +1,42 @@
 import { Routes } from '@angular/router';
+
+import { BoardPageComponent } from '../pages/board/board-page.component';
+import { CustomersPageComponent } from '../pages/customers/customers-page.component';
+import { CustomersDetailComponent } from '../pages/customers/detail/customers-detail.component';
+import { CustomersDraftComponent } from '../pages/customers/draft/customers-draft.component';
 import { HomeComponent } from '../pages/home/home.component';
+import { LocationsPageComponent } from '../pages/locations/locations.component';
+import { OrdersDetailPageComponent } from '../pages/orders/detail/order-detail-page.component';
+import { OrdersDraftPageComponent } from '../pages/orders/draft/orders-draft-page.component';
+import { OrdersPageComponent } from '../pages/orders/orders-page.component';
+import { ProductsPageComponent } from '../pages/products/products-page.component';
 import { LoginPageComponent } from '../pages/session/login/login-page.component';
 import { RegisterPageComponent } from '../pages/session/register/register-page.component';
-import { BoardPageComponent } from '../pages/board/board-page.component';
 import { SettingsPageComponent } from '../pages/settings/settings-page.component';
-import { OrdersDraftPageComponent } from '../pages/orders/draft/orders-draft-page.component';
-import { OrdersDetailPageComponent } from '../pages/orders/detail/order-detail-page.component';
-import { CustomersDraftComponent } from '../pages/customers/draft/customers-draft.component';
-import { CustomersDetailComponent } from '../pages/customers/detail/customers-detail.component';
-import { OrdersPageComponent } from '../pages/orders/orders-page.component';
-import { CustomersPageComponent } from '../pages/customers/customers-page.component';
-import { ProductsPageComponent } from '../pages/products/products-page.component';
+import { UsersPageComponent } from '../pages/users/users.component';
+import { NotificationsPageComponent } from '../pages/notifications/notifications.component';
+import { ReportsPageComponent } from '../pages/reports/reports.component';
+import { SupportPageComponent } from '../pages/support/support.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'board', component: BoardPageComponent },
-  { path: 'orders', component: OrdersPageComponent },
-  { path: 'orders/draft', component: OrdersDraftPageComponent },
-  { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
-  { path: 'orders/detail/:id', component: OrdersDetailPageComponent },
   { path: 'customers', component: CustomersPageComponent },
+  { path: 'customers/detail/:id', component: CustomersDetailComponent },
   { path: 'customers/draft', component: CustomersDraftComponent },
   { path: 'customers/edit/:id', component: CustomersDraftComponent },
-  { path: 'customers/detail/:id', component: CustomersDetailComponent },
+  { path: 'locations', component: LocationsPageComponent },
+  { path: 'orders', component: OrdersPageComponent },
+  { path: 'orders/detail/:id', component: OrdersDetailPageComponent },
+  { path: 'orders/draft', component: OrdersDraftPageComponent },
+  { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
   { path: 'products', component: ProductsPageComponent },
   { path: 'settings', component: SettingsPageComponent },
+  { path: 'users', component: UsersPageComponent },
+  { path: 'notifications', component: NotificationsPageComponent },
+  { path: 'reports', component: ReportsPageComponent },
+  { path: 'support', component: SupportPageComponent },
   { path: '**', redirectTo: '' },
 ];

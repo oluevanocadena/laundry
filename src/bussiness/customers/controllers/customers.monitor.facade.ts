@@ -19,9 +19,7 @@ export class CustomersMonitorFacade extends FacadeBase {
     super(api);
   }
 
-  initialize() {
-    this.fetchCustomers();
-  }
+  initialize() {}
 
   bindEvents() {}
 
@@ -42,9 +40,8 @@ export class CustomersMonitorFacade extends FacadeBase {
    * UI Events
    */
   onNewCustomer() {
-    this.draftFacade.edition = false;
-    this.draftFacade.clearState();
     this.router.navigate([routes.CustomerDraft]);
+    this.draftFacade.customer.value = null;
   }
 
   onCustomerClick(customer: Customer) {

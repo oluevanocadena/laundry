@@ -4,6 +4,7 @@ import { HelperPage } from '../../../../components/common/helper.page';
 import { Router } from '@angular/router';
 import moment from 'moment';
 import { CustomersDraftFacade } from '../../../../bussiness/customers/controllers/customers.draft.facade';
+import { TuiAppearanceOptions } from '@taiga-ui/core';
 
 @Component({
   selector: 'customers-header',
@@ -54,16 +55,18 @@ export class CustomersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get customerStatus(): string {
-    switch (this.facade.customer.value?.StatusCreationId) {
-      case 1:
-        return 'Borrador';
-      case 2:
-        return 'Activo';
-      case 3:
+    switch (this.facade.customer.value?.Disabled) {
+      case true:
         return 'Inactivo';
+      case false:
+        return 'Activo';
       default:
-        return 'Borrador';
+        return 'Activo';
     }
+  }
+
+  get customerStatusAppearance(): TuiAppearanceOptions['appearance'] {
+    return this.facade.customer.value?.Disabled ? 'error' : 'success';
   }
 
   /**

@@ -17,7 +17,8 @@
                 <form-input [label]="'Municipio'" [type]="'text'" [placeholder]="'Municipio'"
                     formControlName="municipality" [required]="true" />
                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
-                    <form-input [label]="'Estado'" [type]="'text'" [placeholder]="'Estado'" formControlName="state" />
+                    <form-input [label]="'Estado'" [type]="'text'" [placeholder]="'Estado'" formControlName="state"
+                        [required]="true" />
                     <form-input [label]="'Código postal'" [type]="'text'" [placeholder]="'Código postal'"
                         formControlName="zipCode" [required]="true" />
                 </grid>

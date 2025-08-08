@@ -13,6 +13,15 @@ button {
         font-size: 13px;
     }
 
+    &[medium] {
+        padding: 0.40rem 0.75rem 0.25rem !important;
+        font-size: 14px;
+    }
+
+    &[full] {
+        width: 100%;
+    }
+
     &[icon] {
         border-radius: 8px;
         padding: 0.35rem 0.5rem 0.25rem !important;
@@ -48,6 +57,18 @@ button {
 
     }
 
+    &[ghost] {
+        background-color: transparent;
+        border: 1px solid transparent;
+        color: var(--text-01);
+
+        &:hover {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--text-01);
+        }
+    }
+
     &[outline] {
         background-color: transparent;
         border: 1px solid var(--border);
@@ -77,8 +98,64 @@ button {
         &:active:not([disabled]) {
             background-color: var(--primary-hsl-pressed);
         }
-
     }
+
+    &[danger] {
+        background-color: var(--error-hsl);
+        border: 1px solid var(--error);
+        color: var(--text-01);
+
+        &:hover:not([disabled]) {
+            background-color: var(--error-hsl-hover);
+        }
+
+        &:active:not([disabled]) {
+            background-color: var(--error-hsl-pressed);
+        }
+    }
+
+    &[info] {
+        background-color: var(--info-hsl);
+        border: 1px solid var(--info);
+        color: var(--text-01);
+
+        &:hover:not([disabled]) {
+            background-color: var(--info-hsl-hover);
+        }
+
+        &:active:not([disabled]) {
+            background-color: var(--info-hsl-pressed);
+        }
+    }
+
+    &[success] {
+        background-color: var(--success-hsl);
+        border: 1px solid var(--success);
+        color: var(--text-01);
+
+        &:hover:not([disabled]) {
+            background-color: var(--success-hsl-hover);
+        }
+
+        &:active:not([disabled]) {
+            background-color: var(--success-hsl-pressed);
+        }
+    }
+
+    &[warning] {
+        background-color: var(--warning-hsl);
+        border: 1px solid var(--warning);
+        color: var(--text-01);
+
+        &:hover:not([disabled]) {
+            background-color: var(--warning-hsl-hover);
+        }
+
+        &:active:not([disabled]) {
+            background-color: var(--warning-hsl-pressed);
+        }
+    }
+
 
     &[prefix] {
         border-radius: 8px 0 0 8px;

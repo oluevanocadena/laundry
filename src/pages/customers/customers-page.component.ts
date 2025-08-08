@@ -18,5 +18,7 @@ export class CustomersPageComponent extends HelperPage implements OnInit {
    * Lifecycle
    */
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.facade.fetchCustomers();
+  }
 }

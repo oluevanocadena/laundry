@@ -1,19 +1,32 @@
 .ant-modal-content {
+    background-color: var(--background-01) !important;
     border-radius: 12px !important;
+    box-shadow: var(--shadow-01);
+    border: 1px solid var(--border) !important;
+    padding: 0 !important;
 }
 
-.ant-modal-body{
-    padding: 1rem !important;
+.ant-modal-body {
+    padding: 0 !important;
+
+    *body {
+        background-color: var(--background-01) !important;
+    }
 }
 
 .ant-message-notice-content {
     border-radius: 12px !important;
 }
 
-tui-root{
-    border-image:none !important;
+nz-modal-container {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
 }
 
-tui-dropdown{
+tui-root {
+    border-image: none !important;
+}
+
+tui-dropdown {
     z-index: 1 !important;
 }

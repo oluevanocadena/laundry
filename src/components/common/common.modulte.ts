@@ -20,6 +20,7 @@ import { MenuComponent } from './menu/menu.component';
 import { ModalSearchComponent } from './modal-search/modal-search.component';
 import { ModalSortComponent } from './modal-sort/modal-sort.component';
 import { ModalTitleComponent } from './modal-title/modal-title.component';
+import { ModalComponent } from './modal/modal.component';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { StatusBadgeComponent } from './status-badge/status-badge.component';
@@ -40,6 +41,7 @@ const components = [
   MenuComponent,
   MenuContentComponent,
   MenuItemComponent,
+  ModalComponent  ,
   ModalSearchComponent,
   ModalSortComponent,
   ModalTitleComponent,

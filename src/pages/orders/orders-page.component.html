@@ -92,7 +92,7 @@
                                 <tr *ngFor="let item of orders; let i = index">
                                     <td tuiTd>{{item.number}}</td>
                                     <td tuiTd>{{item.createdAt | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
-                                    <td tuiTd>{{item.customer.name}}</td>
+                                    <td tuiTd>{{item.customer.FullName}}</td>
                                     <td tuiTd>{{item.total | numeralFormat: '$0,0.00'}}</td>
                                     <td tuiTd>
                                         <status-badge [label]="item?.status" [statusId]="item?.statusId"

@@ -5,6 +5,8 @@ import { FacadeBase } from '../../../types/facade.base';
 import { StorageProp } from '../../../types/storage.type';
 import { CustomersApiService } from '../customers.api.service';
 import { Customer } from '../customers.interfaces';
+import { routes } from '../../../app/routes';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +14,8 @@ import { Customer } from '../customers.interfaces';
 export class CustomersDraftFacade extends FacadeBase {
   //Flag Management
   public edition: boolean = false;
+  public showDeleteModal: boolean = false;
+  public showDisabledModal: boolean = false;
 
   public formGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
@@ -30,28 +34,41 @@ export class CustomersDraftFacade extends FacadeBase {
   });
 
   //Subjects
-  public customer = new StorageProp<Customer | null>(null, 'CUSTOMER_EDITION');
+  public customer = new StorageProp<Customer>(null, 'CUSTOMER_EDITION');
 
-  constructor(public api: CustomersApiService) {
+  constructor(public api: CustomersApiService, public router: Router) {
     super(api);
   }
 
-  initialize() {
-    this.formGroup.controls.country.setValue('México');
-  }
+  initialize() {}
 
   bindEvents() {}
 
   clearState() {
     this.formGroup.reset();
-    this.customer.value = null;
+    this.customer.value = {
+      Deleted: false,
+      Disabled: false,
+      Country: 'México',
+      FirstName: '',
+      LastName: '',
+      FullName: '',
+      Email: '',
+      Municipality: '',
+      Neighborhood: '',
+      State: '',
+      Street: '',
+      ZipCode: '',
+    };
+    this.edition = false;
+    this.formGroup.controls.country.patchValue('México');
+    this.formGroup.controls.country.disable();
   }
 
   fillForm() {
     const value = this.customer.value;
     if (value) {
       this.edition = true;
-      console.log('customer', value);
       this.formGroup.patchValue({
         firstName: value.FirstName,
         lastName: value.LastName,
@@ -67,7 +84,8 @@ export class CustomersDraftFacade extends FacadeBase {
         country: value.Country,
         zipCode: value.ZipCode,
       });
-      console.log('formGroup', this.formGroup.value);
+    } else {
+      this.clearState();
     }
   }
 
@@ -90,13 +108,43 @@ export class CustomersDraftFacade extends FacadeBase {
       State: value.state?.toString() || '',
       Street: value.street?.toString() || '',
       ZipCode: value.zipCode?.toString() || '',
-      Status: true,
-      StatusCreationId: this.edition
-        ? this.customer.value?.StatusCreationId ||
-          CustomerCreationStatusEnum.Draft
-        : CustomerCreationStatusEnum.Draft,
+      Deleted: this.customer.value?.Deleted || false,
+      Disabled: this.customer.value?.Disabled || false,
+      TotalOrders: this.customer.value?.TotalOrders || 0,
     };
 
     this.api.saveCustomer(customer);
+  }
+
+  /**
+   * UI Events
+   */
+
+  onDelete() {
+    const customer = this.customer.value;
+    if (customer?.id) {
+      this.api.deleteCustomer(customer.id).then(() => {
+        this.router.navigate([routes.Customers]);
+      });
+    }
+  }
+
+  onDisable() {
+    const customer = this.customer.value;
+    if (customer?.id) {
+      if (customer.Disabled) {
+        this.api.enableCustomer(customer.id).then(() => {
+          if (this.customer.value) {
+            this.customer.value.Disabled = false;
+          }
+        });
+      } else {
+        this.api.disableCustomer(customer.id).then(() => {
+          if (this.customer.value) {
+            this.customer.value.Disabled = true;
+          }
+        });
+      }
+    }
   }
 }

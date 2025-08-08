@@ -5,7 +5,12 @@ import {
   Output,
   forwardRef,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { TuiDay, TuiTime } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
@@ -38,7 +43,7 @@ export class FormInputComponent implements ControlValueAccessor {
     | 'number' = 'text';
   @Input() countryCode: string = '+52';
   @Input() outerLabel: boolean = true;
-  @Input() size: TuiSizeL | TuiSizeS = 'm';
+  @Input() size: TuiSizeL | TuiSizeS = 's';
   @Input() min: number = 0;
   @Input() max: number = 100;
   @Input() step: number = 1;
@@ -46,17 +51,31 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() timeItems: TuiTime[] = [];
   @Input() minDate: TuiDay | null = TuiDay.currentLocal().append({ day: 1 });
   @Input() debounce: number = 300;
+  @Input() required: boolean = false;
   //Outputs
   @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
 
   value: string = '';
-  disabled = false;
+  private _disabled = false;
+  @Input() set disabled(value: boolean) {
+    this._disabled = value;
+    if (value) {
+      this.formGroup.controls.value.disable();
+    }
+  }
+  get disabled() {
+    return this._disabled;
+  }
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
   private onChange = (value: string) => {};
   private onTouched = () => {};
+
+  formGroup = new FormGroup({
+    value: new FormControl(''),
+  });
 
   constructor() {}
 
@@ -73,7 +92,9 @@ export class FormInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.value = value || '';
+    this.value = value;
+    console.log('value', value);
+    this.formGroup.controls.value.setValue(value);
   }
 
   registerOnChange(fn: (value: string) => void): void {

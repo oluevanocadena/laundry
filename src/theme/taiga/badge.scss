@@ -28,26 +28,32 @@ tui-badge-notification[data-size=s] {
 
 tui-badge,
 [tuiBadge] {
-    padding-top: 2px !important;
-    border-radius: 0.5rem !important;
+    height: 1.25rem !important;
+    padding: 2px 0.75rem !important;
+    border-radius: 0.75rem !important;
 }
 
 tui-badge[data-appearance=warning],
 [tuiBadge][data-appearance=warning] {
-    border: 1px solid var(--warning) !important;
+    background-color: var(--warning-hsl) !important;
+    border: none !important;
     color: var(--warning) !important;
+    box-shadow: 0 0 0 0.025rem var(--warning) !important;
 }
 
 tui-badge[data-appearance=error],
 [tuiBadge][data-appearance=error] {
-    border: 1px solid var(--error) !important;
+    border: none !important;
     color: var(--error) !important;
+    box-shadow: 0 0 0 0.025rem var(--error) !important;
 }
 
 tui-badge[data-appearance=success],
 [tuiBadge][data-appearance=success] {
-    border: 1px solid var(--success) !important;
+    background-color: var(--success-hsl) !important;
+    border: none !important;
     color: var(--success) !important;
+    box-shadow: 0 0 0 0.025rem var(--success) !important;
 }
 
 tui-badge[data-appearance=info],

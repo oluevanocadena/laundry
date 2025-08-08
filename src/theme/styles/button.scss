@@ -4,10 +4,9 @@ button {
     font-weight: 500;
     font-size: 14px;
 
-    &:active {
+    &:active:not([disabled]) {
         transform: translateY(1px);
     }
-
 
     &[small] {
         padding: 0.365rem 0.75rem 0.125rem !important;
@@ -17,6 +16,11 @@ button {
     &[icon] {
         border-radius: 8px;
         padding: 0.3rem 0.5rem 0.2rem !important;
+    }
+
+    &[xsmall] {
+        padding: 0.25rem 0.2rem 0.12rem !important;
+        font-size: 12px;
     }
 
     &[flex] {
@@ -35,7 +39,7 @@ button {
         color: var(--text-01);
 
         &:hover {
-            background-color: transparent;
+            background-color: var(--background-03);
             border: 1px solid var(--border);
             font-size: 13px;
             font-weight: 500;
@@ -53,8 +57,8 @@ button {
         padding: 0.55rem 0.75rem 0.45rem;
 
 
-        &:hover,
-        &:active {
+        &:hover:not([disabled]),
+        &:active:not([disabled]) {
             background-color: var(--background-04);
             border-color: var(--text-06);
         }
@@ -66,13 +70,14 @@ button {
         border: 1px solid var(--primary);
         color: var(--text-01);
 
-        &:hover {
+        &:hover:not([disabled]) {
             background-color: var(--primary-hsl-hover);
         }
 
-        &:active {
+        &:active:not([disabled]) {
             background-color: var(--primary-hsl-pressed);
         }
+
     }
 
     &[prefix] {
@@ -100,5 +105,15 @@ button {
 
     &[rounded] {
         border-radius: 16px;
+    }
+
+    &[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &[disabled]:active {
+        transform: none;
     }
 }

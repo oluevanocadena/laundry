@@ -6,6 +6,7 @@ import {
   OrderStatusEnum,
 } from '../../../services/order-status.service';
 import {
+  CustomerCreationStatusEnum,
   CustomerMarketingSubscriptionEnum,
   CustomerStatusEnum,
 } from '../../../services/customers-status.service';
@@ -98,12 +99,22 @@ export class StatusBadgeComponent implements OnInit {
             break;
         }
         break;
+      case StatusTypeBadgeEnum.CustomerStatusCreation:
+        switch (this.statusId) {
+          case CustomerCreationStatusEnum.Draft:
+            status = 'warning';
+            break;
+          case CustomerCreationStatusEnum.Active:
+            status = 'success';
+            break;
+          default:
+            status = 'warning';
+            break;
+        }
+        break;
       case StatusTypeBadgeEnum.Customer:
         // CustomerStatusEnum
         switch (this.statusId) {
-          case CustomerStatusEnum.Draft:
-            status = 'warning';
-            break;
           case CustomerStatusEnum.Active:
             status = 'success';
             break;
@@ -148,7 +159,8 @@ export type StatusTypeBadge =
   | 'payment'
   | 'delivery'
   | 'customer'
-  | 'customer-marketing';
+  | 'customer-marketing'
+  | 'customer-status-creation';
 
 export enum StatusTypeBadgeEnum {
   Order = 'order',
@@ -157,4 +169,5 @@ export enum StatusTypeBadgeEnum {
   Refund = 'refund',
   Customer = 'customer',
   CustomerMarketing = 'customer-marketing',
+  CustomerStatusCreation = 'customer-status-creation',
 }

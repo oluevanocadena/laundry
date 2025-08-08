@@ -262,6 +262,6 @@ export const CustomerEmpty: Customer = {
   createdAt: moment().format('YYYY-MM-DD'),
   statusMarketingId: CustomerMarketingSubscriptionEnum.Subscribed,
   statusMarketing: 'Subscribed',
-  statusId: CustomerStatusEnum.Draft,
-  status: 'Draft',
+  statusId: CustomerStatusEnum.Active,
+  status: 'Active',
 };

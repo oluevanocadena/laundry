@@ -5,11 +5,13 @@ import {
   OnChanges,
   Renderer2,
   SimpleChanges,
+  HostListener,
 } from '@angular/core';
 
 @Directive({
   standalone: false,
-  selector: '[padding], [margin], [width], [minWidth], [height], [minHeight], [maxHeight], [scroll]', // Selector para los atributos
+  selector:
+    '[padding], [margin], [width], [minWidth], [height], [minHeight], [maxHeight], [scroll]', // Selector para los atributos
 })
 export class StyleDirective implements OnChanges {
   @Input() padding?: string;
@@ -37,10 +39,18 @@ export class StyleDirective implements OnChanges {
       this.renderer.setStyle(this.el.nativeElement, 'minWidth', this.minWidth);
     }
     if (changes['minHeight']) {
-      this.renderer.setStyle(this.el.nativeElement, 'minHeight', this.minHeight);
+      this.renderer.setStyle(
+        this.el.nativeElement,
+        'minHeight',
+        this.minHeight
+      );
     }
     if (changes['maxHeight']) {
-      this.renderer.setStyle(this.el.nativeElement, 'maxHeight', this.maxHeight);
+      this.renderer.setStyle(
+        this.el.nativeElement,
+        'maxHeight',
+        this.maxHeight
+      );
     }
     if (changes['height']) {
       this.renderer.setStyle(this.el.nativeElement, 'height', this.height);

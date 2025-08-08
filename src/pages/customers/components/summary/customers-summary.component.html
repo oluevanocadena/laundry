@@ -1,24 +1,25 @@
-<tui-accordion-item class="container" [open]="true">
-    <grid [gap]="[8,16]" [direction]="isMobile ? 'row': 'column'" [align]="'center-left'">
-        <span class="f-16 fw-600 f-02 f-lh-14">Customer Summary</span>
-    </grid>
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+    <span class="f-14 fw-500 f-06 f-lh-12">Resumen de cliente</span>
 
     <ng-template tuiAccordionItemContent>
-        <form [formGroup]="formGroup">
-            <grid [direction]="'row'" [gap]="[16,16]">
-                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
-                    <form-input [label]="'Name'" [type]="'text'" [placeholder]="'Name'" [formControlName]="'name'" />
-                    <form-input [label]="'Last Name'" [type]="'text'" [placeholder]="'Last Name'"
-                        [formControlName]="'lastName'" />
+        <form [formGroup]="facade.formGroup">
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <form-input [label]="'Nombre(s)'" [type]="'text'" [placeholder]="'Nombre(s)'"
+                        formControlName="firstName" [required]="true" />
+                    <form-input [label]="'Apellido(s)'" [type]="'text'" [placeholder]="'Apellido(s)'"
+                        formControlName="lastName" [required]="true" />
                 </grid>
-                <form-input [label]="'Email'" [type]="'email'" [placeholder]="'Email'" [formControlName]="'email'" />
-                <form-input [label]="'Phone'" [type]="'phone'" [placeholder]="'Phone'" [formControlName]="'phone'"
-                    [countryCode]="'+52'" />
-
-                <grid>
-                    <span class="f-14  f-lh-16 f-03">
-                        You should ask for the customer's email and phone number to keep them informed about their
-                        order.
+                <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <form-input [label]="'Correo electrónico'" [type]="'email'" [placeholder]="'Correo electrónico'"
+                        formControlName="email" [required]="true" />
+                    <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'Teléfono'" [countryCode]="'+52'"
+                        formControlName="phone" />
+                </grid>
+                <grid [padding]="'1rem 0 0 0'">
+                    <span class="f-13 f-lh-16 f-06">
+                        Debes solicitar el correo electrónico y/o el número de teléfono del cliente para poder
+                        notificarlo sobre cambios en su pedido.
                     </span>
                 </grid>
             </grid>

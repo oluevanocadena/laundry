@@ -53,6 +53,7 @@ import {
   TuiTextareaModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/legacy';
+import { TuiLineClamp } from '@taiga-ui/kit';
 @NgModule({
   imports: [
     CommonModule,
@@ -68,6 +69,7 @@ import {
     TuiAppearance,
     TuiAutoColorPipe,
     TuiAvatar,
+    TuiLineClamp,
     TuiBadge,
     TuiBadgeNotification,
     TuiBlock,
@@ -115,9 +117,10 @@ import {
     ...TuiTable,
     ...TuiTextfield,
     TuiAppearance,
-    TuiAutoColorPipe,  
+    TuiAutoColorPipe,
     TuiAvatar,
     TuiBadge,
+    TuiLineClamp,
     TuiBadgeNotification,
     TuiBlock,
     TuiButton,

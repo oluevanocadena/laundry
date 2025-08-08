@@ -40,7 +40,14 @@ tr {
     height: 36px;
     min-height: 36px;
     max-height: 36px;
+
+    &[hoverable]:hover {
+        cursor: pointer;
+        background-color: var(--background-04);
+    }
 }
+
+
 
 thead,
 tbody {

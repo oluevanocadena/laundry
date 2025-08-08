@@ -1,13 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HelperPage } from '../../../../components/common/helper.page';
-import {
-  Customer,
-  CustomerEmpty,
-  CustomersService,
-} from '../../../../services/customers.service';
+
 import { Router } from '@angular/router';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { finalize } from 'rxjs';
+import moment from 'moment';
+import { CustomersDraftFacade } from '../../../../bussiness/customers/controllers/customers.draft.facade';
 
 @Component({
   selector: 'customers-header',
@@ -16,46 +12,9 @@ import { finalize } from 'rxjs';
   styleUrls: ['./customers-header.component.scss'],
 })
 export class CustomersHeaderComponent extends HelperPage implements OnInit {
-  //Flag Management
-  busy: boolean = false;
   showMoreOptions: boolean = false;
 
-  //Input
-  @Input() loading: boolean = false;
-  @Input() edition: boolean = false;
-
-  //Input
-  private _order: Customer | null = null;
-  @Input() set customer(value: Customer) {
-    this._order = value;
-  }
-  get customer(): Customer | null {
-    return this._order;
-  }
-  @Output() customerChange: EventEmitter<Customer> =
-    new EventEmitter<Customer>();
-
-  //Array
-  actionTypes = [
-    {
-      id: 2,
-      name: 'Edit',
-    },
-    {
-      id: 1,
-      name: 'Inactive',
-    },
-    {
-      id: 3,
-      name: 'Delete',
-    },
-  ];
-
-  constructor(
-    public customersService: CustomersService,
-    public nzMessageService: NzMessageService,
-    public router: Router
-  ) {
+  constructor(public facade: CustomersDraftFacade, public router: Router) {
     super();
   }
 
@@ -64,26 +23,7 @@ export class CustomersHeaderComponent extends HelperPage implements OnInit {
    */
 
   saveCustomer() {
-    if (this.customer !== null) {
-      console.log('Save Customer:', this.customer);
-      this.busy = true;
-      this.customersService
-        .createFakeCustomer(this.customer)
-        .pipe(
-          finalize(() => {
-            this.busy = false;
-          })
-        )
-        .subscribe((response) => {
-          if (response) {
-            this.customer = CustomerEmpty;
-            this.nzMessageService.success('Customer saved successfully');
-            this.router.navigate([this.routes.Customers]);
-          } else {
-            this.nzMessageService.error('Error saving the customer.');
-          }
-        });
-    }
+    this.facade.submitForm();
   }
 
   onBack() {
@@ -95,7 +35,35 @@ export class CustomersHeaderComponent extends HelperPage implements OnInit {
    */
 
   get canSave(): boolean {
-    return this.customer !== null;
+    return this.facade.formGroup.valid;
+  }
+
+  get dateCreated(): string {
+    return (
+      this.facade.customer.value?.created_at ||
+      moment().locale('es').toDate().toString()
+    );
+  }
+
+  get customerNumber(): string {
+    return this.facade.customer.value?.CustomerNumber || '';
+  }
+
+  get busy(): boolean {
+    return this.facade.api.busy.value;
+  }
+
+  get customerStatus(): string {
+    switch (this.facade.customer.value?.StatusCreationId) {
+      case 1:
+        return 'Borrador';
+      case 2:
+        return 'Activo';
+      case 3:
+        return 'Inactivo';
+      default:
+        return 'Borrador';
+    }
   }
 
   /**

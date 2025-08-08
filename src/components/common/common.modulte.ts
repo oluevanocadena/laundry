@@ -12,6 +12,7 @@ import { DrawerMenuComponent } from './drawer-menu/drawer-menu.component';
 import { DrawerNotificationsComponent } from './drawer-notifications/drawer-notifications.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { LayoutComponent } from './layout/layout.component';
 import { LogoComponent } from './logo/logo.component';
 import { MenuContentComponent } from './menu-content/menu-content.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
@@ -25,8 +26,8 @@ import { StatusBadgeComponent } from './status-badge/status-badge.component';
 import { TableOptionsComponent } from './table-options/table-options.component';
 import { TableSegmentsComponent } from './table-segments/table-segments.component';
 import { TopBarButtonsComponent } from './top-bar-buttons/top-bar-buttons.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
 import { TopBarOrganizationComponent } from './top-bar-organization/top-bar-organization.component';
+import { TopBarComponent } from './top-bar/top-bar.component';
 
 const components = [
   ButtonResponsiveComponent,
@@ -34,6 +35,7 @@ const components = [
   DrawerNotificationsComponent,
   FooterComponent,
   HeaderComponent,
+  LayoutComponent,
   LogoComponent,
   MenuComponent,
   MenuContentComponent,

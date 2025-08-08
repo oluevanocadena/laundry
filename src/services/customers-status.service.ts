@@ -96,10 +96,14 @@ const customerMarketingStatusesFake: CustomerMarketingStatus[] = [
   },
 ];
 
-export enum CustomerStatusEnum {
+export enum CustomerStatusEnum { 
+  Active = 1,
+  Inactive = 2,
+}
+
+export enum CustomerCreationStatusEnum {
   Draft = 1,
   Active = 2,
-  Inactive = 3,
 }
 
 export enum CustomerMarketingSubscriptionEnum {

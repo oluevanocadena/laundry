@@ -1,55 +1,55 @@
-<grid [gap]="[8, 24]" [direction]="'column'" [template]="'1fr'">
-    <span *ngIf="label" class="f-15 fw-500 f-02">{{ label }}</span>
-    <tui-input *ngIf="isEmailOrText" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel">
-        <ng-container *ngIf="placeholder">
+<form [formGroup]="formGroup">
+    <grid [gap]="[6, 24]" [direction]="'column'" [template]="'1fr'">
+        <span *ngIf="label" class="f-13 fw-500 f-02">
+            {{ label }}
+            <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+        </span>
+        <tui-input *ngIf="isEmailOrText" tuiTextfieldLegacy [tuiTextfieldSize]="size"
+            [tuiTextfieldLabelOutside]="outerLabel" formControlName="value" (input)="onInputChange($event)">
             {{ placeholder }}
-        </ng-container>
-        <input tuiTextfieldLegacy [type]="type" autocomplete="new-password" [disabled]="disabled" [value]="value"
-            (input)="onInputChange($event)" />
-    </tui-input>
-    <tui-input-phone *ngIf="type === 'phone'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
-        [countryCode]="countryCode">
-        <ng-container *ngIf="placeholder">
+        </tui-input>
+        <tui-input-phone *ngIf="type === 'phone'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
+            [countryCode]="countryCode" formControlName="value" (input)="onInputChange($event)">
             {{ placeholder }}
-        </ng-container>
-        <input autocomplete="tel" tuiTextfieldLegacy autocomplete="new-password" [disabled]="disabled" [value]="value"
-            (input)="onInputChange($event)" />
-    </tui-input-phone>
+        </tui-input-phone>
 
-    <tui-textfield *ngIf="type === 'password'" [tuiTextfieldSize]="size">
-        <input [attr.placeholder]="placeholder" tuiTextfield type="password" autocomplete="new-password"
-            [disabled]="disabled" [value]="value" (input)="onInputChange($event)" />
-        <tui-icon tuiPassword />
-    </tui-textfield>
+        <tui-textfield *ngIf="type === 'password'" [tuiTextfieldSize]="size" formControlName="value"
+            (input)="onInputChange($event)">
+            {{ placeholder }}
+            <tui-icon tuiPassword />
+        </tui-textfield>
 
-    <tui-textarea *ngIf="type === 'textarea'" [tuiTextfieldLabelOutside]="outerLabel" tuiTextfieldSize="m"
-        [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
-        {{ placeholder }}
-    </tui-textarea>
+        <tui-textarea *ngIf="type === 'textarea'" [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size"
+            formControlName="value" (input)="onInputChange($event)">
+            {{ placeholder }}
+        </tui-textarea>
 
-    <tui-input-number *ngIf="type === 'number'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-        [tuiTextfieldPostfix]="postFix" [min]="min" [max]="max" [step]="step" [(ngModel)]="value"
-        [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
-        {{ placeholder }}
-    </tui-input-number>
+        <tui-input-number *ngIf="type === 'number'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+            [tuiTextfieldPostfix]="postFix" [min]="min" [max]="max" [step]="step" [(ngModel)]="value"
+            [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
+            {{ placeholder }}
+        </tui-input-number>
 
-    <tui-input-date *ngIf="type === 'date'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [min]="minDate"
-        [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
-        {{ placeholder }}
-    </tui-input-date>
-    <tui-input-date-range *ngIf="type === 'date-range'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-        [min]="minDate" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
-        (ngModelChange)="onNgModelChange($event)">
-        {{ placeholder }}
-    </tui-input-date-range>
+        <tui-input-date *ngIf="type === 'date'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+            [min]="minDate" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="onNgModelChange($event)">
+            {{ placeholder }}
+        </tui-input-date>
+        <tui-input-date-range *ngIf="type === 'date-range'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+            [min]="minDate" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="onNgModelChange($event)">
+            {{ placeholder }}
+        </tui-input-date-range>
 
-    <tui-input-time *ngIf="type === 'time'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-        [items]="timeItems" [strict]="true" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
-        (ngModelChange)="onNgModelChange($event)">
-        {{ placeholder }}
-    </tui-input-time>
-    <tui-textfield *ngIf="type === 'search'" iconStart="@tui.search" [tuiTextfieldSize]="size"
-        [tuiTextfieldLabelOutside]="true">
-        <input [attr.placeholder]="placeholder" tuiTextfield [value]="value" (input)="onInputChange($event)" />
-    </tui-textfield>
-</grid>
+        <tui-input-time *ngIf="type === 'time'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+            [items]="timeItems" [strict]="true" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="onNgModelChange($event)">
+            {{ placeholder }}
+        </tui-input-time>
+        <tui-textfield *ngIf="type === 'search'" iconStart="@tui.search" [tuiTextfieldSize]="size"
+            [tuiTextfieldLabelOutside]="true">
+            <input [attr.placeholder]="placeholder" tuiTextfield formControlName="value"
+                (input)="onInputChange($event)" />
+        </tui-textfield>
+    </grid>
+</form>

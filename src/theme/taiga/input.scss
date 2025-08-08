@@ -1,3 +1,73 @@
+tui-input-phone[data-size="s"],
+tui-input[data-size="s"] {
+    border-radius: 5px !important;
+
+    div {
+        tui-primitive-textfield {
+            div::after {
+                color: var(--border) !important;
+            }
+
+            div { 
+
+                input {
+                    padding-top: 2px !important;
+                    color: var(--text-02) !important;
+                    font-size: 13px !important;
+                }
+
+                input:focus-visible {
+                    border: 1px solid var(--border) !important;
+                    outline: none !important;
+                    box-shadow: 0 0 0 1px var(--primary-hsl-hover) !important;
+                }
+
+                .t-content {
+                    div {
+                        label {
+                            padding-top: 3px !important;
+                            color: var(--text-08) !important;
+                        }
+                    }
+                }
+
+                background: transparent !important;
+            }
+        }
+    }
+}
+
+tui-textarea {
+    div.t-outline {
+        background: transparent !important;
+        border: 1px solid var(--border) !important;
+
+        label::after {
+            color: var(--border) !important;
+        }
+
+        label {
+            color: var(--text-08) !important;
+
+            div.t-wrapper {
+                color: var(--text-08) !important;
+
+                div.t-placeholder {
+                    color: var(--text-08) !important;
+                }
+            }
+
+            div.t-icons {
+                color: var(--text-08) !important;
+            }
+
+            textarea {
+                caret-color: var(--white) !important;
+            }
+        }
+    }
+}
+
 tui-textfield[tuiInputRound] {
     border-radius: 2rem !important;
 }
@@ -12,7 +82,7 @@ tui-textfield[tuiIcons]:before {
     margin-left: 2px !important;
 }
 
-tui-textfield[iconstart] input{
+tui-textfield[iconstart] input {
     padding-top: 0.525rem !important;
 }
 
@@ -22,11 +92,11 @@ tui-textfield[iconstart] input{
 
 
 tui-primitive-textfield.t-textfield[data-size=m] {
-    font: var(--tui-font-text-m) ! important;
+    font: var(--tui-font-text-s) ! important;
 }
 
 tui-primitive-textfield.t-textfield[data-size=l] {
-    font: var(--tui-font-text-l) ! important;
+    font: var(--tui-font-text-m) ! important;
 }
 
 [tuiwrapper] input.t-input[data-size="m"],
@@ -36,5 +106,5 @@ tui-primitive-textfield[data-size="m"] [tuiwrapper] input.t-input {
 
 [tuiwrapper] input.t-input[data-size="s"],
 tui-primitive-textfield[data-size="s"] [tuiwrapper] input.t-input {
-    padding: 1.15rem var(--tui-padding-m) !important;
+    padding: 0.75rem var(--tui-padding-m) !important;
 }

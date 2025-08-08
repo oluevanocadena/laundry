@@ -1,22 +1,17 @@
-<grid [direction]="'row'" [template]="'max-content 1fr'" height="100vh" class="bg-white">
-    <customers-top-bar [title]="'Draft Customer'" [loading]="loading" width="100vw" />
-
+<layout>
     <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content max-content'"
         [padding]="isMobile ? '1.5rem 1rem':'1.5rem'" height="100%">
-        <customers-header [edition]="false" [loading]="loading" [(customer)]="customer" />
-
+        <customers-header />
         <grid [gap]="[24,24]" [direction]="'column'"
             [template]="isMobileOrTablet ? '1fr': isLargeDesktop? '1fr minmax(650px, 0.25fr)': '1fr 350px'"
             height="fit-content">
             <grid [direction]="'row'" [gap]="[24,24]">
-                <customers-summary [edition]="true" [(customer)]="customer" />
-                <customers-notes [edition]="true" [(customer)]="customer" />
+                <customers-summary [edition]="true" />
+                <customers-notes [edition]="true" />
             </grid>
             <grid [direction]="'row'" [gap]="[24,24]">
-                <customers-address #delivery [edition]="true" [(customer)]="customer" />
+                <customers-address #delivery [edition]="true" />
             </grid>
         </grid>
     </grid>
-
-
-</grid>
+</layout>

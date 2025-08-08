@@ -26,9 +26,12 @@
 
     </grid>
 
-    <grid [direction]="'column'" [align]="'center-right'">
+    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
         <button (click)="saveCustomer()" [disabled]="canSave === false" outline small primary>
             Guardar
+        </button>
+        <button outline small icon>
+            <tui-icon icon="@tui.ellipsis-vertical" class="f-16 f-01" />
         </button>
     </grid>
 

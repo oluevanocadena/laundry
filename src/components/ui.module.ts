@@ -1,14 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { GridComponent } from './grid/grid.component';
-import { FormInputComponent } from './form-input/form-input.component';
-import { TUIModule } from './tui.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormInputComponent } from './form-input/form-input.component';
+import { GridComponent } from './grid/grid.component';
+import { TUIModule } from './tui.module';
+import { NgZorroModule } from "./ng-zorro.module";
 
 const components = [GridComponent, FormInputComponent];
 
 @NgModule({
-  imports: [CommonModule, TUIModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    TUIModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgZorroModule
+],
   declarations: components,
   exports: components,
 })

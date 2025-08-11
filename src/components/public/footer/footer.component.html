@@ -1,0 +1,44 @@
+<grid [gap]="[24,24]" [direction]="'column'" [align]="'center-center'" [padding]="'1rem 3rem'" [width]="'100%'"
+    class="brdr-top">
+    <grid [direction]="'row'" [gap]="[16,16]" [width]="'100%'" [maxWidth]="'1024px'">
+        <grid [gap]="[24,24]" [direction]="'row'" [width]="'100%'" [padding]="'1rem 0'">
+            <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                <logo size="medium" />
+                <span class="f-01 f-24 fw-600">Wofloo</span>
+            </grid>
+            <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'">
+                <tui-icon icon="@tui.facebook" class="f-07 f-24" />
+                <tui-icon icon="@tui.instagram" class="f-07 f-24" />
+                <tui-icon icon="@tui.twitch" class="f-07 f-24" />
+            </grid>
+
+            <grid [direction]="'column'" [align]="'center-left'">
+                <grid [direction]="'row'" [gap]="[16,16]">
+                    <span class="f-16 fw-600 f-02 t-left">
+                        Soluciones
+                    </span>
+                    <grid [direction]="'row'" [gap]="[8,8]">
+                        <a routerLink="/" class="f-14 fw-400 f-05 t-left">
+                            Marketing IA
+                        </a>
+                        <a routerLink="/" class="f-14 fw-400 f-05 t-left">
+                            Gestión de lavandería
+                        </a>
+                        <a routerLink="/" class="f-14 fw-400 f-05 t-left">
+                            Gestión de tintorería
+                        </a>
+                    </grid>
+                </grid>
+            </grid>
+        </grid>
+
+        <grid [gap]="[24,24]" [direction]="'row'" [width]="'100%'" [padding]="'1rem 0 4rem'" class="brdr-top">
+            <grid [direction]="'row'" [gap]="[16,16]">
+                <span class="f-14 fw-400 f-05 t-left">
+                    Copyright 2025 Wofloo - Todos los derechos reservados.
+                </span>
+            </grid>
+        </grid>
+    </grid>
+
+</grid>

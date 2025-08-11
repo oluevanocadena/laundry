@@ -14,7 +14,7 @@ import {
 @Directive({
   standalone: false,
   selector:
-    '[padding], [margin], [width], [minWidth], [height], [minHeight], [maxHeight], [scroll]', // Selector para los atributos
+    '[padding], [margin], [width], [minWidth], [height], [minHeight], [maxHeight], [maxWidth], [scroll]', // Selector para los atributos
 })
 export class StyleDirective implements OnChanges {
   @Input() padding?: string;
@@ -24,6 +24,7 @@ export class StyleDirective implements OnChanges {
   @Input() minHeight?: string;
   @Input() maxHeight?: string;
   @Input() height?: string;
+  @Input() maxWidth?: string;
   @Input() scroll?: 'x' | 'y';
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
@@ -40,6 +41,9 @@ export class StyleDirective implements OnChanges {
     }
     if (changes['minWidth']) {
       this.renderer.setStyle(this.el.nativeElement, 'minWidth', this.minWidth);
+    }
+    if (changes['maxWidth']) {
+      this.renderer.setStyle(this.el.nativeElement, 'maxWidth', this.maxWidth);
     }
     if (changes['minHeight']) {
       this.renderer.setStyle(

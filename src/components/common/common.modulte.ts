@@ -10,6 +10,7 @@ import { UIModule } from '../ui.module';
 import { ButtonResponsiveComponent } from './button-responsive/button-responsive.component';
 import { DrawerMenuComponent } from './drawer-menu/drawer-menu.component';
 import { DrawerNotificationsComponent } from './drawer-notifications/drawer-notifications.component';
+import { DrawerComponent } from './drawer/drawer.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout/layout.component';
@@ -32,6 +33,7 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 
 const components = [
   ButtonResponsiveComponent,
+  DrawerComponent,
   DrawerMenuComponent,
   DrawerNotificationsComponent,
   FooterComponent,
@@ -52,7 +54,7 @@ const components = [
   TableSegmentsComponent,
   TopBarButtonsComponent,
   TopBarComponent,
-  TopBarOrganizationComponent,
+  TopBarOrganizationComponent,  
 ];
 
 @NgModule({

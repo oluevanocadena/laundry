@@ -32,3 +32,23 @@
 .ant-checkbox-inner::after {
     border-color: var(--border) !important;
 }
+
+nz-switch {
+    width: fit-content !important;
+}
+
+.ant-switch-checked {
+    background-color: var(--primary) !important;
+}
+
+.ant-click-animating-node {
+    animation: waveEffect 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 0 0 6px var(--primary-hsl);
+}
+
+@keyframes waveEffect {
+    100% {
+        box-shadow: 0 0 0 6px var(--primary-hsl);
+        opacity: 0;
+    }
+}

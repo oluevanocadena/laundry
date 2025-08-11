@@ -1,0 +1,29 @@
+nz-segmented {
+    border: 1px solid var(--border) !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+
+    div {
+        .ant-segmented-thumb {
+            background-color: var(--primary-hsl) !important;
+        }
+
+        label.ant-segmented-item {
+            padding: 2px 0.35rem 0 !important;
+        }
+
+        label.ant-segmented-item-selected,
+        label.ant-segmented-thumb {
+            background-color: var(--primary-hsl) !important;
+            border-radius: 4px !important;
+        }
+
+        label {
+            .ant-segmented-item-label {
+                padding-top: 2px !important;
+                line-height: 20px !important;
+                min-height: 14px !important;
+            }
+        }
+    }
+}

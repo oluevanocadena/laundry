@@ -9,7 +9,7 @@ $end: 80;
 
 @for $i from 1 through 9 {
   .f-0#{$i} {
-    color:var(--text-0#{$i});
+    color:var(--text-0#{$i}) !important;
   }
 }
 
@@ -49,15 +49,15 @@ $end: 80;
 }
 
 .f-error {
-  color: var(--error);
+  color: var(--error) !important;
 }
 
 .f-success {
-  color: var(--success);
+  color: var(--success) !important;
 }
 
 .f-warning {
-  color: var(--warning);
+  color: var(--warning) !important;
 }
 
 .f-warning-secondary {

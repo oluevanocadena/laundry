@@ -1,3 +1,13 @@
+a:hover {
+    color: var(--primary) !important;
+
+    tui-icon {
+        color: var(--primary) !important;
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
+}
+
 button {
     cursor: pointer;
     border-radius: .375rem;
@@ -97,6 +107,20 @@ button {
 
         &:active:not([disabled]) {
             background-color: var(--primary-hsl-pressed);
+        }
+    }
+
+    &[secondary] {
+        background-color: var(--secondary-hsl);
+        border: 1px solid var(--border);
+        color: var(--text-01);
+
+        &:hover:not([disabled]) {
+            background-color: var(--secondary-hsl-hover);
+        }
+
+        &:active:not([disabled]) {
+            background-color: var(--secondary-hsl-pressed);
         }
     }
 

@@ -4,11 +4,15 @@ tui-input[data-size="s"] {
 
     div {
         tui-primitive-textfield {
+
             div::after {
                 color: var(--border) !important;
             }
 
-            div { 
+            div {
+                &[data-state="disabled"] {
+                    background: var(--background-04) !important;
+                }
 
                 input {
                     padding-top: 2px !important;
@@ -106,5 +110,11 @@ tui-primitive-textfield[data-size="m"] [tuiwrapper] input.t-input {
 
 [tuiwrapper] input.t-input[data-size="s"],
 tui-primitive-textfield[data-size="s"] [tuiwrapper] input.t-input {
-    padding: 0.75rem var(--tui-padding-m) !important;
+    padding: 0.9rem var(--tui-padding-m) 0.75rem !important;
+}
+
+.t-input_error {
+    box-shadow: 0px 0px 0.015rem 0.0225rem var(--error) !important;
+    border-radius: 0.5rem !important;
+    outline: 1px solid var(--error) !important;
 }

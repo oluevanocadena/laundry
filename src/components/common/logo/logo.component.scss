@@ -1,3 +1,17 @@
 :host{
     height: 100%;
 }
+
+[alt="logo"] {
+    &.small {
+        height: 24px;
+    }
+
+    &.medium {
+        height: 32px;
+    }
+
+    &.large {
+        height: 40px;
+    }   
+}

@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from '../../environments/environment';
 import { HttpService } from '../../services/common/http.service';
-import { CustomerCreationStatusEnum } from '../../services/customers-status.service';
 import { BusyProp } from '../../types/busy.type';
 import { SubjectProp } from '../../types/subject.type';
 import { Customer } from './customers.interfaces';
+import { FacadeApiBase } from '../../types/facade.base';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomersApiService {
+export class CustomersApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
-  private client: SupabaseClient;
+  public client: SupabaseClient;
   private table = 'Customers';
 
   customers = new SubjectProp<Customer[]>([]);

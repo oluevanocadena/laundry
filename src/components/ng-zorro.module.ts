@@ -9,6 +9,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 
 let MODULES = [
   NzAlertModule,
@@ -20,7 +21,8 @@ let MODULES = [
   NzMenuModule,
   NzModalModule,
   NzSegmentedModule,
-  NzSelectModule,
+  NzSelectModule, 
+  NzSwitchModule,
 ];
 
 @NgModule({

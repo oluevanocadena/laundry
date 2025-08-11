@@ -40,11 +40,12 @@
 .segmented-disabled-item,
 .segmented-disabled-item:focus,
 .segmented-disabled-item:hover {
+    cursor: not-allowed !important;
+
     .ant-select-item-option-content {
         color: var(--text-08) !important;
     }
 
-    cursor: not-allowed !important;
 }
 
 .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {

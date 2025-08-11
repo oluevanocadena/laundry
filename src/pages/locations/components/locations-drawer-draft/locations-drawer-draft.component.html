@@ -1,0 +1,86 @@
+<drawer [(show)]="show" (onClose)="close()" (onConfirm)="confirm()" [large]="'500px'" [confirmStyle]="'success'"
+    [closable]="false">
+    <grid title [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
+        <span class="f-16 f-03 fw-600 t-left">
+            {{facade.edition ? 'Editar sucursal' : 'Nueva sucursal'}}
+        </span>
+        <status-badge [label]="labelStatus" [appearance]="facade.edition ? 'success' : 'warning'" [size]="'m'" />
+    </grid>
+    <grid body>
+        <form [formGroup]="facade.formGroup">
+            <grid [gap]="[16,16]" [direction]="'row'">
+                <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1.5rem 1.5rem'">
+                    <grid>
+                        <span class="f-13 f-06 f-lh-15">
+                            Aquí puedes agregar o modificar los datos de la sucursal.
+                        </span>
+                    </grid>
+                    <form-input [label]="'Nombre'" [type]="'text'" [placeholder]="'Nombre de la sucursal'"
+                        formControlName="name" [required]="true" />
+                    <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'Teléfono'" formControlName="phone"
+                        [required]="false" />
+                    <form-input [label]="'Calle'" [type]="'text'" [placeholder]="'Calle'" formControlName="street"
+                        [required]="true" />
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                        <form-input [label]="'# Exterior'" [type]="'text'" [placeholder]="'# Exterior'"
+                            formControlName="externalNumber" />
+                        <form-input [label]="'# Interior'" [type]="'text'" [placeholder]="'# Interior'"
+                            formControlName="internalNumber" />
+                    </grid>
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                        <form-input [label]="'Colonia'" [type]="'text'" [placeholder]="'Colonia'"
+                            formControlName="neighborhood" [required]="true" />
+                        <form-input [label]="'Municipio'" [type]="'text'" [placeholder]="'Municipio'"
+                            formControlName="municipality" [required]="true" />
+                    </grid>
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                        <form-input [label]="'Estado'" [type]="'text'" [placeholder]="'Estado'" formControlName="state"
+                            [required]="true" />
+                        <form-input [label]="'Código postal'" [type]="'text'" [placeholder]="'Código postal'"
+                            formControlName="zipCode" [required]="true" />
+                    </grid>
+
+                    <form-input [label]="'País'" [type]="'text'" [placeholder]="'País'" formControlName="country"
+                        [disabled]="true" />
+
+                    <grid>
+                        <span class="f-13 f-07 f-lh-15">
+                            Estos datos se usarán para generar la dirección de la sucursal ademas de ser incluidos en el
+                            ticket de compra.
+                        </span>
+                    </grid>
+
+
+                    <form-input [label]="'Marcar como predeterminado'" [type]="'switch'" formControlName="default"
+                        [orientation]="'horizontal'" />
+
+                </grid>
+                <grid *ngIf="facade.edition" [gap]="[16,16]" [direction]="'column'" [template]="'max-content 1fr'"
+                    [padding]="'1rem 1.5rem'" class="brdr-top bg-02">
+                    <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]" [padding]="'0.25rem 0 0 0'">
+                        <tui-icon [icon]="disabled ? '@tui.check' : '@tui.info'"
+                            [class]="disabled ? 'f-18 f-01 f-success' : 'f-18 f-01 f-warning'" />
+                    </grid>
+                    <grid [gap]="[0,8]" [direction]="'row'">
+                        <span class="f-15 f-lh-16 f-01 fw-600 t-left">
+                            {{ disabled ?
+                            'Habilitar' :
+                            'Deshabilitar' }}
+                        </span>
+                        <span class="f-14 f-lh-16 f-05 fw-400 t-left">
+                            {{ disabled ?
+                            'Habilitar una sucursal permitirá crear nuevos pedidos al instante.' :
+                            'Deshabilitar una sucursal impedirá crear nuevos pedidos en esta sucursal al confirmar esta
+                            acción.' }}
+                        </span>
+                        <grid [direction]="'row'" [gap]="[8,8]" [padding]="'0.5rem 0 0 0'">
+                            <button danger small [disabled]="disabled">
+                                Deshabilitar sucursal
+                            </button>
+                        </grid>
+                    </grid>
+                </grid>
+            </grid>
+        </form>
+    </grid>
+</drawer>

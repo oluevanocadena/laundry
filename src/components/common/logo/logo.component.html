@@ -1,7 +1,7 @@
 <grid *ngIf="direction === 'vertical'" [gap]="[0,6]" [direction]="'row'" [align]="'center-center'" height="100%"
     class="pointer" [routerLink]="routes.Home">
     <grid [direction]="'column'" [align]="'center-center'" height="100%">
-        <img src="/logo_simple_2.svg" alt="logo" [ngClass]="{'h-16':isMobile, 'h-24':!isMobile}" />
+        <img src="/logo_simple_2.svg" alt="logo" class="{{size}}" />
     </grid>
     <!-- <grid *ngIf="!isMobile" [direction]="'column'" [align]="'center-center'" height="100%">
         <img src="/logo.svg" alt="logo" [ngClass]="{'h-30':isMobile, 'h-22':!isMobile}" />
@@ -13,5 +13,5 @@
     class="pointer" [routerLink]="routes.Home">
     <grid [direction]="'column'" [align]="'center-left'" height="100%">
         <img src="/logo_simple.svg" alt="logo" class="h-28" />
-    </grid> 
+    </grid>
 </grid>

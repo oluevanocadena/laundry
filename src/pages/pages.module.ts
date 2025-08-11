@@ -20,6 +20,7 @@ import { LoginModule } from './session/login.module';
 import { SettingsModule } from './settings/settings.module';
 import { SupportModule } from './support/support.module';
 import { UsersModule } from './users/users.module';
+import { UIPublicModule } from '../components/public/public.modulte';
 
 const components = [HomeComponent];
 
@@ -31,6 +32,7 @@ const components = [HomeComponent];
     RouterModule,
     UIModule,
     UICommonModule,
+    UIPublicModule,
     DirectivesModule,
     TUIModule,
     NgZorroModule,

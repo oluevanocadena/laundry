@@ -1,0 +1,35 @@
+<grid [direction]="'column'" [align]="'center-center'" [padding]="'1rem 3rem'" [width]="'100%'" class="brdr-bottom">
+    <grid [gap]="[0,24]" [direction]="'column'" [template]="'max-content 1fr max-content'" [width]="'100%'"
+        [maxWidth]="'1024px'">
+        <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+            <logo size="small" />
+            <span class="text-01 f-17 fw-600">Wofloo</span>
+        </grid>
+        <grid [direction]="'column'" [align]="'center-center'" [height]="'100%'">
+            <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                <grid [gap]="[0,24]" [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                    <a routerLink="/" class="fw-600 f-lh-14">
+                        Productos
+                        <tui-icon icon="@tui.chevron-down" class="f-05 f-12" />
+                    </a>
+                    <a routerLink="/" class="fw-600 f-lh-14">
+                        Planes
+                        <tui-icon icon="@tui.chevron-down" class="f-05 f-12" />
+                    </a>
+                    <a routerLink="/" class="fw-600 f-lh-14">
+                        Soluciones
+                        <tui-icon icon="@tui.chevron-down" class="f-05 f-12" />
+                    </a>
+                </grid>
+            </grid>
+        </grid>
+        <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-right'">
+            <button [routerLink]="routes.Products" primary small>
+                Tablero
+            </button>
+            <button small icon secondary rounded>
+                <tui-icon icon="@tui.user" class="f-14 f-06" />
+            </button>
+        </grid>
+    </grid>
+</grid>

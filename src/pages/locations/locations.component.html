@@ -1,26 +1,103 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'calc(100vh - 49px)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+        <grid [direction]="'row'" [padding]="'1rem'">
+            <span class="fw-500 f-01 f-20 f-lh-22" padding="0.25rem 0 0 0">
                 Sucursales
+            </span>
+            <span class="fw-500 f-06 f-14" padding="0.25rem 0 0 0">
+                Por ahora solo puedes agregar
+                <span class="fw-600 f-02 f-14">1 sucursal de 1</span>
+                disponible en tu plan.
             </span>
         </grid>
         <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
             class="wrap brdr-top bg-02" padding="0.5rem 1rem">
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por fecha de apertura
-                </button>
-                <button outline small flex>
-                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-                    Columnas
-                </button>
+                <nz-segmented [nzOptions]="facade.segments" [nzSize]="'small'"
+                    (nzValueChange)="facade.onSegmentChange($event)"></nz-segmented>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button primary small>
+                <button primary small (click)="facade.onNewLocationClick()">
                     Nueva sucursal
+                </button>
+            </grid>
+        </grid>
+
+        <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
+            class="scroll-h scroll-v bg-02 baseline">
+            <table>
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th width="150px">Fecha de creación</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th width="200px">Dirección</th>
+                        <th>Predeterminada</th>
+                        <th width="80px">Estatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="facade.api.busy.value">
+                        <td colspan="9">
+                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                    <tui-loader [size]="'m'" />
+                                    Loading...
+                                </grid>
+                            </grid>
+                        </td>
+                    </tr>
+                    <tr *ngIf="facade.api.busy.value === false && facade.api.locations.value?.length === 0">
+                        <td colspan="9">
+                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
+                                    <tui-icon icon="@tui.inbox" class="f-20 f-06" />
+                                    <span class="fw-400 f-06">No hay sucursales disponibles</span>
+                                </grid>
+                            </grid>
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="facade.api.busy.value === false">
+                        <tr hoverable *ngFor="let item of facade.api.locations.value; let i = index"
+                            (click)="facade.onLocationClick(item)">
+                            <td>
+                                <label nz-checkbox></label>
+                            </td>
+                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
+                            <td>{{item.Name}}</td>
+                            <td>{{item.Phone}}</td>
+                            <td>
+                                <tui-line-clamp [content]="item.Address || '-' | capitalization" [lineHeight]="20"
+                                    [linesLimit]="1" />
+                            </td>
+                            <td>{{item.Default ? 'Si' : 'No'}}</td>
+                            <td>
+                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
+                                    <status-badge [label]="item?.Disabled ? 'Inactivo' : 'Activo'"
+                                        [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
+                                </grid>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </grid>
+
+        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
+            <grid [direction]="'column'" [align]="'center-left'">
+                <button outline small flex prefix>
+                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
+                </button>
+                <button outline small flex suffix>
+                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
+                </button>
+            </grid>
+            <grid [direction]="'column'" [align]="'center-right'">
+                <button (click)="facade.fetchLocations()" flat small flex>
+                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
+                    Actualizar
                 </button>
             </grid>
         </grid>
@@ -29,3 +106,5 @@
 
 
 </layout>
+
+<locations-drawer-draft [(show)]="facade.showLocationDrawer" />

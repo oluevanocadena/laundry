@@ -4,13 +4,13 @@
     <ng-template tuiAccordionItemContent>
         <form [formGroup]="facade.formGroup">
             <grid [direction]="'row'" [gap]="[8,8]">
-                <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr 1fr'">
+                <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr 1fr'">
                     <form-input [label]="'Nombre(s)'" [type]="'text'" [placeholder]="'Nombre(s)'"
                         formControlName="firstName" [required]="true" />
                     <form-input [label]="'Apellido(s)'" [type]="'text'" [placeholder]="'Apellido(s)'"
                         formControlName="lastName" [required]="true" />
                 </grid>
-                <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr 1fr'">
+                <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr 1fr'">
                     <form-input [label]="'Correo electrónico'" [type]="'email'" [placeholder]="'Correo electrónico'"
                         formControlName="email" [required]="true" />
                     <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'Teléfono'" [countryCode]="'+52'"

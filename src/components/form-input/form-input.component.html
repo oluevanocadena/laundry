@@ -1,11 +1,12 @@
 <form [formGroup]="formGroup">
-    <grid [gap]="[6, 24]" [direction]="'column'" [template]="'1fr'">
-        <span *ngIf="label" class="f-13 fw-500 f-02">
+    <grid [gap]="[6, 16]" [direction]="'column'" [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+        <span *ngIf="label" class="f-13 fw-500 f-02" class="w-content">
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
         <tui-input *ngIf="isEmailOrText" tuiTextfieldLegacy [tuiTextfieldSize]="size"
-            [tuiTextfieldLabelOutside]="outerLabel" formControlName="value" (input)="onInputChange($event)">
+            [tuiTextfieldLabelOutside]="outerLabel" formControlName="value" (input)="onInputChange($event)"
+            class="{{hadError ? 't-input_error' : ''}}">
             {{ placeholder }}
         </tui-input>
         <tui-input-phone *ngIf="type === 'phone'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
@@ -51,5 +52,7 @@
             <input [attr.placeholder]="placeholder" tuiTextfield formControlName="value"
                 (input)="onInputChange($event)" />
         </tui-textfield>
+        <nz-switch *ngIf="type === 'switch'" [(ngModel)]="switchValue" [ngModelOptions]="{standalone: true}"
+            (ngModelChange)="onNgModelChange($event)"></nz-switch>
     </grid>
 </form>

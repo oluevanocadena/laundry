@@ -6,6 +6,7 @@ import { BusyProp } from '../../types/busy.type';
 import { FacadeApiBase } from '../../types/facade.base';
 import { SubjectProp } from '../../types/subject.type';
 import { Location } from './locations.interfaces';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,10 @@ export class LocationsApiService implements FacadeApiBase {
 
   locations = new SubjectProp<Location[]>([]);
 
-  constructor(private readonly httpService: HttpService) {
+  constructor(
+    private readonly httpService: HttpService,
+    public nzMessageService: NzMessageService
+  ) {
     this.client = createClient(supabase.url, supabase.key);
   }
 
@@ -31,6 +35,9 @@ export class LocationsApiService implements FacadeApiBase {
       const result = await callback();
       return result;
     } catch (error) {
+      this.nzMessageService.error(
+        '¡Ocurrió un error al guardar los cambios! ⛔'
+      );
       console.error('⛔ Error:', error);
       return null;
     } finally {
@@ -38,15 +45,68 @@ export class LocationsApiService implements FacadeApiBase {
     }
   }
 
-  getLocations(disabled: boolean = false) {
+  getLocations(disabled: boolean | null = null) {
     this.executeWithBusy(async () => {
+      const { data, error } =
+        disabled === null
+          ? await this.client.from(this.table).select('*').eq('Deleted', false)
+          : await this.client
+              .from(this.table)
+              .select('*')
+              .eq('Deleted', false)
+              .eq('Disabled', disabled);
+      console.log('🚩 data', data);
+      this.locations.value = data || [];
+    }, 'fetching locations');
+  }
+
+  async saveLocation(location: Location) {
+    return this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(this.table)
-        .select('*')
-        .eq('Deleted', false)
-        .eq('Disabled', disabled);
-      if (error) throw error;
-      this.locations.value = data;
-    }, 'fetching locations');
+        .upsert(location);
+      if (error) {
+        this.nzMessageService.error(
+          '¡Ocurrió un error al guardar los cambios! ⛔'
+        );
+        return false;
+      }
+      this.getLocations();
+      return true;
+    }, 'saving location');
+  }
+
+  async disableLocation(id: string, disabled: boolean) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(this.table)
+        .update({ Disabled: !disabled })
+        .eq('id', id);
+      if (error) {
+        this.nzMessageService.error(
+          '¡Ocurrió un error al guardar los cambios! ⛔'
+        );
+        return false;
+      }
+      this.getLocations();
+      return data;
+    }, 'disabling location');
+  }
+
+  async deleteLocation(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(this.table)
+        .delete()
+        .eq('id', id);
+      if (error) {
+        this.nzMessageService.error(
+          '¡Ocurrió un error al eliminar la sucursal! ⛔'
+        );
+        return false;
+      }
+      this.getLocations();
+      return data;
+    }, 'deleting location');
   }
 }

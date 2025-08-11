@@ -72,10 +72,15 @@
                                 <tui-line-clamp [content]="item.Address || '-' | capitalization" [lineHeight]="20"
                                     [linesLimit]="1" />
                             </td>
-                            <td>{{item.Default ? 'Si' : 'No'}}</td>
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
-                                    <status-badge [label]="item?.Disabled ? 'Inactivo' : 'Activo'"
+                                    <status-badge [label]="item?.Default ? 'Predeterminado' : 'No predeterminado'"
+                                        [appearance]="item?.Default ? 'success' : 'warning'" [size]="'m'" />
+                                </grid>
+                            </td>
+                            <td>
+                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
+                                    <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"
                                         [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
                                 </grid>
                             </td>

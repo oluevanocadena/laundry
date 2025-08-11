@@ -3,7 +3,7 @@ export interface Location {
   created_at?: string;
   Name: string;
   Phone: string;
-  Address: string; //For auto join in supabase
+  Address?: string; //For auto join in supabase
 
   Street: string;
   IntNumber?: string | null;
@@ -13,6 +13,8 @@ export interface Location {
   State: string;
   Country: string;
   ZipCode: string;
+
+  OrganizationId: string;
 
   Default?: boolean;
   Deleted?: boolean;

@@ -36,6 +36,7 @@ export class DrawerComponent {
   @Input() confirmStyle: DrawerConfirmStyleButton = 'danger';
   @Input() large: string = '500px';
   @Input() closable: boolean = true;
+  @Input() busy: boolean = false;
 
   @Output() onClose = new EventEmitter<void>();
   @Output() onConfirm = new EventEmitter<void>();

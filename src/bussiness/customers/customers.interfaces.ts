@@ -20,6 +20,8 @@ export interface Customer {
   Street: string;
   TotalOrders?: number;
   ZipCode: string;
+
+  OrganizationId: string;
   Deleted?: boolean;
   Disabled?: boolean;
 }

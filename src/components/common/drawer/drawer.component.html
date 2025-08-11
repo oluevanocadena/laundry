@@ -17,10 +17,10 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" [padding]="'1rem 1.5rem'"
                 class="brdr-top">
-                <button outline small (click)="close()">
+                <button outline small [disabled]="busy" (click)="close()">
                     {{closeLabel}}
                 </button>
-                <button #buttonConfirm small (click)="confirm()">
+                <button #buttonConfirm small [disabled]="busy" [showLoader]="busy" (click)="confirm()">
                     {{confirmLabel}}
                 </button>
             </grid>

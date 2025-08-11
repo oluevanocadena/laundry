@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CookiesService } from '../../../services/common/cookie.service';
 import { FacadeBase } from '../../../types/facade.base';
 import { StorageProp } from '../../../types/storage.type';
+import { Session } from '../../session/session.interface';
 import { LocationsApiService } from '../locations.api.service';
 import { Location } from '../locations.interfaces';
 
@@ -11,6 +13,8 @@ import { Location } from '../locations.interfaces';
 export class LocationsDraftFacade extends FacadeBase {
   //Flag Management
   public edition: boolean = false;
+  public showDeleteModal: boolean = false;
+  public showDisableModal: boolean = false;
 
   public formGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -29,7 +33,10 @@ export class LocationsDraftFacade extends FacadeBase {
   //Subjects
   public selectedLocation = new StorageProp<Location>(null, 'LOCATION_EDITION');
 
-  constructor(public api: LocationsApiService) {
+  constructor(
+    public api: LocationsApiService,
+    public cookiesService: CookiesService<Session>
+  ) {
     super(api);
   }
 
@@ -53,7 +60,47 @@ export class LocationsDraftFacade extends FacadeBase {
     this.formGroup.controls.country.disable();
   }
 
-  submitForm() {}
+  /**
+   * API
+   */
+
+  submitForm() {
+    const value = this.formGroup.value;
+    const location: Location = {
+      id: this.edition ? this.selectedLocation.value?.id : undefined,
+      Name: value.name?.toString() || '',
+      Phone: value.phone?.toString() || '',
+      Country: this.selectedLocation.value?.Country || 'México',
+      ExtNumber: value.externalNumber?.toString() || '',
+      IntNumber: value.internalNumber?.toString() || '',
+      Neighborhood: value.neighborhood?.toString() || '',
+      Municipality: value.municipality?.toString() || '',
+      State: value.state?.toString() || '',
+      Street: value.street?.toString() || '',
+      ZipCode: value.zipCode?.toString() || '',
+      Default: this.selectedLocation.value?.Default || value.default || false,
+      OrganizationId: this.cookiesService.UserInfo.Organization.id,
+    };
+    console.log('🤔 location', location);
+    return this.api.saveLocation(location);
+  }
+
+  disableLocation(id: string, disabled: boolean) {
+    return this.api.disableLocation(id, disabled).then(() => {
+      if (this.selectedLocation.value) {
+        this.selectedLocation.value.Disabled =
+          !this.selectedLocation.value.Disabled;
+      }
+    });
+  }
+
+  deleteLocation(id: string) {
+    return this.api.deleteLocation(id).then(() => {
+      if (this.selectedLocation.value) {
+        this.selectedLocation.value.Deleted = true;
+      }
+    });
+  }
 
   /**
    * Methods

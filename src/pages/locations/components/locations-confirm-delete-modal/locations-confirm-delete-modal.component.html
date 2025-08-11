@@ -1,0 +1,38 @@
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'" [confirmStyle]="'danger'"
+    (onConfirm)="confirm()" (onClose)="close()">
+    <span title>
+        Eliminar sucursal
+    </span>
+    <grid [gap]="[0,16]" body>
+        <grid [gap]="[16,16]" [direction]="'column'" [template]="'max-content 1fr'" [padding]="'1rem 1.5rem'"
+            class="brdr-bottom bg-00">
+            <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]" [padding]="'0.25rem 0 0 0'">
+                <tui-icon icon="@tui.triangle-alert" class="f-18 f-01 f-warning" />
+            </grid>
+            <grid [gap]="[0,8]" [direction]="'row'">
+                <span class="f-15 f-lh-16 f-01 fw-600 t-left">
+                    ¡Ésta es una acción irreversible!
+                </span>
+                <span class="f-14 f-lh-16 f-05 fw-400 t-left">
+                    Eliminar una sucursal eliminará información de contacto, direcciones, pero no borrará el
+                    <span class="f-02 fw-600">historial de pedidos.</span>
+                </span>
+            </grid>
+        </grid>
+        <grid [gap]="[8,8]" [padding]="'1rem 1.5rem'">
+            <grid [direction]="'row'" [width]="'100%'" [padding]="'0.5rem 1rem'" class="bg-02 brdr-radius-6 brdr">
+                <span class="f-14 f-lh-16 f-04 fw-500 t-left">
+                    ¡Ésta acción no se puede deshacer!
+                </span>
+                <span class="f-14 f-lh-16 f-07 fw-400 t-left">
+                    Eliminar una sucursal evitará que no se puedan crear nuevos pedidos en esta sucursal al confirmar
+                    esta
+                    acción.
+                </span>
+            </grid>
+            <span class="f-14 f-04 fw-400 t-left">
+                Por favor, confirma que deseas eliminar esta sucursal.
+            </span>
+        </grid>
+    </grid>
+</modal>

@@ -7,6 +7,8 @@ import { CustomersApiService } from '../customers.api.service';
 import { Customer } from '../customers.interfaces';
 import { routes } from '../../../app/routes';
 import { Router } from '@angular/router';
+import { CookiesService } from '../../../services/common/cookie.service';
+import { Session } from '../../session/session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +38,11 @@ export class CustomersDraftFacade extends FacadeBase {
   //Subjects
   public customer = new StorageProp<Customer>(null, 'CUSTOMER_EDITION');
 
-  constructor(public api: CustomersApiService, public router: Router) {
+  constructor(
+    public api: CustomersApiService,
+    public router: Router,
+    public cookiesService: CookiesService<Session>
+  ) {
     super(api);
   }
 
@@ -59,6 +65,7 @@ export class CustomersDraftFacade extends FacadeBase {
       State: '',
       Street: '',
       ZipCode: '',
+      OrganizationId: this.cookiesService.UserInfo.Organization.id,
     };
     this.edition = false;
     this.formGroup.controls.country.patchValue('México');
@@ -111,6 +118,7 @@ export class CustomersDraftFacade extends FacadeBase {
       Deleted: this.customer.value?.Deleted || false,
       Disabled: this.customer.value?.Disabled || false,
       TotalOrders: this.customer.value?.TotalOrders || 0,
+      OrganizationId: this.cookiesService.UserInfo.Organization.id,
     };
 
     this.api.saveCustomer(customer);

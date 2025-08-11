@@ -259,5 +259,6 @@ export const OrderEmpty: Order = {
     Neighborhood: '',
     Notes: '',
     State: '',
+    OrganizationId: '',
   },
 };

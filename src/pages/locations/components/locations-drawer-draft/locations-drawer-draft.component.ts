@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LocationsDraftFacade } from '../../../../bussiness/locations/controllers/locations.draft.facade';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { LocationsMonitorFacade } from '../../../../bussiness/locations/controllers/locations.monitor.facade';
 
 @Component({
   selector: 'locations-drawer-draft',
@@ -50,14 +51,65 @@ export class LocationsDrawerDraftComponent implements OnInit {
 
   confirm() {
     if (this.facade.formGroup.valid) {
-      this.facade.submitForm();
-      this.close(true);
+      this.facade.submitForm().then((success: boolean | null) => {
+        if (success === true) {
+          this.close(true);
+        }
+      });
     } else {
       this.nzMessageService.error(
         'Por favor, completa todos los campos requeridos.😉'
       );
     }
   }
+
+  onDisableOrEnableClick() {
+    if (this.facade.api.locations.value?.length === 1) {
+      this.nzMessageService.error(
+        '¡No se puede deshabilitar la única sucursal! ⛔'
+      );
+      return;
+    }
+    this.facade.showDisableModal = true;
+  }
+
+  onDeleteClick() {
+    if (this.facade.api.locations.value?.length === 1) {
+      this.nzMessageService.error(
+        '¡No se puede eliminar la única sucursal! ⛔'
+      );
+      return;
+    }
+    this.facade.showDeleteModal = true;
+  }
+
+  onDisable() {
+    const location = this.facade.selectedLocation.value;
+    if (location?.id) {
+      this.facade
+        .disableLocation(location.id, location.Disabled || false)
+        .then(() => {
+          this.facade.selectedLocation.value!.Disabled =
+            !this.facade.selectedLocation.value!.Disabled;
+          this.nzMessageService.success(
+            '¡Sucursal ' +
+              (this.facade.selectedLocation.value!.Disabled
+                ? 'habilitada'
+                : 'deshabilitada') +
+              ' correctamente! ✅'
+          );
+          this.close(true);
+        });
+    }
+  }
+
+  onDelete() {
+    const location = this.facade.selectedLocation.value;
+    if (location?.id) {
+      this.facade.deleteLocation(location.id);
+    }
+  }
+
   /**
    * Getters
    */
@@ -71,6 +123,14 @@ export class LocationsDrawerDraftComponent implements OnInit {
 
   get disabled(): boolean {
     return this.facade.selectedLocation.value?.Disabled === true;
+  }
+
+  get busy(): boolean {
+    return this.facade.api.busy.value;
+  }
+
+  get canDisableOrDelete(): boolean {
+    return this.facade.api.locations.value?.length !== 1;
   }
 
   /**

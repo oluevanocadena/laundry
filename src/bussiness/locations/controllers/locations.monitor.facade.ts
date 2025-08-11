@@ -15,12 +15,11 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   segments: NzSegmentedOption[] = [
     { label: 'Todas', value: '0' },
-    { label: 'Activas', value: 'true' },
-    { label: 'Inactivas', value: 'false' },
+    { label: 'Activas', value: 'false' },
+    { label: 'Inactivas', value: 'true' },
   ];
 
-  locationSegment = new SubjectProp<string>('0');
-  selectedLocation = new SubjectProp<Location | null>(null);
+  locationSegment = new SubjectProp<string>('0'); 
 
   constructor(
     public api: LocationsApiService,
@@ -42,9 +41,7 @@ export class LocationsMonitorFacade extends FacadeBase {
    */
 
   fetchLocations() {
-    return this.api.getLocations(
-      this.locationSegment.value === 'true' ? false : true
-    );
+    this.api.getLocations(this.disabled);
   }
 
   /**
@@ -57,12 +54,29 @@ export class LocationsMonitorFacade extends FacadeBase {
   }
 
   onLocationClick(location: Location) {
-    this.selectedLocation.value = location;
+    this.draftFacade.selectedLocation.value = location;
     this.showLocationDrawer = true;
   }
 
   onSegmentChange(value: string | number) {
     this.locationSegment.value = value.toString();
     this.fetchLocations();
+  }
+
+  /**
+   * Getters
+   */
+
+  get disabled(): boolean | null {
+    switch (this.locationSegment.value) {
+      case '0':
+        return null; //All
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      default:
+        return false;
+    }
   }
 }

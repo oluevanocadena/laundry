@@ -1,5 +1,5 @@
 <drawer [(show)]="show" (onClose)="close()" (onConfirm)="confirm()" [large]="'500px'" [confirmStyle]="'success'"
-    [closable]="false">
+    [closable]="false" [busy]="busy">
     <grid title [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
         <span class="f-16 f-03 fw-600 t-left">
             {{facade.edition ? 'Editar sucursal' : 'Nueva sucursal'}}
@@ -30,12 +30,12 @@
                     <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
                         <form-input [label]="'Colonia'" [type]="'text'" [placeholder]="'Colonia'"
                             formControlName="neighborhood" [required]="true" />
-                        <form-input [label]="'Municipio'" [type]="'text'" [placeholder]="'Municipio'"
+                        <form-input [label]="'Municipio/Delegación'" [type]="'text'" [placeholder]="'Municipio'"
                             formControlName="municipality" [required]="true" />
                     </grid>
                     <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
-                        <form-input [label]="'Estado'" [type]="'text'" [placeholder]="'Estado'" formControlName="state"
-                            [required]="true" />
+                        <form-input [label]="'Estado/Ciudad'" [type]="'text'" [placeholder]="'Estado'"
+                            formControlName="state" [required]="true" />
                         <form-input [label]="'Código postal'" [type]="'text'" [placeholder]="'Código postal'"
                             formControlName="zipCode" [required]="true" />
                     </grid>
@@ -65,7 +65,7 @@
                         <span class="f-15 f-lh-16 f-01 fw-600 t-left">
                             {{ disabled ?
                             'Habilitar' :
-                            'Deshabilitar' }}
+                            'Deshabilitar y/o eliminar' }}
                         </span>
                         <span class="f-14 f-lh-16 f-05 fw-400 t-left">
                             {{ disabled ?
@@ -73,9 +73,20 @@
                             'Deshabilitar una sucursal impedirá crear nuevos pedidos en esta sucursal al confirmar esta
                             acción.' }}
                         </span>
-                        <grid [direction]="'row'" [gap]="[8,8]" [padding]="'0.5rem 0 0 0'">
-                            <button danger small [disabled]="disabled">
+                        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr 1fr'" [padding]="'0.5rem 0 0 0'">
+                            <button *ngIf="facade.selectedLocation.value?.Disabled === false"
+                                (click)="onDisableOrEnableClick()" warning small
+                                [disabled]="canDisableOrDelete === false || busy" [showLoader]="busy">
                                 Deshabilitar sucursal
+                            </button>
+                            <button *ngIf="facade.selectedLocation.value?.Disabled === true"
+                                (click)="onDisableOrEnableClick()" success small
+                                [disabled]="canDisableOrDelete === false || busy" [showLoader]="busy">
+                                Habilitar sucursal
+                            </button>
+                            <button (click)="onDeleteClick()" danger small
+                                [disabled]="canDisableOrDelete === false || busy" [showLoader]="busy">
+                                Eliminar sucursal
                             </button>
                         </grid>
                     </grid>
@@ -84,3 +95,6 @@
         </form>
     </grid>
 </drawer>
+
+<locations-confirm-delete-modal [(show)]="facade.showDeleteModal" (onConfirm)="onDelete()" />
+<locations-confirm-disable-modal [(show)]="facade.showDisableModal" (onConfirm)="onDisable()" [disabled]="disabled" />

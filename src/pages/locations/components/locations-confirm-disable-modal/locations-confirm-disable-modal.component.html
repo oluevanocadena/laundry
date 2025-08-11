@@ -1,0 +1,48 @@
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'"
+    [confirmStyle]="disabled ? 'success' : 'warning'" (onConfirm)="confirm()" (onClose)="close()">
+    <span title>
+        {{ disabled ? 'Habilitar sucursal' : 'Inhabilitar sucursal' }}
+    </span>
+    <grid [gap]="[0,16]" body>
+        <grid [gap]="[16,16]" [direction]="'column'" [template]="'max-content 1fr'" [padding]="'1rem 1.5rem'"
+            class="brdr-bottom bg-00">
+            <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]" [padding]="'0.25rem 0 0 0'">
+                <tui-icon [icon]="disabled ? '@tui.check' : '@tui.info'"
+                    [class]="disabled ? 'f-18 f-01 f-success' : 'f-18 f-01 f-warning'" />
+            </grid>
+            <grid [gap]="[0,8]" [direction]="'row'">
+                <span class="f-15 f-lh-16 f-01 fw-600 t-left">
+                    {{ disabled ?
+                    'Estás a punto de habilitar esta sucursal nuevamente.' :
+                    'Estás a punto de deshabilitar esta sucursal.' }}
+                </span>
+                <span class="f-14 f-lh-16 f-05 fw-400 t-left">
+                    {{ disabled ?
+                    'Habilitar una sucursal permitirá que se muestre en la lista de sucursales.' :
+                    'Deshabilitar una sucursal impedirá que se muestre en la lista de sucursales.' }}
+                </span>
+            </grid>
+        </grid>
+        <grid [gap]="[8,8]" [padding]="'0.75rem 1.5rem'">
+            <grid [direction]="'row'" [width]="'100%'" [padding]="'0.5rem 1rem'" class="bg-02 brdr-radius-6 brdr">
+                <span class="f-14 f-lh-16 f-04 fw-500 t-left">
+                    {{ disabled ?
+                    'Se habilitará la sucursal nuevamente ahora mismo. 🫡' :
+                    'Se eliminarán todos los datos de la sucursal excepto el historial de pedidos. 🤔' }}
+                </span>
+                <span class="f-14 f-lh-16 f-07 fw-400 t-left">
+                    {{ disabled ?
+                    'Si deseas que la sucursal pueda operar nuevamente, puedes habilitarla ahora.' :
+                    'Si deseas que la sucursal no pueda operar por ahora, puedes deshabilitarla ahora y
+                    habilitarla nuevamente cuando lo desees. Solo se conservará el historial de pedidos.'
+                    }}
+                </span>
+            </grid>
+            <span class="f-14 f-04 fw-400 t-left">
+                {{ disabled ?
+                'Por favor, confirma que deseas habilitar esta sucursal.' :
+                'Por favor, confirma que deseas deshabilitar esta sucursal.' }}
+            </span>
+        </grid>
+    </grid>
+</modal>

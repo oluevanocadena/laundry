@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SettingsPageComponent } from './settings-page.component';
 import { UIModule } from '../../components/ui.module';
-import { UICommonModule } from '../../components/common/common.modulte';
+import { UICommonModule } from '../../components/common/common.module';
 import { DirectivesModule } from '../../directives/directives.module';
 import { TUIModule } from '../../components/tui.module';
 import { NgZorroModule } from '../../components/ng-zorro.module';

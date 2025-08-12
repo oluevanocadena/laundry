@@ -17,6 +17,7 @@ import { UsersPageComponent } from '../pages/users/users.component';
 import { NotificationsPageComponent } from '../pages/notifications/notifications.component';
 import { ReportsPageComponent } from '../pages/reports/reports.component';
 import { SupportPageComponent } from '../pages/support/support.component';
+import { ProductsDraftComponent } from '../pages/products/draft/products-draft.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -33,6 +34,8 @@ export const routes: Routes = [
   { path: 'orders/draft', component: OrdersDraftPageComponent },
   { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
   { path: 'products', component: ProductsPageComponent },
+  { path: 'products/draft', component: ProductsDraftComponent },
+  { path: 'products/edit/:id', component: ProductsDraftComponent },
   { path: 'settings', component: SettingsPageComponent },
   { path: 'users', component: UsersPageComponent },
   { path: 'notifications', component: NotificationsPageComponent },

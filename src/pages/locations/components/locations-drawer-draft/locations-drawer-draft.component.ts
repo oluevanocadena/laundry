@@ -43,7 +43,7 @@ export class LocationsDrawerDraftComponent implements OnInit {
 
   close(avoidMessage: boolean = false) {
     if (avoidMessage === false) {
-      this.nzMessageService.info('¡No se guardaron los cambios! ✖️');
+      this.nzMessageService.info('¡No se guardó ningún cambio! ℹ️');
     }
     this.show = false;
     this.showChange.emit(this.show);

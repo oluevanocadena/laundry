@@ -8,7 +8,7 @@ import { NgZorroModule } from '../ng-zorro.module';
 import { TUIModule } from '../tui.module';
 import { UIModule } from '../ui.module';
 import { HeaderComponent } from './header/header.component';
-import { UICommonModule } from '../common/common.modulte';
+import { UICommonModule } from '../common/common.module';
 import { PublicFooterComponent } from './footer/footer.component';
 
 const components = [HeaderComponent, PublicFooterComponent];

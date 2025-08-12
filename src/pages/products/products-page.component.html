@@ -6,21 +6,99 @@
                 Productos
             </span>
         </grid>
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
+        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
             class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por fecha de creación
-                </button>
-                <button outline small flex>
-                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-                    Columnas
-                </button>
+            <grid [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
+                <nz-select ngModel="all" [width]="'220px'">
+                    <nz-option nzValue="all" nzLabel="Todos los productos"></nz-option>
+                    <nz-option nzValue="active" nzLabel="Productos con mayores ventas"></nz-option>
+                    <nz-option nzValue="disabled" nzLabel="Productos con menos ventas"></nz-option>
+                </nz-select>
+                <nz-segmented [nzOptions]="facade.segments" [nzSize]="'small'"
+                    (nzValueChange)="facade.onSegmentChange($event)"></nz-segmented>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button primary small>
-                    Crear producto
+                <button primary small (click)="facade.onNewProductClick()">
+                    Nuevo producto
+                </button>
+            </grid>
+        </grid>
+        <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
+            class="scroll-h scroll-v bg-02 baseline">
+            <table>
+                <thead>
+                    <tr>
+                        <th> </th>
+                        <th [width]="'80px'">Imagen</th>
+                        <th width="150px">Fecha de creación</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>SKU</th>
+                        <th>Categoría</th>
+                        <th width="80px">Estatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="facade.api.busy.value">
+                        <td colspan="9">
+                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                    <tui-loader [size]="'m'" />
+                                    Loading...
+                                </grid>
+                            </grid>
+                        </td>
+                    </tr>
+                    <tr *ngIf="facade.api.busy.value === false && facade.api.products.value?.length === 0">
+                        <td colspan="9">
+                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
+                                    <tui-icon icon="@tui.inbox" class="f-20 f-06" />
+                                    <span class="fw-400 f-06">No hay productos disponibles</span>
+                                </grid>
+                            </grid>
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="facade.api.busy.value === false">
+                        <tr hoverable *ngFor="let item of facade.api.products.value; let i = index"
+                            (click)="facade.onProductClick(item)">
+                            <td>
+                                <label nz-checkbox></label>
+                            </td>
+                            <td>
+                                <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="50" height="50"
+                                    (error)="onImageError($event)" />
+                            </td>
+                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
+                            <td>{{item.Name}}</td>
+                            <td>{{item.Price | numeralFormat: '$0,0.00'}}</td>
+                            <td>{{item.SKU}}</td>
+                            <td>{{item.ProductCategory}}</td>
+                            <td>
+                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
+                                    <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"
+                                        [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
+                                </grid>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </grid>
+
+        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
+            <grid [direction]="'column'" [align]="'center-left'">
+                <button outline small flex prefix>
+                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
+                </button>
+                <button outline small flex suffix>
+                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
+                </button>
+            </grid>
+            <grid [direction]="'column'" [align]="'center-right'">
+                <button (click)="facade.fetchProducts()" flat small flex>
+                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
+                    Actualizar
                 </button>
             </grid>
         </grid>
@@ -29,19 +107,3 @@
 
 
 </layout>
-
-<ng-template #contentCustomerTypes>
-    <tui-data-list [style.width.rem]="12" [size]="'m'">
-        <tui-opt-group>
-            <tui-opt-group label="Order Types">
-                <button *ngFor="let option of orderTypes" (click)="onSelectFilter(option)" tuiOption type="button"
-                    [value]="option">
-                    <span class="f-15  f-lh-13"
-                        [ngClass]="{'fw-600 f-primary': orderType ===option, 'fw-500 f-02': orderType !== option}">
-                        {{ option }}
-                    </span>
-                </button>
-            </tui-opt-group>
-        </tui-opt-group>
-    </tui-data-list>
-</ng-template>

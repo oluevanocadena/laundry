@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TuiRoot } from '@taiga-ui/core';
-import { UICommonModule } from '../components/common/common.modulte';
+import { UICommonModule } from '../components/common/common.module';
 import { NgZorroModule } from '../components/ng-zorro.module';
 import { TUIModule } from '../components/tui.module';
 import { UIModule } from '../components/ui.module';

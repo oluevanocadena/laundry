@@ -3,6 +3,7 @@ import { HelperPage } from '../../components/common/helper.page';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TuiDay } from '@taiga-ui/cdk';
 import moment from 'moment';
+import { ProductsMonitorFacade } from '../../bussiness/products/controllers/products.monitor.facade';
 
 @Component({
   selector: 'app-products-page',
@@ -31,7 +32,7 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
   //Arrays
   orderTypes = ['All', 'Unprocessed', 'UnPaid', 'Completed', 'Cancelled'];
 
-  constructor() {
+  constructor(public facade: ProductsMonitorFacade) {
     super();
   }
 
@@ -48,6 +49,11 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
     this.showFilterOptions = false;
   }
 
+  onImageError(event: ErrorEvent) {
+    const target = event.target as HTMLImageElement;
+    target.src = '/assets/no-image.png';
+  }
+
   /**
    * Getters
    */
@@ -59,5 +65,7 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
    * Lifecycle
    */
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.facade.fetchProducts();
+  }
 }

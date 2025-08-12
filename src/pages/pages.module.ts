@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { UICommonModule } from '../components/common/common.modulte';
+import { UICommonModule } from '../components/common/common.module';
 import { NgZorroModule } from '../components/ng-zorro.module';
 import { TUIModule } from '../components/tui.module';
 import { UIModule } from '../components/ui.module';

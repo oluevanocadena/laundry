@@ -27,6 +27,7 @@ export class ProductsDraftFacade extends FacadeBase {
   });
 
   public samePrice = new FormProp(this.formGroup, 'samePrice', true);
+  public price = new FormProp(this.formGroup, 'price', 0);
 
   public selectedProduct = new StorageProp<Product>(null, 'PRODUCT_EDITION');
   public locationPrices: LocationPrice[] = [];
@@ -45,7 +46,6 @@ export class ProductsDraftFacade extends FacadeBase {
 
   bindEvents() {
     this.locationApi.locations.onChange((locations) => {
-      console.log('🚩 locations', locations);
       this.locationPrices =
         locations.map((location) => {
           return {
@@ -56,14 +56,17 @@ export class ProductsDraftFacade extends FacadeBase {
         }) || [];
     });
 
-    this.samePrice.onChange((value) => {
-      console.log('🚩 samePrice', value);
+    this.price.onChange((value) => {
       // Only for same price
-      if (value === false) {
-        this.locationPrices.forEach((location) => {
-          location.Price = this.formGroup.controls.price.value || 0;
-        });
-      }
+      setTimeout(() => {
+        this.locationPrices = Array.from(this.locationPrices).map(
+          (location) => {
+            console.log('🚩 price', this.price.value);
+            location.Price = this.price.value ?? 0;
+            return location;
+          }
+        );
+      }, 100);
     });
   }
 

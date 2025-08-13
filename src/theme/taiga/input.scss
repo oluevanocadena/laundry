@@ -77,6 +77,16 @@ tui-textarea {
 
 
 tui-textfield {
+    &[tuiIcons]:before {
+        font-size: 14px !important;
+        margin-left: 2px !important;
+        color: var(--text-06) !important;
+    }
+
+    &[iconstart] input {
+        padding-top: 0.525rem !important;
+    }
+
     &[style*="--t-icon-start:"] {
         color: var(--text-01) !important;
         font-size: 14px !important;
@@ -117,14 +127,7 @@ textarea.t-input {
     color: #0000004b !important;
 }
 
-tui-textfield[tuiIcons]:before {
-    font-size: 18px !important;
-    margin-left: 2px !important;
-}
 
-tui-textfield[iconstart] input {
-    padding-top: 0.525rem !important;
-}
 
 .t-input.t-input_template {
     padding-top: 0.525rem !important;

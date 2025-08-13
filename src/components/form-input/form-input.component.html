@@ -6,7 +6,7 @@
             <ng-container [ngSwitch]="orientation">
                 <ng-container *ngSwitchCase="'horizontal'">
                     <grid [gap]="[6,8]" [direction]="'column'" [align]="'center-left'">
-                        <nz-switch formControlName="value" [nzSize]="'small'"></nz-switch>
+                        <input formControlName="value" tuiSwitch type="checkbox" [size]="'s'" />
                         <span *ngIf="label" class="f-12 f-lh-14 fw-500 f-04 w-content pdd-0">
                             {{ label }}
                             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
@@ -18,7 +18,7 @@
                         {{ label }}
                         <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
                     </span>
-                    <nz-switch formControlName="value" [nzSize]="'small'"></nz-switch>
+                    <input formControlName="value" tuiSwitch type="checkbox" [size]="'s'" />
                 </ng-container>
             </ng-container>
         </grid>

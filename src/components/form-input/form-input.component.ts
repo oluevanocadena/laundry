@@ -100,8 +100,6 @@ export class FormInputComponent implements ControlValueAccessor {
   private onChange = (value: string) => {};
   private onTouched = () => {};
 
-  switchValue: boolean = false;
-
   formGroup = new FormGroup({
     value: new FormControl(),
   });
@@ -130,9 +128,6 @@ export class FormInputComponent implements ControlValueAccessor {
 
   writeValue(value: any): void {
     this._updateInternalValue(value);
-    if (this.type === 'switch') {
-      this.switchValue = value;
-    }
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -161,16 +156,13 @@ export class FormInputComponent implements ControlValueAccessor {
     this.onChange(value);
   }
 
-  clearFormControl() {
-    console.log('🤔 clearFormControl');
-    this.formGroup.controls.value.reset();
-    this.formGroup.controls.value.markAsPristine();
-    this.formGroup.controls.value.markAsUntouched();
-  }
-
   private _updateInternalValue(value: any): void {
     this.value = value;
-    this.formGroup.controls.value.patchValue(value);
+    if (this.type === 'switch') {
+      this.formGroup.controls.value.setValue(value ?? false);
+    } else {
+      this.formGroup.controls.value.setValue(value);
+    }
   }
 
   /**
@@ -197,14 +189,13 @@ export class FormInputComponent implements ControlValueAccessor {
    */
 
   ngAfterContentInit() {
-    try {
-      this.formGroup.controls.value.valueChanges.subscribe((value) => {
-        if (value !== this.value && value !== null && this.type === 'switch') {
-          this.value = value;
-          this.onChange(value);
-        }
+    this.formGroup.controls.value.valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        this.onChange(value);
       });
 
+    try {
       this.ngControl = this.injector.get(NgControl, null);
       if (this.ngControl) {
         this.ngControl.valueAccessor = this;
@@ -226,9 +217,9 @@ export class FormInputComponent implements ControlValueAccessor {
             const intDirty = internalControl.dirty;
 
             // Si el estado externo difiere del interno, sincronizar
-            if (extTouched !== intTouched || extDirty !== intDirty) {
-              this.formGroup.reset(externalControl.value);
-            }
+            // if (extTouched !== intTouched || extDirty !== intDirty) {
+            //   this.formGroup.reset(externalControl.value);
+            // }
           });
 
         internalControl.setValidators(this.ngControl.validator);

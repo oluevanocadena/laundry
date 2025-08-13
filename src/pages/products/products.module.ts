@@ -11,14 +11,20 @@ import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ServicesModule } from '../../services/services.module';
 
-import { ProductsHeaderComponent } from './components/products-header/products-header.component';
+import { ProductsAvailabilityComponent } from './components/availability/products-availability.component';
+import { ProductsGeneralsComponent } from './components/generals/products-generals.component';
+import { ProductsHeaderComponent } from './components/header/products-header.component';
+import { ProductsPrincingComponent } from './components/princing/products-princing.component';
 import { ProductsDraftComponent } from './draft/products-draft.component';
 import { ProductsPageComponent } from './products-page.component';
 
 const components: any[] = [
-  ProductsPageComponent,
+  ProductsAvailabilityComponent,
   ProductsDraftComponent,
+  ProductsGeneralsComponent,
   ProductsHeaderComponent,
+  ProductsPageComponent,
+  ProductsPrincingComponent,
 ];
 
 @NgModule({

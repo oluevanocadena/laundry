@@ -1,0 +1,35 @@
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+    <span class="f-14 fw-500 f-05 f-lh-12">Disponibilidad</span>
+
+    <ng-template tuiAccordionItemContent>
+        <grid [direction]="'row'" [gap]="[8,8]">
+
+            <span class="f-13 f-lh-16 f-06">
+                Marca o desmarca las sucursales donde se encontrará disponible el producto.
+            </span>
+
+            <span class="f-14 f-lh-16 f-02 fw-600">
+                Sucursales:
+            </span>
+
+            <grid *ngIf="locations.length > 0" [gap]="[8,16]" [direction]="'row'">
+                <ng-container *ngFor="let location of locations">
+                    <label nz-checkbox [nzValue]="location.Checked" [(ngModel)]="location.Checked"
+                        [ngModelOptions]="{standalone: true}" class="f-14">
+                        {{location.Name}} -
+                        <span class="f-14 f-lh-16 f-06">
+                            {{location.Address}}
+                        </span>
+                    </label>
+                </ng-container>
+            </grid>
+
+            <grid *ngIf="locations.length === 0" [gap]="[8,16]" [direction]="'column'">
+                <span class="f-13 f-lh-16 f-06">
+                    No hay sucursales disponibles.
+                </span>
+            </grid>
+
+        </grid>
+    </ng-template>
+</tui-accordion-item>

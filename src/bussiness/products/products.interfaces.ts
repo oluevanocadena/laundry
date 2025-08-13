@@ -2,6 +2,8 @@
 // Models
 // ::::::::::::::::::::::::::::::::::::::
 
+import { UISelectOption } from "../../components/form-input/form-input.component";
+
 export interface Product {
   id?: string;
   created_at?: string;
@@ -37,7 +39,7 @@ export interface ProductLocation {
   PriceByLocation?: number;
 }
 
-export interface ProductCategory {
+export interface ProductCategory extends UISelectOption {
   id: string;
   Name: string;
   Deleted?: boolean;

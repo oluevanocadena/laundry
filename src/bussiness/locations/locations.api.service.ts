@@ -7,6 +7,8 @@ import { FacadeApiBase } from '../../types/facade.base';
 import { SubjectProp } from '../../types/subject.type';
 import { Location } from './locations.interfaces';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CookiesService } from '../../services/common/cookie.service';
+import { Session } from '../session/session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +21,8 @@ export class LocationsApiService implements FacadeApiBase {
   locations = new SubjectProp<Location[]>([]);
 
   constructor(
-    private readonly httpService: HttpService,
-    public nzMessageService: NzMessageService
+    public nzMessageService: NzMessageService,
+    public cookiesService: CookiesService<Session>
   ) {
     this.client = createClient(supabase.url, supabase.key);
   }
@@ -53,10 +55,18 @@ export class LocationsApiService implements FacadeApiBase {
           : await this.client
               .from(this.table)
               .select('*')
+              .eq(
+                'OrganizationId',
+                this.cookiesService.UserInfo.Organization.id
+              )
               .eq('Deleted', false)
               .eq('Disabled', disabled);
       console.log('🚩 data', data);
-      this.locations.value = data || [];
+      this.locations.value =
+        data?.map((location: Location) => ({
+          ...location,
+          Checked: false,
+        })) || [];
     }, 'fetching locations');
   }
 

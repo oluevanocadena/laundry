@@ -3,6 +3,17 @@
         [padding]="isMobile ? '1.5rem 1rem':'1.5rem'" height="100%">
         <products-header />
 
+        <grid [gap]="[24,24]" [direction]="'column'"
+            [template]="isMobileOrTablet ? '1fr': isLargeDesktop? '1fr minmax(650px, 0.25fr)': '1fr 350px'"
+            height="fit-content">
+            <grid [direction]="'row'" [gap]="[24,24]">
+                <products-generals />
+                <products-princing />
+            </grid>
+            <grid [direction]="'row'" [gap]="[24,24]">
+                <products-availability />
+            </grid>
+        </grid>
 
     </grid>
 </layout>

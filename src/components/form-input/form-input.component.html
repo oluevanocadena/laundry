@@ -1,58 +1,212 @@
-<form [formGroup]="formGroup">
-    <grid [gap]="[6, 16]" [direction]="'column'" [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
-        <span *ngIf="label" class="f-13 fw-500 f-02" class="w-content">
-            {{ label }}
-            <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
-        </span>
-        <tui-input *ngIf="isEmailOrText" tuiTextfieldLegacy [tuiTextfieldSize]="size"
-            [tuiTextfieldLabelOutside]="outerLabel" formControlName="value" (input)="onInputChange($event)"
-            class="{{hadError ? 't-input_error' : ''}}">
-            {{ placeholder }}
-        </tui-input>
-        <tui-input-phone *ngIf="type === 'phone'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
-            [countryCode]="countryCode" formControlName="value" (input)="onInputChange($event)">
-            {{ placeholder }}
-        </tui-input-phone>
+<ng-container [ngSwitch]="type">
+    <!-- Switch -->
+    <form *ngSwitchCase="'switch'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <ng-container [ngSwitch]="orientation">
+                <ng-container *ngSwitchCase="'horizontal'">
+                    <grid [gap]="[6,8]" [direction]="'column'" [align]="'center-left'">
+                        <nz-switch formControlName="value" [nzSize]="'small'"></nz-switch>
+                        <span *ngIf="label" class="f-12 f-lh-14 fw-500 f-04 w-content pdd-0">
+                            {{ label }}
+                            <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+                        </span>
+                    </grid>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <span *ngIf="label" class="f-13 fw-500 f-01 w-content">
+                        {{ label }}
+                        <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+                    </span>
+                    <nz-switch formControlName="value" [nzSize]="'small'"></nz-switch>
+                </ng-container>
+            </ng-container>
+        </grid>
+    </form>
 
-        <tui-textfield *ngIf="type === 'password'" [tuiTextfieldSize]="size" formControlName="value"
-            (input)="onInputChange($event)">
-            {{ placeholder }}
-            <tui-icon tuiPassword />
-        </tui-textfield>
+    <!-- Text -->
+    <form *ngSwitchCase="'text'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-input tuiTextfieldLegacy [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
+                formControlName="value" (input)="onInputChange($event)" class="{{hadError ? 't-input_error' : ''}}">
+                {{ placeholder }}
+            </tui-input>
+        </grid>
+    </form>
 
-        <tui-textarea *ngIf="type === 'textarea'" [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size"
-            formControlName="value" (input)="onInputChange($event)">
-            {{ placeholder }}
-        </tui-textarea>
+    <!-- Email -->
+    <form *ngSwitchCase="'email'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-input tuiTextfieldLegacy [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
+                formControlName="value" (input)="onInputChange($event)" class="{{hadError ? 't-input_error' : ''}}">
+                {{ placeholder }}
+            </tui-input>
+        </grid>
+    </form>
 
-        <tui-input-number *ngIf="type === 'number'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-            [tuiTextfieldPostfix]="postFix" [min]="min" [max]="max" [step]="step" [(ngModel)]="value"
-            [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
-            {{ placeholder }}
-        </tui-input-number>
+    <!-- Phone -->
+    <form *ngSwitchCase="'phone'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-input-phone [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
+                [countryCode]="countryCode" formControlName="value" (input)="onInputChange($event)">
+                {{ placeholder }}
+            </tui-input-phone>
+        </grid>
+    </form>
 
-        <tui-input-date *ngIf="type === 'date'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-            [min]="minDate" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
-            (ngModelChange)="onNgModelChange($event)">
-            {{ placeholder }}
-        </tui-input-date>
-        <tui-input-date-range *ngIf="type === 'date-range'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-            [min]="minDate" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
-            (ngModelChange)="onNgModelChange($event)">
-            {{ placeholder }}
-        </tui-input-date-range>
+    <!-- Password -->
+    <form *ngSwitchCase="'password'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-textfield [tuiTextfieldSize]="size" formControlName="value" (input)="onInputChange($event)">
+                {{ placeholder }}
+                <tui-icon tuiPassword />
+            </tui-textfield>
+        </grid>
+    </form>
 
-        <tui-input-time *ngIf="type === 'time'" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-            [items]="timeItems" [strict]="true" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
-            (ngModelChange)="onNgModelChange($event)">
-            {{ placeholder }}
-        </tui-input-time>
-        <tui-textfield *ngIf="type === 'search'" iconStart="@tui.search" [tuiTextfieldSize]="size"
-            [tuiTextfieldLabelOutside]="true">
-            <input [attr.placeholder]="placeholder" tuiTextfield formControlName="value"
-                (input)="onInputChange($event)" />
-        </tui-textfield>
-        <nz-switch *ngIf="type === 'switch'" [(ngModel)]="switchValue" [ngModelOptions]="{standalone: true}"
-            (ngModelChange)="onNgModelChange($event)"></nz-switch>
-    </grid>
-</form>
+    <!-- Currency -->
+    <form *ngSwitchCase="'currency'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-textfield iconStart="@tui.dollar-sign" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+                class="{{hadError ? 't-input_error' : ''}}">
+                <input tuiInputNumber [min]="min" formControlName="value" [tuiNumberFormat]="{precision: 2}" />
+            </tui-textfield>
+        </grid>
+    </form>
+
+    <!-- Textarea -->
+    <form *ngSwitchCase="'textarea'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-textarea [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size" formControlName="value"
+                (input)="onInputChange($event)">
+                {{ placeholder }}
+            </tui-textarea>
+        </grid>
+    </form>
+
+    <!-- Number -->
+    <form *ngSwitchCase="'number'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldPostfix]="postFix"
+                formControlName="value" (input)="onInputChange($event)">
+                {{ placeholder }}
+                <input tuiInputNumber [min]="min" [max]="max" [step]="step" />
+            </tui-textfield>
+        </grid>
+    </form>
+
+    <!-- Select -->
+    <form *ngSwitchCase="'select'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-textfield tuiChevron tuiTextfieldSize="s" [tuiTextfieldCleaner]="false" [stringify]="stringify"
+                class="{{hadError ? 't-input_error' : ''}}">
+                <input [placeholder]="placeholder" tuiSelect formControlName="value" />
+                <tui-data-list-wrapper *tuiTextfieldDropdown new [itemContent]="content" [items]="options" />
+                <ng-template #content let-card>
+                    {{ card.Name }}
+                </ng-template>
+            </tui-textfield>
+        </grid>
+    </form>
+
+    <!-- Date -->
+    <form *ngSwitchCase="'date'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-input-date [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [min]="minDate"
+                [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
+                {{ placeholder }}
+            </tui-input-date>
+        </grid>
+    </form>
+
+    <!-- Date Range -->
+    <form *ngSwitchCase="'date-range'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-input-date-range [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [min]="minDate"
+                [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
+                {{ placeholder }}
+            </tui-input-date-range>
+        </grid>
+    </form>
+
+    <!-- Time -->
+    <form *ngSwitchCase="'time'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-input-time [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [items]="timeItems"
+                [strict]="true" [(ngModel)]="value" [ngModelOptions]="{standalone: true}"
+                (ngModelChange)="onNgModelChange($event)">
+                {{ placeholder }}
+            </tui-input-time>
+        </grid>
+    </form>
+
+    <!-- Search -->
+    <form *ngSwitchCase="'search'" [formGroup]="formGroup">
+        <grid [gap]="[6, 16]" [direction]="'column'"
+            [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                {{ label }}
+                <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+            </span>
+            <tui-textfield iconStart="@tui.search" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true">
+                <input [attr.placeholder]="placeholder" tuiTextfield formControlName="value"
+                    (input)="onInputChange($event)" />
+            </tui-textfield>
+        </grid>
+    </form>
+</ng-container>

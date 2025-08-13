@@ -22,9 +22,9 @@ export class FormProp<T> {
 		private beforeSet?: ((value: T) => T) | null,
 		private beforeGet?: ((value: T) => T) | null
 	) {
-		this.value = this.defaultValue;
-		this._beforeSet = this.beforeSet;
-		this._beforeGet = this.beforeGet;
+		this.value = this.defaultValue || null;
+		this._beforeSet = this.beforeSet || null;
+		this._beforeGet = this.beforeGet || null;
 
 		// Suscribirse a los cambios del formGroup
 		this.formGroup

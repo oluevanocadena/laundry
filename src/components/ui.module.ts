@@ -11,9 +11,9 @@ const components = [GridComponent, FormInputComponent];
 @NgModule({
   imports: [
     CommonModule,
-    TUIModule,
     FormsModule,
     ReactiveFormsModule,
+    TUIModule,
     NgZorroModule
 ],
   declarations: components,

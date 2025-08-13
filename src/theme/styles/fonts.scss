@@ -60,6 +60,10 @@ $end: 80;
   color: var(--warning) !important;
 }
 
+.f-warning-hsl {
+  color: var(--warning-hsl-pressed) !important;
+}
+
 .f-warning-secondary {
   color: var(--warning-secondary);
 }

@@ -7,6 +7,7 @@ import {
   Output,
   Self,
   forwardRef,
+  signal,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -15,8 +16,8 @@ import {
   NG_VALUE_ACCESSOR,
   NgControl,
 } from '@angular/forms';
-import { TuiDay, TuiTime } from '@taiga-ui/cdk';
-import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
+import { TuiDay, TuiStringHandler, TuiTime } from '@taiga-ui/cdk';
+import { tuiItemsHandlersProvider, TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import {
   Subject,
   debounceTime,
@@ -36,6 +37,12 @@ import {
       useExisting: forwardRef(() => FormInputComponent),
       multi: true,
     },
+    tuiItemsHandlersProvider({
+      stringify: signal((x: UISelectOption) => x.Name),
+      identityMatcher: signal(
+        (a: UISelectOption, b: UISelectOption) => a.id === b.id
+      ),
+    }),
   ],
 })
 export class FormInputComponent implements ControlValueAccessor {
@@ -52,10 +59,13 @@ export class FormInputComponent implements ControlValueAccessor {
     | 'time'
     | 'search'
     | 'switch'
+    | 'select'
+    | 'currency'
     | 'number' = 'text';
   @Input() countryCode: string = '+52';
   @Input() outerLabel: boolean = true;
   @Input() size: TuiSizeL | TuiSizeS = 's';
+  @Input() clearable: boolean = true;
   @Input() min: number = 0;
   @Input() max: number = 100;
   @Input() step: number = 1;
@@ -65,6 +75,9 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() debounce: number = 300;
   @Input() required: boolean = false;
   @Input() orientation: 'horizontal' | 'vertical' = 'vertical';
+  @Input() options:
+    | (UISelectOption | ({ [key: string]: any } & UISelectOption))[]
+    | null = [];
   //Outputs
   @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
 
@@ -83,6 +96,7 @@ export class FormInputComponent implements ControlValueAccessor {
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
+  protected stringify: TuiStringHandler<UISelectOption> = (x) => x.Name;
   private onChange = (value: string) => {};
   private onTouched = () => {};
 
@@ -184,6 +198,13 @@ export class FormInputComponent implements ControlValueAccessor {
 
   ngAfterContentInit() {
     try {
+      this.formGroup.controls.value.valueChanges.subscribe((value) => {
+        if (value !== this.value && value !== null && this.type === 'switch') {
+          this.value = value;
+          this.onChange(value);
+        }
+      });
+
       this.ngControl = this.injector.get(NgControl, null);
       if (this.ngControl) {
         this.ngControl.valueAccessor = this;
@@ -226,4 +247,9 @@ export class FormInputComponent implements ControlValueAccessor {
     this.destroy$?.next();
     this.destroy$?.complete();
   }
+}
+
+export interface UISelectOption {
+  id: string;
+  Name: string;
 }

@@ -1,0 +1,39 @@
+tui-textfield {
+    border: none !important;
+    border-radius: 6px !important;
+
+    &[tuiChevron][tuiIcons]:after {
+        color: var(--text-07) !important;
+        font-size: 14px !important;
+    }
+
+    >input[tuiSelect] {
+        color: var(--text-01) !important;
+        font-size: 13px !important;
+        border-radius: 4px !important;
+    }
+
+    >input[tuiSelect]::placeholder {
+        color: var(--text-08) !important;
+    }
+}
+
+tui-dropdown {
+    background: var(--background-01) !important;
+    color: var(--text-01) !important;
+    font-size: 13px !important;
+    border-radius: 4px !important;
+    box-shadow: var(--shadow-01) !important;
+    border: 1px solid var(--border) !important;
+
+    *>button {
+        color: var(--text-01) !important;
+        padding-top: 8px !important;
+        border-radius: 4px !important;
+        font-size: 14px !important;
+    }
+
+    *>button:hover {
+        background-color: var(--background-04) !important;
+    }
+}

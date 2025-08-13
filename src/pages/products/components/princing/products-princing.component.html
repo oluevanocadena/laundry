@@ -1,0 +1,31 @@
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+    <span class="f-14 fw-500 f-05 f-lh-12">Precios</span>
+
+    <ng-template tuiAccordionItemContent>
+        <form [formGroup]="facade.formGroup">
+            <grid [gap]="[8,16]" [direction]="'row'">
+                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'0 0 0.25rem 0'">
+                    <span class="f-13 f-lh-14 f-06">
+                        Los precios pueden variar dependiendo de la disponibilidad en tiendas.
+                    </span>
+                </grid>
+                <form-input [label]="'Precio'" [type]="'currency'" [placeholder]="'Precio del producto'"
+                    formControlName="price" [required]="true" />
+                <form-input [label]="'Usar el mismo precio en todas las sucursales'" [type]="'switch'"
+                    formControlName="samePrice" [required]="true" [orientation]="'horizontal'"
+                    [padding]="'0.5rem 0 0'" />
+            </grid>
+        </form>
+
+        <grid *ngIf="samePrice === false" [gap]="[8,16]" [direction]="'row'" [padding]="'1rem 0 0'">
+            <span class="f-15 f-lh-16 f-06 fw-400">
+                Precios por sucursal:
+            </span>
+            <ng-container *ngFor="let location of locationPrices">
+                <form-input [label]="location.LocationName" [type]="'currency'" [placeholder]="'Precio del producto'"
+                    [(ngModel)]="location.Price" [ngModelOptions]="{standalone: true}" [required]="true" />
+            </ng-container>
+        </grid>
+
+    </ng-template>
+</tui-accordion-item>

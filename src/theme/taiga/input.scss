@@ -42,6 +42,9 @@ tui-input[data-size="s"] {
 }
 
 tui-textarea {
+    border-radius: 6px !important;
+
+
     div.t-outline {
         background: transparent !important;
         border: 1px solid var(--border) !important;
@@ -69,6 +72,39 @@ tui-textarea {
                 caret-color: var(--white) !important;
             }
         }
+    }
+}
+
+
+tui-textfield {
+    &[style*="--t-icon-start:"] {
+        color: var(--text-01) !important;
+        font-size: 14px !important;
+
+        [tuiAppearance][data-appearance=textfield] {
+            padding: 0 !important;
+            padding-left: 2.5rem !important;
+            padding-bottom: 2px !important;
+        }
+    }
+
+    [tuiAppearance][data-appearance=textfield] {
+        background-color: transparent !important;
+        color: var(--text-01) !important;
+        outline: 1px solid var(--border) !important;
+        border-radius: 6px !important;
+    }
+
+    >.t-content,
+    >.t-template {
+        padding-top: 0 !important;
+    }
+
+    button[tuiicons]::before,
+    >button[tuiicons]::before,
+    *>button[tuiicons]::before {
+        color: var(--text-06) !important;
+        font-size: 14px !important;
     }
 }
 
@@ -115,6 +151,6 @@ tui-primitive-textfield[data-size="s"] [tuiwrapper] input.t-input {
 
 .t-input_error {
     box-shadow: 0px 0px 0.015rem 0.0225rem var(--error) !important;
-    border-radius: 0.5rem !important;
+    border-radius: 4px !important;
     outline: 1px solid var(--error) !important;
 }

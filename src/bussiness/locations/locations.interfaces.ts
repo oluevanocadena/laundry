@@ -19,4 +19,6 @@ export interface Location {
   Default?: boolean;
   Deleted?: boolean;
   Disabled?: boolean;
+
+  Checked?: boolean; //Only for UI
 }

@@ -1,0 +1,53 @@
+<grid [direction]="'column'" [template]="'1fr max-content'">
+    <grid [gap]="[16,16]" [direction]="'row'">
+        <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'" height="fit-content">
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,16]">
+                    <button (click)="onBack()" outline xsmall icon>
+                        <tui-icon icon="@tui.chevron-left" class="f-14 f-04" />
+                    </button>
+                    <span class="fw-600 f-01 f-18">
+                        {{facade.edition ? '' : 'Nuevo producto'}}
+                        <label *ngIf="!busy" [ngClass]="{'skeleton': busy}">
+                            {{facade.selectedProduct.value?.Name || ''}}
+                        </label>
+                    </span>
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
+                        <tui-loader *ngIf="busy" />
+                        <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
+                            [appearance]="'warning'" />
+                        <status-badge *ngIf="!busy && facade.edition === true" [label]="productStatus" [size]="'s'"
+                            [appearance]="productStatusAppearance" />
+                    </grid>
+                </grid>
+                <span class="f-13 fw-400 f-06 f-lh-13">
+                    {{dateCreated | dateFormat: 'DD/MM/yyyy [a las] hh:mm A' }}
+                </span>
+            </grid>
+        </grid>
+
+    </grid>
+
+    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
+        <button (click)="saveProduct()" [disabled]="busy || canSave === false" [showLoader]="busy" outline small
+            primary>
+            Guardar
+        </button>
+        <button *ngIf="facade.edition === true" outline small icon [disabled]="busy" [showLoader]="busy" nz-dropdown
+            nzTrigger="click" [nzDropdownMenu]="menu">
+            <tui-icon icon="@tui.ellipsis-vertical" class="f-16 f-01" />
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <grid [gap]="[2,8]" [direction]="'row'" [padding]="'0.5rem'" class="bg-02 brdr-radius-6 shadow-01">
+                <span class="f-12 f-03 fw-300" [padding]="'0.5rem 0 0.5rem 0.5rem'">
+                    Acciones
+                </span>
+                <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.showDeleteModal = true">
+                    <tui-icon icon="@tui.trash" class="f-12 fw-100 f-error" />
+                    Eliminar
+                </button>
+            </grid>
+        </nz-dropdown-menu>
+    </grid>
+
+</grid>

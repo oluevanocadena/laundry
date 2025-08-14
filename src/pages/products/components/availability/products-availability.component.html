@@ -14,11 +14,11 @@
 
             <grid *ngIf="locations.length > 0" [gap]="[8,16]" [direction]="'row'">
                 <ng-container *ngFor="let location of locations">
-                    <label nz-checkbox [nzValue]="location.Checked" [(ngModel)]="location.Checked"
+                    <label nz-checkbox [nzValue]="location.IsEnabled" [(ngModel)]="location.IsEnabled"
                         [ngModelOptions]="{standalone: true}" class="f-14">
-                        {{location.Name}} -
+                        {{location.Location?.Name}} -
                         <span class="f-14 f-lh-16 f-06">
-                            {{location.Address}}
+                            {{location.Location?.Address}}
                         </span>
                     </label>
                 </ng-container>

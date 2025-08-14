@@ -14,6 +14,7 @@ import { ServicesModule } from '../../services/services.module';
 import { ProductsAvailabilityComponent } from './components/availability/products-availability.component';
 import { ProductsGeneralsComponent } from './components/generals/products-generals.component';
 import { ProductsHeaderComponent } from './components/header/products-header.component';
+import { ProductsMediaComponent } from './components/media/products-media.component';
 import { ProductsPrincingComponent } from './components/princing/products-princing.component';
 import { ProductsDraftComponent } from './draft/products-draft.component';
 import { ProductsPageComponent } from './products-page.component';
@@ -23,6 +24,7 @@ const components: any[] = [
   ProductsDraftComponent,
   ProductsGeneralsComponent,
   ProductsHeaderComponent,
+  ProductsMediaComponent,
   ProductsPageComponent,
   ProductsPrincingComponent,
 ];

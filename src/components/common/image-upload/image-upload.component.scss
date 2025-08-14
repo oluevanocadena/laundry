@@ -1,0 +1,76 @@
+.drop-zone {
+    transition: all 0.3s ease;
+    position: relative;
+
+    &:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+    }
+
+    &.drag-over {
+        cursor: pointer;
+        border-style: dashed !important;
+        background-color: rgba(24, 144, 255, 0.1); // Color primario de ng-zorro
+        transform: scale(1.02);
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(24, 144, 255, 0.05);
+            border-radius: 6px;
+            pointer-events: none;
+        }
+
+        // Animación sutil durante drag over
+        animation: dragPulse 2s infinite;
+    }
+}
+
+@keyframes dragPulse {
+
+    0%,
+    100% {
+        transform: scale(1.02);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.95;
+    }
+}
+
+.button-flotade {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.image-container {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden; // Para que el overlay respete el border-radius
+
+    &:hover {
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            pointer-events: none;
+        }
+    }
+
+    img {
+        display: block;
+        transition: all 0.2s ease;
+    }
+}

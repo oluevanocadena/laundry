@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { v4 as uuidv4 } from 'uuid';
+
 import { supabase } from '../../environments/environment';
 import { BusyProp } from '../../types/busy.type';
 import { FacadeApiBase } from '../../types/facade.base';
 import { SubjectProp } from '../../types/subject.type';
-import { Product, ProductCategory } from './products.interfaces';
+import {
+  Product,
+  ProductCategory,
+  ProductLocation,
+} from './products.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +20,12 @@ export class ProductsApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
   public client: SupabaseClient;
 
+  private bucket = 'products';
   private table = 'Products';
+  private tableLocations = 'Locations';
   private tableProductLocations = 'ProductLocations';
   private tableProductCategories = 'ProductCategories';
+  private tableProductImages = 'ProductImages';
 
   products = new SubjectProp<Product[]>([]);
   productCategories = new SubjectProp<ProductCategory[]>([]);
@@ -61,7 +70,9 @@ export class ProductsApiService implements FacadeApiBase {
       const { data, error } = await this.client
         .from(this.table)
         .select(
-          `*, ProductLocations: ${this.tableProductLocations}(*), ProductCategory: ${this.tableProductCategories}(Name) `
+          `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
+              ProductCategory: ${this.tableProductCategories}(Name),
+              ProductImages: ${this.tableProductImages}(*) `
         )
         .eq('Deleted', false)
         .overrideTypes<Product[], { merge: false }>();
@@ -70,25 +81,44 @@ export class ProductsApiService implements FacadeApiBase {
     }, 'fetching products');
   }
 
+  getProduct(productId: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(this.table)
+        .select(
+          `*, ProductLocations: ${this.tableProductLocations}(*), 
+              ProductCategory: ${this.tableProductCategories}(Name), 
+              ProductImages: ${this.tableProductImages}(*) `
+        )
+        .eq('Id', productId);
+      if (error) throw error;
+      return data[0] || [];
+    }, 'fetching product images');
+  }
+
   uploadProductImage(file: File) {
     return this.executeWithBusy(async () => {
+      // Generar nombre único manteniendo la extensión original
+      const extension = file.name.split('.').pop();
+      const uniqueName = `${uuidv4()}.${extension}`;
+
+      // Subir con ruta en carpeta "public" (por RLS)
       const { data, error } = await this.client.storage
-        .from(this.table)
-        .upload(file.name, file);
+        .from(this.bucket)
+        .upload(`public/${uniqueName}`, file);
+
       if (error) throw error;
-      return data;
+
+      // Obtener la URL pública
+      const { data: publicUrl } = this.client.storage
+        .from(this.bucket)
+        .getPublicUrl(`public/${uniqueName}`);
+
+      return publicUrl.publicUrl;
     }, 'uploading product image');
   }
 
-  async saveProduct(
-    product: Product,
-    locations: {
-      LocationId: string;
-      IsEnabled: boolean;
-      StockByLocation?: number;
-      PriceByLocation?: number;
-    }[]
-  ) {
+  async saveProduct(product: Product, locations: ProductLocation[]) {
     return this.executeWithBusy(async () => {
       // 1️⃣ Guardar o actualizar producto
       const { data: productData, error: productError } = await this.client
@@ -114,14 +144,12 @@ export class ProductsApiService implements FacadeApiBase {
         ProductId: productId,
         LocationId: loc.LocationId,
         IsEnabled: loc.IsEnabled,
-        StockByLocation: loc.StockByLocation ?? null,
-        PriceByLocation: loc.PriceByLocation ?? null,
       }));
 
       if (productLocations.length) {
         const { error: locationError } = await this.client
           .from(this.tableProductLocations)
-          .insert(productLocations);
+          .upsert(productLocations);
 
         if (locationError) throw locationError;
       }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { routes } from '../../../../app/routes';
 import { ProductsDraftFacade } from '../../../../bussiness/products/controllers/products.draft.facade';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
+import moment from 'moment';
 
 @Component({
   selector: 'products-header',
@@ -36,7 +37,10 @@ export class ProductsHeaderComponent extends HelperPage {
   }
 
   get dateCreated(): string {
-    return this.facade.selectedProduct.value?.created_at || '';
+    return (
+      this.facade.selectedProduct.value?.created_at ||
+      moment().locale('es').toDate().toString()
+    );
   }
 
   get productStatus(): string {

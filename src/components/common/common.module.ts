@@ -13,6 +13,7 @@ import { DrawerNotificationsComponent } from './drawer-notifications/drawer-noti
 import { DrawerComponent } from './drawer/drawer.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { LayoutComponent } from './layout/layout.component';
 import { LogoComponent } from './logo/logo.component';
 import { MenuContentComponent } from './menu-content/menu-content.component';
@@ -38,6 +39,7 @@ const components = [
   DrawerNotificationsComponent,
   FooterComponent,
   HeaderComponent,
+  ImageUploadComponent,
   LayoutComponent,
   LogoComponent,
   MenuComponent,

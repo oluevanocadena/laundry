@@ -2,7 +2,8 @@
 // Models
 // ::::::::::::::::::::::::::::::::::::::
 
-import { UISelectOption } from "../../components/form-input/form-input.component";
+import { UISelectOption } from '../../components/form-input/form-input.component';
+import { Location } from '../locations/locations.interfaces';
 
 export interface Product {
   id?: string;
@@ -23,8 +24,9 @@ export interface Product {
 
   OrganizationId: string;
 
-  ProductCategory?: ProductCategory;
-  ProductLocations?: ProductLocation[];
+  ProductLocations?: ProductLocation[]; // Only for UI
+  ProductCategory?: ProductCategory; // Only for UI
+  ProductImages?: ProductImage[]; // Only for UI
 }
 
 export interface ProductLocation {
@@ -35,8 +37,15 @@ export interface ProductLocation {
   LocationId: string;
   IsEnabled: boolean;
 
-  StockByLocation?: number;
-  PriceByLocation?: number;
+  Location?: Location; // Only for UI
+}
+
+export interface ProductImage {
+  id?: string; //uuid
+  created_at?: string;
+  ProductId: string;
+  Url: string;
+  Deleted?: boolean;
 }
 
 export interface ProductCategory extends UISelectOption {

@@ -58,7 +58,7 @@ button {
         color: var(--text-01);
 
         &:hover {
-            background-color: var(--background-03);
+            background-color: var(--secondary-hsl-hover);
             border: 1px solid var(--border);
             font-size: 13px;
             font-weight: 500;

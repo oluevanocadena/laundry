@@ -127,7 +127,11 @@ textarea.t-input {
     color: #0000004b !important;
 }
 
-
+input[tuiswitch] {
+    &::before {
+        margin-left: 2px !important;
+    }
+}
 
 .t-input.t-input_template {
     padding-top: 0.525rem !important;

@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { FacadeBase } from '../../../types/facade.base';
-import { ProductsApiService } from '../products.api.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { StorageProp } from '../../../types/storage.type';
-import { Product } from '../products.interfaces';
 import { LocationsApiService } from '../../../bussiness/locations/locations.api.service';
+import { FacadeBase } from '../../../types/facade.base';
 import { FormProp } from '../../../types/form.type';
+import { StorageProp } from '../../../types/storage.type';
+import { ProductsApiService } from '../products.api.service';
+import { Product, ProductLocation } from '../products.interfaces';
+import { Location } from '../../locations/locations.interfaces';
+import { SubjectProp } from '../../../types/subject.type';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +32,10 @@ export class ProductsDraftFacade extends FacadeBase {
   public price = new FormProp(this.formGroup, 'price', 0);
 
   public selectedProduct = new StorageProp<Product>(null, 'PRODUCT_EDITION');
+  public productLocations = new SubjectProp<ProductLocation[]>([]);
   public locationPrices: LocationPrice[] = [];
+
+  public urlImages: string[] = [];
 
   constructor(
     public api: ProductsApiService,
@@ -41,38 +46,67 @@ export class ProductsDraftFacade extends FacadeBase {
 
   initialize() {
     this.api.getProductCategories();
-    this.locationApi.getLocations();
+    if (this.edition === false) {
+      this.locationApi.getLocations();
+    }
   }
 
   bindEvents() {
     this.locationApi.locations.onChange((locations) => {
-      this.locationPrices =
-        locations.map((location) => {
-          return {
-            LocationId: location.id || '',
-            LocationName: location.Name || '',
-            Price: 0,
-          };
-        }) || [];
+      if (this.edition === false) {
+        // Only get from server for new products
+        this.locationPrices =
+          locations.map((location: Location) => {
+            return {
+              LocationId: location.id || '',
+              LocationName: location.Name || '',
+              Price: 0,
+            };
+          }) || [];
+        this.productLocations.value =
+          locations?.map((loc) => ({
+            IsEnabled: true,
+            LocationId: loc.id || '',
+            ProductId: '',
+            Location: loc,
+          })) || [];
+      }
     });
 
     this.price.onChange((value) => {
-      // Only for same price
-      setTimeout(() => {
+      if (this.samePrice.value === true) {
         this.locationPrices = Array.from(this.locationPrices).map(
           (location) => {
-            console.log('🚩 price', this.price.value);
             location.Price = this.price.value ?? 0;
             return location;
           }
         );
-      }, 100);
+      }
     });
   }
 
-  clearState() {}
+  clearState() {
+    this.formGroup.reset();
+    this.urlImages = [];
+    this.selectedProduct.value = null;
+    this.edition = false;
+    this.showDeleteModal = false;
+    this.showDisableModal = false;
+  }
 
   submitForm() {}
+
+  /**
+   * UI Events
+   */
+
+  onSelectedImage(file: File) {
+    this.api.uploadProductImage(file).then((url) => {
+      if (url) {
+        this.urlImages.push(url);
+      }
+    });
+  }
 }
 
 export interface LocationPrice {

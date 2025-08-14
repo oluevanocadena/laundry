@@ -46,6 +46,10 @@ nz-switch {
     box-shadow: 0 0 0 6px var(--primary-hsl);
 }
 
+.ant-checkbox-wrapper+.ant-checkbox-wrapper {
+    margin-left: 0 !important;
+}
+
 @keyframes waveEffect {
     100% {
         box-shadow: 0 0 0 6px var(--primary-hsl);

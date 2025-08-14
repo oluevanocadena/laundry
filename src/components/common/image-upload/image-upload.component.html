@@ -24,12 +24,12 @@
 
 <grid *ngIf="imageSelected" [direction]="'row'" [align]="'center-center'" [width]="'150px'" [height]="'150px'"
     class="brdr brdr-radius-6 bg-02 relative">
-    <input #file type="file" class="hidden" (change)="onSelectedImage($event)" [accept]="accept" />
+
     <div class="image-container">
         <img [src]="imageBase64" [alt]="'Imagen seleccionada'" [width]="'100%'" [height]="'150px'"
             class="brdr-radius-6 img-cover" />
     </div>
-    <button flat xsmall icon (click)="file.click()" class="button-flotade">
+    <button flat xsmall icon (click)="delete()" class="button-flotade">
         <grid [gap]="[2,2]" [direction]="'column'" [align]="'center-center'">
             <tui-icon icon="@tui.x" class="f-18 f-04 f-02" />
         </grid>

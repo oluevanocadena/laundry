@@ -107,6 +107,11 @@ export class ProductsDraftFacade extends FacadeBase {
       }
     });
   }
+
+  onDeleteImage(url: string) {
+    console.log('📷 url', url);
+    this.urlImages = this.urlImages.filter((image) => image !== url);
+  }
 }
 
 export interface LocationPrice {

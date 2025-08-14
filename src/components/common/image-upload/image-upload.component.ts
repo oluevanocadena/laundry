@@ -14,6 +14,7 @@ export class ImageUploadComponent implements OnInit {
   @Input() avoidDisplay: boolean = false;
 
   @Output() onSelected = new EventEmitter<File>();
+  @Output() onDelete = new EventEmitter<string>();
 
   // Estado para el drag & drop
   isDragOver = false;
@@ -111,6 +112,16 @@ export class ImageUploadComponent implements OnInit {
 
     this.nzMessageService.error(`Solo se permiten archivos de ${typeMessage}`);
   }
+
+  /**
+   * UI Events
+   */
+
+  delete() {
+    this.file = null;
+    this.onDelete.emit(this.imageUrl || '');
+  }
+
   /**
    * Getters
    */

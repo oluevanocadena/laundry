@@ -9,15 +9,12 @@ export abstract class FacadeBase implements LifecycleStrategy {
   // public routes = Routes;
   // public strings = Strings;
 
-  constructor(api: FacadeApiBase) {
-    setTimeout(() => {
-      this.bindEvents();
-      this.initialize();
-    });
-  }
+  constructor(api: FacadeApiBase) {}
 
   //Initialize facade state and get data from api
-  public abstract initialize(): void;
+  public initialize(): void {
+    this.bindEvents();
+  }
 
   //Setup event subscriptions and listeners
   public abstract bindEvents(): void;

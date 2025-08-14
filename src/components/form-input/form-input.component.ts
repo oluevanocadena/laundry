@@ -26,6 +26,7 @@ import {
   startWith,
   takeUntil,
 } from 'rxjs';
+import { FormProp } from '../../types/form.type';
 @Component({
   selector: 'form-input',
   standalone: false,
@@ -46,42 +47,37 @@ import {
   ],
 })
 export class FormInputComponent implements ControlValueAccessor {
-  @Input() label: string | undefined = undefined;
-  @Input() placeholder: string = 'Enter value';
-  @Input() type:
-    | 'text'
-    | 'email'
-    | 'phone'
-    | 'password'
-    | 'textarea'
-    | 'date'
-    | 'date-range'
-    | 'time'
-    | 'search'
-    | 'switch'
-    | 'select'
-    | 'currency'
-    | 'number' = 'text';
-  @Input() countryCode: string = '+52';
-  @Input() outerLabel: boolean = true;
-  @Input() size: TuiSizeL | TuiSizeS = 's';
   @Input() clearable: boolean = true;
-  @Input() min: number = 0;
-  @Input() max: number = 100;
-  @Input() step: number = 1;
-  @Input() postFix: string = '';
-  @Input() timeItems: TuiTime[] = [];
-  @Input() minDate: TuiDay | null = TuiDay.currentLocal().append({ day: 1 });
+  @Input() countryCode: string = '+52';
   @Input() debounce: number = 300;
+  @Input() label: string | undefined = undefined;
+  @Input() max: number = 100;
+  @Input() min: number = 0;
+  @Input() minDate: TuiDay | null = TuiDay.currentLocal().append({ day: 1 });
+  @Input() orientation: InputOrientation = 'vertical';
+  @Input() outerLabel: boolean = true;
+  @Input() placeholder: string = 'Enter value';
+  @Input() postFix: string = '';
   @Input() required: boolean = false;
-  @Input() orientation: 'horizontal' | 'vertical' = 'vertical';
-  @Input() options:
-    | (UISelectOption | ({ [key: string]: any } & UISelectOption))[]
-    | null = [];
-  //Outputs
-  @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
+  @Input() size: TuiSizeL | TuiSizeS = 's';
+  @Input() step: number = 1;
+  @Input() timeItems: TuiTime[] = [];
+  @Input() type: InputType = 'text';
 
-  value: string = '';
+  //Options
+  private _options: UISelectOption[] | null = [];
+  @Input() set options(value: UISelectOption[] | null) {
+    this._options = value;
+    const idOption = this.formValue.value;
+    if (this.type === 'select' && value && idOption) {
+      this.formValue.value = value?.find((option) => option.id === idOption);
+    }
+  }
+  get options() {
+    return this._options || [];
+  }
+
+  //Disabled
   private _disabled = false;
   @Input() set disabled(value: boolean) {
     this._disabled = value;
@@ -93,26 +89,28 @@ export class FormInputComponent implements ControlValueAccessor {
     return this._disabled;
   }
 
+  //Outputs
+  @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
+
+  value: string = '';
+
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
   protected stringify: TuiStringHandler<UISelectOption> = (x) => x.Name;
+  mapper = (item: any) => item.id;
+
   private onChange = (value: string) => {};
   private onTouched = () => {};
 
   formGroup = new FormGroup({
-    value: new FormControl(),
+    value: new FormControl(null),
   });
 
-  public ngControl: NgControl | null = null;
+  //Subject Type
+  formValue = new FormProp<any>(this.formGroup, 'value', null);
 
-  constructor(private injector: Injector) {
-    if (this.type === 'switch') {
-      this.formGroup.controls.value.valueChanges.subscribe((value) => {
-        this.onChange(value);
-      });
-    }
-  }
+  constructor(private injector: Injector) {}
 
   setupSearchDebounce(): void {
     this.searchSubject
@@ -159,9 +157,9 @@ export class FormInputComponent implements ControlValueAccessor {
   private _updateInternalValue(value: any): void {
     this.value = value;
     if (this.type === 'switch') {
-      this.formGroup.controls.value.setValue(value ?? false);
+      this.formValue.value = value ?? false;
     } else {
-      this.formGroup.controls.value.setValue(value);
+      this.formValue.value = value;
     }
   }
 
@@ -171,10 +169,6 @@ export class FormInputComponent implements ControlValueAccessor {
 
   get isEmailOrText() {
     return this.type === 'email' || this.type === 'text';
-  }
-
-  get control(): FormControl {
-    return this.ngControl?.control as FormControl;
   }
 
   get hadError() {
@@ -189,18 +183,26 @@ export class FormInputComponent implements ControlValueAccessor {
    */
 
   ngAfterContentInit() {
-    this.formGroup.controls.value.valueChanges
-      .pipe(distinctUntilChanged())
-      .subscribe((value) => {
+    this.formValue.change$.pipe(distinctUntilChanged()).subscribe((value) => {
+      if (this.type === 'switch') {
         this.onChange(value);
-      });
+      } else if (this.type === 'select') {
+        if (value && typeof value === 'object' && this.value !== value.id) {
+          console.log('👉🏽 select value', value.id);
+          this.onChange(value.id);
+          this.value = value.id;
+        }
+      } else {
+        this.onChange(value);
+      }
+    });
 
+    let ngControl = this.injector.get(NgControl, null);
     try {
-      this.ngControl = this.injector.get(NgControl, null);
-      if (this.ngControl) {
-        this.ngControl.valueAccessor = this;
+      if (ngControl) {
+        ngControl.valueAccessor = this;
 
-        const externalControl = this.ngControl.control;
+        const externalControl = ngControl.control;
         const internalControl = this.formGroup.controls.value;
 
         if (!externalControl) return;
@@ -222,11 +224,11 @@ export class FormInputComponent implements ControlValueAccessor {
             // }
           });
 
-        internalControl.setValidators(this.ngControl.validator);
+        internalControl.setValidators(ngControl.validator);
         internalControl.updateValueAndValidity();
       }
     } catch {
-      this.ngControl = null;
+      ngControl = null;
     }
 
     if (this.type === 'search') {
@@ -244,3 +246,20 @@ export interface UISelectOption {
   id: string;
   Name: string;
 }
+
+export type InputType =
+  | 'text'
+  | 'email'
+  | 'phone'
+  | 'password'
+  | 'textarea'
+  | 'date'
+  | 'date-range'
+  | 'time'
+  | 'search'
+  | 'switch'
+  | 'select'
+  | 'currency'
+  | 'number';
+
+export type InputOrientation = 'horizontal' | 'vertical';

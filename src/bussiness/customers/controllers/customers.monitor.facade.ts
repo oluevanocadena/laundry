@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { routes } from '../../../app/routes';
 import { FacadeBase } from '../../../types/facade.base';
-import { SubjectProp } from '../../../types/subject.type';
 import { CustomersApiService } from '../customers.api.service';
 import { Customer } from '../customers.interfaces';
-import { routes } from '../../../app/routes';
 import { CustomersDraftFacade } from './customers.draft.facade';
 
 @Injectable({
@@ -19,7 +18,9 @@ export class CustomersMonitorFacade extends FacadeBase {
     super(api);
   }
 
-  initialize() {}
+  override initialize() {
+    super.initialize();
+  }
 
   bindEvents() {}
 

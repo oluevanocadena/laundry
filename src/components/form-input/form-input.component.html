@@ -140,7 +140,8 @@
             </span>
             <tui-textfield tuiChevron tuiTextfieldSize="s" [tuiTextfieldCleaner]="false" [stringify]="stringify"
                 class="{{hadError ? 't-input_error' : ''}}">
-                <input [placeholder]="placeholder" tuiSelect formControlName="value" />
+                <input *ngIf="(options || []).length > 0" [placeholder]="placeholder" tuiSelect
+                    formControlName="value" />
                 <tui-data-list-wrapper *tuiTextfieldDropdown new [itemContent]="content" [items]="options" />
                 <ng-template #content let-card>
                     {{ card.Name }}

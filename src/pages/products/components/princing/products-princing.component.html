@@ -23,7 +23,7 @@
                 Precios por sucursal:
             </span>
             <ng-container *ngFor="let location of locationPrices">
-                <form-input [label]="location.LocationName" [type]="'currency'" [placeholder]="'Precio del producto'"
+                <form-input [label]="location.Location?.Name" [type]="'currency'" [placeholder]="'Precio del producto'"
                     [(ngModel)]="location.Price" [ngModelOptions]="{standalone: true}" [required]="true" />
             </ng-container>
         </grid>

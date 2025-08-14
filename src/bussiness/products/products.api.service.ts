@@ -11,6 +11,7 @@ import {
   Product,
   ProductCategory,
   ProductLocation,
+  ProductLocationPrice,
 } from './products.interfaces';
 
 @Injectable({
@@ -26,6 +27,7 @@ export class ProductsApiService implements FacadeApiBase {
   private tableProductLocations = 'ProductLocations';
   private tableProductCategories = 'ProductCategories';
   private tableProductImages = 'ProductImages';
+  private tableProductLocationPrice = 'ProductLocationPrices';
 
   products = new SubjectProp<Product[]>([]);
   productCategories = new SubjectProp<ProductCategory[]>([]);
@@ -38,7 +40,7 @@ export class ProductsApiService implements FacadeApiBase {
     callback: () => Promise<T>,
     message?: string
   ): Promise<T | null> {
-    console.log(`🚩 ${message || 'Executing operation'}`);
+    console.log(`🚀 [Products API] ${message || 'Executing operation'}`);
     this.busy.value = true;
     try {
       const result = await callback();
@@ -62,7 +64,7 @@ export class ProductsApiService implements FacadeApiBase {
         .eq('Deleted', false);
       if (error) throw error;
       this.productCategories.value = data || [];
-    }, 'fetching product categories');
+    }, 'Fetching Product Categories');
   }
 
   getProducts() {
@@ -72,13 +74,14 @@ export class ProductsApiService implements FacadeApiBase {
         .select(
           `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
               ProductCategory: ${this.tableProductCategories}(Name),
-              ProductImages: ${this.tableProductImages}(*) `
+              ProductImages: ${this.tableProductImages}(*),
+              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)) `
         )
         .eq('Deleted', false)
         .overrideTypes<Product[], { merge: false }>();
       if (error) throw error;
       this.products.value = data || [];
-    }, 'fetching products');
+    }, 'Fetching Products');
   }
 
   getProduct(productId: string) {
@@ -88,12 +91,14 @@ export class ProductsApiService implements FacadeApiBase {
         .select(
           `*, ProductLocations: ${this.tableProductLocations}(*), 
               ProductCategory: ${this.tableProductCategories}(Name), 
-              ProductImages: ${this.tableProductImages}(*) `
+              ProductImages: ${this.tableProductImages}(*),
+              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)) `
         )
-        .eq('Id', productId);
+        .eq('Id', productId)
+        .single();
       if (error) throw error;
-      return data[0] || [];
-    }, 'fetching product images');
+      return data || [];
+    }, 'Fetching Product Images');
   }
 
   uploadProductImage(file: File) {
@@ -115,47 +120,119 @@ export class ProductsApiService implements FacadeApiBase {
         .getPublicUrl(`public/${uniqueName}`);
 
       return publicUrl.publicUrl;
-    }, 'uploading product image');
+    }, 'Uploading Product Image');
   }
 
-  async saveProduct(product: Product, locations: ProductLocation[]) {
+  async saveProduct(
+    product: Product,
+    locations: ProductLocation[],
+    locationPrices: ProductLocationPrice[],
+    images: string[]
+  ) {
     return this.executeWithBusy(async () => {
       // 1️⃣ Guardar o actualizar producto
       const { data: productData, error: productError } = await this.client
         .from(this.table)
-        .upsert(product, { onConflict: 'Id' }) // si viene Id lo actualiza
+        .upsert(product)
         .select()
         .single();
 
       if (productError) throw productError;
+      console.log('🤔 productData', productData);
+      const productId = productData.id;
 
-      const productId = productData.Id;
-
-      // 2️⃣ Eliminar relaciones previas para evitar duplicados
-      const { error: deleteError } = await this.client
-        .from(this.tableProductLocations)
-        .delete()
-        .eq('ProductId', productId);
-
-      if (deleteError) throw deleteError;
-
-      // 3️⃣ Insertar nuevas relaciones
-      const productLocations = locations.map((loc) => ({
-        ProductId: productId,
-        LocationId: loc.LocationId,
-        IsEnabled: loc.IsEnabled,
-      }));
-
-      if (productLocations.length) {
-        const { error: locationError } = await this.client
+      if (locations.length > 0) {
+        // 2️⃣ Eliminar relaciones previas para evitar duplicados
+        const { error: deleteError } = await this.client
           .from(this.tableProductLocations)
-          .upsert(productLocations);
+          .delete()
+          .eq('ProductId', productId);
 
-        if (locationError) throw locationError;
+        if (deleteError) throw deleteError;
+        console.log('🤔 Location availability deleted');
+
+        // 3️⃣ Insertar nuevas relaciones
+        const productLocations = locations.map((loc) => {
+          delete loc.Location; //eliminar la relación con la ubicación
+          return {
+            ...loc,
+            ProductId: productId, //actualizar el id del producto
+          };
+        });
+        console.log('🤔 productLocations cleaned', productLocations);
+
+        if (productLocations.length) {
+          const { error: locationError } = await this.client
+            .from(this.tableProductLocations)
+            .upsert(productLocations, { onConflict: 'id' });
+
+          if (locationError) throw locationError;
+          console.log('🤔 Inserted availability locations');
+        }
       }
 
-      // 4️⃣ Retornar el producto ya guardado con relaciones
-      return { ...productData, ProductLocations: productLocations };
-    }, 'saving product');
+      // 4️⃣ Guardar imágenes
+      if (images.length > 0) {
+        // 5️⃣ Eliminar imágenes previas
+        const { error: deleteErrorImages } = await this.client
+          .from(this.tableProductImages)
+          .delete()
+          .eq('ProductId', productId);
+        if (deleteErrorImages) throw deleteErrorImages;
+        console.log('🤔 Images deleted');
+
+        // 6️⃣ Insertar nuevas imágenes
+        const productImages = images.map((image) => ({
+          ProductId: productId,
+          Url: image,
+          Deleted: false,
+        }));
+
+        const { error: imageError } = await this.client
+          .from(this.tableProductImages)
+          .upsert(productImages);
+
+        if (imageError) throw imageError;
+        console.log('🤔 Images inserted');
+      }
+
+      // Location Prices
+      if (locationPrices.length > 0) {
+        // 7️⃣ Eliminar precios previos
+        const { error: deleteErrorLocationPrice } = await this.client
+          .from(this.tableProductLocationPrice)
+          .delete()
+          .eq('ProductId', productId);
+        if (deleteErrorLocationPrice) throw deleteErrorLocationPrice;
+        console.log('🤔 Location prices deleted');
+
+        // 8️⃣ Insertar nuevos precios
+        const { error: locationPriceError } = await this.client
+          .from(this.tableProductLocationPrice)
+          .upsert(
+            locationPrices.map((loc) => ({
+              ProductId: productId,
+              LocationId: loc.LocationId,
+              Price: loc.Price,
+            }))
+          );
+        if (locationPriceError) throw locationPriceError;
+        console.log('🤔 Location prices inserted');
+      }
+
+      // 9️⃣ Retornar el producto ya guardado con relaciones
+      return { ...productData };
+    }, 'Saving Product');
+  }
+
+  deleteProduct(productId: string) {
+    return this.executeWithBusy(async () => {
+      const { error } = await this.client
+        .from(this.table)
+        .update({ Disabled: true, Deleted: true })
+        .eq('id', productId);
+      if (error) throw error;
+      return true;
+    }, 'Deleting Product');
   }
 }

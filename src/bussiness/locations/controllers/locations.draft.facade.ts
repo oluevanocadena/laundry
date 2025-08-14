@@ -40,7 +40,9 @@ export class LocationsDraftFacade extends FacadeBase {
     super(api);
   }
 
-  initialize() {}
+  override initialize() {
+    super.initialize();
+  }
 
   bindEvents() {}
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 import { FacadeBase } from '../../../types/facade.base';
-import { LocationsApiService } from '../locations.api.service';
 import { SubjectProp } from '../../../types/subject.type';
+import { LocationsApiService } from '../locations.api.service';
 import { Location } from '../locations.interfaces';
 import { LocationsDraftFacade } from './locations.draft.facade';
 
@@ -19,7 +19,7 @@ export class LocationsMonitorFacade extends FacadeBase {
     { label: 'Inactivas', value: 'true' },
   ];
 
-  locationSegment = new SubjectProp<string>('0'); 
+  locationSegment = new SubjectProp<string>('0');
 
   constructor(
     public api: LocationsApiService,
@@ -28,7 +28,9 @@ export class LocationsMonitorFacade extends FacadeBase {
     super(api);
   }
 
-  initialize() {}
+  override initialize() {
+    super.initialize();
+  }
 
   bindEvents() {}
 

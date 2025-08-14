@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ProductsDraftFacade } from '../../../bussiness/products/controllers/products.draft.facade';
 import { HelperPage } from '../../../components/common/helper.page';
 
 @Component({
@@ -8,7 +9,7 @@ import { HelperPage } from '../../../components/common/helper.page';
   styleUrls: ['./products-draft.component.scss'],
 })
 export class ProductsDraftComponent extends HelperPage {
-  constructor() {
+  constructor(public facade: ProductsDraftFacade) {
     super();
   }
 
@@ -20,5 +21,7 @@ export class ProductsDraftComponent extends HelperPage {
    * Lifecycle
    */
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.facade.initialize();
+  }
 }

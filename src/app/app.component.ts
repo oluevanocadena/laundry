@@ -46,6 +46,6 @@ export class AppComponent {
         Disabled: false,
       },
     });
-    console.log('🚩 cookiesService', this.cookiesService.UserInfo);
+    console.log('🍪 [Cookies Service] UserInfo:', this.cookiesService.UserInfo);
   }
 }

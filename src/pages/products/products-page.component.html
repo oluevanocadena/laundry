@@ -33,7 +33,7 @@
                         <th width="150px">Fecha de creación</th>
                         <th>Nombre</th>
                         <th>Precio</th>
-                        <th>SKU</th>
+                        <th>Disponibilidad</th>
                         <th>Categoría</th>
                         <th width="80px">Estatus</th>
                     </tr>
@@ -66,14 +66,16 @@
                                 <label nz-checkbox></label>
                             </td>
                             <td>
-                                <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="50" height="50"
-                                    (error)="onImageError($event)" />
+                                <grid [padding]="'0.5rem 0'">
+                                    <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="48" height="48"
+                                        (error)="onImageError($event)" class="brdr-radius-4 img-cover" />
+                                </grid>
                             </td>
                             <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
                             <td>{{item.Name}}</td>
                             <td>{{item.Price | numeralFormat: '$0,0.00'}}</td>
-                            <td>{{item.SKU}}</td>
-                            <td>{{item.ProductCategory}}</td>
+                            <td>{{item.QtyStoresAvailable || 0 | numeralFormat: '0,0'}} tiendas</td>
+                            <td>{{item.ProductCategory?.Name}}</td>
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"

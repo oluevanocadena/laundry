@@ -6,9 +6,9 @@
         </span>
         <status-badge [label]="labelStatus" [appearance]="facade.edition ? 'success' : 'warning'" [size]="'m'" />
     </grid>
-    <grid body>
-        <form [formGroup]="facade.formGroup">
-            <grid [gap]="[16,16]" [direction]="'row'">
+    <grid body [height]="'100%'">
+        <form [formGroup]="facade.formGroup" [height]="'100%'">
+            <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" class="baseline">
                 <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1.5rem 1.5rem'">
                     <grid>
                         <span class="f-13 f-06 f-lh-15">

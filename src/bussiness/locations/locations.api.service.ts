@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { supabase } from '../../environments/environment';
-import { HttpService } from '../../services/common/http.service';
+import { CookiesService } from '../../services/common/cookie.service';
 import { BusyProp } from '../../types/busy.type';
 import { FacadeApiBase } from '../../types/facade.base';
 import { SubjectProp } from '../../types/subject.type';
-import { Location } from './locations.interfaces';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { CookiesService } from '../../services/common/cookie.service';
 import { Session } from '../session/session.interface';
+import { Location } from './locations.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +30,7 @@ export class LocationsApiService implements FacadeApiBase {
     callback: () => Promise<T>,
     message?: string
   ): Promise<T | null> {
-    console.log(`🚩 ${message || 'Executing operation'}`);
+    console.log(`🚀 [Locations API] ${message || 'Executing operation'}`);
     this.busy.value = true;
     try {
       const result = await callback();
@@ -40,7 +39,7 @@ export class LocationsApiService implements FacadeApiBase {
       this.nzMessageService.error(
         '¡Ocurrió un error al guardar los cambios! ⛔'
       );
-      console.error('⛔ Error:', error);
+      console.error('⛔ [Locations API] Error:', error);
       return null;
     } finally {
       this.busy.value = false;
@@ -61,13 +60,8 @@ export class LocationsApiService implements FacadeApiBase {
               )
               .eq('Deleted', false)
               .eq('Disabled', disabled);
-      console.log('🚩 data', data);
-      this.locations.value =
-        data?.map((location: Location) => ({
-          ...location,
-          Checked: false,
-        })) || [];
-    }, 'fetching locations');
+      this.locations.value = data || [];
+    }, 'Fetching locations');
   }
 
   async saveLocation(location: Location) {
@@ -83,7 +77,7 @@ export class LocationsApiService implements FacadeApiBase {
       }
       this.getLocations();
       return true;
-    }, 'saving location');
+    }, 'Saving Location');
   }
 
   async disableLocation(id: string, disabled: boolean) {
@@ -100,7 +94,7 @@ export class LocationsApiService implements FacadeApiBase {
       }
       this.getLocations();
       return data;
-    }, 'disabling location');
+    }, 'Disabling Location');
   }
 
   async deleteLocation(id: string) {
@@ -117,6 +111,6 @@ export class LocationsApiService implements FacadeApiBase {
       }
       this.getLocations();
       return data;
-    }, 'deleting location');
+    }, 'Deleting Location');
   }
 }

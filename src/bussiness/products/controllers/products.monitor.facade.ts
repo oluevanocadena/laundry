@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FacadeBase } from '../../../types/facade.base';
 
-import { ProductsApiService } from '../products.api.service';
-import { ProductsDraftFacade } from './products.draft.facade';
-import { Product } from '../products.interfaces';
-import { routes } from '../../../app/routes';
 import { Router } from '@angular/router';
+import { routes } from '../../../app/routes';
+import { ProductsApiService } from '../products.api.service';
+import { Product } from '../products.interfaces';
+import { ProductsDraftFacade } from './products.draft.facade';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,9 @@ export class ProductsMonitorFacade extends FacadeBase {
     super(api);
   }
 
-  initialize() {}
+  override initialize() {
+    super.initialize();
+  }
 
   bindEvents() {}
 
@@ -46,12 +48,12 @@ export class ProductsMonitorFacade extends FacadeBase {
   }
 
   onNewProductClick() {
-    this.draftFacade.selectedProduct.value = null;
+    this.draftFacade.clearState();
     this.router.navigate([routes.ProductDraft]);
   }
 
   onProductClick(product: Product) {
-    this.draftFacade.selectedProduct.value = product;
+    this.draftFacade.product.value = product;
     this.router.navigate([routes.ProductDraft]);
   }
 }

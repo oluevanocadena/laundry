@@ -13,6 +13,7 @@ import { ServicesModule } from '../../services/services.module';
 
 import { ProductsAvailabilityComponent } from './components/availability/products-availability.component';
 import { ProductsGeneralsComponent } from './components/generals/products-generals.component';
+import { ProductsConfirmDeleteModalComponent } from './components/header/components/products-confirm-delete-modal/products-confirm-delete-modal.component';
 import { ProductsHeaderComponent } from './components/header/products-header.component';
 import { ProductsMediaComponent } from './components/media/products-media.component';
 import { ProductsPrincingComponent } from './components/princing/products-princing.component';
@@ -27,6 +28,7 @@ const components: any[] = [
   ProductsMediaComponent,
   ProductsPageComponent,
   ProductsPrincingComponent,
+  ProductsConfirmDeleteModalComponent,
 ];
 
 @NgModule({

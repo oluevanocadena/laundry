@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { routes } from '../../../app/routes';
 import { LocationsApiService } from '../../../bussiness/locations/locations.api.service';
+import { CookiesService } from '../../../services/common/cookie.service';
 import { FacadeBase } from '../../../types/facade.base';
 import { FormProp } from '../../../types/form.type';
 import { StorageProp } from '../../../types/storage.type';
-import { ProductsApiService } from '../products.api.service';
-import { Product, ProductLocation } from '../products.interfaces';
 import { Location } from '../../locations/locations.interfaces';
-import { SubjectProp } from '../../../types/subject.type';
+import { Session } from '../../session/session.interface';
+import { ProductsApiService } from '../products.api.service';
+import {
+  Product,
+  ProductLocation,
+  ProductLocationPrice,
+} from '../products.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -19,58 +27,69 @@ export class ProductsDraftFacade extends FacadeBase {
   public showDisableModal: boolean = false;
 
   public formGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+    name: new FormControl<string>('', [Validators.required]),
+    description: new FormControl<string>('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
-    stock: new FormControl('', [Validators.required]),
-    image: new FormControl('', [Validators.required]),
-    categoryId: new FormControl(null, [Validators.required]),
+    categoryId: new FormControl<string>('', [Validators.required]),
     samePrice: new FormControl(true, [Validators.required]),
   });
 
   public samePrice = new FormProp(this.formGroup, 'samePrice', true);
   public price = new FormProp(this.formGroup, 'price', 0);
+  public categoryId = new FormProp<string>(this.formGroup, 'categoryId');
 
-  public selectedProduct = new StorageProp<Product>(null, 'PRODUCT_EDITION');
-  public productLocations = new SubjectProp<ProductLocation[]>([]);
-  public locationPrices: LocationPrice[] = [];
+  public product = new StorageProp<Product>(null, 'PRODUCT_EDITION');
+  public locationAvailability: ProductLocation[] = [];
+  public locationPrices: ProductLocationPrice[] = [];
 
   public urlImages: string[] = [];
 
   constructor(
     public api: ProductsApiService,
-    public locationApi: LocationsApiService
+    public locationApi: LocationsApiService,
+    public cookiesService: CookiesService<Session>,
+    public nzMessageService: NzMessageService,
+    public router: Router
   ) {
     super(api);
   }
 
-  initialize() {
+  override initialize() {
+    super.initialize();
     this.api.getProductCategories();
-    if (this.edition === false) {
-      this.locationApi.getLocations();
-    }
+    this.locationApi.getLocations();
+    this.fillForm();
   }
 
   bindEvents() {
     this.locationApi.locations.onChange((locations) => {
-      if (this.edition === false) {
-        // Only get from server for new products
-        this.locationPrices =
-          locations.map((location: Location) => {
-            return {
-              LocationId: location.id || '',
-              LocationName: location.Name || '',
-              Price: 0,
-            };
-          }) || [];
-        this.productLocations.value =
-          locations?.map((loc) => ({
-            IsEnabled: true,
+      const prices = this.product.value?.ProductLocationPrice || [];
+      const availability = this.product.value?.ProductLocations || [];
+      this.locationPrices =
+        locations.map((location: Location) => {
+          const price = prices.find(
+            (productLocationPrice) =>
+              productLocationPrice.LocationId === location.id
+          );
+          return {
+            LocationId: location.id || '',
+            ProductId: this.product.value?.id || '',
+            Price: price?.Price ?? 0,
+            Location: location,
+          };
+        }) || [];
+      this.locationAvailability =
+        locations?.map((loc) => {
+          const avaiLoc = availability.find(
+            (avaiLoc) => avaiLoc.LocationId === loc.id
+          );
+          return {
+            IsEnabled: avaiLoc?.IsEnabled ?? true,
             LocationId: loc.id || '',
-            ProductId: '',
+            ProductId: this.product.value?.id || '',
             Location: loc,
-          })) || [];
-      }
+          };
+        }) || [];
     });
 
     this.price.onChange((value) => {
@@ -88,13 +107,69 @@ export class ProductsDraftFacade extends FacadeBase {
   clearState() {
     this.formGroup.reset();
     this.urlImages = [];
-    this.selectedProduct.value = null;
+    this.product.value = null;
     this.edition = false;
     this.showDeleteModal = false;
     this.showDisableModal = false;
   }
 
-  submitForm() {}
+  fillForm() {
+    const product = this.product.value;
+    if (product) {
+      this.edition = true;
+      this.formGroup.patchValue({
+        name: product.Name,
+        description: product.Description,
+        price: product.Price,
+        categoryId: product.ProductCategoryId,
+        samePrice:
+          product?.ProductLocationPrice?.length &&
+          product?.ProductLocationPrice?.length > 0
+            ? product?.ProductLocationPrice?.every(
+                (location) => location.Price === product.Price
+              )
+            : true,
+      });
+      this.urlImages = product?.ProductImages?.map((image) => image.Url) || [];
+    }
+  }
+
+  submitForm() {
+    if (this.locationAvailability.length > 0) {
+      const value = this.formGroup.value;
+      const product: Product = {
+        id: this.edition ? this.product.value?.id : undefined,
+        Name: value.name?.toString() || '',
+        Description: value.description?.toString() || '',
+        Price: value.price || 0,
+        ImageUrl: this.urlImages[0] || undefined,
+        ProductCategoryId: this.categoryId.value || '',
+        OrganizationId: this.cookiesService.UserInfo.Organization.id,
+        QtyStoresAvailable: this.locationAvailability.filter(
+          (location) => location.IsEnabled === true
+        ).length,
+      };
+      if (this.samePrice.value === true) {
+        this.locationPrices = Array.from(this.locationPrices).map(
+          (location) => {
+            location.Price = this.price.value ?? 0;
+            return location;
+          }
+        );
+      }
+      this.api
+        .saveProduct(
+          product,
+          JSON.parse(JSON.stringify(this.locationAvailability)),
+          JSON.parse(JSON.stringify(this.locationPrices)),
+          JSON.parse(JSON.stringify(this.urlImages))
+        )
+        .then((product) => {
+          this.nzMessageService.success('Producto guardado correctamente');
+          this.router.navigate([routes.Products]);
+        });
+    }
+  }
 
   /**
    * UI Events
@@ -112,10 +187,13 @@ export class ProductsDraftFacade extends FacadeBase {
     console.log('📷 url', url);
     this.urlImages = this.urlImages.filter((image) => image !== url);
   }
-}
 
-export interface LocationPrice {
-  LocationId: string;
-  LocationName: string;
-  Price: number;
+  onDelete() {
+    const product = this.product.value;
+    if (product?.id) {
+      this.api.deleteProduct(product.id).then(() => {
+        this.router.navigate([routes.Products]);
+      });
+    }
+  }
 }

@@ -12,21 +12,23 @@ export interface Product {
   Name: string;
   Description: string;
   Price: number;
-  Stock: number;
-  ImageUrl: string;
+  ImageUrl?: string;
 
   Barcode?: string;
   SKU?: string;
   ProductCategoryId: string;
+  QtyStoresAvailable: number;
 
   Deleted?: boolean;
   Disabled?: boolean;
+  Deletable?: boolean;
 
   OrganizationId: string;
 
   ProductLocations?: ProductLocation[]; // Only for UI
   ProductCategory?: ProductCategory; // Only for UI
   ProductImages?: ProductImage[]; // Only for UI
+  ProductLocationPrice?: ProductLocationPrice[]; // Only for UI
 }
 
 export interface ProductLocation {
@@ -46,6 +48,17 @@ export interface ProductImage {
   ProductId: string;
   Url: string;
   Deleted?: boolean;
+}
+
+export interface ProductLocationPrice {
+  id?: string;
+  created_at?: string;
+
+  ProductId: string;
+  LocationId: string;
+  Price: number;
+
+  Location?: Location; // Only for UI
 }
 
 export interface ProductCategory extends UISelectOption {

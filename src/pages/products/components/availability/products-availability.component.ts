@@ -15,7 +15,7 @@ export class ProductsAvailabilityComponent implements OnInit {
    */
 
   get locations() {
-    return this.facade.productLocations.value || [];
+    return this.facade.locationAvailability || [];
   }
 
   ngOnInit() {}

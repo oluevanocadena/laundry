@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CustomerCreationStatusEnum } from '../../../services/customers-status.service';
+import { Router } from '@angular/router';
+import { routes } from '../../../app/routes';
+import { CookiesService } from '../../../services/common/cookie.service';
 import { FacadeBase } from '../../../types/facade.base';
 import { StorageProp } from '../../../types/storage.type';
+import { Session } from '../../session/session.interface';
 import { CustomersApiService } from '../customers.api.service';
 import { Customer } from '../customers.interfaces';
-import { routes } from '../../../app/routes';
-import { Router } from '@angular/router';
-import { CookiesService } from '../../../services/common/cookie.service';
-import { Session } from '../../session/session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +45,9 @@ export class CustomersDraftFacade extends FacadeBase {
     super(api);
   }
 
-  initialize() {}
+  override initialize() {
+    super.initialize();
+  }
 
   bindEvents() {}
 

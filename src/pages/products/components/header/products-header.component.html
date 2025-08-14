@@ -9,7 +9,7 @@
                     <span class="fw-600 f-01 f-18">
                         {{facade.edition ? '' : 'Nuevo producto'}}
                         <label *ngIf="!busy" [ngClass]="{'skeleton': busy}">
-                            {{facade.selectedProduct.value?.Name || ''}}
+                            {{productName || ''}}
                         </label>
                     </span>
                     <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
@@ -33,9 +33,11 @@
             primary>
             Guardar
         </button>
-        <button *ngIf="facade.edition === true" outline small icon [disabled]="busy" [showLoader]="busy" nz-dropdown
-            nzTrigger="click" [nzDropdownMenu]="menu">
-            <tui-icon icon="@tui.ellipsis-vertical" class="f-16 f-01" />
+        <button *ngIf="facade.edition === true" outline small icon flex [disabled]="busy" [showLoader]="busy"
+            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+            <span class="material-symbols-outlined f-20 f-lh-22 f-01 fw-400">
+                more_vert
+            </span>
         </button>
         <nz-dropdown-menu #menu="nzDropdownMenu">
             <grid [gap]="[2,8]" [direction]="'row'" [padding]="'0.5rem'" class="bg-02 brdr-radius-6 shadow-01">
@@ -51,3 +53,5 @@
     </grid>
 
 </grid>
+
+<products-confirm-delete-modal [(show)]="facade.showDeleteModal" (onConfirm)="facade.onDelete()" />

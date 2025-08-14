@@ -3,68 +3,53 @@
         <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'" height="fit-content">
             <grid [direction]="'row'" [gap]="[8,8]">
                 <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,16]">
-                    <button (click)="onBack()" tuiButton tuiIconButton [appearance]="'outline'" [size]="'s'">
-                        <tui-icon icon="@tui.chevron-left" class="f-17 fw-600 f-04" />
+                    <button (click)="onBack()" outline xsmall icon>
+                        <tui-icon icon="@tui.chevron-left" class="f-14 f-04" />
                     </button>
-                    <span class="fw-600 f-01"
-                        [ngClass]="{'f-20 f-lh-20': isMobileOrTablet, 'f-24 f-lh-24': !isMobileOrTablet}">
-                        Order:
-                        <label [ngClass]="{'skeleton': busy}">{{order?.number ?? '' }}</label>
+                    <span class="fw-600 f-01 f-18">
+                        {{facade.edition ? '' : 'Nuevo pedido'}}
+                        <label *ngIf="!busy" [ngClass]="{'skeleton': busy}">
+                            {{orderName || ''}}
+                        </label>
                     </span>
+                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
+                        <tui-loader *ngIf="busy" />
+                        <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
+                            [appearance]="'warning'" />
+                        <status-badge *ngIf="!busy && facade.edition === true" [label]="orderStatus" [size]="'s'"
+                            [appearance]="orderStatusAppearance" />
+                    </grid>
                 </grid>
-                <span class="f-14 fw-400 f-02 f-lh-14">
-                    {{order?.createdAt || '' | dateFormat: 'MMMM DD, yyyy [at] hh:mm A'}}
+                <span class="f-13 fw-400 f-06 f-lh-13">
+                    {{dateCreated | dateFormat: 'DD/MM/yyyy [a las] hh:mm A' }}
                 </span>
             </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <tui-loader *ngIf="loading" />
-                <status-badge [label]="order?.status" [statusId]="order?.statusId" [type]="'order'" />
-            </grid>
         </grid>
 
     </grid>
 
-    <grid *ngIf="edition === false" [direction]="'column'" [align]="'center-right'">
-        <button-responsive [label]="'Save Order'" [icon]="'check'" [loading]="busy" [disabled]="canSave === false"
-            (click)="saveOrder()" [appearance]="'primary'" [size]="'m'" />
+    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
+        <button (click)="facade.submitForm()" [disabled]="busy || canSave === false" [showLoader]="busy" outline small
+            primary>
+            Guardar
+        </button>
+        <button *ngIf="facade.edition === true" outline small icon flex [disabled]="busy" [showLoader]="busy"
+            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+            <span class="material-symbols-outlined f-20 f-lh-22 f-01 fw-400">
+                more_vert
+            </span>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <grid [gap]="[2,8]" [direction]="'row'" [padding]="'0.5rem'" class="bg-02 brdr-radius-6 shadow-01">
+                <span class="f-12 f-03 fw-300" [padding]="'0.5rem 0 0.5rem 0.5rem'">
+                    Acciones
+                </span>
+                <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.showDeleteModal = true">
+                    <tui-icon icon="@tui.trash" class="f-12 fw-100 f-error" />
+                    Eliminar
+                </button>
+            </grid>
+        </nz-dropdown-menu>
     </grid>
 
-    <grid *ngIf="edition === true" [direction]="'column'" [align]="'center-right'">
-        <grid *ngIf="isMobile === false" [direction]="'column'" [template]="'1fr'" height="100%">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button tuiButton [appearance]="'secondary'" [size]="'m'">
-                    <span class="f-14">Print</span>
-                </button>
-                <button tuiButton appearance="outline" tuiChevron type="button" [size]="'m'" [tuiDropdown]="moreOptions"
-                    [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="showMoreOptions">
-                    <grid [direction]="'column'" [template]="'1fr'">
-                        <span class="f-13 fw-600 f-lh-13 t-left">More actions </span>
-                    </grid>
-                </button>
-            </grid>
-        </grid>
-        <grid *ngIf="isMobile" [direction]="'column'" [template]="'1fr'" height="100%">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button tuiButton [appearance]="'outline'" [size]="'m'">
-                    <tui-icon icon="@tui.printer" class="f-18 fw-600 f-02" />
-                </button>
-                <button tuiButton tuiRoundButton tuiIconButton [appearance]="'secondary'" [size]="'m'"
-                    [tuiDropdown]="moreOptions" [tuiDropdownMaxHeight]="500" [(tuiDropdownOpen)]="showMoreOptions">
-                    <tui-icon icon="@tui.ellipsis" class="f-18 fw-600 f-02" />
-                </button>
-            </grid>
-        </grid>
-    </grid>
 </grid>
-
-<ng-template #moreOptions>
-    <tui-data-list [style.width.rem]="12" [size]="'m'">
-        <tui-opt-group>
-            <tui-opt-group>
-                <button *ngFor="let option of actionTypes" tuiOption type="button" [value]="option">
-                    <span class="f-13 fw-600 f-lh-13 f-02">{{ option.name }}</span>
-                </button>
-            </tui-opt-group>
-        </tui-opt-group>
-    </tui-data-list>
-</ng-template>

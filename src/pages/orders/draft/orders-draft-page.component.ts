@@ -1,22 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { firstValueFrom } from 'rxjs';
+
+import { OrdersDraftFacade } from '../../../bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '../../../components/common/helper.page';
-import { Utils } from '../../../services/common/utils.service';
 import {
   OrderItemsStatus,
-  OrderItemsStatusEnum,
   OrderPaymentStatus,
-  OrdersStatusService,
   OrderStatus,
-  OrderStatusEnum,
 } from '../../../services/order-status.service';
-import {
-  Order,
-  OrderEmpty,
-  OrderItem,
-  OrdersService,
-} from '../../../services/orders.service';
+import { Order, OrderEmpty } from '../../../services/orders.service';
 
 @Component({
   selector: 'app-orders-draft-page',
@@ -36,11 +27,7 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
   orderItemsStatuses: OrderItemsStatus[] = [];
   orderPaymentStatuses: OrderPaymentStatus[] = [];
 
-  constructor(
-    public nzMessageService: NzMessageService,
-    public ordersService: OrdersService,
-    public ordersStatusService: OrdersStatusService
-  ) {
+  constructor(public facade: OrdersDraftFacade) {
     super();
   }
 
@@ -48,59 +35,44 @@ export class OrdersDraftPageComponent extends HelperPage implements OnInit {
    * APi Calls
    */
 
-  async load() {
-    try {
-      this.loading = true;
-      this.orderStatuses = await firstValueFrom(
-        this.ordersStatusService.getFakeOrderStatuses()
-      );
-      this.orderItemsStatuses = await firstValueFrom(
-        this.ordersStatusService.getFakeOrderItemsStatuses()
-      );
-      this.orderPaymentStatuses = await firstValueFrom(
-        this.ordersStatusService.getFakeOrderPaymentStatuses()
-      );
-      // Set status name's
-      if (this.order !== null) {
-        this.order.status =
-          this.orderStatuses.find((x) => x.id === this.order.statusId)?.name ??
-          '';
-        this.order.statusItems =
-          this.orderItemsStatuses.find((x) => x.id === this.order.statusItemsId)
-            ?.name ?? '';
-        this.order.statusPayment =
-          this.orderPaymentStatuses.find(
-            (x) => x.id === this.order.statusPaymentId
-          )?.name ?? '';
-      }
-    } catch (error) {
-      console.error(error);
-      this.nzMessageService.error('Error loading data');
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  /**
-   * UI Events
-   */
-
-  itemsChange(items: OrderItem[]) {
-    if (this.order !== null) {
-      this.order.orderItems = items;
-    }
-    console.log('Items Change:', items);
-  }
-
-  /**
-   * Getters
-   */
+  // async load() {
+  //   try {
+  //     this.loading = true;
+  //     this.orderStatuses = await firstValueFrom(
+  //       this.ordersStatusService.getFakeOrderStatuses()
+  //     );
+  //     this.orderItemsStatuses = await firstValueFrom(
+  //       this.ordersStatusService.getFakeOrderItemsStatuses()
+  //     );
+  //     this.orderPaymentStatuses = await firstValueFrom(
+  //       this.ordersStatusService.getFakeOrderPaymentStatuses()
+  //     );
+  //     // Set status name's
+  //     if (this.order !== null) {
+  //       this.order.status =
+  //         this.orderStatuses.find((x) => x.id === this.order.statusId)?.name ??
+  //         '';
+  //       this.order.statusItems =
+  //         this.orderItemsStatuses.find((x) => x.id === this.order.statusItemsId)
+  //           ?.name ?? '';
+  //       this.order.statusPayment =
+  //         this.orderPaymentStatuses.find(
+  //           (x) => x.id === this.order.statusPaymentId
+  //         )?.name ?? '';
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     this.nzMessageService.error('Error loading data');
+  //   } finally {
+  //     this.loading = false;
+  //   }
+  // }
 
   /**
    * Life cycle method
    */
   ngOnInit() {
     console.log('OrdersDraftPageComponent: ngOnInit');
-    this.load();
+    this.facade.initialize();
   }
 }

@@ -17,14 +17,12 @@ import { CustomersNotesComponent } from './components/notes/customers-notes.comp
 import { CustomersSummaryComponent } from './components/summary/customers-summary.component';
 import { CustomersTopBarComponent } from './components/top-bar/customers-top-bar.component';
 import { CustomersPageComponent } from './customers-page.component';
-import { CustomersDetailComponent } from './detail/customers-detail.component';
 import { CustomersDraftComponent } from './draft/customers-draft.component';
 
 const components: any[] = [
   CustomersAddressComponent,
   CustomersConfirmDeleteModalComponent,
   CustomersConfirmDisableModalComponent,
-  CustomersDetailComponent,
   CustomersDraftComponent,
   CustomersHeaderComponent,
   CustomersNotesComponent,

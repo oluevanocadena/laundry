@@ -1,15 +1,12 @@
-<tui-accordion-item class="container" [open]="true">
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+
     <grid [gap]="[16,12]" [direction]="'column'" [align]="'center-left'">
-        <span class="f-16 fw-600 f-02 f-lh-14">
-            Item Summary
-        </span>
+        <span class="f-14 fw-500 f-05 f-lh-12">Partidas del pedido</span>
         <tui-badge *ngIf="orderHaveItems" appearance="info" [size]="'m'">
             <span class="f-15 fw-600 f-lh-17 f-info">
                 {{ itemsCount }}
             </span>
         </tui-badge>
-        <status-badge *ngIf="orderHaveItems && edition === false" [label]="order?.statusItems"
-            [statusId]="order?.statusItemsId" [type]="'orderItems'" />
     </grid>
 
     <ng-template tuiAccordionItemContent>

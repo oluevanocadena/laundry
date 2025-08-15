@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
+import { supabase } from '@environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { supabase } from '../../environments/environment';
-import { CookiesService } from '../../services/common/cookie.service';
-import { BusyProp } from '../../types/busy.type';
-import { FacadeApiBase } from '../../types/facade.base';
-import { SubjectProp } from '../../types/subject.type';
-import { Session } from '../session/session.interface';
-import { Location } from './locations.interfaces';
+
+import { BusyProp } from '@type/busy.type';
+import { FacadeApiBase } from '@type/facade.base';
+import { SubjectProp } from '@type/subject.type';
+
+import { Location } from '@bussiness/locations/locations.interfaces';
+import { Session } from '@bussiness/session/session.interface';
+import { CookiesService } from '@services/common/cookie.service';
 
 @Injectable({
   providedIn: 'root',

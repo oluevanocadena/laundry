@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UICommonModule } from '../../components/common/common.module';
-import { NgZorroModule } from '../../components/ng-zorro.module';
-import { TUIModule } from '../../components/tui.module';
-import { UIModule } from '../../components/ui.module';
-import { DirectivesModule } from '../../directives/directives.module';
-import { PipesModule } from '../../pipes/pipes.module';
+
+import { UICommonModule } from '@components/common/common.module';
+import { NgZorroModule } from '@components/ng-zorro.module';
+import { TUIModule } from '@components/tui.module';
+import { UIModule } from '@components/ui.module';
+import { DirectivesModule } from '@directives/directives.module';
+import { PipesModule } from '@pipes/pipes.module';
+
 import { CustomersAddressComponent } from './components/address/customers-address.component';
 import { CustomersConfirmDeleteModalComponent } from './components/header/components/customers-confirm-delete-modal/customers-confirm-delete-modal.component';
 import { CustomersConfirmDisableModalComponent } from './components/header/components/customers-confirm-disable-modal/customers-confirm-disable-modal.component';

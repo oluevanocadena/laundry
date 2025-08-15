@@ -18,12 +18,16 @@
     "target": "ES2022",
     "module": "ES2022",
     "paths": {
+      "@app/*": ["./src/app/*"],
       "@bussiness/*": ["./src/bussiness/*"],
+      "@directives/*": ["./src/directives/*"],
       "@components/*": ["./src/components/*"],
       "@pages/*": ["./src/pages/*"],
       "@services/*": ["./src/services/*"],
-      "@types/*": ["./src/types/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@type/*": ["./src/types/*"],
+      "@utils/*": ["./src/utils/*"], 
+      "@pipes/*": ["./src/pipes/*"],
+      "@environments/*": ["./src/environments/*"],
     }
   },
   "angularCompilerOptions": {

@@ -2,7 +2,7 @@ import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { routes } from '../../app/routes';
 import moment from 'moment';
 import { BrowserService } from '../../services/common/browser.service';
-import { system } from '../../environments/environment';
+import { system } from '@environments/environment';
 
 @Component({
   template: '<ng-content></ng-content>',

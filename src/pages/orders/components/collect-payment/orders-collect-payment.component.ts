@@ -5,7 +5,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import {
   Order,
   PaymentMethods,
-} from '../../../../bussiness/orders/orders.interfaces';
+} from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '../../../../components/common/helper.page';
 import {
   OrderPaymentStatus,

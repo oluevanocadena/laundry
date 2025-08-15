@@ -3,16 +3,17 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { v4 as uuidv4 } from 'uuid';
 
-import { supabase } from '../../environments/environment';
-import { BusyProp } from '../../types/busy.type';
-import { FacadeApiBase } from '../../types/facade.base';
-import { SubjectProp } from '../../types/subject.type';
+import { supabase } from '@environments/environment';
+import { BusyProp } from '@type/busy.type';
+import { FacadeApiBase } from '@type/facade.base';
+import { SubjectProp } from '@type/subject.type';
+
 import {
   Product,
   ProductCategory,
   ProductLocation,
   ProductLocationPrice,
-} from './products.interfaces';
+} from '@bussiness/products/products.interfaces';
 
 @Injectable({
   providedIn: 'root',

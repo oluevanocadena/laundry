@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsDraftFacade } from '../../../../bussiness/products/controllers/products.draft.facade';
+import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 
 @Component({
   selector: 'products-media',

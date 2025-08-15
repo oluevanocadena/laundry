@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { UICommonModule } from '../../components/common/common.module';
-import { NgZorroModule } from '../../components/ng-zorro.module';
-import { TUIModule } from '../../components/tui.module';
-import { UIModule } from '../../components/ui.module';
-import { DirectivesModule } from '../../directives/directives.module';
-import { PipesModule } from '../../pipes/pipes.module';
+import { UICommonModule } from '@components/common/common.module';
+import { NgZorroModule } from '@components/ng-zorro.module';
+import { TUIModule } from '@components/tui.module';
+import { UIModule } from '@components/ui.module';
+import { DirectivesModule } from '@directives/directives.module';
+import { PipesModule } from '@pipes/pipes.module';
 
 import { ProductsAvailabilityComponent } from './components/availability/products-availability.component';
 import { ProductsGeneralsComponent } from './components/generals/products-generals.component';

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Order } from '../../../../bussiness/orders/orders.interfaces';
+import { Order } from '@bussiness/orders/orders.interfaces';
 import {
   SettingsService
 } from '../../../../services/settings.services';

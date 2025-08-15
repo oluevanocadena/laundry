@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { supabase } from '../../environments/environment';
-import { BusyProp } from '../../types/busy.type';
-import { FacadeApiBase } from '../../types/facade.base';
-import { SubjectProp } from '../../types/subject.type';
-import { Order } from './orders.interfaces';
+import { supabase } from '@environments/environment';
+import { BusyProp } from '@type/busy.type';
+import { FacadeApiBase } from '@type/facade.base';
+import { SubjectProp } from '@type/subject.type';
+
+import { Order } from '@bussiness/orders/orders.interfaces';
 
 @Injectable({
   providedIn: 'root',

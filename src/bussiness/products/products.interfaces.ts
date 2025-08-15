@@ -2,8 +2,8 @@
 // Models
 // ::::::::::::::::::::::::::::::::::::::
 
-import { UISelectOption } from '../../components/form-input/form-input.component';
-import { Location } from '../locations/locations.interfaces';
+import { Location } from '@bussiness/locations/locations.interfaces';
+import { UISelectOption } from '@components/form-input/form-input.component';
 
 export interface Product {
   id?: string;

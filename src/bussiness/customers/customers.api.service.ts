@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
+import { supabase } from '@environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { supabase } from '../../environments/environment';
-import { CookiesService } from '../../services/common/cookie.service';
-import { BusyProp } from '../../types/busy.type';
-import { FacadeApiBase } from '../../types/facade.base';
-import { SubjectProp } from '../../types/subject.type';
-import { Session } from '../session/session.interface';
-import { Customer } from './customers.interfaces';
+
+import { CookiesService } from '@services/common/cookie.service';
+import { BusyProp } from '@type/busy.type';
+import { FacadeApiBase } from '@type/facade.base';
+import { SubjectProp } from '@type/subject.type';
+
+import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Session } from '@bussiness/session/session.interface';
 
 @Injectable({
   providedIn: 'root',

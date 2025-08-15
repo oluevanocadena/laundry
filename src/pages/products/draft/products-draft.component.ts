@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductsDraftFacade } from '../../../bussiness/products/controllers/products.draft.facade';
+import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { HelperPage } from '../../../components/common/helper.page';
 
 @Component({

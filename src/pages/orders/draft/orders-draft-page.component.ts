@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { OrdersDraftFacade } from '../../../bussiness/orders/controllers/orders.draft.facade';
+import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '../../../components/common/helper.page';
 
 @Component({

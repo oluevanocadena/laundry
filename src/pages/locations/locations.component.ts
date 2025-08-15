@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationsMonitorFacade } from '../../bussiness/locations/controllers/locations.monitor.facade';
+import { LocationsMonitorFacade } from '@bussiness/locations/controllers/locations.monitor.facade';
 
 @Component({
   selector: 'app-locations',

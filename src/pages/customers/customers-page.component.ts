@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CustomersMonitorFacade } from '../../bussiness/customers/controllers/customers.monitor.facade';
-import { HelperPage } from '../../components/common/helper.page';
+
+import { CustomersMonitorFacade } from '@bussiness/customers/controllers/customers.monitor.facade';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'app-customers-page',

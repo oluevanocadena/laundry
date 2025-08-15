@@ -26,7 +26,7 @@ import {
   startWith,
   takeUntil,
 } from 'rxjs';
-import { FormProp } from '../../types/form.type';
+import { FormProp } from '@type/form.type';
 @Component({
   selector: 'form-input',
   standalone: false,

@@ -6,8 +6,8 @@ import { SettingsService } from '../../../../services/settings.services';
 import {
   DiscountTypes,
   Order,
-} from '../../../../bussiness/orders/orders.interfaces';
-import { OrdersDraftFacade } from '../../../../bussiness/orders/controllers/orders.draft.facade';
+} from '@bussiness/orders/orders.interfaces';
+import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 
 @Component({
   selector: 'orders-adjust-discount',

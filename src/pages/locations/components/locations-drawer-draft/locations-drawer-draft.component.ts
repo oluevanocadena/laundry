@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LocationsDraftFacade } from '../../../../bussiness/locations/controllers/locations.draft.facade';
+import { LocationsDraftFacade } from '@bussiness/locations/controllers/locations.draft.facade';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { LocationsMonitorFacade } from '../../../../bussiness/locations/controllers/locations.monitor.facade';
+import { LocationsMonitorFacade } from '@bussiness/locations/controllers/locations.monitor.facade';
 
 @Component({
   selector: 'locations-drawer-draft',

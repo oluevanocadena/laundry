@@ -3,7 +3,7 @@ import { HelperPage } from '../../../../components/common/helper.page';
 
 import { Router } from '@angular/router';
 import moment from 'moment';
-import { CustomersDraftFacade } from '../../../../bussiness/customers/controllers/customers.draft.facade';
+import { CustomersDraftFacade } from '@bussiness/customers/controllers/customers.draft.facade';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 
 @Component({

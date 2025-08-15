@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HelperPage } from '../../../../components/common/helper.page';
-import { Order } from '../../../../bussiness/orders/orders.interfaces';
+import { Order } from '@bussiness/orders/orders.interfaces';
 
 @Component({
   selector: 'orders-notes',

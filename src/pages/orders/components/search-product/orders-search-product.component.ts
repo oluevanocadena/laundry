@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { firstValueFrom } from 'rxjs';
-import { ProductsApiService } from '../../../../bussiness/products/products.api.service';
-import { Product } from '../../../../bussiness/products/products.interfaces';
+import { ProductsApiService } from '@bussiness/products/products.api.service';
+import { Product } from '@bussiness/products/products.interfaces';
 import { HelperTablePage } from '../../../../components/common/helper.table.page';
 import {
   OrderItemsStatus,
@@ -12,7 +12,7 @@ import {
   OrdersStatusService,
   OrderStatus,
 } from '../../../../services/order-status.service';
-import { OrderItem } from '../../../../bussiness/orders/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/orders.interfaces';
 import { SettingsService } from '../../../../services/settings.services';
 
 @Component({

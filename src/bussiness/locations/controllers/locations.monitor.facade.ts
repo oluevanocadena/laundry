@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
-import { FacadeBase } from '../../../types/facade.base';
-import { SubjectProp } from '../../../types/subject.type';
+import { FacadeBase } from '@type/facade.base';
+import { SubjectProp } from '@type/subject.type';
 import { LocationsApiService } from '../locations.api.service';
 import { Location } from '../locations.interfaces';
 import { LocationsDraftFacade } from './locations.draft.facade';

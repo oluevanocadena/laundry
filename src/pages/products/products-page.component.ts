@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsMonitorFacade } from '../../bussiness/products/controllers/products.monitor.facade';
-import { HelperPage } from '../../components/common/helper.page';
+import { ProductsMonitorFacade } from '@bussiness/products/controllers/products.monitor.facade';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'app-products-page',

@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 import {
-  CustomerMarketingSubscriptionEnum
-} from '../../../services/customers-status.service';
-import {
   OrderItemsStatusEnum,
   OrderPaymentStatusEnum,
   OrderStatusEnum,
@@ -97,22 +94,7 @@ export class StatusBadgeComponent implements OnInit {
             status = 'default';
             break;
         }
-        break;  
-        break;
-      case StatusTypeBadgeEnum.CustomerMarketing:
-        // CustomerMarketingSubscriptionEnum
-        switch (this.statusId) {
-          case CustomerMarketingSubscriptionEnum.Subscribed:
-            status = 'success';
-            break;
-          case CustomerMarketingSubscriptionEnum.Unsubscribed:
-            status = 'error';
-            break;
-          default:
-            status = 'info';
-            break;
-        }
-        break;
+        break;   
       default:
         status = 'default';
         break;

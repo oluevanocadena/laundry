@@ -5,10 +5,10 @@ import { RouterModule } from '@angular/router';
 
 import { UICommonModule } from '../components/common/common.module';
 import { NgZorroModule } from '../components/ng-zorro.module';
+import { UIPublicModule } from '../components/public/public.modulte';
 import { TUIModule } from '../components/tui.module';
 import { UIModule } from '../components/ui.module';
 import { DirectivesModule } from '../directives/directives.module';
-import { BoardModule } from './board/board.module';
 import { CustomersModule } from './customers/customers.module';
 import { HomeComponent } from './home/home.component';
 import { LocationsModule } from './locations/locations.module';
@@ -20,7 +20,6 @@ import { LoginModule } from './session/login.module';
 import { SettingsModule } from './settings/settings.module';
 import { SupportModule } from './support/support.module';
 import { UsersModule } from './users/users.module';
-import { UIPublicModule } from '../components/public/public.modulte';
 
 const components = [HomeComponent];
 
@@ -37,8 +36,7 @@ const components = [HomeComponent];
     TUIModule,
     NgZorroModule,
     LoginModule,
-
-    BoardModule,
+ 
     CustomersModule,
     LocationsModule,
     NotificationsModule,

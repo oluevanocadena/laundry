@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperPage } from '../../../../components/common/helper.page';
-import { Order } from '../../../../services/orders.service';
+import { Order } from '../../../../bussiness/orders/orders.interfaces';
 import {
   CustomerSettings,
   SettingsService,

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { BoardPageComponent } from '../pages/board/board-page.component';
 import { CustomersPageComponent } from '../pages/customers/customers-page.component';
 import { CustomersDraftComponent } from '../pages/customers/draft/customers-draft.component';
 import { HomeComponent } from '../pages/home/home.component';
@@ -21,12 +20,11 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
-  { path: 'board', component: BoardPageComponent },
-  { path: 'customers', component: CustomersPageComponent }, 
+  { path: 'customers', component: CustomersPageComponent },
   { path: 'customers/draft', component: CustomersDraftComponent },
   { path: 'customers/edit/:id', component: CustomersDraftComponent },
   { path: 'locations', component: LocationsPageComponent },
-  { path: 'orders', component: OrdersPageComponent }, 
+  { path: 'orders', component: OrdersPageComponent },
   { path: 'orders/draft', component: OrdersDraftPageComponent },
   { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
   { path: 'products', component: ProductsPageComponent },

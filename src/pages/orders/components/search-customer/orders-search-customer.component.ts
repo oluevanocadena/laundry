@@ -5,6 +5,8 @@ import { catchError, finalize } from 'rxjs';
 import { HelperTablePage } from '../../../../components/common/helper.table.page';
 import { Customer } from '../../../../bussiness/customers/customers.interfaces';
 import { CustomersApiService } from '../../../../bussiness/customers/customers.api.service';
+import { OrdersDraftFacade } from '../../../../bussiness/orders/controllers/orders.draft.facade';
+import { FormProp } from '../../../../types/form.type';
 
 @Component({
   selector: 'orders-search-customer',
@@ -16,67 +18,42 @@ export class OrdersSearchCustomerComponent
   extends HelperTablePage<Customer>
   implements OnInit
 {
-  //Flag Maganement
-  loading: boolean = false;
-
   //Show
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
+    if (value) {
+      this.facade.getCustomers('');
+    }
   }
   get show() {
     return this._show;
   }
-  @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onSelectCustomer: EventEmitter<Customer | null> =
-    new EventEmitter<Customer | null>();
+  @Output() showChange = new EventEmitter<boolean>();
 
-  //Arrays
-  customers: Customer[] = [];
+  @Output() onConfirm = new EventEmitter<Customer | null>();
 
   //FormGroup
   formGroup = new FormGroup({
     search: new FormControl(''),
-    selectedCustomer: new FormControl<Customer | null>(null),
   });
+  search = new FormProp(this.formGroup, 'search', '');
 
-  constructor(
-    public customersApi: CustomersApiService,
-    public nzMessageService: NzMessageService
-  ) {
+  customer: Customer | null = null;
+
+  constructor(public facade: OrdersDraftFacade) {
     super();
-  }
-
-  /**
-   * API Calls
-   */
-
-  searchCustomers() {
-    // this.loading = true;
-    // this.customersService
-    //   .getCustomersFake(this.page, this.pageSize, this.search)
-    //   .pipe(
-    //     catchError((error) => {
-    //       this.nzMessageService.error('Error loading products');
-    //       return [];
-    //     }),
-    //     finalize(() => {
-    //       this.loading = false;
-    //     })
-    //   )
-    //   .subscribe((customers) => {
-    //     this.formGroup.controls['selectedCustomer'].setValue(null);
-    //     this.customers = customers;
-    //     console.log('customers', customers);
-    //   });
   }
 
   /**
    * UI Events
    */
+  selectCustomer(customer: Customer) {
+    this.customer = customer;
+  }
 
-  assignCustomer() {
-    this.onSelectCustomer.emit(this.selectedCustomer);
+  confirm() {
+    this.onConfirm.emit(this.customer);
     this.reset();
     this.close();
   }
@@ -94,22 +71,26 @@ export class OrdersSearchCustomerComponent
    * Getters
    */
 
+  get busy(): boolean {
+    return this.facade.apiCustomers.busy.value;
+  }
+
+  get customers(): Customer[] {
+    return this.facade.apiCustomers.customers.value ?? [];
+  }
+
   get canSave(): boolean {
-    return this.selectedCustomer !== null;
-  }
-
-  get search(): string {
-    return this.formGroup.get('search')?.value ?? '';
-  }
-
-  get selectedCustomer(): Customer | null {
-    return this.formGroup.get('selectedCustomer')?.value ?? null;
+    return this.customer !== null;
   }
 
   /**
    * Life cycle method
    */
   ngOnInit() {
-    this.searchCustomers();
+    this.search.onChange((value) => {
+      if (value) {
+        this.customer = null;
+      }
+    });
   }
 }

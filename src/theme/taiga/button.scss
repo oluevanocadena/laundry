@@ -33,3 +33,11 @@
     height: 2.5rem !important;
     width: 2.5rem !important;
 }
+
+tui-copy {
+    cursor: pointer;
+
+    >button[tuiAppearance][data-appearance=icon]::before {
+        color: var(--text-04) !important;
+    }
+}

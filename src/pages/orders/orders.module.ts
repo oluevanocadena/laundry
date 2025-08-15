@@ -8,7 +8,6 @@ import { TUIModule } from '../../components/tui.module';
 import { UIModule } from '../../components/ui.module';
 import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
-import { ServicesModule } from '../../services/services.module';
 import { OrdersAdjustDeliveryComponent } from './components/adjust-delivery/orders-adjust-delivery.component';
 import { OrdersAdjustDiscountComponent } from './components/adjust-discount/orders-adjust-discount.component';
 import { OrdersAdjustQuantityComponent } from './components/adjust-quantity/orders-adjust-quantity.component';
@@ -59,7 +58,6 @@ const components: any[] = [
     DirectivesModule,
     TUIModule,
     NgZorroModule,
-    ServicesModule,
   ],
   declarations: components,
   exports: components,

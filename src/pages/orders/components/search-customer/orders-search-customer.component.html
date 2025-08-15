@@ -1,66 +1,58 @@
-<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
-    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'" [confirmStyle]="'success'"
+    (onConfirm)="confirm()" (onClose)="close()" [busy]="busy" [disableConfirm]="canSave === false">
+    <span title>
+        Búsqueda de cliente
+    </span>
 
-    <ng-container *nzModalContent>
-        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
-            <modal-title [title]="'Select customer'" (onClose)="close()" />
-
-            <!-- Dry Cleaning -->
-            <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem" class="border-bottom-06">
-                <ng-container *ngTemplateOutlet="searchProductTemplate; context: { controlName: 'selectedCustomer' }">
-                </ng-container>
-            </grid>
-
-            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr max-content'">
-                <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                    <span class="f-14 f-lh-16 fw-400 f-03 t-left">
-                        Will be assigned to the order the <span class="fw-500 f-primary">selected customer</span>.
-                    </span>
-                </grid>
-                <grid [direction]="'column'" [align]="'center-right'">
-                    <button tuiButton [disabled]="canSave === false" (click)="assignCustomer()" [appearance]="'primary'"
-                        [size]="'m'">
-                        Assign Customer
-                    </button>
-                </grid>
-            </grid>
+    <grid body [direction]="'row'" [gap]="[8,8]" padding="1rem 1.5rem">
+        <grid [direction]="'row'" width="100%">
+            <span class="f-14 fw-400 f-05 f-lh-15">
+                ¿Quien es el cliente a quien le vas a entregar el pedido?
+            </span>
         </grid>
-    </ng-container>
 
-</nz-modal>
+        <!-- Dry Cleaning -->
+        <grid [direction]="'row'" [gap]="[16,16]" width="100%">
+            <form [formGroup]="formGroup" width="100%">
+                <grid [direction]="'row'" [gap]="[24,16]" width="100%" [padding]="'0 0 1rem 0'" [maxHeight]="'450px'"
+                    class="scroll-v">
+                    <form-input [type]="'search'" [placeholder]="'Comienza a escribir para buscar'"
+                        formControlName="search" (onSearch)="facade.getCustomers($event)" />
 
-
-<ng-template #searchProductTemplate let-controlName="controlName">
-    <form [formGroup]="formGroup" width="100%">
-        <grid [direction]="'row'" [gap]="[24,16]" width="100%">
-            <grid [direction]="'column'" [align]="'center-center'" padding="0 1rem" width="100%">
-                <tui-textfield tuiInputRound iconStart="@tui.search" [tuiTextfieldSize]="'m'" width="100%">
-                    <input formControlName="search" [attr.placeholder]="isMobile ? 'Search': 'Search a customer'"
-                        tuiTextfield (ngModelChange)="searchCustomers()" />
-                </tui-textfield>
-            </grid>
-            <form [formGroup]="formGroup" tuiGroup [collapsed]="true" orientation="vertical"
-                [margin]="isMobile? '0 0.5rem': '0 1rem'" [width]="isMobile? 'calc(100% - 1rem)': 'calc(100% - 2rem)'"
-                [maxHeight]="isMobileOrTablet ? '200px':'400px'" class="group scroll-v">
-                <label appearance="" tuiBlock *ngFor="let customer of customers">
-                    <input [formControlName]="controlName" tuiBlock type="radio" [value]="customer" />
-                    <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
-                        <grid [direction]="'row'" [gap]="[0,8]">
-                            <span class="f-16 fw-600 f-01 f-lh-17">
-                                {{customer.FullName}}
-                            </span>
-                            <span class="f-14 fw-400 f-03 f-lh-16">
-                                {{customer.Address}}
+                    <ng-container *ngIf="customers.length === 0">
+                        <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 0.5rem 0">
+                            <span class="f-13 fw-400 f-06 f-lh-16">
+                                {{search.value ?
+                                'No hay clientes registrados.' :
+                                'Comience a escribir para buscar un cliente.'
+                                }}
                             </span>
                         </grid>
-                        <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                            <span class="f-15 fw-600 f-03">
-                                {{customer.TotalOrders || 0 | numeralFormat: '0,0'}} orders
-                            </span>
-                        </grid>
+                    </ng-container>
+                    <grid *ngIf="customers.length > 0" [direction]="'row'" [gap]="[0,0]" width="100%">
+                        <ng-container *ngFor="let cust of customers">
+                            <button full medium flat flex [attr.selected]="cust?.id === customer?.id"
+                                (click)="selectCustomer(cust)" class="brdr-bottom">
+                                <grid [gap]="[0,16]" [direction]="'column'" [template]="'1fr max-content'" width="100%">
+                                    <grid [direction]="'row'" [gap]="[0,8]">
+                                        <span class="f-14 fw-600 f-01 f-lh-17 t-left">
+                                            {{cust.FullName}}
+                                        </span>
+                                        <span class="f-13 fw-400 f-06 f-lh-16 t-left">
+                                            {{cust.Address}}
+                                        </span>
+                                    </grid>
+                                    <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                                        <span class="f-13 fw-600 f-03">
+                                            {{cust.TotalOrders || 0 | numeralFormat: '0,0'}} pedidos
+                                        </span>
+                                    </grid>
+                                </grid>
+                            </button>
+                        </ng-container>
                     </grid>
-                </label>
+                </grid>
             </form>
         </grid>
-    </form>
-</ng-template>
+    </grid>
+</modal>

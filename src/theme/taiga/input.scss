@@ -116,11 +116,16 @@ tui-textfield {
         color: var(--text-06) !important;
         font-size: 14px !important;
     }
+
+    >input::placeholder {
+        color: var(--text-08) !important;
+    }
+
+    &[tuiInputRound] {
+        border-radius: 2rem !important;
+    }
 }
 
-tui-textfield[tuiInputRound] {
-    border-radius: 2rem !important;
-}
 
 textarea.t-input {
     font-size: 14.495px !important;

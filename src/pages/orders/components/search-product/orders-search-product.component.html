@@ -12,31 +12,11 @@
                     the quantity of the selected product.
                 </span>
             </grid>
-            <grid [direction]="'column'" [align]="'center-center'" height="100%">
-                <tui-segmented [size]="isMobileOrTablet? 'l':'m'" [(activeItemIndex)]="tabIndex"
-                    (activeItemIndexChange)="onChangeTab($event)">
-                    <ng-container *ngFor="let category of categories">
-                        <button *ngIf="category.visible" type="button" [minWidth]="isMobileOrTablet? '60px': '100px'">
-                            <grid [gap]="[8,6]" [direction]="'column'"
-                                [align]="isMobile? 'center-center' :'center-left'">
-                                <span class="material-symbols-outlined fw-600"
-                                    [ngClass]="{'f-26': isMobileOrTablet, 'f-22': !isMobileOrTablet}">
-                                    {{category.icon}}
-                                </span>
-                                <span *ngIf="!isMobileOrTablet" padding="0.45rem 0.3rem 0 0" class="fw-500"
-                                    [ngClass]="{'f-14': isMobileOrTablet, 'f-15': !isMobileOrTablet}">
-                                    {{category.name}}
-                                </span>
-                                <!-- <tui-badge-notification [size]="'m'" badgeStatus="primary">3</tui-badge-notification> -->
-                            </grid>
-                        </button>
-                    </ng-container>
-                </tui-segmented>
-            </grid>
+
 
             <!-- Laundry -->
-            <grid *ngIf="tabIndex + 1 === prodCatEnum.Laundry" [direction]="'row'" [gap]="[16,16]" width="100%"
-                padding="0 0 2.5rem 0" class="border-bottom-06">
+            <grid *ngIf="tabIndex + 1 === 1" [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem 0"
+                class="border-bottom-06">
                 <form [formGroup]="formGroup" width="100%">
                     <grid [direction]="'column'" [template]="'1fr'">
                         <form-input [label]="'Weight'" [type]="'number'" [placeholder]="'Weight'"
@@ -58,16 +38,16 @@
             </grid>
 
             <!-- Dry Cleaning -->
-            <grid *ngIf="tabIndex+ 1 === prodCatEnum.DryCleaning" [direction]="'row'" [gap]="[16,16]" width="100%"
-                padding="0 0 2.5rem" class="border-bottom-06">
+            <grid *ngIf="tabIndex+ 1 === 1" [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem"
+                class="border-bottom-06">
                 <ng-container
                     *ngTemplateOutlet="searchProductTemplate; context: { controlName: 'selectedDryCleaningProduct' }">
                 </ng-container>
             </grid>
 
             <!-- Ironing -->
-            <grid *ngIf="tabIndex + 1 === prodCatEnum.Ironing" [direction]="'row'" [gap]="[16,16]" width="100%"
-                padding="0 0 2.5rem 0" class="border-bottom-06">
+            <grid *ngIf="tabIndex + 1 === 2" [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem 0"
+                class="border-bottom-06">
                 <form [formGroup]="formGroup" width="100%">
                     <grid [direction]="'column'" [template]="'1fr'">
                         <form-input [label]="'Ironing'" [type]="'number'" [placeholder]="'Pieces'"
@@ -91,8 +71,8 @@
             </grid>
 
             <!-- Others -->
-            <grid *ngIf="tabIndex + 1 === prodCatEnum.Others" [direction]="'row'" [gap]="[16,16]" width="100%"
-                padding="0 0 2.5rem" class="border-bottom-06">
+            <grid *ngIf="tabIndex + 1 === 3" [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 2.5rem"
+                class="border-bottom-06">
                 <ng-container
                     *ngTemplateOutlet="searchProductTemplate; context: { controlName: 'selectedOtherProduct' }">
                 </ng-container>
@@ -129,15 +109,15 @@
                     <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
                         <grid [direction]="'row'" [gap]="[0,8]">
                             <span class="f-15 fw-600 f-01 f-lh-17">
-                                {{product.name}}
+                                {{product.Name}}
                             </span>
                             <span class="f-15 fw-400 f-03 f-lh-17">
-                                {{product.description}}
+                                {{product.Description}}
                             </span>
                         </grid>
                         <grid [direction]="'column'" [align]="'center-right'" height="100%">
                             <span class="f-15 fw-600 f-03">
-                                {{product.price | numeralFormat: '$0,0.00'}}
+                                {{product.Price | numeralFormat: '$0,0.00'}}
                             </span>
                         </grid>
                     </grid>

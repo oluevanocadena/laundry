@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Order } from '../../../../services/orders.service';
-import {
-  CustomerSettings,
-  SettingsService,
-} from '../../../../services/settings.services';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { firstValueFrom } from 'rxjs';
+import { Order } from '../../../../bussiness/orders/orders.interfaces';
+import {
+  SettingsService
+} from '../../../../services/settings.services';
 
 @Component({
   selector: 'orders-delivery',

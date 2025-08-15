@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HelperPage } from '../../../../components/common/helper.page';
-import { Order } from '../../../../services/orders.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { Customer } from '../../../../bussiness/customers/customers.interfaces';
+import { OrdersDraftFacade } from '../../../../bussiness/orders/controllers/orders.draft.facade';
+import { HelperPage } from '../../../../components/common/helper.page';
 
 @Component({
   selector: 'orders-customer',
@@ -10,49 +11,29 @@ import { Customer } from '../../../../bussiness/customers/customers.interfaces';
   styleUrls: ['./orders-customer.component.scss'],
 })
 export class OrdersCustomerComponent extends HelperPage implements OnInit {
-  //Flag Maganement
-  loading: boolean = false;
-  showCustomerModal: boolean = false;
-
   //Input
   @Input() edition: boolean = false;
 
-  // Order
-  private _order: Order | null = null;
-  @Input() set order(value: Order) {
-    if (this._order !== value) {
-      this._order = value;
-    }
-  }
-  get order(): Order | null {
-    return this._order;
-  }
-  @Output() orderChange: EventEmitter<Order> = new EventEmitter<Order>();
-
-  constructor() {
+  constructor(public facade: OrdersDraftFacade) {
     super();
   }
 
   /**
-   * Api Calls
-   */
-
-  /**
    * UI Events
    */
-  openCustomerModal() {
-    this.showCustomerModal = true;
-  }
 
   onSelectCustomer(customer: Customer | null) {
-    if (this.order && customer) {
-      this.order.customer = customer;
-      // this.order.delivery.address = customer.Address;
-      // this.order.delivery.distanceKm = customer.address.distanceKm ?? 0;
-      this.order = { ...this.order };
-      this.orderChange.emit(this.order);
+    if (customer !== null) {
+      this.facade.customer.value = customer;
+      this.facade.showCustomerModal = false;
+      this.facade.delivery.value = {
+        Address: customer.Address || '',
+        Date: '',
+        EstimatedDate: '',
+        Fee: 0,
+        DistanceKm: 0,
+      };
     }
-    this.showCustomerModal = false;
   }
 
   /**
@@ -60,25 +41,38 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
    */
 
   get googleUrlMap(): string {
-    return this.order?.customer?.Address
+    return this.facade.customer.value?.Address
       ? `https://www.google.com/maps/search/${encodeURIComponent(
-          this.order?.customer?.Address
+          this.facade.customer.value?.Address
         )}`
       : '';
   }
 
   get hadCustomer(): boolean {
-    return this.order &&
-      this.order?.customer !== null &&
-      this.order.customer.id?.trim() !== ''
-      ? true
-      : false;
+    return this.facade.customer.value !== null;
   }
 
-  get customerDetailUrl(): string {
-    return this.order && this.order.customer
-      ? `/customers/detail/${this.order.customer.id}`
-      : '';
+  get order() {
+    return this.facade.order.value;
+  }
+
+  get customer() {
+    return this.facade.customer.value;
+  }
+
+  get customerStatus(): string {
+    switch (this.facade.customer.value?.Disabled) {
+      case true:
+        return 'Inactivo';
+      case false:
+        return 'Activo';
+      default:
+        return 'Activo';
+    }
+  }
+
+  get customerStatusAppearance(): TuiAppearanceOptions['appearance'] {
+    return this.facade.customer.value?.Disabled ? 'error' : 'success';
   }
 
   /**

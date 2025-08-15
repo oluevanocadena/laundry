@@ -217,4 +217,10 @@ button {
     &[disabled]:active {
         transform: none;
     }
+
+
+    &[selected=true] {
+        background-color: var(--background-04) !important;
+    }
+
 }

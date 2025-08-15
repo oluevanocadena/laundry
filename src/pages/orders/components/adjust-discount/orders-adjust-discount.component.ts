@@ -1,15 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HelperPage } from '../../../../components/common/helper.page';
-import {
-  DiscountTypes,
-  DiscountTypesEnum,
-  Order,
-  OrdersService,
-  PaymentMethods,
-} from '../../../../services/orders.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { SettingsService } from '../../../../services/settings.services';
+import {
+  DiscountTypes,
+  Order,
+} from '../../../../bussiness/orders/orders.interfaces';
+import { OrdersDraftFacade } from '../../../../bussiness/orders/controllers/orders.draft.facade';
 
 @Component({
   selector: 'orders-adjust-discount',
@@ -45,11 +43,8 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
     amount: new FormControl(0, [Validators.required]),
   });
 
-  //Enums
-  DiscountTypesEnum = DiscountTypesEnum;
-
   constructor(
-    public orderService: OrdersService,
+    public facade: OrdersDraftFacade,
     public settingsService: SettingsService,
     public nzmessage: NzMessageService
   ) {
@@ -69,9 +64,8 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   applyDiscount() {
     if (this.order) {
       this.order.discountAmount = this.amount;
-      this.order.discountType = this.discountType;
 
-      const isPercent = this.discountType === DiscountTypesEnum.Percentage;
+      const isPercent = this.discountType === 1;
 
       if (isPercent) {
         // Para porcentaje, primero calculamos el subtotal sin IVA
@@ -89,7 +83,7 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
       console.log('discount', this.order.discount);
 
       // Recalcular totales con el nuevo descuento
-      this.order = this.orderService.calculateTotals(this.order);
+      // this.order = this.orderService.calculateTotals(this.order);
     }
 
     this.orderChange.emit(this.order);
@@ -110,9 +104,7 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
    */
 
   get discountType() {
-    return (
-      this.formGroup.controls.discountType.value ?? DiscountTypesEnum.Amount
-    );
+    return this.formGroup.controls.discountType.value ?? 1;
   }
 
   get amount() {
@@ -120,21 +112,19 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   }
 
   get placeholder() {
-    return this.discountType === DiscountTypesEnum.Amount
-      ? 'Amount'
-      : 'Percentage';
+    return this.discountType === 1 ? 'Amount' : 'Percentage';
   }
 
   get maxNumber() {
-    return this.discountType === DiscountTypesEnum.Amount ? 99999 : 100;
+    return this.discountType === 1 ? 99999 : 100;
   }
 
   get stepIncrement() {
-    return this.discountType === DiscountTypesEnum.Amount ? 1 : 0.1;
+    return this.discountType === 1 ? 1 : 0.1;
   }
 
   get postFixText() {
-    return this.discountType === DiscountTypesEnum.Amount ? '$' : '%';
+    return this.discountType === 1 ? '$' : '%';
   }
 
   get canSave() {

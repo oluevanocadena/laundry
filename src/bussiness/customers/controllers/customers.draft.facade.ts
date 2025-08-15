@@ -122,7 +122,9 @@ export class CustomersDraftFacade extends FacadeBase {
       OrganizationId: this.cookiesService.UserInfo.Organization.id,
     };
 
-    this.api.saveCustomer(customer);
+    this.api.saveCustomer(customer).then(() => {
+      this.router.navigate([routes.Customers]);
+    });
   }
 
   /**

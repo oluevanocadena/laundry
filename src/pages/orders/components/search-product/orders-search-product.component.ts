@@ -2,7 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { catchError, finalize, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { ProductsApiService } from '../../../../bussiness/products/products.api.service';
+import { Product } from '../../../../bussiness/products/products.interfaces';
 import { HelperTablePage } from '../../../../components/common/helper.table.page';
 import {
   OrderItemsStatus,
@@ -10,17 +12,8 @@ import {
   OrdersStatusService,
   OrderStatus,
 } from '../../../../services/order-status.service';
-import { OrderItem } from '../../../../services/orders.service';
-import {
-  ProductCategory,
-  ProductCategoryEnum,
-  ProductCategoryService,
-} from '../../../../services/product-category.service';
-import { Product, ProductService } from '../../../../services/products.service';
-import {
-  CustomerSettings,
-  SettingsService,
-} from '../../../../services/settings.services';
+import { OrderItem } from '../../../../bussiness/orders/orders.interfaces';
+import { SettingsService } from '../../../../services/settings.services';
 
 @Component({
   selector: 'orders-search-product',
@@ -59,16 +52,9 @@ export class OrdersSearchProductComponent
   });
 
   //Arrays
-  categories: ProductCategory[] = [];
   products: Product[] = [];
   orderStatuses: OrderStatus[] = [];
   orderItemsStatuses: OrderItemsStatus[] = [];
-
-  //Models
-  selectedCategory: ProductCategory | null = null;
-
-  //Enums
-  prodCatEnum = ProductCategoryEnum;
 
   //Index
   tabIndex: number = 0;
@@ -77,8 +63,7 @@ export class OrdersSearchProductComponent
     public nzMessageService: NzMessageService,
     public nzModalService: NzModalService,
     public ordersStatusService: OrdersStatusService,
-    public productCategoryService: ProductCategoryService,
-    public productService: ProductService,
+    public productService: ProductsApiService,
     public settingsService: SettingsService
   ) {
     super();
@@ -91,9 +76,6 @@ export class OrdersSearchProductComponent
   async load(): Promise<void> {
     try {
       this.loading = true;
-      this.categories = await firstValueFrom(
-        this.productCategoryService.getCategoriesFake()
-      );
       this.orderStatuses = await firstValueFrom(
         this.ordersStatusService.getFakeOrderStatuses()
       );
@@ -101,7 +83,6 @@ export class OrdersSearchProductComponent
         this.ordersStatusService.getFakeOrderItemsStatuses()
       );
 
-      this.selectedCategory = this.categories[0];
       await this.searchProducts();
     } catch (error) {
       console.error(error);
@@ -112,28 +93,28 @@ export class OrdersSearchProductComponent
   }
 
   searchProducts() {
-    this.loading = true;
-    this.productService
-      .getProductsFake(
-        this.page,
-        this.pageSize,
-        this.search,
-        this.selectedCategory?.id ?? 0
-      )
-      .pipe(
-        catchError((error) => {
-          this.nzMessageService.error('Error loading products');
-          return [];
-        }),
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe((products) => {
-        this.clearSelectedProduct();
-        this.products = products;
-        console.log('products', products);
-      });
+    // this.loading = true;
+    // this.productService
+    //   .getProducts(
+    //     // this.page,
+    //     // this.pageSize,
+    //     // this.search,
+    //     // this.selectedCategory?.id ?? 0
+    //   )
+    //   .pipe(
+    //     catchError((error) => {
+    //       this.nzMessageService.error('Error loading products');
+    //       return [];
+    //     }),
+    //     finalize(() => {
+    //       this.loading = false;
+    //     })
+    //   )
+    //   .subscribe((products) => {
+    //     this.clearSelectedProduct();
+    //     this.products = products;
+    //     console.log('products', products);
+    //   });
   }
 
   /**
@@ -142,8 +123,6 @@ export class OrdersSearchProductComponent
 
   onChangeTab(index: any) {
     this.onTabChange.emit(index);
-    this.selectedCategory = this.categories[index];
-    console.log(index, this.selectedCategory);
     setTimeout(() => {
       this.formGroup.controls['search'].patchValue('');
       this.searchProducts();
@@ -160,9 +139,9 @@ export class OrdersSearchProductComponent
             this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
               ?.name ?? '',
           statusId: OrderItemsStatusEnum.NotProccesed,
-          categoryId: this.selectedCategory?.id ?? 0,
-          category: this.selectedCategory?.name ?? '',
-          name: this.selectedCategory?.name ?? '',
+          categoryId: 0,
+          category: 'Laundry',
+          name: 'Laundry',
           productId: 'laundry',
           quantity: this.weight ?? 0,
           price:
@@ -180,9 +159,9 @@ export class OrdersSearchProductComponent
             this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
               ?.name ?? '',
           statusId: OrderItemsStatusEnum.NotProccesed,
-          categoryId: this.selectedCategory?.id ?? 0,
-          category: this.selectedCategory?.name ?? '',
-          name: this.selectedDryCleaningProduct?.name ?? '',
+          categoryId: 0,
+          category: 'Dry Cleaning',
+          name: this.selectedDryCleaningProduct?.Name ?? '',
           productId: this.selectedDryCleaningProduct?.id ?? '',
           quantity: 1,
           price: this.priceOfSelectedDryCleaningProduct,
@@ -199,9 +178,9 @@ export class OrdersSearchProductComponent
             this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
               ?.name ?? '',
           statusId: OrderItemsStatusEnum.NotProccesed,
-          categoryId: this.selectedCategory?.id ?? 0,
-          category: this.selectedCategory?.name ?? '',
-          name: this.selectedCategory?.name ?? '',
+          categoryId: 0,
+          category: 'Ironing',
+          name: 'Ironing',
           productId: 'ironing',
           quantity: this.ironing ?? 0,
           price:
@@ -220,9 +199,9 @@ export class OrdersSearchProductComponent
             this.orderItemsStatuses.find((x) => x.name == 'Not Proccesed')
               ?.name ?? '',
           statusId: OrderItemsStatusEnum.NotProccesed,
-          categoryId: this.selectedCategory?.id ?? 0,
-          category: this.selectedCategory?.name ?? '',
-          name: this.selectedOtherProduct?.name ?? '',
+          categoryId: 0,
+          category: 'Others',
+          name: this.selectedOtherProduct?.Name ?? '',
           productId: this.selectedOtherProduct?.id ?? '',
           quantity: 1,
           price: this.priceOfSelectedOtherProduct,
@@ -342,38 +321,38 @@ export class OrdersSearchProductComponent
 
   get taxtOfSelectedDryCleaningProduct() {
     let total = 0;
-    let price = this.selectedDryCleaningProduct?.price ?? 0;
+    let price = this.selectedDryCleaningProduct?.Price ?? 0;
     total = price * (this.settingsService.settings.value?.taxes.taxRate ?? 0);
     return total;
   }
 
   get subTotalOfSelectedDryCleaningProduct() {
     let total = 0;
-    let price = this.selectedDryCleaningProduct?.price ?? 0;
+    let price = this.selectedDryCleaningProduct?.Price ?? 0;
     total = price - this.taxtOfSelectedDryCleaningProduct;
     return total;
   }
 
   get priceOfSelectedDryCleaningProduct() {
-    return this.selectedDryCleaningProduct?.price ?? 0;
+    return this.selectedDryCleaningProduct?.Price ?? 0;
   }
 
   get taxOfSelectedOtherProduct() {
     let total = 0;
-    let price = this.selectedOtherProduct?.price ?? 0;
+    let price = this.selectedOtherProduct?.Price ?? 0;
     total = price * (this.settingsService.settings.value?.taxes.taxRate ?? 0);
     return total;
   }
 
   get subTotalOfSelectedOtherProduct() {
     let total = 0;
-    let price = this.selectedOtherProduct?.price ?? 0;
+    let price = this.selectedOtherProduct?.Price ?? 0;
     total = price - this.taxOfSelectedOtherProduct;
     return total;
   }
 
   get priceOfSelectedOtherProduct() {
-    return this.selectedOtherProduct?.price ?? 0;
+    return this.selectedOtherProduct?.Price ?? 0;
   }
 
   /**

@@ -2,7 +2,7 @@
 
     <grid [gap]="[16,12]" [direction]="'column'" [align]="'center-left'">
         <span class="f-14 fw-500 f-05 f-lh-12">Partidas del pedido</span>
-        <tui-badge *ngIf="orderHaveItems" appearance="info" [size]="'m'">
+        <tui-badge *ngIf="itemsCount > 0" appearance="info" [size]="'m'">
             <span class="f-15 fw-600 f-lh-17 f-info">
                 {{ itemsCount }}
             </span>
@@ -10,37 +10,27 @@
     </grid>
 
     <ng-template tuiAccordionItemContent>
-        <grid [direction]="'row'" [gap]="[16,16]">
-            <grid *ngIf="order?.orderItems && orderHaveItems" [direction]="'row'" [gap]="[16,16]">
-                <ng-container *ngFor="let item of order?.orderItems; let i = index">
-                    <ng-container *ngIf="item.isDeliveryFee === false">
-                        <ng-container *ngTemplateOutlet="rowItemTemplate; context: { item: item, index: i}">
-                        </ng-container>
-                    </ng-container>
-                </ng-container>
-            </grid>
-            <grid *ngIf="order?.orderItems && orderHaveItems === false" [direction]="'row'" [gap]="[16,16]">
-                <grid [direction]="'column'" [align]="'center-left'" padding="0.5rem 0" height="100%">
-                    <span class="f-15 fw-500 f-04 f-lh-17">
-                        No product items added to the order yet,
-                        <a [href]="routes.ProductDraft" target="_blank" class="fw-600 f-05 link">
-                            create a new product
-                        </a>
-                    </span>
-                </grid>
-            </grid>
-            <grid *ngIf="canModifyItems" [direction]="'column'" [template]="'1fr'" padding="1rem 0 0 0"
-                class="border-top-06">
-                <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button (click)="openSearchProduct()" tuiButton [appearance]="'primary'" [size]="'m'">
-                        Add Item
+        <grid *ngIf="itemsCount === 0" [direction]="'row'" [gap]="[16,16]">
+            <grid [gap]="[8,8]" [direction]="'row'" padding="1rem 0.25rem" height="100%" [width]="'100%'">
+                <span class="f-14 fw-500 f-06 f-lh-17">
+                    Aún no has agregado productos, da click en el botón de buscar o ve a la sección de productos.
+                </span>
+                <grid [direction]="'row'" [align]="'center-right'" width="fit-content">
+                    <button success small (click)="facade.goToProducts()">
+                        Ir a productos
                     </button>
                 </grid>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
+                class="border-top-02">
+                <button primary small (click)="facade.showCustomerModal = true">
+                    Buscar producto
+                </button>
             </grid>
         </grid>
     </ng-template>
 </tui-accordion-item>
-
+<!-- 
 <ng-template #rowItemTemplate let-item="item" let-index="index">
     <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
         <grid [direction]="'column'" [template]="'1fr'" height="100%">
@@ -76,4 +66,4 @@
 </ng-template>
 
 <orders-search-product [(show)]="showSearchProduct" (onSelectItem)="onSelectItem($event)" />
-<orders-adjust-quantity [(show)]="showAdjustQuantity" [(order)]="order" [item]="selectedItem" [indexItem]="indexItem" />
+<orders-adjust-quantity [(show)]="showAdjustQuantity" [(order)]="order" [item]="selectedItem" [indexItem]="indexItem" /> -->

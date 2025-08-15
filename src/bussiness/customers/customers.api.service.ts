@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from '../../environments/environment';
-import { HttpService } from '../../services/common/http.service';
+import { CookiesService } from '../../services/common/cookie.service';
 import { BusyProp } from '../../types/busy.type';
-import { SubjectProp } from '../../types/subject.type';
-import { Customer } from './customers.interfaces';
 import { FacadeApiBase } from '../../types/facade.base';
+import { SubjectProp } from '../../types/subject.type';
+import { Session } from '../session/session.interface';
+import { Customer } from './customers.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class CustomersApiService implements FacadeApiBase {
 
   customers = new SubjectProp<Customer[]>([]);
 
-  constructor(private readonly httpService: HttpService) {
+  constructor(private readonly cookiesService: CookiesService<Session>) {
     this.client = createClient(supabase.url, supabase.key);
   }
 
@@ -38,23 +39,32 @@ export class CustomersApiService implements FacadeApiBase {
     }
   }
 
-  async getCustomers() {
+  async getCustomers(search?: string, page: number = 1, pageSize: number = 50) {
     await this.executeWithBusy(async () => {
-      const { data, error } = await this.client
+      let query = this.client
         .from(this.table)
         .select('*')
-        .eq('Deleted', false);
+        .eq('OrganizationId', this.cookiesService.UserInfo.Organization.id)
+        .eq('Deleted', false)
+        .eq('Disabled', false);
+
+      if (search) {
+        query = query.ilike('FullName', `%${search}%`);
+      }
+      query = query.range((page - 1) * pageSize, page * pageSize);
+      const { data, error } = await query;
       if (error) throw error;
       this.customers.value = data;
     }, 'fetching customers');
   }
 
   async saveCustomer(customer: Customer) {
-    this.executeWithBusy(async () => {
+    return this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(this.table)
         .upsert(customer);
       if (error) throw error;
+      return data;
     }, 'saving customer');
   }
 

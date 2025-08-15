@@ -9,7 +9,6 @@ import { TUIModule } from '../../components/tui.module';
 import { UIModule } from '../../components/ui.module';
 import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
-import { ServicesModule } from '../../services/services.module';
 
 import { ProductsAvailabilityComponent } from './components/availability/products-availability.component';
 import { ProductsGeneralsComponent } from './components/generals/products-generals.component';
@@ -43,7 +42,6 @@ const components: any[] = [
     DirectivesModule,
     TUIModule,
     NgZorroModule,
-    ServicesModule,
   ],
   declarations: components,
   exports: components,

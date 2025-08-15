@@ -20,7 +20,7 @@
                 <button outline medium full (click)="close()">
                     {{closeLabel}}
                 </button>
-                <button #buttonConfirm medium full (click)="confirm()">
+                <button #buttonConfirm medium full [disabled]="disableConfirm" (click)="confirm()">
                     {{confirmLabel}}
                 </button>
             </grid>

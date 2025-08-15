@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HelperPage } from '../../../../components/common/helper.page';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Order, PaymentMethods } from '../../../../services/orders.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import {
+  Order,
+  PaymentMethods,
+} from '../../../../bussiness/orders/orders.interfaces';
+import { HelperPage } from '../../../../components/common/helper.page';
 import {
   OrderPaymentStatus,
   OrderPaymentStatusEnum,

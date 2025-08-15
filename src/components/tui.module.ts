@@ -56,7 +56,8 @@ import {
   TuiTextareaModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/legacy';
-import {TuiSelect} from '@taiga-ui/kit';
+import { TuiSelect } from '@taiga-ui/kit';
+
 @NgModule({
   imports: [
     CommonModule,

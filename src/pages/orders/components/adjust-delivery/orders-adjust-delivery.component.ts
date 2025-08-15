@@ -1,22 +1,22 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HelperPage } from '../../../../components/common/helper.page';
-import {
-  CustomerSettings,
-  SettingsService,
-} from '../../../../services/settings.services';
-import { firstValueFrom } from 'rxjs';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { Order, OrdersService } from '../../../../services/orders.service';
 import { TuiDay } from '@taiga-ui/cdk';
-import moment from 'moment';
 import { tuiCreateTimePeriods } from '@taiga-ui/kit';
+import moment from 'moment';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { firstValueFrom } from 'rxjs';
+import { OrdersDraftFacade } from '../../../../bussiness/orders/controllers/orders.draft.facade';
+import { Order } from '../../../../bussiness/orders/orders.interfaces';
+import { HelperPage } from '../../../../components/common/helper.page';
+import { Utils } from '../../../../services/common/utils.service';
 import {
   OrderItemsStatus,
   OrderItemsStatusEnum,
   OrdersStatusService,
 } from '../../../../services/order-status.service';
-import { Utils } from '../../../../services/common/utils.service';
+import {
+  SettingsService
+} from '../../../../services/settings.services';
 
 @Component({
   selector: 'orders-adjust-delivery',
@@ -75,7 +75,7 @@ export class OrdersAdjustDeliveryComponent
 
   constructor(
     public settingsService: SettingsService,
-    public orderservice: OrdersService,
+    public facade: OrdersDraftFacade,
     public ordersStatusService: OrdersStatusService,
     public nzMessageService: NzMessageService
   ) {
@@ -115,7 +115,7 @@ export class OrdersAdjustDeliveryComponent
         this.order.delivery.date = this.estimatedDeliveryDate;
         this.order.delivery.estimatedDate = this.estimatedDeliveryDate;
         this.order.delivery.estimatedTime = this.estimatedDeliveryTime;
-        this.order = this.orderservice.calculateTotals(this.order as Order);
+        // this.order = this.orderservice.calculateTotals(this.order as Order);
         this.orderChange.emit(this.order);
       }
       this.onSave.emit(this.formGroup.value);

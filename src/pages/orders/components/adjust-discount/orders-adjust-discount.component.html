@@ -14,7 +14,8 @@
             </grid>
             <form tuiGroup [orientation]="'horizontal'" class="group" [collapsed]="false" [formGroup]="formGroup">
                 <label tuiBlock>
-                    <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()" [value]="DiscountTypesEnum.Amount" />
+                    <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
+                        [value]="1" />
                     <grid [direction]="'row'" [gap]="[0,16]">
                         <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
                             <tui-icon icon="@tui.dollar-sign" class="f-16 f-02" />
@@ -29,7 +30,7 @@
                 </label>
                 <label tuiBlock>
                     <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
-                        [value]="DiscountTypesEnum.Percentage" />
+                        [value]="1" />
                     <grid [gap]="[0,8]" [direction]="'row'">
                         <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
                             <tui-icon icon="@tui.percent" class="f-16 f-02" />

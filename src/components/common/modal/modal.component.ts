@@ -40,6 +40,8 @@ export class ModalComponent extends HelperPage {
   @Input() confirmLabel = 'Confirmar';
   @Input() confirmStyle: ModalConfirmStyleButton = 'danger';
   @Input() centered: boolean = true;
+  @Input() disableConfirm: boolean = false;
+  @Input() busy: boolean = false;
 
   private nativeButton: HTMLElement | null = null;
 

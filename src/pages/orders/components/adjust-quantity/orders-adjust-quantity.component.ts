@@ -1,12 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperPage } from '../../../../components/common/helper.page';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  Order,
-  OrderItem,
-  OrdersService,
-} from '../../../../services/orders.service';
-import { ProductCategoryEnum } from '../../../../services/product-category.service';
+import { Order, OrderItem } from '../../../../bussiness/orders/orders.interfaces';
+import { OrdersDraftFacade } from '../../../../bussiness/orders/controllers/orders.draft.facade';
+ 
 
 @Component({
   selector: 'orders-adjust-quantity',
@@ -60,7 +57,7 @@ export class OrdersAdjustQuantityComponent
     quantity: new FormControl(1, [Validators.required]),
   });
 
-  constructor(public orderservice: OrdersService) {
+  constructor(public facade: OrdersDraftFacade) {
     super();
   }
 
@@ -88,7 +85,7 @@ export class OrdersAdjustQuantityComponent
         (x) => x.id !== item.id
       );
       this.order.orderItems.push(item);
-      this.order = this.orderservice.calculateTotals(this.order as Order);
+      // this.order = this.orderservice.calculateTotals(this.order as Order);
       this.orderChange.emit(this.order as Order);
       this.close();
     }
@@ -99,7 +96,7 @@ export class OrdersAdjustQuantityComponent
       this.order.orderItems = this.order.orderItems.filter(
         (x, index) => index !== this.indexItem
       );
-      this.order = this.orderservice.calculateTotals(this.order as Order);
+      // this.order = this.orderservice.calculateTotals(this.order as Order);
       this.orderChange.emit(this.order as Order);
       this.close();
     }
@@ -117,11 +114,11 @@ export class OrdersAdjustQuantityComponent
   }
 
   get isLaundry() {
-    return this.item?.categoryId === ProductCategoryEnum.Laundry;
+    return this.item?.category === 'Laundry';
   }
 
   get isIroning() {
-    return this.item?.categoryId === ProductCategoryEnum.Ironing;
+    return this.item?.category === 'Ironing';
   }
 
   /**

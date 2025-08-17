@@ -10,19 +10,22 @@ import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
-import { CustomersModule } from '@pages/customers/customers.module';
-import { HomeComponent } from '@pages/home/home.component';
-import { LocationsModule } from '@pages/locations/locations.module';
-import { NotificationsModule } from '@pages/notifications/notifications.module';
-import { OrdersModule } from '@pages/orders/orders.module';
-import { ProductsModule } from '@pages/products/products.module';
-import { ReportsModule } from '@pages/reports/reports.module';
-import { LoginModule } from '@pages/session/login.module';
-import { SettingsModule } from '@pages/settings/settings.module';
-import { SupportModule } from '@pages/support/support.module';
-import { UsersModule } from '@pages/users/users.module';
+import { CustomersModule } from '@pages/private/customers/customers.module';
+import { LocationsModule } from '@pages/private/locations/locations.module';
+import { NotificationsModule } from '@pages/private/notifications/notifications.module';
+import { OrdersModule } from '@pages/private/orders/orders.module';
+import { ProductsModule } from '@pages/private/products/products.module';
+import { ReportsModule } from '@pages/private/reports/reports.module';
+import { LoginModule } from '@pages/private/session/login.module';
+import { SettingsModule } from '@pages/private/settings/settings.module';
+import { SupportModule } from '@pages/private/support/support.module';
+import { UsersModule } from '@pages/private/users/users.module';
 
-const components = [HomeComponent];
+import { LandingModule } from '@pages/public/landing/landing.module';
+import { PricingModule } from '@pages/public/pricing/pricing.module';
+import { HomeModule } from './private/home/home.module';
+
+const components: any[] = [];
 
 @NgModule({
   imports: [
@@ -47,6 +50,9 @@ const components = [HomeComponent];
     SettingsModule,
     UsersModule,
     SupportModule,
+    LandingModule,
+    PricingModule,
+    HomeModule,
   ],
   declarations: components,
   exports: components,

@@ -8,14 +8,20 @@
             Feddback
         </button>
         <grid [direction]="'column'" [align]="'center-left'">
-            <button outline rounded small icon prefix (click)="openNotifications()">
-                <tui-icon icon="@tui.info" class="f-16 f-06" />
+            <button outline rounded small icon-google prefix (click)="openNotifications()">
+                <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                    help
+                </span>
             </button>
-            <button outline rounded small icon middle (click)="openNotifications()">
-                <tui-icon icon="@tui.inbox" class="f-16 f-06" />
+            <button outline rounded small icon-google middle (click)="openNotifications()">
+                <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                    inbox
+                </span>
             </button>
-            <button outline rounded small icon suffix (click)="openNotifications()">
-                <tui-icon icon="@tui.bug" class="f-16 f-06" />
+            <button outline rounded small icon-google suffix (click)="openNotifications()">
+                <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                    support_agent
+                </span>
             </button>
         </grid>
         <grid [direction]="'column'" [align]="'center-center'" [height]="'100%'">

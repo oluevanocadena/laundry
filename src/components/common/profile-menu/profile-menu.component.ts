@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SessionFacade } from '@bussiness/session/controllers/session.facade';
 
 @Component({
   selector: 'profile-menu',
@@ -7,22 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile-menu.component.scss'],
 })
 export class ProfileMenuComponent implements OnInit {
-  //Flag Management
-  show: boolean = false;
-
-  //Arrays
-  options: UIOptionProfileMenu[] = [
-    { id: 1, label: 'Profile' },
-    { id: 1, label: 'Logout' },
-  ];
-
-  constructor() {}
+ 
+  constructor(public facade: SessionFacade) {}
 
   /**
    * Getters
    */
-  get name() {
-    return 'Oscar Luevano';
+  get userName() {
+    return this.facade.api.account.value?.FullName || 'Usuario apellido largos prueba';
+  }
+
+  get email() {
+    return this.facade.api.session.value?.user?.email;
   }
 
   /**

@@ -10,3 +10,14 @@ export interface Organization {
   Deleted: boolean;
   Disabled: boolean;
 }
+
+
+export interface Account {
+  id: string; // uuid
+  FullName: string;
+  Email: string;
+  Phone: string;
+  created_at: string; // ISO date string
+  Deleted: boolean;
+  Disabled: boolean;
+}

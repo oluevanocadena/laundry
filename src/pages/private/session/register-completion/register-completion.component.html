@@ -1,0 +1,46 @@
+<grid [direction]="'column'" [align]="'center-center'" height="100vh" class="bg-01">
+    <grid [gap]="[40,24]" [direction]="'column'" [template]="'1fr'" [width]="isMobile ? '100%': '400px'"
+        padding="2rem 2rem 4rem 2rem" card default>
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
+            <logo />
+            <span class="f-19 f-03 fw-600">
+                Wofloo
+            </span>
+        </grid>
+        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
+            <span class="f-20 fw-600">
+                Completa los datos de tu cuenta <span class="f-03 f-12 f-error">*</span>
+            </span>
+            <span class="f-14 f-06">
+                Ingresa los datos de tu cuenta para continuar
+            </span>
+        </grid>
+
+        <form [formGroup]="facade.formGroup">
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
+                <grid [direction]="'column'" [template]="'1fr'">
+                    <tui-pagination size="s" class="tui-space_top-4" [(index)]="facade.step" [length]="2" />
+                </grid>
+                <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
+                    <form-input [label]="'Nombre'" [type]="'text'" [placeholder]="'Nombre'" [formControlName]="'name'"
+                        [required]="true" />
+                    <form-input [label]="'Apellidos'" [type]="'text'" [placeholder]="'Apellidos'"
+                        [formControlName]="'name'" [required]="true" />
+                    <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'Teléfono'"
+                        [formControlName]="'phone'" [required]="true" />
+                    <form-input [label]="'Organización'" [type]="'text'" [placeholder]="'Organización'"
+                        [formControlName]="'name'" [required]="true" />
+
+                    <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%" padding="1rem 0 0 0">
+                        <button large full primary (click)="facade.step=facade.step+1">
+                            Continuar
+                        </button>
+                    </grid>
+                </grid>
+            </grid>
+
+        </form>
+
+
+    </grid>
+</grid>

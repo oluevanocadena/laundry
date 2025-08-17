@@ -44,19 +44,19 @@ import {
   TuiSegmented,
   TuiSkeleton,
   TuiSwitch,
+  TuiTextarea,
 } from '@taiga-ui/kit';
 import {
   TuiInputDateModule,
   TuiInputDateMultiModule,
   TuiInputDateRangeModule,
   TuiInputModule,
-  TuiInputPhoneModule,
   TuiInputTimeModule,
   TuiMultiSelectModule,
   TuiTextareaModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/legacy';
-import { TuiSelect } from '@taiga-ui/kit';
+import { TuiSelect, TuiInputPhone } from '@taiga-ui/kit';
 
 @NgModule({
   imports: [
@@ -97,7 +97,7 @@ import { TuiSelect } from '@taiga-ui/kit';
     TuiInputDateMultiModule,
     TuiInputDateRangeModule,
     TuiInputModule,
-    TuiInputPhoneModule,
+    TuiInputPhone,
     TuiInputTimeModule,
     TuiLineClamp,
     TuiLoader,
@@ -110,7 +110,7 @@ import { TuiSelect } from '@taiga-ui/kit';
     TuiSegmented,
     TuiSkeleton,
     TuiSwitch,
-    TuiTextareaModule,
+    TuiTextarea,
     TuiTextfieldControllerModule,
   ],
   exports: [
@@ -151,7 +151,7 @@ import { TuiSelect } from '@taiga-ui/kit';
     TuiInputDateMultiModule,
     TuiInputDateRangeModule,
     TuiInputModule,
-    TuiInputPhoneModule,
+    TuiInputPhone,
     TuiInputTimeModule,
     TuiLineClamp,
     TuiLoader,
@@ -163,7 +163,7 @@ import { TuiSelect } from '@taiga-ui/kit';
     TuiSegmented,
     TuiSkeleton,
     TuiSwitch,
-    TuiTextareaModule,
+    TuiTextarea,
     TuiTextfieldControllerModule,
   ],
 })

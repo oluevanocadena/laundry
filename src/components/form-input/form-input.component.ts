@@ -3,10 +3,9 @@ import {
   EventEmitter,
   Injector,
   Input,
-  Optional,
   Output,
-  Self,
   forwardRef,
+  inject,
   signal,
 } from '@angular/core';
 import {
@@ -16,8 +15,9 @@ import {
   NG_VALUE_ACCESSOR,
   NgControl,
 } from '@angular/forms';
-import { TuiDay, TuiStringHandler, TuiTime } from '@taiga-ui/cdk';
-import { tuiItemsHandlersProvider, TuiSizeL, TuiSizeS } from '@taiga-ui/core';
+import { TUI_IS_IOS, TuiDay, TuiStringHandler, TuiTime } from '@taiga-ui/cdk';
+import { TuiSizeL, TuiSizeS, tuiItemsHandlersProvider } from '@taiga-ui/core';
+import { FormProp } from '@type/form.type';
 import {
   Subject,
   debounceTime,
@@ -26,7 +26,7 @@ import {
   startWith,
   takeUntil,
 } from 'rxjs';
-import { FormProp } from '@type/form.type';
+
 @Component({
   selector: 'form-input',
   standalone: false,
@@ -109,6 +109,12 @@ export class FormInputComponent implements ControlValueAccessor {
 
   //Subject Type
   formValue = new FormProp<any>(this.formGroup, 'value', null);
+
+  //IOS
+  protected readonly isIos = inject(TUI_IS_IOS);
+  protected get pattern(): string | null {
+    return this.isIos ? '+[0-9-]{1,20}' : null;
+  }
 
   constructor(private injector: Injector) {}
 

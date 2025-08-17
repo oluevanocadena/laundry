@@ -2,16 +2,22 @@
     nzTrigger="click" [nzDropdownMenu]="menu" />
 
 <nz-dropdown-menu #menu="nzDropdownMenu">
-    <grid class="bg-01 brdr brdr-radius-8">
-        <tui-data-list [style.width.rem]="12" [size]="'s'">
-            <tui-opt-group>
-                <tui-opt-group>
-                    <button *ngFor="let option of options" tuiOption type="button" [value]="option">
-                        <span class="f-14 fw-500 f-lh-13 f-02">{{ option.label }}</span>
-                    </button>
-                </tui-opt-group>
-            </tui-opt-group>
-        </tui-data-list>
+    <grid [gap]="[2,8]" [direction]="'row'" [padding]="'0.5rem'" [width]="'200px'"
+        class="bg-02 brdr-radius-6 shadow-01">
+
+        <button flat small [width]="'100%'" class="f-13 f-03" (click)="facade.signOut()">
+            <grid [direction]="'row'" [gap]="[0,0]">
+                <tui-line-clamp [content]="userName | capitalization" [lineHeight]="20" [linesLimit]="1"
+                    class="f-15 f-03 fw-600 t-left" />
+                <span class="f-12 f-05 fw-300 t-left">
+                    {{ email }}
+                </span>
+            </grid>
+        </button>
+        <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.signOut()">
+            <tui-icon icon="@tui.log-out" class="f-12 fw-100 f-error" />
+            Cerrar sesión
+        </button>
     </grid>
 
 </nz-dropdown-menu>

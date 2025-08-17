@@ -1,0 +1,64 @@
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+
+    <grid [gap]="[16,12]" [direction]="'column'" [align]="'center-left'">
+        <span class="f-14 fw-500 f-05 f-lh-12">Partidas del pedido</span>
+        <tui-badge *ngIf="itemsCount > 0" appearance="info" [size]="'m'">
+            <span class="f-15 fw-600 f-lh-17 f-info">
+                {{ itemsCount }}
+            </span>
+        </tui-badge>
+    </grid>
+
+    <ng-template tuiAccordionItemContent>
+        <grid *ngIf="itemsCount === 0" [direction]="'row'" [gap]="[16,16]">
+            <grid [gap]="[8,8]" [direction]="'row'" padding="1rem 0.25rem" height="100%" [width]="'100%'">
+                <span class="f-14 fw-500 f-06 f-lh-17">
+                    Aún no has agregado productos a este pedido.
+                </span>
+            </grid>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
+                class="border-top-02">
+                <button primary small (click)="facade.showSearchProduct = true">
+                    Buscar producto
+                </button>
+            </grid>
+        </grid>
+    </ng-template>
+</tui-accordion-item>
+<!-- 
+<ng-template #rowItemTemplate let-item="item" let-index="index">
+    <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
+        <grid [direction]="'column'" [template]="'1fr'" height="100%">
+            <span class="f-15 fw-600 f-01 f-lh-17">{{ item.name }}</span>
+            <span class="f-15 fw-400 f-03 f-lh-17">{{ item.category }}</span>
+        </grid>
+        <grid [gap]="[8,16]" [direction]="'column'" [align]="'center-right'">
+            <button tuiButton [appearance]="'outline'" [size]="'s'" [disabled]="canModifyItems === false"
+                (click)="openAdjustQuantity(item, index)">
+                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                    <span class="f-15 fw-600 f-02 f-lh-17" [ngClass]="{'f-02': edition, 'f-04': !edition}">
+                        {{ item.quantity | numeralFormat: '0,0.0' }}
+                    </span>
+                    <span class="f-15 fw-600 f-02 f-lh-17" [ngClass]="{'f-02': edition, 'f-04': !edition}">
+                        x
+                    </span>
+                    <span class="f-15 fw-600 f-02 f-lh-17" [ngClass]="{'f-02': edition, 'f-04': !edition}">
+                        {{ item.price | numeralFormat: '$0,0.00' }}
+                    </span>
+                </grid>
+            </button>
+            <grid [gap]="[4,4]" [direction]="'column'" [align]="'center-right'">
+                <span class="f-15 fw-600 f-02 f-lh-15" padding="0.45rem 0 0 0">
+                    {{ item.total | numeralFormat: '$0,0.00' }}
+                </span>
+                <button *ngIf="canModifyItems" tuiButton tuiIconButton [size]="'s'" [appearance]="'clear'"
+                    (click)="removeItem(index)">
+                    <tui-icon icon="@tui.trash-2" class="f-18 fw-600 f-error" />
+                </button>
+            </grid>
+        </grid>
+    </grid>
+</ng-template>
+ -->
+<orders-search-product [(show)]="facade.showSearchProduct" />
+<orders-adjust-quantity [(show)]="facade.showAdjustQuantity" />

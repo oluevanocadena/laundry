@@ -62,10 +62,11 @@
                 {{ label }}
                 <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
             </span>
-            <tui-input-phone [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
-                [countryCode]="countryCode" formControlName="value" (input)="onInputChange($event)">
-                {{ placeholder }}
-            </tui-input-phone>
+            <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
+                class="{{hadError ? 't-input_error' : ''}}">
+                <input [placeholder]="placeholder" autocomplete="tel" [mask]="countryCode + '### ###-##-##'"
+                    tuiInputPhone formControlName="value" />
+            </tui-textfield>
         </grid>
     </form>
 
@@ -77,9 +78,10 @@
                 {{ label }}
                 <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
             </span>
-            <tui-textfield [tuiTextfieldSize]="size" formControlName="value" (input)="onInputChange($event)">
-                {{ placeholder }}
-                <tui-icon tuiPassword />
+            <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
+                class="{{hadError ? 't-input_error' : ''}}">
+                <input [placeholder]="placeholder" tuiTextfield type="password" formControlName="value" />
+                <tui-icon tuiPassword icon="@tui.eye" />
             </tui-textfield>
         </grid>
     </form>
@@ -93,7 +95,7 @@
                 <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
             </span>
             <tui-textfield iconStart="@tui.dollar-sign" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-                class="{{hadError ? 't-input_error' : ''}}">
+                [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
                 <input tuiInputNumber [min]="min" formControlName="value" [tuiNumberFormat]="{precision: 2}" />
             </tui-textfield>
         </grid>
@@ -107,10 +109,9 @@
                 {{ label }}
                 <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
             </span>
-            <tui-textarea [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size" formControlName="value"
-                (input)="onInputChange($event)">
-                {{ placeholder }}
-            </tui-textarea>
+            <tui-textfield [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size" formControlName="value">
+                <textarea [placeholder]="placeholder" tuiTextarea></textarea>
+            </tui-textfield>
         </grid>
     </form>
 
@@ -122,10 +123,9 @@
                 {{ label }}
                 <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
             </span>
-            <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldPostfix]="postFix"
-                formControlName="value" (input)="onInputChange($event)">
-                {{ placeholder }}
-                <input tuiInputNumber [min]="min" [max]="max" [step]="step" />
+            <tui-textfield iconStart="@tui.hash" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+                [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
+                <input tuiInputNumber [min]="min" formControlName="value" />
             </tui-textfield>
         </grid>
     </form>
@@ -138,7 +138,7 @@
                 {{ label }}
                 <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
             </span>
-            <tui-textfield tuiChevron tuiTextfieldSize="s" [tuiTextfieldCleaner]="false" [stringify]="stringify"
+            <tui-textfield tuiChevron tuiTextfieldSize="s" [tuiTextfieldCleaner]="clearable" [stringify]="stringify"
                 class="{{hadError ? 't-input_error' : ''}}">
                 <input *ngIf="(options || []).length > 0" [placeholder]="placeholder" tuiSelect
                     formControlName="value" />
@@ -204,7 +204,8 @@
                 {{ label }}
                 <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
             </span>
-            <tui-textfield iconStart="@tui.search" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true">
+            <tui-textfield iconStart="@tui.search" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+                [tuiTextfieldCleaner]="clearable">
                 <input [attr.placeholder]="placeholder" tuiTextfield formControlName="value"
                     (input)="onInputChange($event)" />
             </tui-textfield>

@@ -1,0 +1,49 @@
+<grid [direction]="'column'" [align]="'center-center'" height="100vh" class="bg-01">
+    <grid [gap]="[40,24]" [direction]="'column'" [template]="'1fr'" [width]="isMobile ? '100%': '400px'" padding="2rem"
+        card primary>
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
+            <logo />
+            <span class="f-19 f-03 fw-600">
+                Wofloo
+            </span>
+        </grid>
+        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
+            <span class="f-20 fw-600">
+                Registro de cuenta <span class="f-03 f-12 f-error">*</span>
+            </span>
+            <span class="f-14 f-06">
+                Crea una cuenta para comenzar a usar Wofloo
+            </span>
+        </grid>
+
+        <form [formGroup]="facade.formGroup">
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
+                <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
+                    <form-input [label]="'Correo electrónico'" [type]="'email'" [placeholder]="'Correo electrónico'"
+                        [formControlName]="'email'" [required]="true" />
+                    <form-input [label]="'Contraseña'" [type]="'password'" [placeholder]="'Contraseña'"
+                        [formControlName]="'password'" [required]="true" />
+                    <form-input [label]="'Confirmar contraseña'" [type]="'password'"
+                        [placeholder]="'Confirmar contraseña'" [formControlName]="'confirmPassword'"
+                        [required]="true" />
+
+                    <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%" padding="1rem 0 0 0">
+                        <button large full primary [routerLink]="routes.RegisterCompletion">
+                            Continar
+                        </button>
+                    </grid>
+                </grid>
+            </grid>
+
+        </form>
+
+        <grid [direction]="'column'" [align]="'center-center'" [padding]="'2rem 0 0 0'">
+            <span class="f-03 f-14">
+                ¿Ya tienes una cuenta?
+                <a [routerLink]="routes.Login" class="f-primary f-15 fw-500 link">
+                    Iniciar sesión
+                </a>
+            </span>
+        </grid>
+    </grid>
+</grid>

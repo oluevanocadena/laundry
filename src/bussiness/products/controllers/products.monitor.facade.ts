@@ -37,7 +37,7 @@ export class ProductsMonitorFacade extends FacadeBase {
    * Api
    */
   fetchProducts() {
-    this.api.getProducts();
+    this.api.getProducts('', 1, 50);
   }
 
   /**

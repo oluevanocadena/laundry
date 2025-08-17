@@ -34,6 +34,10 @@
     width: 2.5rem !important;
 }
 
+button[tuiAppearance][data-appearance=secondary] {
+    background-color: var(--background-05) !important;
+}
+
 tui-copy {
     cursor: pointer;
 

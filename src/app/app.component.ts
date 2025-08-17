@@ -6,7 +6,7 @@ import { NgZorroModule } from '../components/ng-zorro.module';
 import { TUIModule } from '../components/tui.module';
 import { UIModule } from '../components/ui.module';
 import { DirectivesModule } from '../directives/directives.module';
-import { PagesModule } from '../pages/pages.module';
+import { PagesModule } from '@pages/pages.module';
 import { SettingsService } from '../services/settings.services';
 import { CookiesService } from '../services/common/cookie.service';
 import { Session } from 'inspector';

@@ -2,7 +2,7 @@
     <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%" width="100%">
         <menu width="100%">
             <menu-item [collapsed]="collapsed" [icon]="'location_away'" [iconType]="'google'" [label]="'Inicio'"
-                [urlBase]="routes.Home" [level]="0" />
+                [urlBase]="routes.Home" [link]="routes.Home" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'box'" [iconType]="'google'" [label]="'Pedidos'"
                 [urlBase]="routes.Orders" [link]="routes.Orders" [isGroup]="false" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'" [label]="'Clientes'"

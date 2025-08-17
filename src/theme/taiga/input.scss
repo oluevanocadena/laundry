@@ -105,6 +105,12 @@ tui-textfield {
         border-radius: 6px !important;
     }
 
+    >.t-content {
+        tui-icon::after {
+            color: var(--text-01) !important;
+        }
+    }
+
     >.t-content,
     >.t-template {
         padding-top: 0 !important;

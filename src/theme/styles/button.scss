@@ -28,6 +28,11 @@ button {
         font-size: 14px;
     }
 
+    &[large] {
+        padding: 0.55rem 0.75rem 0.45rem !important;
+        font-size: 15px;
+    }
+
     &[full] {
         width: 100%;
     }
@@ -35,6 +40,13 @@ button {
     &[icon] {
         border-radius: 8px;
         padding: 0.35rem 0.5rem 0.25rem !important;
+    }
+
+    &[icon-google] {
+        border-radius: 8px;
+        padding: 0.35rem 0.5rem 0.35rem !important;
+        line-height: 0px;
+        align-items: center;
     }
 
     &[xsmall] {
@@ -45,6 +57,17 @@ button {
     &[flex] {
         display: flex;
         align-items: center;
+        gap: 0.5rem;
+
+        tui-icon {
+            top: -2px !important;
+        }
+    }
+
+    &[center] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         gap: 0.5rem;
 
         tui-icon {

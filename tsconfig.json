@@ -27,6 +27,7 @@
       "@type/*": ["./src/types/*"],
       "@utils/*": ["./src/utils/*"], 
       "@pipes/*": ["./src/pipes/*"],
+      "@guards/*": ["./src/guards/*"],
       "@environments/*": ["./src/environments/*"],
     }
   },

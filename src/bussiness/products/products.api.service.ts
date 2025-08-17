@@ -14,6 +14,8 @@ import {
   ProductLocation,
   ProductLocationPrice,
 } from '@bussiness/products/products.interfaces';
+import { Session } from '@bussiness/session/session.interface';
+import { CookiesService } from '@services/common/cookie.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +35,10 @@ export class ProductsApiService implements FacadeApiBase {
   products = new SubjectProp<Product[]>([]);
   productCategories = new SubjectProp<ProductCategory[]>([]);
 
-  constructor(public nzMessageService: NzMessageService) {
+  constructor(
+    public nzMessageService: NzMessageService,
+    public cookiesService: CookiesService<Session>
+  ) {
     this.client = createClient(supabase.url, supabase.key);
   }
 
@@ -68,9 +73,9 @@ export class ProductsApiService implements FacadeApiBase {
     }, 'Fetching Product Categories');
   }
 
-  getProducts() {
+  getProducts(search: string, page: number = 1, pageSize: number = 50) {
     this.executeWithBusy(async () => {
-      const { data, error } = await this.client
+      let query = this.client
         .from(this.table)
         .select(
           `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
@@ -79,7 +84,20 @@ export class ProductsApiService implements FacadeApiBase {
               ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)) `
         )
         .eq('Deleted', false)
-        .overrideTypes<Product[], { merge: false }>();
+        .eq('Disabled', false)
+        .eq('OrganizationId', this.cookiesService.UserInfo.Organization.id);
+      if (search) {
+        query = query.ilike('Name', `%${search}%`);
+        query = query.ilike('Description', `%${search}%`);
+        query = query.ilike('Barcode', `%${search}%`);
+        query = query.ilike('SKU', `%${search}%`);
+        query = query.ilike('Price', `%${search}%`);
+      }
+      query = query.range((page - 1) * pageSize, page * pageSize);
+      const { data, error } = await query.overrideTypes<
+        Product[],
+        { merge: false }
+      >();
       if (error) throw error;
       this.products.value = data || [];
     }, 'Fetching Products');
@@ -90,11 +108,14 @@ export class ProductsApiService implements FacadeApiBase {
       const { data, error } = await this.client
         .from(this.table)
         .select(
-          `*, ProductLocations: ${this.tableProductLocations}(*), 
+          `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
               ProductCategory: ${this.tableProductCategories}(Name), 
               ProductImages: ${this.tableProductImages}(*),
               ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)) `
         )
+        .eq('Deleted', false)
+        .eq('Disabled', false)
+        .eq('OrganizationId', this.cookiesService.UserInfo.Organization.id)
         .eq('Id', productId)
         .single();
       if (error) throw error;

@@ -10,10 +10,14 @@ import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
 import { LoginPageComponent } from './login/login-page.component';
-import { RegisterCompletionComponent } from './register-completion/register-completion.component';
+import { RegisterConfirmComponent } from './register-confirm/register-confirm.component';
 import { RegisterPageComponent } from './register/register-page.component';
 
-const components = [LoginPageComponent, RegisterPageComponent, RegisterCompletionComponent];
+const components = [
+  LoginPageComponent,
+  RegisterPageComponent,
+  RegisterConfirmComponent,
+];
 
 @NgModule({
   imports: [

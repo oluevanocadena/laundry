@@ -8,14 +8,15 @@ import { SessionFacade } from '@bussiness/session/controllers/session.facade';
   styleUrls: ['./profile-menu.component.scss'],
 })
 export class ProfileMenuComponent implements OnInit {
- 
-  constructor(public facade: SessionFacade) {}
+  constructor(public facade: SessionFacade) {
+    console.log(this.facade.api.session.value?.user);
+  }
 
   /**
    * Getters
    */
   get userName() {
-    return this.facade.api.account.value?.FullName || 'Usuario apellido largos prueba';
+    return this.facade.api.account.value?.FullName || '-';
   }
 
   get email() {

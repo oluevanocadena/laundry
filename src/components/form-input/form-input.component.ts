@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Injector,
@@ -32,6 +33,7 @@ import {
   standalone: false,
   templateUrl: './form-input.component.html',
   styleUrls: ['./form-input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -68,9 +70,9 @@ export class FormInputComponent implements ControlValueAccessor {
   private _options: UISelectOption[] | null = [];
   @Input() set options(value: UISelectOption[] | null) {
     this._options = value;
-    const idOption = this.formValue.value;
+    const idOption = this.valueControl.value;
     if (this.type === 'select' && value && idOption) {
-      this.formValue.value = value?.find((option) => option.id === idOption);
+      this.value = value?.find((option) => option.id === idOption);
     }
   }
   get options() {
@@ -82,7 +84,7 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() set disabled(value: boolean) {
     this._disabled = value;
     if (value) {
-      this.formGroup.controls.value.disable();
+      this.valueControl.disable();
     }
   }
   get disabled() {
@@ -92,7 +94,7 @@ export class FormInputComponent implements ControlValueAccessor {
   //Outputs
   @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
 
-  value: string = '';
+  value: any = '';
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -103,12 +105,7 @@ export class FormInputComponent implements ControlValueAccessor {
   private onChange = (value: string) => {};
   private onTouched = () => {};
 
-  formGroup = new FormGroup({
-    value: new FormControl(null),
-  });
-
-  //Subject Type
-  formValue = new FormProp<any>(this.formGroup, 'value', null);
+  valueControl = new FormControl(null);
 
   //IOS
   protected readonly isIos = inject(TUI_IS_IOS);
@@ -131,7 +128,10 @@ export class FormInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    this._updateInternalValue(value);
+    this.value = value;
+    if (this.type === 'switch') {
+      this.valueControl.setValue(value ?? false);
+    }
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -146,27 +146,8 @@ export class FormInputComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onInputChange(event: Event): void {
-    let value = (event.target as any)?.value;
-    this._updateInternalValue(value);
-    this.onChange(value);
-    if (this.type === 'search') {
-      this.searchSubject.next(value);
-    }
-  }
-
   onNgModelChange(value: any): void {
-    this._updateInternalValue(value);
     this.onChange(value);
-  }
-
-  private _updateInternalValue(value: any): void {
-    this.value = value;
-    if (this.type === 'switch') {
-      this.formValue.value = value ?? false;
-    } else {
-      this.formValue.value = value;
-    }
   }
 
   /**
@@ -178,10 +159,7 @@ export class FormInputComponent implements ControlValueAccessor {
   }
 
   get hadError() {
-    return (
-      this.formGroup.controls.value.invalid &&
-      this.formGroup.controls.value.touched
-    );
+    return this.valueControl.invalid && this.valueControl.touched;
   }
 
   /**
@@ -189,52 +167,24 @@ export class FormInputComponent implements ControlValueAccessor {
    */
 
   ngAfterContentInit() {
-    this.formValue.change$.pipe(distinctUntilChanged()).subscribe((value) => {
-      if (this.type === 'switch') {
-        this.onChange(value);
-      } else if (this.type === 'select') {
-        if (value && typeof value === 'object' && this.value !== value.id) {
-          console.log('👉🏽 select value', value.id);
-          this.onChange(value.id);
-          this.value = value.id;
-        }
-      } else {
-        this.onChange(value);
-      }
-    });
-
     let ngControl = this.injector.get(NgControl, null);
-    try {
-      if (ngControl) {
-        ngControl.valueAccessor = this;
-
-        const externalControl = ngControl.control;
-        const internalControl = this.formGroup.controls.value;
-
-        if (!externalControl) return;
-
-        merge(
-          externalControl.statusChanges.pipe(startWith(externalControl.status)),
-          externalControl.valueChanges.pipe(startWith(externalControl.value))
-        )
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            const extTouched = externalControl.touched;
-            const extDirty = externalControl.dirty;
-            const intTouched = internalControl.touched;
-            const intDirty = internalControl.dirty;
-
-            // Si el estado externo difiere del interno, sincronizar
-            // if (extTouched !== intTouched || extDirty !== intDirty) {
-            //   this.formGroup.reset(externalControl.value);
-            // }
-          });
-
-        internalControl.setValidators(ngControl.validator);
-        internalControl.updateValueAndValidity();
-      }
-    } catch {
-      ngControl = null;
+    if (ngControl) {
+      ngControl.valueAccessor = this;
+      this.valueControl = ngControl.control as FormControl;
+      this.valueControl.valueChanges
+        ?.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+        .subscribe((value: any) => {
+          if (this.type === 'switch') {
+            this.onChange(value);
+          } else if (this.type === 'select') {
+            if (value && typeof value === 'object' && this.value !== value.id) {
+              this.onChange(value.id);
+              this.value = value.id;
+            }
+          } else {
+            this.onChange(value);
+          }
+        });
     }
 
     if (this.type === 'search') {

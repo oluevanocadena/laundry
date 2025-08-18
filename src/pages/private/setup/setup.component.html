@@ -9,10 +9,10 @@
         </grid>
         <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
             <span class="f-20 fw-600">
-                Completa los datos de tu cuenta <span class="f-03 f-12 f-error">*</span>
+                Configura tu cuenta
             </span>
             <span class="f-14 f-06">
-                Ingresa los datos de tu cuenta para continuar
+                Completa los datos de tu cuenta para iniciar a usar Wofloo
             </span>
         </grid>
 
@@ -32,7 +32,7 @@
                         [formControlName]="'name'" [required]="true" />
 
                     <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%" padding="1rem 0 0 0">
-                        <button large full primary (click)="facade.step=facade.step+1">
+                        <button large full primary>
                             Continuar
                         </button>
                     </grid>

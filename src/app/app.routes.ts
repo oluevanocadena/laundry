@@ -14,9 +14,10 @@ import { ProductsDraftComponent } from '@pages/private/products/draft/products-d
 import { ProductsPageComponent } from '@pages/private/products/products-page.component';
 import { ReportsPageComponent } from '@pages/private/reports/reports.component';
 import { LoginPageComponent } from '@pages/private/session/login/login-page.component';
-import { RegisterCompletionComponent } from '@pages/private/session/register-completion/register-completion.component';
+import { RegisterConfirmComponent } from '@pages/private/session/register-confirm/register-confirm.component';
 import { RegisterPageComponent } from '@pages/private/session/register/register-page.component';
 import { SettingsPageComponent } from '@pages/private/settings/settings-page.component';
+import { SetupPageComponent } from '@pages/private/setup/setup.component';
 import { SupportPageComponent } from '@pages/private/support/support.component';
 import { UsersPageComponent } from '@pages/private/users/users.component';
 import { LandingComponent } from '@pages/public/landing/landing.component';
@@ -25,6 +26,7 @@ import { PricingComponent } from '@pages/public/pricing/pricing.component';
 export const routes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'home', canActivate: [AuthGuard], component: HomeComponent },
+  { path: 'setup', canActivate: [AuthGuard], component: SetupPageComponent },
   { path: 'customers', component: CustomersPageComponent },
   { path: 'customers/draft', component: CustomersDraftComponent },
   { path: 'customers/edit/:id', component: CustomersDraftComponent },
@@ -39,7 +41,7 @@ export const routes: Routes = [
   { path: 'products/draft', component: ProductsDraftComponent },
   { path: 'products/edit/:id', component: ProductsDraftComponent },
   { path: 'register', component: RegisterPageComponent },
-  { path: 'register-completion', component: RegisterCompletionComponent },
+  { path: 'register-confirmation', component: RegisterConfirmComponent },
   { path: 'reports', component: ReportsPageComponent },
   { path: 'settings', component: SettingsPageComponent },
   { path: 'support', component: SupportPageComponent },

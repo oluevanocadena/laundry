@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { RegisterCompletionComponent } from "./register-completion.component";
+import { RegisterConfirmComponent } from "./register-confirm.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-describe("RegisterCompletionComponent", () => {
+describe("RegisterConfirmComponent", () => {
 
-  let fixture: ComponentFixture<RegisterCompletionComponent>;
-  let component: RegisterCompletionComponent;
+  let fixture: ComponentFixture<RegisterConfirmComponent>;
+  let component: RegisterConfirmComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [RegisterCompletionComponent]
+      declarations: [RegisterConfirmComponent]
     });
 
-    fixture = TestBed.createComponent(RegisterCompletionComponent);
+    fixture = TestBed.createComponent(RegisterConfirmComponent);
     component = fixture.componentInstance;
 
   });

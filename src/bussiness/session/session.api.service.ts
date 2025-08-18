@@ -6,6 +6,7 @@ import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { BusyProp } from '@type/busy.type';
 import { FacadeApiBase } from '@type/facade.base';
 import { StorageProp } from '@type/storage.type';
+import moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Account } from './session.interface';
 
@@ -43,9 +44,9 @@ export class SessionApiService implements FacadeApiBase {
       const result = await callback();
       return result;
     } catch (error) {
-      this.nzMessageService.error('¡Usuario y/o contraseña incorrectos!');
+      this.nzMessageService.error('Ocurrió un error al realizar la acción');
       console.error('⛔ Error:', error);
-      return null;
+      return error as any;
     } finally {
       this.busy.value = false;
     }
@@ -58,7 +59,14 @@ export class SessionApiService implements FacadeApiBase {
         email,
         password,
       });
-      if (error) throw error;
+      console.log('👉🏽 error', error);
+      if (error && error.message === 'Email not confirmed') {
+        this.nzMessageService.error(
+          '¡Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!'
+        );
+      } else {
+        this.nzMessageService.error('¡Usuario y/o contraseña incorrectos!');
+      }
       return data;
     }, 'Signing in');
   }
@@ -70,20 +78,24 @@ export class SessionApiService implements FacadeApiBase {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin + routes.Home,
+          emailRedirectTo: window.location.origin + routes.RegisterConfirm,
         },
       });
       if (error) throw error;
-      //   if (!data.session) {
-      //     // ⚠️ No hay sesión, porque se requiere confirmar email
-      //     alert('Revisa tu correo para confirmar tu cuenta antes de iniciar sesión.');
-      //   } else {
-      //     // Solo pasa si confirm email está desactivado
-      //     console.log('Registro con sesión activa:', data.session);
-      //     this.router.navigate([routes.Login]);
-      //   }
-      return data.session;
+      return data.session; // Ojo: con confirm email activado, será null hasta confirmar
     }, 'Signing up');
+  }
+
+  async confirmEmail(email: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.auth.admin.updateUserById(
+        email,
+        {
+          email_confirm: true,
+        }
+      );
+      return { data, error };
+    }, 'Confirming email');
   }
 
   // Logout

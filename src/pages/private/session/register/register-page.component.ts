@@ -14,6 +14,24 @@ export class RegisterPageComponent extends HelperPage {
   }
 
   /**
+   * Getters
+   */
+
+  get showInstructions() {
+    return !(
+      this.facade.pwd.value !== this.facade.pwdConfirm.value &&
+      this.facade.pwdConfirm.value !== ''
+    );
+  }
+
+  get passwordNotMatch() {
+    return (
+      this.facade.pwd.value !== this.facade.pwdConfirm.value &&
+      this.facade.pwdConfirm.value !== ''
+    );
+  }
+
+  /**
    * Life cycle hook
    */
 

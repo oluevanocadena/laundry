@@ -1,36 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
-@import 'theme/styles/resets.scss';
-@import 'theme/styles/button.scss';
 
-@import 'theme/styles/background.scss';
-@import 'theme/styles/spacing.scss';
-@import 'theme/styles/fonts.scss';
-@import 'theme/styles/display.scss';
-@import 'theme/styles/colors.scss';
-@import 'theme/styles/borders.scss';
-@import 'theme/styles/skeleton.scss';
-@import 'theme/styles/table.scss';
-@import 'theme/styles/shadows.scss';
-@import 'theme/styles/card.scss';
+// Styles
+@use 'theme/styles/resets.scss' as *;
+@use 'theme/styles/button.scss' as *;
+@use 'theme/styles/background.scss' as *;
+@use 'theme/styles/spacing.scss' as *;
+@use 'theme/styles/fonts.scss' as *;
+@use 'theme/styles/display.scss' as *;
+@use 'theme/styles/colors.scss' as *;
+@use 'theme/styles/borders.scss' as *;
+@use 'theme/styles/skeleton.scss' as *;
+@use 'theme/styles/table.scss' as *;
+@use 'theme/styles/shadows.scss' as *;
+@use 'theme/styles/card.scss' as *;
 
-@import 'theme/taiga/button.scss';
-@import 'theme/taiga/input.scss';
-@import 'theme/taiga/chip.scss';
-@import 'theme/taiga/badge.scss';
-@import 'theme/taiga/accordion.scss';
-@import 'theme/taiga/select.scss';
+// Taiga
+@use 'theme/taiga/button.scss' as *;
+@use 'theme/taiga/input.scss' as *;
+@use 'theme/taiga/chip.scss' as *;
+@use 'theme/taiga/badge.scss' as *;
+@use 'theme/taiga/accordion.scss' as *;
+@use 'theme/taiga/select.scss' as *;
 
-@import 'theme/ng-zorro/modal.scss';
-@import 'theme/ng-zorro/menu.scss';
-@import 'theme/ng-zorro/select.scss';
-@import 'theme/ng-zorro/checkbox.scss';
-@import 'theme/ng-zorro/segments.scss';
-@import 'theme/ng-zorro/drawer.scss';
-@import 'theme/ng-zorro/messages.scss';
-
-
-
-body {
-    margin: 0;
-    padding: 0;
-}
+// Ng-Zorro
+@use 'theme/ng-zorro/modal.scss' as *;
+@use 'theme/ng-zorro/menu.scss' as *;
+@use 'theme/ng-zorro/select.scss' as *;
+@use 'theme/ng-zorro/checkbox.scss' as *;
+@use 'theme/ng-zorro/segments.scss' as *;
+@use 'theme/ng-zorro/drawer.scss' as *;
+@use 'theme/ng-zorro/messages.scss' as *;
+ 

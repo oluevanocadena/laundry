@@ -7,6 +7,11 @@
     --t-group-margin: -0px;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
 tui-opt-group:before {
     font-size: 13px !important;
 }

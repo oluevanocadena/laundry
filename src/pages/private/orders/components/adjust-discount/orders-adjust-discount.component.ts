@@ -5,7 +5,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { DiscountTypes, Order } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
-import { SettingsService } from '@services/settings.services';
 
 @Component({
   selector: 'orders-adjust-discount',
@@ -43,7 +42,6 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
 
   constructor(
     public facade: OrdersDraftFacade,
-    public settingsService: SettingsService,
     public nzmessage: NzMessageService
   ) {
     super();
@@ -67,7 +65,7 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
 
       if (isPercent) {
         // Para porcentaje, primero calculamos el subtotal sin IVA
-        const taxRate = this.settingsService.settings.value?.taxes.taxRate || 0;
+        const taxRate = 0.16;
         const totalWithoutTax = this.order.total / (1 + taxRate);
 
         // Calculamos el descuento sobre el monto sin IVA

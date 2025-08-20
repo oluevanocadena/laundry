@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Order } from '@bussiness/orders/orders.interfaces';
-import { SettingsService } from '@services/settings.services';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -39,8 +38,7 @@ export class OrdersDeliveryComponent implements OnInit {
     deliveryType: new FormControl<'pickup' | 'delivery'>('pickup'),
   });
 
-  constructor(
-    public settingsService: SettingsService,
+  constructor( 
     public nzMessageService: NzMessageService
   ) {}
 

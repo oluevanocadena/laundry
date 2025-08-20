@@ -1,10 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
-import {
-  OrderItemsStatusEnum,
-  OrderPaymentStatusEnum,
-  OrderStatusEnum,
-} from '../../../services/order-status.service';
 
 @Component({
   selector: 'status-badge',
@@ -35,22 +30,22 @@ export class StatusBadgeComponent implements OnInit {
       case StatusTypeBadgeEnum.Order:
         // OrderStatusEnum
         switch (this.statusId) {
-          case OrderStatusEnum.Draft:
+          case 1: //Draft
             status = 'warning';
             break;
-          case OrderStatusEnum.Pending:
+          case 2: //Pending
             status = 'warning';
             break;
-          case OrderStatusEnum.Processing:
+          case 3: //Processing
             status = 'info';
             break;
-          case OrderStatusEnum.Completed:
+          case 4: //Completed
             status = 'success';
             break;
-          case OrderStatusEnum.Cancelled:
+          case 5: //Cancelled
             status = 'error';
             break;
-          case OrderStatusEnum.Refunded:
+          case 6: //Refunded
             status = 'error';
             break;
           default:
@@ -61,16 +56,16 @@ export class StatusBadgeComponent implements OnInit {
       case StatusTypeBadgeEnum.OrderItems:
         // OrderItemsStatusEnum
         switch (this.statusId) {
-          case OrderItemsStatusEnum.NotProccesed:
+          case 1: //NotProccesed
             status = 'warning';
             break;
-          case OrderItemsStatusEnum.Processing:
+          case 2: //Processing
             status = 'info';
             break;
-          case OrderItemsStatusEnum.Completed:
+          case 3: //Completed
             status = 'success';
             break;
-          case OrderItemsStatusEnum.Cancelled:
+          case 4: //Cancelled
             status = 'error';
             break;
           default:
@@ -81,20 +76,20 @@ export class StatusBadgeComponent implements OnInit {
       case StatusTypeBadgeEnum.Payment:
         // OrderPaymentStatusEnum
         switch (this.statusId) {
-          case OrderPaymentStatusEnum.Pending:
+          case 1: //Pending
             status = 'warning';
             break;
-          case OrderPaymentStatusEnum.Paid:
+          case 2: //Paid
             status = 'success';
             break;
-          case OrderPaymentStatusEnum.Refunded:
+          case 3: //Refunded
             status = 'error';
             break;
           default:
             status = 'default';
             break;
         }
-        break;   
+        break;
       default:
         status = 'default';
         break;
@@ -112,7 +107,7 @@ export type StatusTypeBadge =
   | 'order'
   | 'orderItems'
   | 'payment'
-  | 'delivery' 
+  | 'delivery'
   | 'customer-marketing'
   | 'customer-status-creation';
 

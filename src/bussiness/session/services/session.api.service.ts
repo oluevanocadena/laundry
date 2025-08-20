@@ -6,9 +6,7 @@ import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { BusyProp } from '@type/busy.type';
 import { FacadeApiBase } from '@type/facade.base';
 import { StorageProp } from '@type/storage.type';
-import moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Account } from './session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +16,6 @@ export class SessionApiService implements FacadeApiBase {
   public client: SupabaseClient;
 
   public session = new StorageProp<Session | null>(null, 'SESSION_COOKIE');
-  public account = new StorageProp<Account | null>(null, 'ACCOUNT_COOKIE');
 
   constructor(public nzMessageService: NzMessageService) {
     this.client = createClient(supabase.url, supabase.key);
@@ -60,12 +57,13 @@ export class SessionApiService implements FacadeApiBase {
         password,
       });
       console.log('👉🏽 error', error);
-      if (error && error.message === 'Email not confirmed') {
+      if (error) {
         this.nzMessageService.error(
-          '¡Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!'
+          error.message === 'Email not confirmed'
+            ? '¡Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!'
+            : '¡Usuario y/o contraseña incorrectos!'
         );
-      } else {
-        this.nzMessageService.error('¡Usuario y/o contraseña incorrectos!');
+        return null;
       }
       return data;
     }, 'Signing in');

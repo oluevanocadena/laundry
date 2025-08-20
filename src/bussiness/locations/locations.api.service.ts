@@ -8,8 +8,7 @@ import { FacadeApiBase } from '@type/facade.base';
 import { SubjectProp } from '@type/subject.type';
 
 import { Location } from '@bussiness/locations/locations.interfaces';
-import { Session } from '@bussiness/session/session.interface';
-import { CookiesService } from '@services/common/cookie.service';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +22,7 @@ export class LocationsApiService implements FacadeApiBase {
 
   constructor(
     public nzMessageService: NzMessageService,
-    public cookiesService: CookiesService<Session>
+    public sessionService: SessionService
   ) {
     this.client = createClient(supabase.url, supabase.key);
   }
@@ -56,29 +55,40 @@ export class LocationsApiService implements FacadeApiBase {
           : await this.client
               .from(this.table)
               .select('*')
-              .eq(
-                'OrganizationId',
-                this.cookiesService.UserInfo.Organization.id
-              )
+              .eq('OrganizationId', this.sessionService.organizationId)
               .eq('Deleted', false)
               .eq('Disabled', disabled);
       this.locations.value = data || [];
     }, 'Fetching locations');
   }
 
+  getDefaultLocation(organizationId: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(this.table)
+        .select('*')
+        .eq('OrganizationId', organizationId)
+        .eq('Default', true)
+        .eq('Deleted', false)
+        .single();
+      return data;
+    }, 'Fetching default location');
+  }
+
   async saveLocation(location: Location) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(this.table)
-        .upsert(location);
+        .upsert(location)
+        .select()
+        .single();
       if (error) {
         this.nzMessageService.error(
           '¡Ocurrió un error al guardar los cambios! ⛔'
         );
         return false;
       }
-      this.getLocations();
-      return true;
+      return data;
     }, 'Saving Location');
   }
 
@@ -94,7 +104,6 @@ export class LocationsApiService implements FacadeApiBase {
         );
         return false;
       }
-      this.getLocations();
       return data;
     }, 'Disabling Location');
   }
@@ -111,7 +120,6 @@ export class LocationsApiService implements FacadeApiBase {
         );
         return false;
       }
-      this.getLocations();
       return data;
     }, 'Deleting Location');
   }

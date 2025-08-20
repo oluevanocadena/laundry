@@ -16,7 +16,13 @@ import {
   NG_VALUE_ACCESSOR,
   NgControl,
 } from '@angular/forms';
-import { TUI_IS_IOS, TuiDay, TuiStringHandler, TuiTime } from '@taiga-ui/cdk';
+import {
+  TUI_IS_IOS,
+  TuiDay,
+  TuiIdentityMatcher,
+  TuiStringHandler,
+  TuiTime,
+} from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS, tuiItemsHandlersProvider } from '@taiga-ui/core';
 import { FormProp } from '@type/form.type';
 import {
@@ -40,12 +46,6 @@ import {
       useExisting: forwardRef(() => FormInputComponent),
       multi: true,
     },
-    tuiItemsHandlersProvider({
-      stringify: signal((x: UISelectOption) => x.Name),
-      identityMatcher: signal(
-        (a: UISelectOption, b: UISelectOption) => a.id === b.id
-      ),
-    }),
   ],
 })
 export class FormInputComponent implements ControlValueAccessor {
@@ -65,15 +65,12 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() step: number = 1;
   @Input() timeItems: TuiTime[] = [];
   @Input() type: InputType = 'text';
+  @Input() maxRows: number = 8;
 
   //Options
   private _options: UISelectOption[] | null = [];
-  @Input() set options(value: UISelectOption[] | null) {
-    this._options = value;
-    const idOption = this.valueControl.value;
-    if (this.type === 'select' && value && idOption) {
-      this.value = value?.find((option) => option.id === idOption);
-    }
+  @Input() set options(options: UISelectOption[] | null) {
+    this._options = options;
   }
   get options() {
     return this._options || [];
@@ -94,13 +91,32 @@ export class FormInputComponent implements ControlValueAccessor {
   //Outputs
   @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
 
-  value: any = '';
-
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
-  protected stringify: TuiStringHandler<UISelectOption> = (x) => x.Name;
-  mapper = (item: any) => item.id;
+  protected stringifyContent: TuiStringHandler<any> = (x) => {
+    const id = x.$implicit;
+    return this.options?.find((option) => option.id === id)?.Name ?? '';
+  };
+  protected stringify: TuiStringHandler<UISelectOption> = (x) => {
+    return x.Name;
+  };
+  protected identityMatcher: TuiIdentityMatcher<UISelectOption> = (
+    a: UISelectOption | string,
+    b: UISelectOption | string
+  ) => {
+    let result = false;
+    if (typeof a === 'string' && typeof b === 'object') {
+      result = a === b.id;
+    } else if (typeof a === 'object' && typeof b === 'string') {
+      result = a.id === b;
+    } else if (typeof a === 'string' && typeof b === 'string') {
+      result = a === b;
+    } else if (typeof a === 'object' && typeof b === 'object') {
+      result = a.id === b.id;
+    }
+    return result;
+  };
 
   private onChange = (value: string) => {};
   private onTouched = () => {};
@@ -127,12 +143,7 @@ export class FormInputComponent implements ControlValueAccessor {
       });
   }
 
-  writeValue(value: any): void {
-    this.value = value;
-    if (this.type === 'switch') {
-      this.valueControl.setValue(value ?? false);
-    }
-  }
+  writeValue(value: any): void {}
 
   registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
@@ -154,10 +165,6 @@ export class FormInputComponent implements ControlValueAccessor {
    * Getters
    */
 
-  get isEmailOrText() {
-    return this.type === 'email' || this.type === 'text';
-  }
-
   get hadError() {
     return this.valueControl.invalid && this.valueControl.touched;
   }
@@ -177,9 +184,12 @@ export class FormInputComponent implements ControlValueAccessor {
           if (this.type === 'switch') {
             this.onChange(value);
           } else if (this.type === 'select') {
-            if (value && typeof value === 'object' && this.value !== value.id) {
+            if (
+              value &&
+              typeof value === 'object' &&
+              this.valueControl.value !== value.id
+            ) {
               this.onChange(value.id);
-              this.value = value.id;
             }
           } else {
             this.onChange(value);

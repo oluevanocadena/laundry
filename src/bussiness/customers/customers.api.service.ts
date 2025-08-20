@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { supabase } from '@environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-import { CookiesService } from '@services/common/cookie.service';
 import { BusyProp } from '@type/busy.type';
 import { FacadeApiBase } from '@type/facade.base';
 import { SubjectProp } from '@type/subject.type';
 
 import { Customer } from '@bussiness/customers/customers.interfaces';
-import { Session } from '@bussiness/session/session.interface';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +19,7 @@ export class CustomersApiService implements FacadeApiBase {
 
   customers = new SubjectProp<Customer[]>([]);
 
-  constructor(private readonly cookiesService: CookiesService<Session>) {
+  constructor(public sessionService: SessionService) {
     this.client = createClient(supabase.url, supabase.key);
   }
 
@@ -46,7 +45,7 @@ export class CustomersApiService implements FacadeApiBase {
       let query = this.client
         .from(this.table)
         .select('*')
-        .eq('OrganizationId', this.cookiesService.UserInfo.Organization.id)
+        .eq('OrganizationId', this.sessionService.organizationId)
         .eq('Deleted', false)
         .eq('Disabled', false);
 

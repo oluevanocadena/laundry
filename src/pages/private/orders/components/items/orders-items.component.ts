@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { OrderPaymentStatusEnum } from '@services/order-status.service';
 
 @Component({
   selector: 'orders-items',
@@ -23,10 +22,7 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
   }
 
   get isPendingPayment() {
-    return this.facade.order.value?.statusPaymentId ===
-      OrderPaymentStatusEnum.Pending
-      ? true
-      : false;
+    return this.facade.order.value?.statusPaymentId === 1 ? true : false;
   }
 
   /**

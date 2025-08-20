@@ -96,8 +96,8 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-textfield [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size" [formControl]="valueControl">
-            <textarea [placeholder]="placeholder" tuiTextarea></textarea>
+        <tui-textfield [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size">
+            <textarea [placeholder]="placeholder" tuiTextarea [formControl]="valueControl" [max]="maxRows"></textarea>
         </tui-textfield>
     </grid>
 
@@ -121,15 +121,16 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-textfield tuiChevron tuiTextfieldSize="s" [tuiTextfieldCleaner]="clearable" [stringify]="stringify"
+        <tui-textfield tuiChevron [tuiTextfieldSize]="size" [tuiTextfieldCleaner]="clearable"
+            [content]="stringifyContent" [stringify]="stringify" [identityMatcher]="identityMatcher"
             class="{{hadError ? 't-input_error' : ''}}">
-            <input *ngIf="(options || []).length > 0" [placeholder]="placeholder" tuiSelect
+            <input *ngIf="(options || []).length > 0" tuiSelect [placeholder]="placeholder"
                 [formControl]="valueControl" />
-            <tui-data-list-wrapper *tuiTextfieldDropdown new [itemContent]="content" [items]="options" />
-            <ng-template #content let-card>
-                {{ card.Name }}
-            </ng-template>
+            <tui-data-list-wrapper *tuiTextfieldDropdown new [items]="options" />
         </tui-textfield>
+        <!-- <nz-select [formControlName]="formControlName" [nzPlaceHolder]="placeholder">
+            <nz-option *ngFor="let option of options" [nzValue]="option.id" [nzLabel]="option.Name"></nz-option>
+        </nz-select> -->
     </grid>
 
     <!-- Date -->
@@ -139,10 +140,10 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-input-date [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [min]="minDate" [(ngModel)]="value"
-            [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
-            {{ placeholder }}
-        </tui-input-date>
+        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable">
+            <input tuiInputDate [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
+            <tui-calendar *tuiTextfieldDropdown />
+        </tui-textfield>
     </grid>
 
     <!-- Date Range -->
@@ -152,10 +153,10 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-input-date-range [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [min]="minDate"
-            [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
-            {{ placeholder }}
-        </tui-input-date-range>
+        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable">
+            <input tuiInputDateRange [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
+            <tui-calendar-range *tuiTextfieldDropdown />
+        </tui-textfield>
     </grid>
 
     <!-- Time -->
@@ -165,10 +166,9 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-input-time [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [items]="timeItems" [strict]="true"
-            [(ngModel)]="value" [ngModelOptions]="{standalone: true}" (ngModelChange)="onNgModelChange($event)">
-            {{ placeholder }}
-        </tui-input-time>
+        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable">
+            <input tuiInputTime [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
+        </tui-textfield>
     </grid>
 
     <!-- Search -->

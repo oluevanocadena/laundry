@@ -8,19 +8,19 @@ import { SessionFacade } from '@bussiness/session/controllers/session.facade';
   styleUrls: ['./profile-menu.component.scss'],
 })
 export class ProfileMenuComponent implements OnInit {
-  constructor(public facade: SessionFacade) {
-    console.log(this.facade.api.session.value?.user);
-  }
+  constructor(public facade: SessionFacade) {}
 
   /**
    * Getters
    */
   get userName() {
-    return this.facade.api.account.value?.FullName || '-';
+    return (
+      this.facade.sessionService.SessionInfo.value?.Account?.FullName || '-'
+    );
   }
 
   get email() {
-    return this.facade.api.session.value?.user?.email;
+    return this.facade.sessionService.SessionInfo.value?.Account?.Email;
   }
 
   /**

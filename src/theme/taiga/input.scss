@@ -114,6 +114,7 @@ tui-textfield {
     >.t-content,
     >.t-template {
         padding-top: 0 !important;
+        color: var(--text-01) !important;
     }
 
     button[tuiicons]::before,
@@ -123,6 +124,7 @@ tui-textfield {
         font-size: 14px !important;
     }
 
+    >textarea::placeholder,
     >input::placeholder {
         color: var(--text-08) !important;
     }

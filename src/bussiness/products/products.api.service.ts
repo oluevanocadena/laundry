@@ -14,8 +14,7 @@ import {
   ProductLocation,
   ProductLocationPrice,
 } from '@bussiness/products/products.interfaces';
-import { Session } from '@bussiness/session/session.interface';
-import { CookiesService } from '@services/common/cookie.service';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +36,7 @@ export class ProductsApiService implements FacadeApiBase {
 
   constructor(
     public nzMessageService: NzMessageService,
-    public cookiesService: CookiesService<Session>
+    public sessionService: SessionService
   ) {
     this.client = createClient(supabase.url, supabase.key);
   }
@@ -85,7 +84,7 @@ export class ProductsApiService implements FacadeApiBase {
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
-        .eq('OrganizationId', this.cookiesService.UserInfo.Organization.id);
+        .eq('OrganizationId', this.sessionService.organizationId);
       if (search) {
         query = query.ilike('Name', `%${search}%`);
         query = query.ilike('Description', `%${search}%`);
@@ -115,7 +114,7 @@ export class ProductsApiService implements FacadeApiBase {
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
-        .eq('OrganizationId', this.cookiesService.UserInfo.Organization.id)
+        .eq('OrganizationId', this.sessionService.organizationId)
         .eq('Id', productId)
         .single();
       if (error) throw error;

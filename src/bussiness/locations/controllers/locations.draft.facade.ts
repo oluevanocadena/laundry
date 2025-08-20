@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { CookiesService } from '@services/common/cookie.service';
 import { FacadeBase } from '@type/facade.base';
 import { StorageProp } from '@type/storage.type';
 
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
 import { Location } from '@bussiness/locations/locations.interfaces';
-import { Session } from '@bussiness/session/session.interface';
+import { SessionService } from '@bussiness/session/services/session.service';
+import { system } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class LocationsDraftFacade extends FacadeBase {
   public formGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     phone: new FormControl('', [Validators.required]),
-    country: new FormControl({ value: 'México', disabled: true }),
+    country: new FormControl({ value: system.defaultCountry, disabled: true }),
     externalNumber: new FormControl(''),
     internalNumber: new FormControl(''),
     municipality: new FormControl('', [Validators.required]),
@@ -37,7 +37,7 @@ export class LocationsDraftFacade extends FacadeBase {
 
   constructor(
     public api: LocationsApiService,
-    public cookiesService: CookiesService<Session>
+    public sessionService: SessionService
   ) {
     super(api);
   }
@@ -60,7 +60,7 @@ export class LocationsDraftFacade extends FacadeBase {
     this.selectedLocation.value = null;
     this.edition = false;
     this.formGroup.controls.default.patchValue(true);
-    this.formGroup.controls.country.patchValue('México');
+    this.formGroup.controls.country.patchValue(system.defaultCountry);
     this.formGroup.controls.country.disable();
   }
 
@@ -74,7 +74,7 @@ export class LocationsDraftFacade extends FacadeBase {
       id: this.edition ? this.selectedLocation.value?.id : undefined,
       Name: value.name?.toString() || '',
       Phone: value.phone?.toString() || '',
-      Country: this.selectedLocation.value?.Country || 'México',
+      Country: this.selectedLocation.value?.Country || system.defaultCountry,
       ExtNumber: value.externalNumber?.toString() || '',
       IntNumber: value.internalNumber?.toString() || '',
       Neighborhood: value.neighborhood?.toString() || '',
@@ -83,7 +83,7 @@ export class LocationsDraftFacade extends FacadeBase {
       Street: value.street?.toString() || '',
       ZipCode: value.zipCode?.toString() || '',
       Default: this.selectedLocation.value?.Default || value.default || false,
-      OrganizationId: this.cookiesService.UserInfo.Organization.id,
+      OrganizationId: this.sessionService.organizationId,
     };
     console.log('🤔 location', location);
     return this.api.saveLocation(location);
@@ -91,6 +91,7 @@ export class LocationsDraftFacade extends FacadeBase {
 
   disableLocation(id: string, disabled: boolean) {
     return this.api.disableLocation(id, disabled).then(() => {
+      this.api.getLocations();
       if (this.selectedLocation.value) {
         this.selectedLocation.value.Disabled =
           !this.selectedLocation.value.Disabled;
@@ -100,6 +101,7 @@ export class LocationsDraftFacade extends FacadeBase {
 
   deleteLocation(id: string) {
     return this.api.deleteLocation(id).then(() => {
+      this.api.getLocations();
       if (this.selectedLocation.value) {
         this.selectedLocation.value.Deleted = true;
       }

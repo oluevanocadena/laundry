@@ -3,8 +3,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { Order } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
-import { OrderPaymentStatusEnum } from '@services/order-status.service';
-import { SettingsService } from '@services/settings.services';
 
 @Component({
   selector: 'orders-summary',
@@ -30,9 +28,9 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
     if (
       this.order !== null &&
       this.order.total === 0 &&
-      this.order.statusPaymentId === OrderPaymentStatusEnum.Paid
+      this.order.statusPaymentId === 2 //Paid
     ) {
-      this.order.statusPaymentId = OrderPaymentStatusEnum.Pending;
+      this.order.statusPaymentId = 1; //Pending
     }
   }
   get order(): Order | null {
@@ -40,10 +38,7 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
   }
   @Output() orderChange: EventEmitter<Order> = new EventEmitter<Order>();
 
-  constructor(
-    public settingsService: SettingsService,
-    public nzMessageService: NzMessageService
-  ) {
+  constructor(public nzMessageService: NzMessageService) {
     super();
   }
 
@@ -69,15 +64,15 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
 
   get canPaid(): boolean {
     return (
-      this.order?.statusPaymentId === OrderPaymentStatusEnum.Pending &&
-      this.order?.total > 0
+      this.order?.statusPaymentId === 1 //Pending
+      //&& this.order?.total > 0
     );
   }
 
   get canAddDiscount(): boolean {
     return (
-      this.order?.statusPaymentId === OrderPaymentStatusEnum.Pending &&
-      this.order?.total > 0
+      this.order?.statusPaymentId === 1 //Pending
+      //&& this.order?.total > 0
     );
   }
 

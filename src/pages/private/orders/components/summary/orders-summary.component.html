@@ -25,7 +25,7 @@
                 <span class="f-15 fw-400 f-02 f-lh-14">
                     Tax
                     <span class="fw-500">
-                        {{settingsService.settings!.value?.taxes?.taxRate ?? 0 | numeralFormat:'0.0%'}}
+                        {{16 | numeralFormat:'0.0%'}}
                     </span>
                 </span>
                 <span class="f-15 f-02 f-lh-14">
@@ -53,6 +53,7 @@
         </grid>
     </ng-template>
 </tui-accordion-item>
-
+<!--
 <orders-collect-payment [(show)]="showCollectPaymentModal" [(order)]="order" />
 <orders-adjust-discount [(show)]="showAdjustDiscountModal" [(order)]="order" />
+-->

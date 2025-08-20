@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginGuard } from '@guards/login.guard';
 
-import { AuthGuard } from '@guards/session.guard';
+import { SessionGuard } from '@guards/session.guard';
 
 import { CustomersPageComponent } from '@pages/private/customers/customers-page.component';
 import { CustomersDraftComponent } from '@pages/private/customers/draft/customers-draft.component';
@@ -25,26 +25,76 @@ import { PricingComponent } from '@pages/public/pricing/pricing.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
-  { path: 'home', canActivate: [AuthGuard], component: HomeComponent },
-  { path: 'setup', canActivate: [AuthGuard], component: SetupPageComponent },
-  { path: 'customers', component: CustomersPageComponent },
-  { path: 'customers/draft', component: CustomersDraftComponent },
-  { path: 'customers/edit/:id', component: CustomersDraftComponent },
-  { path: 'locations', component: LocationsPageComponent },
-  { path: 'login', canActivate: [LoginGuard], component: LoginPageComponent },
-  { path: 'notifications', component: NotificationsPageComponent },
-  { path: 'orders', component: OrdersPageComponent },
-  { path: 'orders/draft', component: OrdersDraftPageComponent },
-  { path: 'orders/edit/:id', component: OrdersDraftPageComponent },
-  { path: 'pricing', component: PricingComponent },
-  { path: 'products', component: ProductsPageComponent },
-  { path: 'products/draft', component: ProductsDraftComponent },
-  { path: 'products/edit/:id', component: ProductsDraftComponent },
+  { path: 'home', canActivate: [SessionGuard], component: HomeComponent },
+  { path: 'setup', canActivate: [SessionGuard], component: SetupPageComponent },
+  {
+    path: 'customers',
+    canActivate: [SessionGuard],
+    component: CustomersPageComponent,
+  },
+  {
+    path: 'customers/draft',
+    canActivate: [SessionGuard],
+    component: CustomersDraftComponent,
+  },
+  {
+    path: 'customers/edit/:id',
+    canActivate: [SessionGuard],
+    component: CustomersDraftComponent,
+  },
+  {
+    path: 'locations',
+    canActivate: [SessionGuard],
+    component: LocationsPageComponent,
+  },
+  {
+    path: 'notifications',
+    canActivate: [SessionGuard],
+    component: NotificationsPageComponent,
+  },
+  { path: 'orders', canActivate: [SessionGuard], component: OrdersPageComponent },
+  {
+    path: 'orders/draft',
+    canActivate: [SessionGuard],
+    component: OrdersDraftPageComponent,
+  },
+  {
+    path: 'orders/edit/:id',
+    canActivate: [SessionGuard],
+    component: OrdersDraftPageComponent,
+  },
+  {
+    path: 'products',
+    canActivate: [SessionGuard],
+    component: ProductsPageComponent,
+  },
+  {
+    path: 'products/draft',
+    canActivate: [SessionGuard],
+    component: ProductsDraftComponent,
+  },
+  {
+    path: 'products/edit/:id',
+    canActivate: [SessionGuard],
+    component: ProductsDraftComponent,
+  },
+  { path: 'users', canActivate: [SessionGuard], component: UsersPageComponent },
+  {
+    path: 'reports',
+    canActivate: [SessionGuard],
+    component: ReportsPageComponent,
+  },
+  {
+    path: 'settings',
+    canActivate: [SessionGuard],
+    component: SettingsPageComponent,
+  },
+
   { path: 'register', component: RegisterPageComponent },
   { path: 'register-confirmation', component: RegisterConfirmComponent },
-  { path: 'reports', component: ReportsPageComponent },
-  { path: 'settings', component: SettingsPageComponent },
   { path: 'support', component: SupportPageComponent },
-  { path: 'users', component: UsersPageComponent },
+
+  { path: 'login', component: LoginPageComponent },
+  { path: 'pricing', component: PricingComponent },
   { path: '**', redirectTo: '' },
 ];

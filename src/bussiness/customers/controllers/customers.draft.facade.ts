@@ -3,13 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { routes } from '@app/routes';
-import { CookiesService } from '@services/common/cookie.service';
 import { FacadeBase } from '@type/facade.base';
 import { StorageProp } from '@type/storage.type';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/customers.interfaces';
-import { Session } from '@bussiness/session/session.interface';
+import { SessionService } from '@bussiness/session/services/session.service';
+import { system } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +42,7 @@ export class CustomersDraftFacade extends FacadeBase {
   constructor(
     public api: CustomersApiService,
     public router: Router,
-    public cookiesService: CookiesService<Session>
+    public sessionService: SessionService
   ) {
     super(api);
   }
@@ -58,7 +58,7 @@ export class CustomersDraftFacade extends FacadeBase {
     this.customer.value = {
       Deleted: false,
       Disabled: false,
-      Country: 'México',
+      Country: system.defaultCountry,
       FirstName: '',
       LastName: '',
       FullName: '',
@@ -68,10 +68,10 @@ export class CustomersDraftFacade extends FacadeBase {
       State: '',
       Street: '',
       ZipCode: '',
-      OrganizationId: this.cookiesService.UserInfo.Organization.id,
+      OrganizationId: this.sessionService.organizationId,
     };
     this.edition = false;
-    this.formGroup.controls.country.patchValue('México');
+    this.formGroup.controls.country.patchValue(system.defaultCountry);
     this.formGroup.controls.country.disable();
   }
 
@@ -104,7 +104,7 @@ export class CustomersDraftFacade extends FacadeBase {
     const customer: Customer = {
       id: this.edition ? this.customer.value?.id : undefined,
       AllowNotifications: true,
-      Country: 'México',
+      Country: system.defaultCountry,
       Email: value.email?.toString() || '',
       ExtNumber: value.externalNumber?.toString() || '',
       FirstName: value.firstName?.toString() || '',
@@ -121,7 +121,7 @@ export class CustomersDraftFacade extends FacadeBase {
       Deleted: this.customer.value?.Deleted || false,
       Disabled: this.customer.value?.Disabled || false,
       TotalOrders: this.customer.value?.TotalOrders || 0,
-      OrganizationId: this.cookiesService.UserInfo.Organization.id,
+      OrganizationId: this.sessionService.organizationId,
     };
 
     this.api.saveCustomer(customer).then(() => {

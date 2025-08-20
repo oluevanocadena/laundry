@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { routes } from '@app/routes';
-import { Session } from '@bussiness/session/session.interface';
-import { CookiesService } from '@services/common/cookie.service';
 import { FacadeBase } from '@type/facade.base';
 import { FormProp } from '@type/form.type';
 import { StorageProp } from '@type/storage.type';
@@ -18,6 +16,7 @@ import {
   ProductLocation,
   ProductLocationPrice,
 } from '@bussiness/products/products.interfaces';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -49,9 +48,9 @@ export class ProductsDraftFacade extends FacadeBase {
   constructor(
     public api: ProductsApiService,
     public locationApi: LocationsApiService,
-    public cookiesService: CookiesService<Session>,
     public nzMessageService: NzMessageService,
-    public router: Router
+    public router: Router,
+    public sessionService: SessionService
   ) {
     super(api);
   }
@@ -146,7 +145,7 @@ export class ProductsDraftFacade extends FacadeBase {
         Price: value.price || 0,
         ImageUrl: this.urlImages[0] || undefined,
         ProductCategoryId: this.categoryId.value || '',
-        OrganizationId: this.cookiesService.UserInfo.Organization.id,
+        OrganizationId: this.sessionService.organizationId,
         QtyStoresAvailable: this.locationAvailability.filter(
           (location) => location.IsEnabled === true
         ).length,

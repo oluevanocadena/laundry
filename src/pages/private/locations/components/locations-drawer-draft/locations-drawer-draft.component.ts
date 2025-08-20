@@ -53,6 +53,7 @@ export class LocationsDrawerDraftComponent implements OnInit {
     if (this.facade.formGroup.valid) {
       this.facade.submitForm().then((success: boolean | null) => {
         if (success === true) {
+          this.facade.api.getLocations();
           this.close(true);
         }
       });

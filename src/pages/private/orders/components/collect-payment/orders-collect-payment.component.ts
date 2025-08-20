@@ -5,11 +5,6 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 
 import { Order, PaymentMethods } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
-import {
-  OrderPaymentStatus,
-  OrderPaymentStatusEnum,
-  OrdersStatusService,
-} from '@services/order-status.service';
 
 @Component({
   selector: 'orders-collect-payment',
@@ -48,12 +43,11 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   });
 
   //Arrays
-  paymentStatuses: OrderPaymentStatus[] = [];
+  paymentStatuses: string[] = [];
 
   constructor(
     public nzModalService: NzModalService,
-    public nzMessageService: NzMessageService,
-    public ordersStatusService: OrdersStatusService
+    public nzMessageService: NzMessageService
   ) {
     super();
   }
@@ -63,11 +57,11 @@ export class OrdersCollectPaymentComponent extends HelperPage {
    */
 
   load() {
-    this.ordersStatusService
-      .getFakeOrderPaymentStatuses()
-      .subscribe((result) => {
-        this.paymentStatuses = result;
-      });
+    // this.ordersStatusService
+    //   .getFakeOrderPaymentStatuses()
+    //   .subscribe((result) => {
+    //     this.paymentStatuses = result;
+    //   });
   }
 
   /**
@@ -81,10 +75,8 @@ export class OrdersCollectPaymentComponent extends HelperPage {
 
   collectPayment() {
     if (this.order !== null) {
-      this.order.statusPaymentId = OrderPaymentStatusEnum.Paid;
-      this.order.statusPayment =
-        this.paymentStatuses.find((x) => x.id === OrderPaymentStatusEnum.Paid)
-          ?.name ?? '';
+      this.order.statusPaymentId = 2;
+      this.order.statusPayment = 'Paid';
       this.order.payment = {
         id: this.order.payment.id,
         method: this.paymentMethod ?? 'cash',

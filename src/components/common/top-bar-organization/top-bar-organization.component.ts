@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { HomeFacade } from "@bussiness/home/controllers/home.facade";
 
 @Component({
   selector: "top-bar-organization",
@@ -9,11 +10,11 @@ import { Component, OnInit } from "@angular/core";
 
 export class TopBarOrganizationComponent implements OnInit {
   
-  constructor() { 
+  constructor(public facade: HomeFacade) { 
 
   }
 
   ngOnInit() {
-
+    this.facade.initialize();
   }
 }

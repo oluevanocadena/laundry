@@ -7,39 +7,90 @@
                 Wofloo
             </span>
         </grid>
-        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
-            <span class="f-20 fw-600">
-                Configura tu cuenta
-            </span>
+        <grid *ngIf="facade.step === 0" [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
+            <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                <span class="f-20 fw-600">
+                    ¡Comencemos!
+                </span>
+            </grid>
             <span class="f-14 f-06">
-                Completa los datos de tu cuenta para iniciar a usar Wofloo
+                Completa los datos de tu organización, puedes cambiarlos en cualquier momento.
+            </span>
+        </grid>
+        <grid *ngIf="facade.step === 1" [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
+            <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                <button (click)="facade.onClickBack()" outline xsmall icon>
+                    <tui-icon icon="@tui.arrow-left" />
+                </button>
+                <span class="f-20 fw-600">
+                    Configura tu primera sucursal
+                </span>
+            </grid>
+            <span class="f-14 f-06">
+                Completa los datos de tu primera sucursal o unidad de ventas.
             </span>
         </grid>
 
-        <form [formGroup]="facade.formGroup">
-            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
-                <grid [direction]="'column'" [template]="'1fr'">
-                    <tui-pagination size="s" class="tui-space_top-4" [(index)]="facade.step" [length]="2" />
-                </grid>
-                <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
-                    <form-input [label]="'Nombre'" [type]="'text'" [placeholder]="'Nombre'" [formControlName]="'name'"
-                        [required]="true" />
-                    <form-input [label]="'Apellidos'" [type]="'text'" [placeholder]="'Apellidos'"
-                        [formControlName]="'name'" [required]="true" />
-                    <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'Teléfono'"
-                        [formControlName]="'phone'" [required]="true" />
-                    <form-input [label]="'Organización'" [type]="'text'" [placeholder]="'Organización'"
-                        [formControlName]="'name'" [required]="true" />
+        <form *ngIf="facade.step === 0" [formGroup]="facade.formGroup">
+            <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
+                <form-input [label]="'Organización | Empresa'" [type]="'text'"
+                    [placeholder]="'¿Cúal es el nombre de tu empresa?'" [formControlName]="'organizationName'"
+                    [required]="true" />
+                <form-input [label]="'Nombre(s)'" [type]="'text'" [placeholder]="'¿Cómo te llamas?'"
+                    [formControlName]="'firstName'" [required]="true" />
+                <form-input [label]="'Apellido(s)'" [type]="'text'" [placeholder]="'¿Cúales son tus apellidos?'"
+                    [formControlName]="'lastName'" [required]="true" />
+                <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'¿Algún número de contacto?'"
+                    [formControlName]="'phone'" [required]="false" />
 
-                    <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%" padding="1rem 0 0 0">
-                        <button large full primary>
-                            Continuar
-                        </button>
-                    </grid>
+
+                <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%" padding="1rem 0 0 0">
+                    <button large full primary (click)="facade.onClickNext()"
+                        [disabled]="!facade.canNextStepOrganization">
+                        Continuar
+                    </button>
                 </grid>
             </grid>
-
         </form>
+        <form *ngIf="facade.step === 1" [formGroup]="facade.formGroupLocation">
+            <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
+                <form-input [label]="'Nombre de sucursal'" [type]="'text'" [placeholder]="'Nombra tu primera sucursal'"
+                    formControlName="name" [required]="true" />
+                <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'¿A dónde llamarán tus clientes?'"
+                    formControlName="phone" [required]="false" />
+                <form-input [label]="'Calle'" [type]="'text'" [placeholder]="'¿En qué calle está tu negocio?'"
+                    formControlName="street" [required]="true" />
+                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <form-input [label]="'# Exterior'" [type]="'text'" [placeholder]="'# Exterior'"
+                        formControlName="externalNumber" />
+                    <form-input [label]="'# Interior'" [type]="'text'" [placeholder]="'# Interior'"
+                        formControlName="internalNumber" />
+                </grid>
+                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <form-input [label]="'Colonia'" [type]="'text'" [placeholder]="'Colonia'"
+                        formControlName="neighborhood" [required]="true" />
+                    <form-input [label]="'Municipio | Delegación'" [type]="'text'"
+                        [placeholder]="'Municipio | Delegación'" formControlName="municipality" [required]="true" />
+                </grid>
+                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <form-input [label]="'Estado | Ciudad'" [type]="'text'" [placeholder]="'Estado'"
+                        formControlName="state" [required]="true" />
+                    <form-input [label]="'Código postal'" [type]="'text'" [placeholder]="'Código postal'"
+                        formControlName="zipCode" [required]="true" />
+                </grid>
+
+                <form-input [label]="'País'" [type]="'text'" [placeholder]="'País'" formControlName="country"
+                    [disabled]="true" />
+
+                <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%" padding="1rem 0 0 0">
+                    <button (click)="facade.onClickComplete()" large full primary [showLoader]="showLoader"
+                        [disabled]="!facade.canComplete || showLoader">
+                        Finalizar
+                    </button>
+                </grid>
+            </grid>
+        </form>
+
 
 
     </grid>

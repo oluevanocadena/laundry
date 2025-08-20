@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationStart, Router, RouterOutlet } from '@angular/router';
+import { PagesModule } from '@pages/pages.module';
 import { TuiRoot } from '@taiga-ui/core';
+import moment from 'moment';
+import 'moment/locale/es';
+
+import { routes } from './routes';
+
+import { SessionFacade } from '@bussiness/session/controllers/session.facade';
 import { UICommonModule } from '../components/common/common.module';
 import { NgZorroModule } from '../components/ng-zorro.module';
 import { TUIModule } from '../components/tui.module';
 import { UIModule } from '../components/ui.module';
 import { DirectivesModule } from '../directives/directives.module';
-import { PagesModule } from '@pages/pages.module';
-import { SettingsService } from '../services/settings.services';
-import { CookiesService } from '../services/common/cookie.service';
-import { Session } from 'inspector';
-import moment from 'moment';
-import 'moment/locale/es';
 moment.locale('es');
 
 @Component({
@@ -31,21 +32,11 @@ moment.locale('es');
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  // protected readonly switcher = inject(TuiLanguageSwitcherService);
-  constructor(
-    public settingsService: SettingsService,
-    public cookiesService: CookiesService<Session>
-  ) {
-    this.cookiesService.setUserInfo({
-      Organization: {
-        id: '7578c6ad-536a-4d4b-a612-d10ac8c5823e',
-        Name: 'Brikerr Laundry',
-        PlanId: null,
-        created_at: moment().format('DD/MM/YYYY'),
-        Deleted: false,
-        Disabled: false,
-      },
+  constructor(public sessionFacade: SessionFacade, private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.sessionFacade.checkProfileCompletion();
+      }
     });
-    console.log('🍪 [Cookies Service] UserInfo:', this.cookiesService.UserInfo);
   }
 }

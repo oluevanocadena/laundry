@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import { Router } from '@angular/router';
+import { routes } from '@app/routes';
+import { LocationsApiService } from '@bussiness/locations/locations.api.service';
 import { FacadeBase } from '@type/facade.base';
 import { FormProp } from '@type/form.type';
+import { StorageProp } from '@type/storage.type';
 import { validators } from '@type/validators.type';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { SessionApiService } from '../session.api.service';
-import { routes } from '@app/routes';
-import { Router } from '@angular/router';
+import { AccountsApiService } from '../services/accounts.api.service';
+import { SessionApiService } from '../services/session.api.service';
+import { SessionInfo } from '../session.interface';
+import { SessionService } from '../services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +29,10 @@ export class SessionFacade extends FacadeBase {
 
   constructor(
     public api: SessionApiService,
+    public apiAccounts: AccountsApiService,
+    public apiLocations: LocationsApiService,
     public nzMessageService: NzMessageService,
+    public sessionService: SessionService,
     public router: Router
   ) {
     super(api);
@@ -44,15 +52,44 @@ export class SessionFacade extends FacadeBase {
    * UI Events
    */
 
-  login() {
-    if (this.formGroup.valid) {
-      this.api.signIn(this.email.value!, this.password.value!).then((res) => {
-        if (res) {
-          this.router.navigate([routes.Home]);
-        }
-      });
-    } else {
+  async login() {
+    if (!this.formGroup.valid) {
       this.nzMessageService.warning('Por favor, complete todos los campos.');
+      return;
+    }
+
+    try {
+      const session = await this.api.signIn(
+        this.email.value!,
+        this.password.value!
+      );
+      if (!session) {
+        throw new Error('Session not found');
+      }
+
+      const account = await this.apiAccounts.getAccount(session.user?.email!);
+      if (!account) {
+        throw new Error('Account not found');
+      }
+
+      const location = await this.apiLocations.getDefaultLocation(
+        account.OrganizationId
+      );
+
+      const sessionInfo: SessionInfo = {
+        Session: session.session,
+        Account: account,
+        Location: location ?? null,
+      };
+
+      console.log('👉🏽 Logged In SessionInfo', sessionInfo);
+      this.sessionService.SessionInfo.value = sessionInfo;
+      this.router.navigate([routes.Home]);
+    } catch (error) {
+      console.error('Error during login:', error);
+      this.nzMessageService.error(
+        'Ocurrió un error al iniciar sesión, intenta nuevamente.'
+      );
     }
   }
 
@@ -63,5 +100,20 @@ export class SessionFacade extends FacadeBase {
         this.router.navigate([routes.Login]);
       }
     });
+  }
+
+  /**
+   * Methods
+   */
+
+  checkProfileCompletion() {
+    if (this.sessionService.isLoggedIn) {
+      const user = this.sessionService.SessionInfo.value;
+      console.log('🚀 Usuario autenticado', user);
+      if (!user?.Location && this.router.url !== routes.Setup) {
+        console.log('🔒 Usuario pero sin datos completos', user);
+        this.router.navigate([routes.Setup]);
+      }
+    }
   }
 }

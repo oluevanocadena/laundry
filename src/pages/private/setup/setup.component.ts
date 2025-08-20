@@ -13,5 +13,17 @@ export class SetupPageComponent extends HelperPage {
     super();
   }
 
+  /**
+   * Getters
+   */
+
+  get showLoader() {
+    return (
+      this.facade.accountApi.busy.value ||
+      this.facade.organizationApi.busy.value ||
+      this.facade.locationsApi.busy.value
+    );
+  }
+
   ngOnInit() {}
 }

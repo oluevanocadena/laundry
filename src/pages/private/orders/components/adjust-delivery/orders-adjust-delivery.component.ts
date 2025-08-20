@@ -10,13 +10,6 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { Order } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { Utils } from '@services/common/utils.service';
-import { SettingsService } from '@services/settings.services';
-
-import {
-  OrderItemsStatus,
-  OrderItemsStatusEnum,
-  OrdersStatusService,
-} from '@services/order-status.service';
 
 @Component({
   selector: 'orders-adjust-delivery',
@@ -60,7 +53,7 @@ export class OrdersAdjustDeliveryComponent
 
   //Arrays
   timeItems = tuiCreateTimePeriods(8, 20, [0, 30, 59]);
-  orderItemsStatuses: OrderItemsStatus[] = [];
+  orderItemsStatuses: string[] = [];
 
   //formGroup
   formGroup = new FormGroup({
@@ -74,9 +67,7 @@ export class OrdersAdjustDeliveryComponent
   });
 
   constructor(
-    public settingsService: SettingsService,
     public facade: OrdersDraftFacade,
-    public ordersStatusService: OrdersStatusService,
     public nzMessageService: NzMessageService
   ) {
     super();
@@ -88,9 +79,9 @@ export class OrdersAdjustDeliveryComponent
   async load(): Promise<void> {
     try {
       this.loading = true;
-      this.orderItemsStatuses = await firstValueFrom(
-        this.ordersStatusService.getFakeOrderItemsStatuses()
-      );
+      // this.orderItemsStatuses = await firstValueFrom(
+      //   this.ordersStatusService.getFakeOrderItemsStatuses()
+      // );
     } catch (error) {
       console.error(error);
       this.nzMessageService.error('Error loading data');
@@ -137,10 +128,8 @@ export class OrdersAdjustDeliveryComponent
         total: this.deliveryFee,
         subtotal: this.deliveryFeeWitoutTax,
         status:
-          this.orderItemsStatuses?.find(
-            (x) => x.id === OrderItemsStatusEnum.NotProccesed
-          )?.name ?? '',
-        statusId: OrderItemsStatusEnum.NotProccesed,
+          this.orderItemsStatuses?.find((x) => x === 'NotProccesed') ?? '',
+        statusId: 1,
         categoryId: 5,
         productId: undefined,
         oderId: this.order?.id ?? Utils.Text.newGuid(),
@@ -192,10 +181,7 @@ export class OrdersAdjustDeliveryComponent
   }
 
   get deliveryFee() {
-    return (
-      (this.settingsService.settings.value?.delivery.pricePerKm ?? 0) *
-      this.distance
-    );
+    return 100 * this.distance;
   }
 
   get deliveryFeeOrderItem() {
@@ -207,10 +193,7 @@ export class OrdersAdjustDeliveryComponent
   }
 
   get deliveryFeeWitoutTax() {
-    return (
-      this.deliveryFee /
-      (1 + (this.settingsService.settings.value?.taxes.taxRate ?? 0))
-    );
+    return this.deliveryFee / (1 + 0.16);
   }
 
   get canSave() {

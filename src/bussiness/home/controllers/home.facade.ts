@@ -9,6 +9,7 @@ import { SessionInfo } from '@bussiness/session/session.interface';
 import { UISelectOption } from '@components/form-input/form-input.component';
 import { FacadeBase } from '@type/facade.base';
 import { FormProp } from '@type/form.type';
+import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 
 @Injectable({
   providedIn: 'root',
@@ -27,10 +28,13 @@ export class HomeFacade extends FacadeBase {
 
   period = new FormProp(this.formGroup, 'period', '1');
 
+  canChangeLocation = true;
+
   constructor(
     public sessionService: SessionService,
     public api: SessionApiService,
-    public apiLocations: LocationsApiService
+    public apiLocations: LocationsApiService,
+    public ordersDraftFacade: OrdersDraftFacade
   ) {
     super(api);
   }
@@ -40,7 +44,11 @@ export class HomeFacade extends FacadeBase {
     this.apiLocations.getLocations();
   }
 
-  bindEvents(): void {}
+  bindEvents(): void {
+    this.ordersDraftFacade.order.onChange((order) => {
+      this.canChangeLocation = !order.id;
+    });
+  }
 
   clearState(): void {}
 

@@ -11,7 +11,7 @@ import { HomeFacade } from "@bussiness/home/controllers/home.facade";
 export class TopBarOrganizationComponent implements OnInit {
   
   constructor(public facade: HomeFacade) { 
-
+    
   }
 
   ngOnInit() {

@@ -21,7 +21,8 @@
                 {{facade.defaultLocation}}
             </span>
         </grid>
-        <button outline xsmall icon nz-dropdown nzTrigger="click" [nzDropdownMenu]="dropdown">
+        <button outline xsmall icon nz-dropdown nzTrigger="click" [nzDropdownMenu]="dropdown"
+            [disabled]="!facade.canChangeLocation">
             <tui-icon icon="@tui.chevrons-up-down" class="f-14 f-lh-13 f-08" />
         </button>
         <nz-dropdown-menu #dropdown="nzDropdownMenu">

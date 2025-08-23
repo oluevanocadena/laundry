@@ -7,12 +7,10 @@ import {
   Output,
   forwardRef,
   inject,
-  signal,
 } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
-  FormGroup,
   NG_VALUE_ACCESSOR,
   NgControl,
 } from '@angular/forms';
@@ -23,16 +21,8 @@ import {
   TuiStringHandler,
   TuiTime,
 } from '@taiga-ui/cdk';
-import { TuiSizeL, TuiSizeS, tuiItemsHandlersProvider } from '@taiga-ui/core';
-import { FormProp } from '@type/form.type';
-import {
-  Subject,
-  debounceTime,
-  distinctUntilChanged,
-  merge,
-  startWith,
-  takeUntil,
-} from 'rxjs';
+import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'form-input',
@@ -157,8 +147,9 @@ export class FormInputComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  onNgModelChange(value: any): void {
-    this.onChange(value);
+  onInputSearch(value: any): void {
+    const text = value?.value ?? '';
+    this.searchSubject.next(text);
   }
 
   /**

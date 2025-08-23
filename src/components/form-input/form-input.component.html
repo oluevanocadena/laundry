@@ -180,7 +180,8 @@
         </span>
         <tui-textfield iconStart="@tui.search" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
             [tuiTextfieldCleaner]="clearable">
-            <input [attr.placeholder]="placeholder" tuiTextfield [formControl]="valueControl" />
+            <input [attr.placeholder]="placeholder" tuiTextfield [formControl]="valueControl"
+                (input)="onInputSearch($event.target)" />
         </tui-textfield>
     </grid>
 </ng-container>

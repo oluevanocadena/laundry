@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
+import { routes } from '@app/routes';
+
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
 import { Location } from '@bussiness/locations/locations.interfaces';
-import { SessionFacade } from '@bussiness/session/controllers/session.facade';
-import { SessionService } from '@bussiness/session/services/session.service';
+import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
+import { SessionService } from '@bussiness/session/services/session.service';
 import { SessionInfo } from '@bussiness/session/session.interface';
 import { UISelectOption } from '@components/form-input/form-input.component';
 import { FacadeBase } from '@type/facade.base';
 import { FormProp } from '@type/form.type';
-import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+
+const routesNotAllowed = [routes.OrderDraft, routes.OrderDetails];
 
 @Injectable({
   providedIn: 'root',
@@ -34,19 +38,23 @@ export class HomeFacade extends FacadeBase {
     public sessionService: SessionService,
     public api: SessionApiService,
     public apiLocations: LocationsApiService,
-    public ordersDraftFacade: OrdersDraftFacade
+    public ordersDraftFacade: OrdersDraftFacade,
+    public router: Router
   ) {
     super(api);
   }
 
   override initialize(): void {
     super.initialize();
+    this.validateRoute();
     this.apiLocations.getLocations();
   }
 
   bindEvents(): void {
-    this.ordersDraftFacade.order.onChange((order) => {
-      this.canChangeLocation = !order.id;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.validateRoute();
+      }
     });
   }
 
@@ -57,6 +65,11 @@ export class HomeFacade extends FacadeBase {
   /**
    * UI Events
    */
+
+  validateRoute() {
+    console.log('👉🏽 router.url', this.router.url);
+    this.canChangeLocation = !routesNotAllowed.includes(this.router.url);
+  }
 
   onLocationClick(location: Location) {
     this.sessionService.SessionInfo.value = {

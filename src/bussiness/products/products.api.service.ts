@@ -52,7 +52,7 @@ export class ProductsApiService implements FacadeApiBase {
       return result;
     } catch (error) {
       this.nzMessageService.error(
-        '¡Ocurrió un error al guardar los cambios! ⛔'
+        '¡Ocurrió un error al intentar realizar la acción! ⛔'
       );
       console.error('⛔ Error:', error);
       return null;
@@ -86,11 +86,9 @@ export class ProductsApiService implements FacadeApiBase {
         .eq('Disabled', false)
         .eq('OrganizationId', this.sessionService.organizationId);
       if (search) {
-        query = query.ilike('Name', `%${search}%`);
-        query = query.ilike('Description', `%${search}%`);
-        query = query.ilike('Barcode', `%${search}%`);
-        query = query.ilike('SKU', `%${search}%`);
-        query = query.ilike('Price', `%${search}%`);
+        query = query.or(
+          `Name.ilike.%${search}%,Description.ilike.%${search}%,Barcode.ilike.%${search}%,SKU.ilike.%${search}%`
+        );
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
       const { data, error } = await query.overrideTypes<

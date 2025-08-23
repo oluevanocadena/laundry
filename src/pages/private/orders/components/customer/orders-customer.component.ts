@@ -24,9 +24,9 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
 
   onSelectCustomer(customer: Customer | null) {
     if (customer !== null) {
-      this.facade.customer.value = customer;
+      this.facade.orderCustomer.value = customer;
       this.facade.showCustomerModal = false;
-      this.facade.delivery.value = {
+      this.facade.orderDelivery.value = {
         Address: customer.Address || '',
         Date: '',
         EstimatedDate: '',
@@ -41,15 +41,15 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
    */
 
   get googleUrlMap(): string {
-    return this.facade.customer.value?.Address
+    return this.facade.orderCustomer.value?.Address
       ? `https://www.google.com/maps/search/${encodeURIComponent(
-          this.facade.customer.value?.Address
+          this.facade.orderCustomer.value?.Address
         )}`
       : '';
   }
 
   get hadCustomer(): boolean {
-    return this.facade.customer.value !== null;
+    return this.facade.orderCustomer.value !== null;
   }
 
   get order() {
@@ -57,11 +57,11 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
   }
 
   get customer() {
-    return this.facade.customer.value;
+    return this.facade.orderCustomer.value;
   }
 
   get customerStatus(): string {
-    switch (this.facade.customer.value?.Disabled) {
+    switch (this.facade.orderCustomer.value?.Disabled) {
       case true:
         return 'Inactivo';
       case false:
@@ -72,7 +72,7 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
   }
 
   get customerStatusAppearance(): TuiAppearanceOptions['appearance'] {
-    return this.facade.customer.value?.Disabled ? 'error' : 'success';
+    return this.facade.orderCustomer.value?.Disabled ? 'error' : 'success';
   }
 
   /**

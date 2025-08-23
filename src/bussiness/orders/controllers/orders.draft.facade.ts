@@ -4,24 +4,25 @@ import { Router } from '@angular/router';
 
 import { routes } from '@app/routes';
 import { FacadeBase } from '@type/facade.base';
-import { StorageProp } from '@type/storage.type';
 import { SubjectProp } from '@type/subject.type';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/customers.interfaces';
+import { OrdersApiService } from '@bussiness/orders/orders.api.service';
+
+import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
+import { ProductsApiService } from '@bussiness/products/products.api.service';
+import { Product } from '@bussiness/products/products.interfaces';
+
 import {
   OrdersCartDomain,
   OrderTotals,
 } from '@bussiness/orders/domains/orders.cart.domain';
-import { OrdersApiService } from '@bussiness/orders/orders.api.service';
 import {
   Delivery,
   Order,
   OrderItem,
 } from '@bussiness/orders/orders.interfaces';
-import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
-import { Product } from '@bussiness/products/products.interfaces';
-import { ProductsApiService } from '@bussiness/products/products.api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,10 +37,10 @@ export class OrdersDraftFacade extends FacadeBase {
 
   order = new SubjectProp<Order>(null);
   orderItems = new SubjectProp<OrderItem[]>([]);
-  customer = new StorageProp<Customer>(null, 'CUSTOMER_EDITION');
-  delivery = new SubjectProp<Delivery>(null);
-
   orderTotals = new SubjectProp<OrderTotals>(null);
+
+  orderCustomer = new SubjectProp<Customer>(null);
+  orderDelivery = new SubjectProp<Delivery>(null);
 
   formGroup = new FormGroup({
     number: new FormControl('', [Validators.required]),

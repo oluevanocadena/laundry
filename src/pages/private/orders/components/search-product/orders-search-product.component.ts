@@ -1,8 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { Product } from '@bussiness/products/products.interfaces';
+import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperTablePage } from '@components/common/helper.table.page';
 import { FormProp } from '@type/form.type';
 
@@ -11,6 +20,7 @@ import { FormProp } from '@type/form.type';
   standalone: false,
   templateUrl: './orders-search-product.component.html',
   styleUrls: ['./orders-search-product.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersSearchProductComponent
   extends HelperTablePage<Product>
@@ -35,7 +45,11 @@ export class OrdersSearchProductComponent
   search = new FormProp(this.formGroup, 'search', '');
   quantity = new FormProp(this.formGroup, 'quantity', 1);
 
-  constructor(public facade: OrdersDraftFacade) {
+  constructor(
+    public facade: OrdersDraftFacade,
+    public sessionService: SessionService,
+    public cdr: ChangeDetectorRef
+  ) {
     super();
   }
 
@@ -46,12 +60,14 @@ export class OrdersSearchProductComponent
   confirm() {
     if (this.product) {
       this.facade.onSelectProduct(this.product);
+      this.cdr.detectChanges();
       this.close();
     }
   }
 
   selectProduct(product: Product) {
     this.product = product;
+    this.cdr.detectChanges();
   }
 
   close() {
@@ -61,6 +77,17 @@ export class OrdersSearchProductComponent
 
   isSelected(product: Product) {
     return this.product && this.product.id === product.id;
+  }
+
+  getPriceAtStore(product: Product): number {
+    const locationId = this.sessionService.SessionInfo.value?.Location?.id;
+    console.log('🚀 locationId', locationId);
+    console.log('🚀 ProductLproductocationPrice', product);
+    const productPrice = product?.ProductLocationPrice?.find(
+      (price) => price.LocationId === locationId
+    );
+    console.log('🚀 productPrice', productPrice);
+    return productPrice?.Price ?? 0;
   }
 
   onImageError(event: ErrorEvent) {
@@ -77,19 +104,19 @@ export class OrdersSearchProductComponent
   }
 
   get products(): Product[] {
-    return this.facade.apiProducts.products.value ?? [];
+    return (
+      this.facade.apiProducts.products.value?.filter((product) =>
+        product.ProductLocationPrice?.find(
+          (price) =>
+            price.LocationId ===
+            this.sessionService.SessionInfo.value?.Location?.id
+        )
+      ) ?? []
+    );
   }
 
   get canSave(): boolean {
     return this.product !== null && (this.quantity.value ?? 0) > 0;
-  }
-
-  get priceAtStore(): number {
-    return (
-      this.product?.ProductLocationPrice?.find(
-        (price) => price.LocationId === '1'
-      )?.Price ?? 0
-    );
   }
 
   /**

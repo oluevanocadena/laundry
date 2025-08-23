@@ -66,7 +66,7 @@
                         </grid>
                         <grid *ngIf="hadCustomer" [gap]="[8,16]" [direction]="'row'">
                             <span class="f-14 fw-400 f-04 f-lh-16">
-                                {{order?.customer?.Address ?? ''}}
+                                {{order?.Customer?.Address ?? ''}}
                                 at
                                 <span class="f-15 fw-600 f-02 f-lh-17">
                                     <!-- {{ order?.customer?.address?.distanceKm ?? 0 | numeralFormat: '0,0.0'}} -->
@@ -74,7 +74,7 @@
                                 </span>
                                 with a delivery fee of
                                 <span class="f-15 fw-600 f-primary f-lh-17">
-                                    {{ order?.deliveryFee ?? 0 | numeralFormat: '$0,0.00'}}
+                                    {{ 0 | numeralFormat: '$0,0.00'}}
                                 </span>
                             </span>
                             <grid [direction]="'column'" [align]="'center-right'">

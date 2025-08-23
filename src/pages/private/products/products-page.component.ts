@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsMonitorFacade } from '@bussiness/products/controllers/products.monitor.facade';
 import { HelperPage } from '@components/common/helper.page';
+import { UtilsDomain } from '@utils/utils.domain';
 
 @Component({
   selector: 'app-products-page',
@@ -9,7 +10,7 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./products-page.component.scss'],
 })
 export class ProductsPageComponent extends HelperPage implements OnInit {
-
+  utils = UtilsDomain;
 
   constructor(public facade: ProductsMonitorFacade) {
     super();
@@ -19,10 +20,7 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
    * UI Events
    */ 
 
-  onImageError(event: ErrorEvent) {
-    const target = event.target as HTMLImageElement;
-    target.src = '/assets/no-image.png';
-  }
+ 
 
   /**
    * Getters

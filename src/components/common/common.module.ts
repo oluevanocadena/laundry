@@ -19,6 +19,7 @@ import { LogoComponent } from './logo/logo.component';
 import { MenuContentComponent } from './menu-content/menu-content.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import { MenuComponent } from './menu/menu.component';
+import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
 import { ModalSearchComponent } from './modal-search/modal-search.component';
 import { ModalSortComponent } from './modal-sort/modal-sort.component';
 import { ModalTitleComponent } from './modal-title/modal-title.component';
@@ -45,7 +46,8 @@ const components = [
   MenuComponent,
   MenuContentComponent,
   MenuItemComponent,
-  ModalComponent  ,
+  ModalComponent,
+  ModalConfirmComponent,
   ModalSearchComponent,
   ModalSortComponent,
   ModalTitleComponent,

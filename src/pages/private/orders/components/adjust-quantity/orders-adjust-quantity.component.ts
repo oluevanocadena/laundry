@@ -3,7 +3,7 @@ import { HelperPage } from '@components/common/helper.page';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
- 
+import { FormProp } from '@type/form.type';
 
 @Component({
   selector: 'orders-adjust-quantity',
@@ -19,43 +19,24 @@ export class OrdersAdjustQuantityComponent
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
+    if (value) {
+      this.quantity.value = this.facade.orderItemSelected.value?.Quantity ?? 0;
+    }
   }
   get show() {
     return this._show;
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //Item
-  private _item: OrderItem | null = null;
-  @Input() set item(value: OrderItem) {
-    this._item = value;
-    if (value?.quantity) {
-      this.formGroup.controls['quantity'].patchValue(value?.quantity);
-    }
-  }
-  get item(): OrderItem | null {
-    return this._item;
-  }
-  @Output() itemChange: EventEmitter<OrderItem> = new EventEmitter<OrderItem>();
-
-  //Index
-  @Input() indexItem: number | null = null;
-
-  //Order
-  private _order: Order | null = null;
-  @Input() set order(value: Order | null) {
-    this._order = value;
-  }
-  get order(): Order | null {
-    return this._order;
-  }
-  @Output() orderChange: EventEmitter<Order | null> =
-    new EventEmitter<Order | null>();
-
   //formGroup
   formGroup = new FormGroup({
-    quantity: new FormControl(1, [Validators.required]),
+    quantity: new FormControl(0, [Validators.required]),
   });
+
+  quantity = new FormProp(this.formGroup, 'quantity', 0);
+
+  //Show Confirm
+  showConfirm: boolean = false;
 
   constructor(public facade: OrdersDraftFacade) {
     super();
@@ -70,61 +51,44 @@ export class OrdersAdjustQuantityComponent
     this.showChange.emit(false);
   }
 
-  sum(quantity: number) {
-    if (this.quantity > 0) {
-      this.formGroup.controls['quantity'].patchValue(this.quantity + quantity);
-    }
-  }
-
-  adjustQuantity() {
-    if (this.order !== null && this.indexItem !== null) {
-      let item = this.order.orderItems[this.indexItem];
-      item.quantity = this.quantity;
-      item.total = item.price * item.quantity;
-      this.order.orderItems = this.order.orderItems.filter(
-        (x) => x.id !== item.id
-      );
-      this.order.orderItems.push(item);
-      // this.order = this.orderservice.calculateTotals(this.order as Order);
-      this.orderChange.emit(this.order as Order);
-      this.close();
-    }
+  confirm() {
+    this.facade.onAdjustQuantity(this.quantity.value ?? 0);
+    this.close();
   }
 
   deleteItem() {
-    if (this.order !== null && this.indexItem !== null) {
-      this.order.orderItems = this.order.orderItems.filter(
-        (x, index) => index !== this.indexItem
-      );
-      // this.order = this.orderservice.calculateTotals(this.order as Order);
-      this.orderChange.emit(this.order as Order);
-      this.close();
-    }
+    this.showConfirm = true;
+  }
+
+  onConfirmDelete() {
+    this.facade.onDeleteItem();
+    this.close();
   }
 
   /**
    * Getters
    */
-  get quantity() {
-    return this.formGroup.controls['quantity']?.value || 0;
+
+  get orderItem() {
+    return this.facade.orderItemSelected.value;
   }
 
-  get adjustedQuantity() {
-    return this.isLaundry || this.isIroning ? 0.1 : 1;
+  get postFixText(): string {
+    return this.orderItem?.UnitMeasure?.Name
+      ? ' ' + this.orderItem?.UnitMeasure?.Name + '(s)'
+      : '';
   }
 
-  get isLaundry() {
-    return this.item?.category === 'Laundry';
-  }
-
-  get isIroning() {
-    return this.item?.category === 'Ironing';
+  get canUpdate() {
+    return (this.quantity.value ?? 0) > 0;
   }
 
   /**
    * Life Cycles
    */
-  ngOnInit() {}
+  ngOnInit() {
+    this.quantity.value = this.facade.orderItemSelected.value?.Quantity ?? 0;
+  }
 }
 
 export interface AdjustQuantityEvent {

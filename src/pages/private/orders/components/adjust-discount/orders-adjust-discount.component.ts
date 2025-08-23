@@ -59,24 +59,24 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
 
   applyDiscount() {
     if (this.order) {
-      this.order.discountAmount = this.amount;
+      this.order.DiscountAmount = this.amount;
 
       const isPercent = this.discountType === 1;
 
       if (isPercent) {
         // Para porcentaje, primero calculamos el subtotal sin IVA
         const taxRate = 0.16;
-        const totalWithoutTax = this.order.total / (1 + taxRate);
+        const totalWithoutTax = this.order.Total / (1 + taxRate);
 
         // Calculamos el descuento sobre el monto sin IVA
         const discountPercentage = (this.amount ?? 0) / 100;
-        this.order.discount = totalWithoutTax * discountPercentage;
+        this.order.DiscountAmount = totalWithoutTax * discountPercentage;
       } else {
         // Para monto fijo, usamos directamente el valor
-        this.order.discount = this.order.discountAmount ?? 0;
+        this.order.DiscountAmount = this.order.DiscountAmount ?? 0;
       }
 
-      console.log('discount', this.order.discount);
+      console.log('discount', this.order.DiscountAmount);
 
       // Recalcular totales con el nuevo descuento
       // this.order = this.orderService.calculateTotals(this.order);

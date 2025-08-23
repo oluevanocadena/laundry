@@ -14,6 +14,7 @@ import { Product } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperTablePage } from '@components/common/helper.table.page';
 import { FormProp } from '@type/form.type';
+import { UtilsDomain } from '@utils/utils.domain';
 
 @Component({
   selector: 'orders-search-product',
@@ -26,6 +27,8 @@ export class OrdersSearchProductComponent
   extends HelperTablePage<Product>
   implements OnInit
 {
+  utils = UtilsDomain;
+
   //Show
   private _show: boolean = false;
   @Input() set show(value: boolean) {
@@ -59,7 +62,7 @@ export class OrdersSearchProductComponent
 
   confirm() {
     if (this.product) {
-      this.facade.onSelectProduct(this.product);
+      this.facade.onSelectProduct(this.product, this.quantity.value ?? 0);
       this.cdr.detectChanges();
       this.close();
     }
@@ -67,6 +70,7 @@ export class OrdersSearchProductComponent
 
   selectProduct(product: Product) {
     this.product = product;
+    this.quantity.value = 1;
     this.cdr.detectChanges();
   }
 
@@ -81,18 +85,10 @@ export class OrdersSearchProductComponent
 
   getPriceAtStore(product: Product): number {
     const locationId = this.sessionService.SessionInfo.value?.Location?.id;
-    console.log('🚀 locationId', locationId);
-    console.log('🚀 ProductLproductocationPrice', product);
     const productPrice = product?.ProductLocationPrice?.find(
       (price) => price.LocationId === locationId
     );
-    console.log('🚀 productPrice', productPrice);
     return productPrice?.Price ?? 0;
-  }
-
-  onImageError(event: ErrorEvent) {
-    const target = event.target as HTMLImageElement;
-    target.src = '/assets/no-image.png';
   }
 
   /**
@@ -119,10 +115,19 @@ export class OrdersSearchProductComponent
     return this.product !== null && (this.quantity.value ?? 0) > 0;
   }
 
+  get postFixText(): string {
+    return this.product?.UnitMeasure?.Name
+      ? ' ' + this.product?.UnitMeasure?.Name + '(s)'
+      : '';
+  }
+
   /**
    * Life Cicle
    */
   ngOnInit() {
     this.facade.fetchProducts('');
+    this.facade.apiProducts.busy.onChange((value) => {
+      this.cdr.detectChanges();
+    });
   }
 }

@@ -75,13 +75,13 @@ export class OrdersCollectPaymentComponent extends HelperPage {
 
   collectPayment() {
     if (this.order !== null) {
-      this.order.statusPaymentId = 2;
-      this.order.statusPayment = 'Paid';
-      this.order.payment = {
-        id: this.order.payment.id,
-        method: this.paymentMethod ?? 'cash',
-        date: new Date().toISOString(),
-        transactionNumber:
+      this.order.PaymentId = 2;
+      this.order.Payment = {
+        id: this.order.PaymentId.toString(),
+        createdAt: new Date().toISOString(),
+        Method: this.paymentMethod ?? 'cash',
+        Date: new Date().toISOString(),
+        CardTransactionNumber:
           this.formGroup.controls.transactionNumber.value ?? '',
       };
       this.order = this.order;

@@ -18,6 +18,10 @@
 
                     <form-input [label]="'Categoría'" [type]="'select'" [placeholder]="'Seleccione una categoría'"
                         formControlName="categoryId" [required]="true" [options]="facade.api.productCategories.value" />
+
+                    <form-input [label]="'Unidad de medida'" [type]="'select'" [placeholder]="'Seleccione'"
+                        formControlName="unitMeasureId" [required]="true" [options]="facade.api.unitMeasures.value" />
+
                     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'0 0 0.25rem 0'">
                         <span class="f-13 f-lh-16 f-06">
                             Seleccionar una categoría te ayudará a organizar tus productos y generar estadísticas.

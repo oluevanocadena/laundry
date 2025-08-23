@@ -68,7 +68,7 @@
                             <td>
                                 <grid [padding]="'0.5rem 0'">
                                     <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="48" height="48"
-                                        (error)="onImageError($event)" class="brdr-radius-4 img-cover" />
+                                        (error)="utils.onImageError($event)" class="brdr-radius-4 img-cover" />
                                 </grid>
                             </td>
                             <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>

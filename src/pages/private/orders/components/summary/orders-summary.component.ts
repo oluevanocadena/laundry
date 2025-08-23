@@ -27,10 +27,10 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
     console.log(this._order);
     if (
       this.order !== null &&
-      this.order.total === 0 &&
-      this.order.statusPaymentId === 2 //Paid
+      this.order.Total === 0 &&
+      this.order.PaymentId === 2 //Paid
     ) {
-      this.order.statusPaymentId = 1; //Pending
+      this.order.PaymentId = 1; //Pending
     }
   }
   get order(): Order | null {
@@ -64,14 +64,14 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
 
   get canPaid(): boolean {
     return (
-      this.order?.statusPaymentId === 1 //Pending
+      this.order?.PaymentId === 1 //Pending
       //&& this.order?.total > 0
     );
   }
 
   get canAddDiscount(): boolean {
     return (
-      this.order?.statusPaymentId === 1 //Pending
+      this.order?.PaymentId === 1 //Pending
       //&& this.order?.total > 0
     );
   }

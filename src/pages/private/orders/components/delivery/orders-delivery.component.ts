@@ -75,8 +75,8 @@ export class OrdersDeliveryComponent implements OnInit {
   //Customer id >0
   get hadCustomer(): boolean {
     return this.order &&
-      this.order?.customer !== null &&
-      this.order.customer.id?.trim() !== ''
+      this.order?.Customer !== null &&
+      this.order.Customer?.id?.trim() !== ''
       ? true
       : false;
   }

@@ -19,6 +19,9 @@ export interface Product {
   ProductCategoryId: string;
   QtyStoresAvailable: number;
 
+  UnitMeasureId: string;
+  UnitMeasure?: UnitMeasure; // Only for UI
+
   Deleted?: boolean;
   Disabled?: boolean;
   Deletable?: boolean;
@@ -67,10 +70,13 @@ export interface ProductCategory extends UISelectOption {
   Deleted?: boolean;
 }
 
-// ::::::::::::::::::::::::::::::::::::::
-// Requests
-// ::::::::::::::::::::::::::::::::::::::
+export interface UnitMeasure extends UISelectOption {
+  id: string;
+  Name: string;
+  UnitType: UnitMeasureType;
+  Abbreviation: string;
+  Deleted?: boolean;
+}
+ 
 
-// ::::::::::::::::::::::::::::::::::::::
-// Responses
-// ::::::::::::::::::::::::::::::::::::::
+export type UnitMeasureType = 'decimal' | 'integer';

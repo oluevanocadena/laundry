@@ -32,12 +32,14 @@ export class ProductsDraftFacade extends FacadeBase {
     description: new FormControl<string>('', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
     categoryId: new FormControl<string>('', [Validators.required]),
+    unitMeasureId: new FormControl<string>('', [Validators.required]),
     samePrice: new FormControl(true, [Validators.required]),
   });
 
   public samePrice = new FormProp(this.formGroup, 'samePrice', true);
   public price = new FormProp(this.formGroup, 'price', 0);
   public categoryId = new FormProp<string>(this.formGroup, 'categoryId');
+  public unitMeasureId = new FormProp<string>(this.formGroup, 'unitMeasureId');
 
   public product = new StorageProp<Product>(null, 'PRODUCT_EDITION');
   public locationAvailability: ProductLocation[] = [];
@@ -57,6 +59,7 @@ export class ProductsDraftFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
+    this.api.getUnitMeasures();
     this.api.getProductCategories();
     this.locationApi.getLocations();
     this.fillForm();
@@ -123,6 +126,7 @@ export class ProductsDraftFacade extends FacadeBase {
         description: product.Description,
         price: product.Price,
         categoryId: product.ProductCategoryId,
+        unitMeasureId: product.UnitMeasureId,
         samePrice:
           product?.ProductLocationPrice?.length &&
           product?.ProductLocationPrice?.length > 0
@@ -145,6 +149,7 @@ export class ProductsDraftFacade extends FacadeBase {
         Price: value.price || 0,
         ImageUrl: this.urlImages[0] || undefined,
         ProductCategoryId: this.categoryId.value || '',
+        UnitMeasureId: this.unitMeasureId.value || '',
         OrganizationId: this.sessionService.organizationId,
         QtyStoresAvailable: this.locationAvailability.filter(
           (location) => location.IsEnabled === true

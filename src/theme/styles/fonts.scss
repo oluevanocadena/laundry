@@ -56,6 +56,10 @@ $end: 80;
   color: var(--success) !important;
 }
 
+.f-info {
+  color: var(--info) !important;
+}
+
 .f-warning {
   color: var(--warning) !important;
 }
@@ -68,9 +72,6 @@ $end: 80;
   color: var(--warning-secondary);
 }
 
-.f-info {
-  color: var(--info);
-}
 
 .f-italic {
   font-style: italic;

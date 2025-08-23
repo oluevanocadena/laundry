@@ -1,0 +1,9 @@
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'" [confirmStyle]="'danger'"
+    (onConfirm)="confirm()" (onClose)="close()" [title]="'13'">
+    <span class="f-16 fw-600 f-01" title>
+        <ng-content select="[title]"></ng-content>
+    </span>
+    <grid [gap]="[0,16]" body> 
+        <ng-content select="[body]"></ng-content>
+    </grid>
+</modal>

@@ -13,6 +13,7 @@ import {
   ProductCategory,
   ProductLocation,
   ProductLocationPrice,
+  UnitMeasure,
 } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
@@ -30,9 +31,11 @@ export class ProductsApiService implements FacadeApiBase {
   private tableProductCategories = 'ProductCategories';
   private tableProductImages = 'ProductImages';
   private tableProductLocationPrice = 'ProductLocationPrices';
+  private tableUnitMeasures = 'UnitMeasures';
 
   products = new SubjectProp<Product[]>([]);
   productCategories = new SubjectProp<ProductCategory[]>([]);
+  unitMeasures = new SubjectProp<UnitMeasure[]>([]);
 
   constructor(
     public nzMessageService: NzMessageService,
@@ -61,6 +64,17 @@ export class ProductsApiService implements FacadeApiBase {
     }
   }
 
+  getUnitMeasures() {
+    this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(this.tableUnitMeasures)
+        .select('*')
+        .eq('Deleted', false);
+      if (error) throw error;
+      this.unitMeasures.value = data || [];
+    }, 'Fetching Unit Measures');
+  }
+
   getProductCategories() {
     this.executeWithBusy(async () => {
       const { data, error } = await this.client
@@ -80,7 +94,8 @@ export class ProductsApiService implements FacadeApiBase {
           `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
               ProductCategory: ${this.tableProductCategories}(Name),
               ProductImages: ${this.tableProductImages}(*),
-              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)) `
+              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)),
+              UnitMeasure: ${this.tableUnitMeasures}(*) `
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
@@ -108,7 +123,8 @@ export class ProductsApiService implements FacadeApiBase {
           `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
               ProductCategory: ${this.tableProductCategories}(Name), 
               ProductImages: ${this.tableProductImages}(*),
-              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)) `
+              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)),
+              UnitMeasure: ${this.tableUnitMeasures}(Name, UnitType) `
         )
         .eq('Deleted', false)
         .eq('Disabled', false)

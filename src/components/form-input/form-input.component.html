@@ -110,7 +110,22 @@
         </span>
         <tui-textfield iconStart="@tui.hash" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
-            <input tuiInputNumber [min]="min" [formControl]="valueControl" />
+            <input tuiInputNumber [min]="min" [max]="max" [step]="step" [postfix]="postFix"
+                [formControl]="valueControl" />
+        </tui-textfield>
+    </grid>
+
+    <!-- Decimal -->
+    <grid *ngSwitchCase="'decimal'" [gap]="[6, 16]" [direction]="'column'"
+        [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+        <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+            {{ label }}
+            <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+        </span>
+        <tui-textfield iconStart="@tui.hash" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+            [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
+            <input tuiInputNumber [min]="min" [max]="max" [step]="0.1" [postfix]="postFix" [quantum]="0.01"
+                [formControl]="valueControl" />
         </tui-textfield>
     </grid>
 

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
+import { OrderStatusEnum } from '@bussiness/orders/orders.interfaces';
 
 @Component({
   selector: 'orders-header',
@@ -40,15 +41,15 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get orderName() {
-    return this.facade.order.value?.number || '';
+    return this.facade.order.value?.OrderNumber || '';
   }
 
   get orderStatus(): string {
-    return this.facade.order.value?.status || '';
+    return OrderStatusEnum[this.facade.order.value?.StatusId ?? 0] || 'Pending';
   }
 
   get orderStatusAppearance(): TuiAppearanceOptions['appearance'] {
-    return this.facade.order.value?.status === 'draft' ? 'warning' : 'success';
+    return this.facade.order.value?.Status?.Name === 'Draft' ? 'warning' : 'success';
   }
 
   get canSave(): boolean {

@@ -18,18 +18,41 @@
                     <form-input [type]="'search'" [placeholder]="'Comienza a escribir para buscar'"
                         formControlName="search" (onSearch)="facade.fetchProducts($event)" />
 
-                    <ng-container *ngIf="products.length === 0">
-                        <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 0.5rem 0">
+                    <!-- Busy -->
+                    <grid *ngIf="busy" [direction]="'column'" [align]="'center-center'" [width]="'100%'">
+                        <tui-loader [size]="'m'"></tui-loader>
+                    </grid>
+
+                    <ng-container *ngIf="products.length === 0 && busy === false">
+                        <grid *ngIf="search.value" [gap]="[16,8]" [direction]="'row'" width="100%"
+                            padding="0 0 0.5rem 0">
+                            <span class="f-13 fw-400 f-02 f-lh-16">
+                                No hay productos para mostrar o los criterios de búsqueda no arrojan resultados.
+                            </span>
+
+                            <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]" width="100%"
+                                padding="0 0 0.5rem 0">
+                                <span class="material-symbols-outlined f-16 f-warning icon-fill">
+                                    warning
+                                </span>
+                                <span class="f-13 fw-400 f-06 f-lh-16">
+                                    Algunos productos
+                                    <span class="f-13 fw-400 f-info  ">
+                                        podrían no estar disponibles en la sucursal seleccionada
+                                    </span>
+                                    del menú superior, revise la disponibilidad de los productos para cada sucursal.
+                                </span>
+                            </grid>
+                        </grid>
+
+                        <grid *ngIf="!search.value" [direction]="'row'" [gap]="[16,16]" width="100%"
+                            padding="0 0 0.5rem 0">
                             <span class="f-13 fw-400 f-06 f-lh-16">
-                                {{search.value ?
-                                'No hay productos para mostrar para la sucursal seleccionada o no cumple con los
-                                criterios de búsqueda.' :
-                                'Comience a escribir para buscar un producto.'
-                                }}
+                                Comience a escribir para buscar un producto.
                             </span>
                         </grid>
                     </ng-container>
-                    <grid *ngIf="products.length > 0" [direction]="'row'" [gap]="[0,0]" width="100%"
+                    <grid *ngIf="products.length > 0 && busy === false" [direction]="'row'" [gap]="[0,0]" width="100%"
                         [maxHeight]="'450px'" class="scroll-v">
                         <ng-container *ngFor="let product of products">
                             <button full medium flat flex [attr.selected]="isSelected(product)"
@@ -38,7 +61,7 @@
                                     width="100%">
                                     <grid [padding]="'0.25rem 0 0.5rem 0'">
                                         <img src="{{product.ImageUrl}}" alt="{{product.Name}}" width="48" height="48"
-                                            (error)="onImageError($event)" class="brdr-radius-4 img-cover" />
+                                            (error)="utils.onImageError($event)" class="brdr-radius-4 img-cover" />
                                     </grid>
                                     <grid [direction]="'row'" [gap]="[0,8]" [padding]="'0 0 0.5rem 0'">
                                         <span class="f-14 fw-600 f-01 f-lh-17 t-left">
@@ -58,9 +81,13 @@
                         </ng-container>
                     </grid>
 
-                    <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 0 0">
-                        <form-input [label]="'Cantidad'" [type]="'number'" [placeholder]="'Cantidad'"
-                            formControlName="quantity" [min]="1" />
+                    <grid *ngIf="product" [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 0 0">
+                        <form-input [label]="'Cantidad'"
+                            [type]="product.UnitMeasure?.UnitType === 'decimal' ? 'decimal' : 'number'"
+                            [placeholder]="'Cantidad'" formControlName="quantity"
+                            [min]="product.UnitMeasure?.UnitType === 'decimal' ? 0.01 : 1"
+                            [postFix]="postFixText" />
+
                     </grid>
                 </grid>
             </form>

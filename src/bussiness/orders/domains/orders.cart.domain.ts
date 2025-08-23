@@ -11,46 +11,51 @@ export class OrdersCartDomain {
     product: Product,
     quantity: number
   ) {
-    const orderItem = orderItems.find((item) => item.productId === product.id);
+    const orderItem = orderItems.find((item) => item.ProductId === product.id);
     if (orderItem) {
-      orderItem.quantity += quantity;
+      orderItem.Quantity += quantity;
     } else {
       orderItems.push({
         id: 0,
-        name: product.Name,
-        status: 'Not Proccesed',
-        statusId: 1,
-        categoryId: 0,
-        category: 'Laundry',
-        quantity: quantity,
-        price: product.Price,
-        total: product.Price * quantity,
-        tax: 0,
-        subtotal: product.Price * quantity,
-        isDeliveryFee: false,
-        productId: product.id,
-        oderId: '1',
+        Name: product.Name,
+        Description: product.Description,
+        ImageUrl: product.ImageUrl,
+        Quantity: quantity,
+        UnitMeasureId: product.UnitMeasureId,
+        UnitMeasure: product.UnitMeasure,
+        Price: product.Price,
+        Total: product.Price * quantity,
+        Tax: 0,
+        Subtotal: product.Price * quantity,
+        StatusId: 1,
+        Deleted: false,
+        createdAt: new Date().toISOString(),
+        ProductId: product.id,
       });
     }
     return orderItems;
   }
 
-  static removeProductItem(orderItems: OrderItem[], product: Product) {
-    const orderItem = orderItems.find((item) => item.productId === product.id);
-    if (orderItem) {
-      orderItem.quantity -= 1;
+  static removeProductItem(orderItems: OrderItem[], orderItem: OrderItem) {
+    const orderItemToRemove = orderItems.find(
+      (item) => item.ProductId === orderItem.ProductId
+    );
+    if (orderItemToRemove) {
+      orderItemToRemove.Quantity -= 1;
     }
-    return orderItems;
+    return orderItems.filter((item) => item.ProductId !== orderItem.ProductId);
   }
 
   static adjustProductItemQuantity(
     orderItems: OrderItem[],
-    product: Product,
+    orderItem: OrderItem,
     quantity: number
   ) {
-    const orderItem = orderItems.find((item) => item.productId === product.id);
-    if (orderItem) {
-      orderItem.quantity = quantity;
+    const orderItemToAdjust = orderItems.find(
+      (item) => item.ProductId === orderItem.ProductId
+    );
+    if (orderItemToAdjust) {
+      orderItemToAdjust.Quantity = quantity;
     }
     return orderItems;
   }
@@ -75,11 +80,11 @@ export class OrdersCartDomain {
   }
 
   static calculateSubtotal(orderItems: OrderItem[]) {
-    return orderItems.reduce((acc, item) => acc + item.subtotal, 0);
+    return orderItems.reduce((acc, item) => acc + item.Subtotal, 0);
   }
 
   static calculateTotal(orderItems: OrderItem[]) {
-    return orderItems.reduce((acc, item) => acc + item.total, 0);
+    return orderItems.reduce((acc, item) => acc + item.Total, 0);
   }
 
   static calculateTotalWithTax(orderItems: OrderItem[]) {

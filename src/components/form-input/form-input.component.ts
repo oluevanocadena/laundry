@@ -45,6 +45,7 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() label: string | undefined = undefined;
   @Input() max: number = 100;
   @Input() min: number = 0;
+  @Input() step: number = 1;
   @Input() minDate: TuiDay | null = TuiDay.currentLocal().append({ day: 1 });
   @Input() orientation: InputOrientation = 'vertical';
   @Input() outerLabel: boolean = true;
@@ -52,7 +53,6 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() postFix: string = '';
   @Input() required: boolean = false;
   @Input() size: TuiSizeL | TuiSizeS = 's';
-  @Input() step: number = 1;
   @Input() timeItems: TuiTime[] = [];
   @Input() type: InputType = 'text';
   @Input() maxRows: number = 8;
@@ -217,6 +217,7 @@ export type InputType =
   | 'switch'
   | 'select'
   | 'currency'
-  | 'number';
+  | 'number'
+  | 'decimal';
 
 export type InputOrientation = 'horizontal' | 'vertical';

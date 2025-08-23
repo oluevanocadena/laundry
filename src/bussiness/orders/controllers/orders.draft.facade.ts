@@ -22,6 +22,7 @@ import {
   Delivery,
   Order,
   OrderItem,
+  OrderStatusEnum,
 } from '@bussiness/orders/orders.interfaces';
 
 @Injectable({
@@ -34,8 +35,22 @@ export class OrdersDraftFacade extends FacadeBase {
   showRefundModal: boolean = false;
   showSearchProduct: boolean = false;
   showAdjustQuantity: boolean = false;
+  showConfirmDelete: boolean = false;
 
-  order = new SubjectProp<Order>(null);
+  order = new SubjectProp<Order>({
+    StatusId: OrderStatusEnum.Draft,
+    DiscountTotal: 0,
+    Taxes: 0,
+    Subtotal: 0,
+    Total: 0,
+    ItemCount: 0,
+    PaymentId: 0,
+    CustomerId: 0,
+    OrderItems: [],
+    Deleted: false,
+  });
+
+  orderItemSelected = new SubjectProp<OrderItem>(null);
   orderItems = new SubjectProp<OrderItem[]>([]);
   orderTotals = new SubjectProp<OrderTotals>(null);
 
@@ -89,23 +104,72 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   /**
-   * Ui Events
+   * Methods
    */
-  onSelectProduct(product: Product) {
-    this.orderItems.value = OrdersCartDomain.addProductItem(
-      this.orderItems.value ?? [],
-      product,
-      1
-    );
+
+  calculateTotals() {
     this.orderTotals.value = OrdersCartDomain.calculateTotals(
       this.orderItems.value ?? [],
       this.formGroup.value.discount ?? 0
     );
+  }
+
+  /**
+   * Ui Events
+   */
+  onSelectProduct(product: Product, quantity: number) {
+    this.orderItems.value = OrdersCartDomain.addProductItem(
+      this.orderItems.value ?? [],
+      product,
+      quantity
+    );
+    this.calculateTotals();
+
+    this.order.value!.ItemCount = this.orderItems.value?.length ?? 0;
     this.showSearchProduct = false;
+  }
+
+  onShowAdjustQuantity(item: OrderItem) {
+    this.orderItemSelected.value = item;
+    this.showAdjustQuantity = true;
+  }
+
+  onAdjustQuantity(quantity: number) {
+    if (this.orderItemSelected.value) {
+      this.orderItems.value = OrdersCartDomain.adjustProductItemQuantity(
+        this.orderItems.value ?? [],
+        this.orderItemSelected.value,
+        quantity
+      );
+      this.orderItemSelected.value = null;
+      this.showAdjustQuantity = false;
+      this.calculateTotals();
+    }
+  }
+
+  onDeleteItem() {
+    if (this.orderItemSelected.value) {
+      this.orderItems.value = OrdersCartDomain.removeProductItem(
+        this.orderItems.value ?? [],
+        this.orderItemSelected.value
+      );
+      this.orderItemSelected.value = null;
+      this.showAdjustQuantity = false;
+      this.calculateTotals();
+    }
   }
 
   goToProducts() {
     this.facadeProducts.product.value = null;
     window.open(routes.ProductDraft, '_blank');
+  }
+
+  onShowConfirmDelete(item: OrderItem) {
+    this.orderItemSelected.value = item;
+    this.showConfirmDelete = true;
+  }
+
+  onConfirmDelete() {
+    this.showConfirmDelete = false;
   }
 }

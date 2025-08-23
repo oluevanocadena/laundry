@@ -7,7 +7,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { firstValueFrom } from 'rxjs';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { Order } from '@bussiness/orders/orders.interfaces';
+import {
+  Order,
+  OrderItemStatusEnum,
+} from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { Utils } from '@services/common/utils.service';
 
@@ -30,9 +33,6 @@ export class OrdersAdjustDeliveryComponent
   @Input() set order(value: Order) {
     if (this._order !== value) {
       this._order = value;
-      this.formGroup.controls['distanceKm'].patchValue(
-        value.delivery.distanceKm ?? 0
-      );
     }
   }
   get order(): Order | null {
@@ -95,54 +95,7 @@ export class OrdersAdjustDeliveryComponent
    */
 
   saveDelivery() {
-    if (this.canSave) {
-      if (this.order !== null) {
-        this.setDeliveryFeeOrderItem();
-        // this.order.customer.address.distanceKm = this.distance;
-        this.order.delivery!.distanceKm = this.distance;
-        this.order.deliveryFee = this.deliveryFee;
-        this.order.delivery.fee = this.deliveryFee;
-        this.order.delivery.indications = this.indications;
-        this.order.delivery.date = this.estimatedDeliveryDate;
-        this.order.delivery.estimatedDate = this.estimatedDeliveryDate;
-        this.order.delivery.estimatedTime = this.estimatedDeliveryTime;
-        // this.order = this.orderservice.calculateTotals(this.order as Order);
-        this.orderChange.emit(this.order);
-      }
-      this.onSave.emit(this.formGroup.value);
-      this.close();
-    }
-  }
-
-  setDeliveryFeeOrderItem() {
-    let item = this.deliveryFeeOrderItem;
-    if (this.order && item === undefined) {
-      item = {
-        id: 0,
-        isDeliveryFee: true,
-        name: 'Delivery Fee',
-        price: this.deliveryFeeWitoutTax,
-        quantity: 1,
-        tax: this.deliveryFeeTax,
-        category: 'Delivery',
-        total: this.deliveryFee,
-        subtotal: this.deliveryFeeWitoutTax,
-        status:
-          this.orderItemsStatuses?.find((x) => x === 'NotProccesed') ?? '',
-        statusId: 1,
-        categoryId: 5,
-        productId: undefined,
-        oderId: this.order?.id ?? Utils.Text.newGuid(),
-      };
-      this.order.orderItems.push(item);
-    } else if (this.order && item !== undefined) {
-      item.price = this.deliveryFee;
-      item.tax = this.deliveryFeeTax;
-      item.total = this.deliveryFee;
-      item.subtotal = this.deliveryFeeWitoutTax;
-      this.order.orderItems.slice(this.order.orderItems.indexOf(item), 1);
-      this.order.orderItems.push(item);
-    }
+    console.log('saveDelivery');
   }
 
   close() {
@@ -185,7 +138,7 @@ export class OrdersAdjustDeliveryComponent
   }
 
   get deliveryFeeOrderItem() {
-    return this.order?.orderItems.find((x) => x.isDeliveryFee === true);
+    return {};
   }
 
   get deliveryFeeTax() {

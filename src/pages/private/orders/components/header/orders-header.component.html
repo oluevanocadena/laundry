@@ -18,6 +18,8 @@
                             [appearance]="'warning'" />
                         <status-badge *ngIf="!busy && facade.edition === true" [label]="orderStatus" [size]="'s'"
                             [appearance]="orderStatusAppearance" />
+                        <status-badge [label]="paid ? 'Pagado' : 'Pendiente de pago'" [size]="'s'"
+                            [appearance]="paid ? 'success': 'warning'" />
                     </grid>
                 </grid>
                 <span class="f-13 fw-400 f-06 f-lh-13">

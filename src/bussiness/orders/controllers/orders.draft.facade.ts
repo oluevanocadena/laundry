@@ -172,6 +172,14 @@ export class OrdersDraftFacade extends FacadeBase {
     this.order.value!.PaymentDate = moment().format('YYYY-MM-DD HH:mm:ss');
   }
 
+  onRefund() {
+    this.showRefundModal = false;
+    this.order.value!.Paid = false;
+    this.order.value!.PaymentMethod = undefined;
+    this.order.value!.PaymentCardTransactionNumber = undefined;
+    this.order.value!.PaymentDate = undefined;
+  }
+
   goToProducts() {
     this.facadeProducts.product.value = null;
     window.open(routes.ProductDraft, '_blank');
@@ -193,5 +201,17 @@ export class OrdersDraftFacade extends FacadeBase {
 
   openDiscount() {
     this.showAdjustDiscountModal = true;
+  }
+
+  openRefund() {
+    this.showRefundModal = true;
+  }
+
+  /**
+   * Getters
+   */
+
+  get canExit(): boolean {
+    return !((this.order.value?.ItemCount ?? 0) > 0);
   }
 }

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CanDeactivateGuard } from '@guards/deactivate.guard';
 import { LoginGuard } from '@guards/login.guard';
 
 import { SessionGuard } from '@guards/session.guard';
@@ -52,10 +53,15 @@ export const routes: Routes = [
     canActivate: [SessionGuard],
     component: NotificationsPageComponent,
   },
-  { path: 'orders', canActivate: [SessionGuard], component: OrdersPageComponent },
+  {
+    path: 'orders',
+    canActivate: [SessionGuard],
+    component: OrdersPageComponent,
+  },
   {
     path: 'orders/draft',
     canActivate: [SessionGuard],
+    canDeactivate: [CanDeactivateGuard],
     component: OrdersDraftPageComponent,
   },
   {

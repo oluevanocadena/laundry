@@ -41,6 +41,10 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
     return this.facade.orderItems.value?.length ?? 0;
   }
 
+  get paid(): boolean {
+    return this.facade.order.value?.Paid ?? false;
+  }
+
   /**
    * Life Cycle
    */

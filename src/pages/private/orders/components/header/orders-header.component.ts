@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import moment from 'moment';
 
@@ -12,11 +12,13 @@ import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
   standalone: false,
   templateUrl: './orders-header.component.html',
   styleUrls: ['./orders-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersHeaderComponent extends HelperPage implements OnInit {
   constructor(
     public facade: OrdersDraftFacade,
-    public router: Router
+    public router: Router,
+    public cdr: ChangeDetectorRef
   ) {
     super();
   }
@@ -54,6 +56,10 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
 
   get canSave(): boolean {
     return this.facade.formGroup.valid;
+  }
+
+  get paid(): boolean {
+    return this.facade.order.value?.Paid ?? false;
   }
 
   /**

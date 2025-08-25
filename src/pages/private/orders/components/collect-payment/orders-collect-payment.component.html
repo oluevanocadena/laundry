@@ -4,7 +4,7 @@
         Recibir pago
     </span>
     <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">
-        <span class="f-14 fw-600 f-01">
+        <span class="f-14 fw-400 f-04">
             Selecciona el método de pago o registra el voucher.
         </span>
         <form tuiGroup [orientation]="'vertical'" class="group" [collapsed]="false" [formGroup]="formGroup">
@@ -42,8 +42,7 @@
                     </grid>
                     <grid [direction]="'row'" [gap]="[16,16]">
                         <form-input [label]="'Número de autorización'" [type]="'text'"
-                            [placeholder]="'Número de autorización'" [formControlName]="'transactionNumber'"
-                            [disabled]="disableTransactionNumber" />
+                            [placeholder]="'Número de autorización'" [formControlName]="'transactionNumber'" />
                     </grid>
                 </grid>
             </label>

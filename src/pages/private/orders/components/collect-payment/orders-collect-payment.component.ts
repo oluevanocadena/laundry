@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
@@ -12,7 +19,6 @@ import { FormProp } from '@type/form.type';
   standalone: false,
   templateUrl: './orders-collect-payment.component.html',
   styleUrls: ['./orders-collect-payment.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersCollectPaymentComponent extends HelperPage {
   //Show
@@ -30,24 +36,21 @@ export class OrdersCollectPaymentComponent extends HelperPage {
     paymentMethod: new FormControl<PaymentMethods>('cash', [
       Validators.required,
     ]),
-    transactionNumber: new FormControl('', [Validators.required]),
+    transactionNumber: new FormControl(null, [Validators.required]),
   });
 
   paymentMethod = new FormProp<PaymentMethods>(
     this.formGroup,
     'paymentMethod',
-    'cash'
+    PaymentMethodsEnum.Cash
   );
   transactionNumber = new FormProp<string>(
     this.formGroup,
     'transactionNumber',
-    ''
+    null
   );
 
-  constructor(
-    public facade: OrdersDraftFacade, 
-    public cdr: ChangeDetectorRef
-  ) {
+  constructor(public facade: OrdersDraftFacade) {
     super();
     this.bindEvents();
   }
@@ -57,7 +60,6 @@ export class OrdersCollectPaymentComponent extends HelperPage {
       if (value === PaymentMethodsEnum.Cash) {
         this.transactionNumber.value = null;
       }
-      this.cdr.detectChanges();
     });
   }
 
@@ -83,17 +85,16 @@ export class OrdersCollectPaymentComponent extends HelperPage {
    */
 
   get canSave() {
-    if (this.formGroup.controls.paymentMethod.value === 'cash') {
+    if (this.paymentMethod.value === PaymentMethodsEnum.Cash) {
       return true;
-    } else if (this.formGroup.controls.paymentMethod.value === 'card') {
-      return this.formGroup.controls.transactionNumber.valid;
+    } else if (
+      this.paymentMethod.value === PaymentMethodsEnum.Card &&
+      this.transactionNumber.value
+    ) {
+      return true;
     } else {
       return false;
     }
-  }
-
-  get disableTransactionNumber() {
-    return this.paymentMethod.value === PaymentMethodsEnum.Cash;
   }
 
   get orderTotals() {

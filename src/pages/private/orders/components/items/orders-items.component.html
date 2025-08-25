@@ -2,8 +2,8 @@
 
     <grid [gap]="[16,12]" [direction]="'column'" [align]="'center-left'">
         <span class="f-14 fw-500 f-05 f-lh-12">Partidas del pedido</span>
-        <status-badge *ngIf="itemsCount > 0" [size]="'s'" [label]="itemsCount.toString() + ' productos'"
-            [appearance]="'warning'" />
+        <status-badge *ngIf="itemsCount > 0" [size]="'s'" [label]="itemsCount.toString() + ' partidas'"
+            [appearance]="'success'" />
     </grid>
 
     <ng-template tuiAccordionItemContent>

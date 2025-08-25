@@ -31,49 +31,49 @@ tui-badge,
     height: 1.25rem !important;
     padding: 2px 0.75rem !important;
     border-radius: 0.375rem !important;
-}
 
-tui-badge[data-appearance=warning],
-[tuiBadge][data-appearance=warning] {
-    background-color: var(--warning-hsl) !important;
-    border: none !important;
-    color: var(--warning) !important;
-    box-shadow: 0 0 0 0.025rem var(--warning) !important;
-}
+    &[data-appearance=warning] {
+        background-color: var(--warning-hsl) !important;
+        border: none !important;
+        color: var(--warning) !important;
+        box-shadow: 0 0 0 0.025rem var(--warning) !important;
 
-tui-badge[data-appearance=error],
-[tuiBadge][data-appearance=error] {
-    border: none !important;
-    box-shadow: 0 0 0 0.045rem var(--error) !important;
-    border: none !important;
-
-    span {
-        color: var(--error) !important;
+        span {
+            color: var(--warning) !important;
+        }
     }
-}
 
-tui-badge[data-appearance=success],
-[tuiBadge][data-appearance=success] {
-    background-color: var(--success-hsl) !important;
-    box-shadow: 0 0 0 0.045rem var(--success) !important;
-    border: none !important;
+    &[data-appearance=error] {
+        border: none !important;
+        box-shadow: 0 0 0 0.045rem var(--error) !important;
+        border: none !important;
 
-    span {
-        color: var(--success) !important;
+        span {
+            color: var(--error) !important;
+        }
     }
-}
 
-tui-badge[data-appearance=info],
-[tuiBadge][data-appearance=info] {
-    background-color: var(--info-hsl) !important;
-    box-shadow: 0 0 0 0.045rem var(--info) !important;
-    border: none !important;
+    &[data-appearance=success] {
+        background-color: var(--success-hsl) !important;
+        box-shadow: 0 0 0 0.045rem var(--success) !important;
+        border: none !important;
 
-    span {
-        color: var(--info) !important;
+        span {
+            color: var(--success) !important;
+        }
     }
-}
 
-tui-badge[data-size=l]>span {
-    padding-top: 0.12rem !important;
+    &[data-appearance=info] {
+        background-color: var(--info-hsl) !important;
+        box-shadow: 0 0 0 0.045rem var(--info) !important;
+        border: none !important;
+
+        span {
+            color: var(--info) !important;
+        }
+    }
+
+    &[data-size=l]>span {
+        padding-top: 0.12rem !important;
+    }
 }

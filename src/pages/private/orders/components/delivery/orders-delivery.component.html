@@ -1,7 +1,6 @@
-<tui-accordion-item class="container" [open]="true">
-    <span class="f-16 fw-600 f-02 f-lh-14">
-        Delivery
-    </span>
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+    <span class="f-14 fw-500 f-05 f-lh-12">Envío</span>
+
     <ng-template tuiAccordionItemContent>
         <grid *ngIf="edition === false" [direction]="'row'" [gap]="[16,16]">
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">

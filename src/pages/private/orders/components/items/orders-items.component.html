@@ -54,12 +54,12 @@
                         </span>
                     </grid>
                     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                        <button small icon outline icon-google (click)="facade.onShowAdjustQuantity(item)">
+                        <button small icon outline icon-google (click)="facade.openAdjustQuantity(item)">
                             <span class="material-symbols-outlined f-16 f-05">
                                 numbers
                             </span>
                         </button>
-                        <button (click)="facade.onShowConfirmDelete(item)" small icon outline icon-google>
+                        <button (click)="facade.openConfirmDelete(item)" small icon outline icon-google>
                             <span class="material-symbols-outlined f-16 f-error">
                                 delete
                             </span>

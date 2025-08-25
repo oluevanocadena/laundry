@@ -174,3 +174,24 @@ tui-primitive-textfield[data-size="s"] [tuiwrapper] input.t-input {
     border-radius: 4px !important;
     outline: 1px solid var(--error) !important;
 }
+
+input {
+    &[tuiRadio] {
+        border: 1px solid var(--border) !important;
+    }
+
+    &[tuiAppearance][data-appearance=primary] {
+        background: var(--primary-hsl-hover) !important;
+    }
+}
+
+form {
+    &[tuiGroup]>*:first-child {
+        border: 1px solid var(--border) !important;
+    }
+
+    &[tuiGroup]>*:last-child {
+        border: 1px solid var(--border) !important;
+    }
+
+}

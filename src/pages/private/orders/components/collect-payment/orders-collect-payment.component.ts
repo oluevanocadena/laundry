@@ -1,16 +1,18 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalService } from 'ng-zorro-antd/modal';
 
-import { Order, PaymentMethods } from '@bussiness/orders/orders.interfaces';
+import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+import { PaymentMethodsEnum } from '@bussiness/orders/orders.enums';
+import { PaymentMethods } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
+import { FormProp } from '@type/form.type';
 
 @Component({
   selector: 'orders-collect-payment',
   standalone: false,
   templateUrl: './orders-collect-payment.component.html',
   styleUrls: ['./orders-collect-payment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersCollectPaymentComponent extends HelperPage {
   //Show
@@ -23,17 +25,6 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //Order
-  private _order: Order | null = null;
-  @Input() set order(value: Order | null) {
-    this._order = value;
-  }
-  get order(): Order | null {
-    return this._order;
-  }
-  @Output() orderChange: EventEmitter<Order | null> =
-    new EventEmitter<Order | null>();
-
   // FormGroup
   formGroup = new FormGroup({
     paymentMethod: new FormControl<PaymentMethods>('cash', [
@@ -42,26 +33,32 @@ export class OrdersCollectPaymentComponent extends HelperPage {
     transactionNumber: new FormControl('', [Validators.required]),
   });
 
-  //Arrays
-  paymentStatuses: string[] = [];
+  paymentMethod = new FormProp<PaymentMethods>(
+    this.formGroup,
+    'paymentMethod',
+    'cash'
+  );
+  transactionNumber = new FormProp<string>(
+    this.formGroup,
+    'transactionNumber',
+    ''
+  );
 
   constructor(
-    public nzModalService: NzModalService,
-    public nzMessageService: NzMessageService
+    public facade: OrdersDraftFacade, 
+    public cdr: ChangeDetectorRef
   ) {
     super();
+    this.bindEvents();
   }
 
-  /**
-   * APi Calls
-   */
-
-  load() {
-    // this.ordersStatusService
-    //   .getFakeOrderPaymentStatuses()
-    //   .subscribe((result) => {
-    //     this.paymentStatuses = result;
-    //   });
+  bindEvents() {
+    this.paymentMethod.onChange((value) => {
+      if (value === PaymentMethodsEnum.Cash) {
+        this.transactionNumber.value = null;
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   /**
@@ -74,40 +71,16 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   }
 
   collectPayment() {
-    if (this.order !== null) {
-      this.order.PaymentId = 2;
-      this.order.Payment = {
-        id: this.order.PaymentId.toString(),
-        createdAt: new Date().toISOString(),
-        Method: this.paymentMethod ?? 'cash',
-        Date: new Date().toISOString(),
-        CardTransactionNumber:
-          this.formGroup.controls.transactionNumber.value ?? '',
-      };
-      this.order = this.order;
-      this.orderChange.emit(this.order);
-      console.log(this.order);
-    }
-    this.nzMessageService.success('Payment collected successfully');
+    this.facade.onCollectPayment(
+      this.paymentMethod.value as PaymentMethodsEnum,
+      this.transactionNumber.value ?? undefined
+    );
     this.close();
-  }
-
-  evaluatePayment(value: 'cash' | 'card') {
-    if (value === 'cash') {
-      this.formGroup.controls.transactionNumber.disable();
-    } else {
-      this.formGroup.controls.transactionNumber.enable();
-    }
-    this.formGroup.controls.transactionNumber.updateValueAndValidity();
   }
 
   /**
    * Getters
    */
-
-  get paymentMethod() {
-    return this.formGroup.controls.paymentMethod.value;
-  }
 
   get canSave() {
     if (this.formGroup.controls.paymentMethod.value === 'cash') {
@@ -119,16 +92,16 @@ export class OrdersCollectPaymentComponent extends HelperPage {
     }
   }
 
+  get disableTransactionNumber() {
+    return this.paymentMethod.value === PaymentMethodsEnum.Cash;
+  }
+
+  get orderTotals() {
+    return this.facade.orderTotals.value;
+  }
+
   /**
    * Life cycle method
    */
-  ngOnInit() {
-    this.load();
-    this.evaluatePayment(this.formGroup.controls.paymentMethod.value as any);
-    this.formGroup.controls.paymentMethod.valueChanges.subscribe((value) => {
-      if (value !== null) {
-        this.evaluatePayment(value);
-      }
-    });
-  }
+  ngOnInit() {}
 }

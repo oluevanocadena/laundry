@@ -25,8 +25,8 @@ export interface Order {
   Status?: OrderStatus;
 
   DiscountType?: DiscountTypes;
-  DiscountAmount?: number; //For percentage o amount
-  DiscountTotal: number; //Result of the discount conversion
+  DiscountRate?: number; //For percentage o amount
+  Discount: number; //Result of the discount conversion
 
   Taxes: number;
   Subtotal: number;
@@ -35,8 +35,10 @@ export interface Order {
   ItemCount: number;
   Notes?: string;
 
-  PaymentId: number;
-  Payment?: Payment;
+  Paid: boolean;
+  PaymentMethod: PaymentMethods | undefined;
+  PaymentDate: Date | string | undefined;
+  PaymentCardTransactionNumber: string | undefined;
 
   CustomerId: number;
   Customer?: Customer; // For UI only
@@ -55,7 +57,7 @@ export interface OrderItem {
   ImageUrl?: string;
 
   Quantity: number;
-  
+
   UnitMeasureId: string;
   UnitMeasure?: UnitMeasure; // Only for UI
 
@@ -91,42 +93,17 @@ export interface OrderItemStatus {
   Deleted: boolean;
 }
 
-export interface Payment {
-  id: string;
-  createdAt: string;
+ 
+export interface OrderTotals {
+  DiscountRate?: number; //Stores percentage (0-1) or fixed amount depending on discount type   
+  Discount: number; //Result of the discount conversion
 
-  Method: PaymentMethods;
-  Date: string;
-
-  CardTransactionNumber: string;
+  Delivery: number;
+  Taxes: number;
+  Subtotal: number;
+  Total: number; //Total after discount and taxes
+    
 }
 
 export type PaymentMethods = 'cash' | 'card';
 export type DiscountTypes = 'percentage' | 'amount';
-
-export enum OrderStatusEnum {
-  Draft = 1,
-  Pending = 2,
-  Processing = 3,
-  Completed = 4,
-  Cancelled = 5,
-  Refunded = 6,
-}
-
-export enum OrderItemStatusEnum {
-  NotProccesed = 1,
-  Processing = 2,
-  Completed = 3,
-  Cancelled = 4,
-  Refunded = 5,
-}
-
-export enum PaymentMethodsEnum {
-  Cash = 'cash',
-  Card = 'card',
-}
-
-export enum DiscountTypesEnum {
-  Percentage = 'percentage',
-  Amount = 'amount',
-}

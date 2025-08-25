@@ -5,7 +5,7 @@ import moment from 'moment';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { OrderStatusEnum } from '@bussiness/orders/orders.interfaces';
+import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
 
 @Component({
   selector: 'orders-header',

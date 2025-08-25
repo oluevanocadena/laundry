@@ -13,17 +13,20 @@ import { OrdersApiService } from '@bussiness/orders/orders.api.service';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { ProductsApiService } from '@bussiness/products/products.api.service';
 import { Product } from '@bussiness/products/products.interfaces';
-
 import {
-  OrdersCartDomain,
-  OrderTotals,
-} from '@bussiness/orders/domains/orders.cart.domain';
+  OrderStatusEnum,
+  PaymentMethodsEnum,
+  PaymentStatusEnum,
+} from '../orders.enums';
+
+import { OrdersCartDomain } from '@bussiness/orders/domains/orders.cart.domain';
 import {
   Delivery,
   Order,
   OrderItem,
-  OrderStatusEnum,
+  OrderTotals,
 } from '@bussiness/orders/orders.interfaces';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -36,15 +39,20 @@ export class OrdersDraftFacade extends FacadeBase {
   showSearchProduct: boolean = false;
   showAdjustQuantity: boolean = false;
   showConfirmDelete: boolean = false;
+  showAdjustDiscountModal: boolean = false;
+  showCollectPaymentModal: boolean = false;
 
   order = new SubjectProp<Order>({
     StatusId: OrderStatusEnum.Draft,
-    DiscountTotal: 0,
+    Paid: false,
+    PaymentMethod: undefined,
+    PaymentDate: undefined,
+    PaymentCardTransactionNumber: undefined,
+    Discount: 0,
     Taxes: 0,
     Subtotal: 0,
     Total: 0,
     ItemCount: 0,
-    PaymentId: 0,
     CustomerId: 0,
     OrderItems: [],
     Deleted: false,
@@ -83,7 +91,15 @@ export class OrdersDraftFacade extends FacadeBase {
     super.initialize();
   }
 
-  bindEvents() {}
+  bindEvents() {
+    this.orderItems.onChange((items) => {
+      console.log('items', items);
+      this.orderTotals.value = OrdersCartDomain.calculateTotals(
+        this.orderItems.value ?? [],
+        this.formGroup.value.discount ?? 0
+      );
+    });
+  }
 
   clearState() {
     this.api.orders.value = [];
@@ -107,13 +123,6 @@ export class OrdersDraftFacade extends FacadeBase {
    * Methods
    */
 
-  calculateTotals() {
-    this.orderTotals.value = OrdersCartDomain.calculateTotals(
-      this.orderItems.value ?? [],
-      this.formGroup.value.discount ?? 0
-    );
-  }
-
   /**
    * Ui Events
    */
@@ -123,28 +132,22 @@ export class OrdersDraftFacade extends FacadeBase {
       product,
       quantity
     );
-    this.calculateTotals();
 
     this.order.value!.ItemCount = this.orderItems.value?.length ?? 0;
     this.showSearchProduct = false;
   }
 
-  onShowAdjustQuantity(item: OrderItem) {
-    this.orderItemSelected.value = item;
-    this.showAdjustQuantity = true;
-  }
-
   onAdjustQuantity(quantity: number) {
-    if (this.orderItemSelected.value) {
-      this.orderItems.value = OrdersCartDomain.adjustProductItemQuantity(
-        this.orderItems.value ?? [],
-        this.orderItemSelected.value,
-        quantity
-      );
-      this.orderItemSelected.value = null;
-      this.showAdjustQuantity = false;
-      this.calculateTotals();
-    }
+    const selected = this.orderItemSelected.value;
+    if (!selected) return;
+
+    this.orderItems.value = OrdersCartDomain.adjustProductItemQuantity(
+      this.orderItems.value ?? [],
+      this.orderItemSelected.value!,
+      quantity
+    );
+    this.orderItemSelected.value = null;
+    this.showAdjustQuantity = false;
   }
 
   onDeleteItem() {
@@ -155,8 +158,18 @@ export class OrdersDraftFacade extends FacadeBase {
       );
       this.orderItemSelected.value = null;
       this.showAdjustQuantity = false;
-      this.calculateTotals();
     }
+  }
+
+  onCollectPayment(
+    paymentMethod: PaymentMethodsEnum,
+    transactionNumber?: string
+  ) {
+    this.showCollectPaymentModal = false;
+    this.order.value!.Paid = true;
+    this.order.value!.PaymentMethod = paymentMethod;
+    this.order.value!.PaymentCardTransactionNumber = transactionNumber;
+    this.order.value!.PaymentDate = moment().format('YYYY-MM-DD HH:mm:ss');
   }
 
   goToProducts() {
@@ -164,12 +177,21 @@ export class OrdersDraftFacade extends FacadeBase {
     window.open(routes.ProductDraft, '_blank');
   }
 
-  onShowConfirmDelete(item: OrderItem) {
+  openConfirmDelete(item: OrderItem) {
     this.orderItemSelected.value = item;
     this.showConfirmDelete = true;
   }
 
-  onConfirmDelete() {
-    this.showConfirmDelete = false;
+  openAdjustQuantity(item: OrderItem) {
+    this.orderItemSelected.value = item;
+    this.showAdjustQuantity = true;
+  }
+
+  openCollectPayment() {
+    this.showCollectPaymentModal = true;
+  }
+
+  openDiscount() {
+    this.showAdjustDiscountModal = true;
   }
 }

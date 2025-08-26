@@ -2,19 +2,19 @@
     <span class="f-14 fw-500 f-05 f-lh-12">Cliente</span>
     <ng-template tuiAccordionItemContent>
         <grid *ngIf="hadCustomer === false" [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
-            <grid [gap]="[8,8]" [direction]="'row'" padding="0.5rem 0" height="100%" [width]="'100%'">
+            <grid [gap]="[8,8]" [direction]="'row'" padding="0.5rem 0 0" height="100%" [width]="'100%'">
                 <span class="f-13 fw-500 f-05 f-lh-17">
                     Aún no has asignado un cliente, da click en el botón de buscar o crear.
                 </span>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">
-                <button secondary small (click)="facade.showCustomerModal = true">
+                <button secondary small (click)="facade.openCustomerModal()">
                     Buscar cliente
                 </button>
             </grid>
         </grid>
-        <grid *ngIf="hadCustomer === true" [direction]="'row'" [gap]="[16,16]" [padding]="'0.5rem 0'">
+        <grid *ngIf="hadCustomer === true" [direction]="'row'" [gap]="[16,16]" [padding]="'0.5rem 0 0'">
 
             <grid [gap]="[0,8]" [direction]="'row'">
                 <grid [direction]="'column'" [template]="'1fr max-content'">
@@ -57,18 +57,10 @@
                 <span class="f-13 fw-400 f-05 f-lh-16">
                     {{customer?.Address}}
                 </span>
-                <grid [gap]="[4,4]" [direction]="'column'" [align]="'center-left'">
-                    <span class="material-symbols-outlined f-16 f-primary ">
-                        directions
-                    </span>
-                    <a [href]="googleUrlMap" target="_blank" class="f-13 f-lh-16 f-primary pointer"
-                        [padding]="'3px 0 0 0'">
-                        Ver en mapa
-                    </a>
-                </grid>
+
             </grid>
-            <grid *ngIf="edition === true" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button primary small flex (click)="facade.showCustomerModal = true">
+            <grid [direction]="'column'" [align]="'center-right'" height="100%">
+                <button secondary small flex (click)="facade.openCustomerModal()">
                     Cambiar cliente
                 </button>
             </grid>

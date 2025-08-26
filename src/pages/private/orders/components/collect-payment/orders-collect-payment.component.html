@@ -9,7 +9,7 @@
         </span>
         <form tuiGroup [orientation]="'vertical'" class="group" [collapsed]="false" [formGroup]="formGroup">
             <label tuiBlock [tuiBlock]="'s'">
-                <input formControlName="paymentMethod" tuiRadio type="radio" value="cash" />
+                <input formControlName="paymentMethod" tuiRadio type="radio" value="cash" size="s" />
                 <grid [direction]="'row'" [gap]="[0,16]">
                     <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
                         <tui-icon icon="@tui.dollar-sign" class="f-16 f-02" />
@@ -27,7 +27,7 @@
                 </grid>
             </label>
             <label tuiBlock [tuiBlock]="'s'">
-                <input formControlName="paymentMethod" tuiRadio type="radio" value="card" />
+                <input formControlName="paymentMethod" tuiRadio type="radio" value="card" size="s" />
                 <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0 0 0.5rem 0'">
                     <grid [direction]="'row'" [gap]="[0,0]">
                         <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">

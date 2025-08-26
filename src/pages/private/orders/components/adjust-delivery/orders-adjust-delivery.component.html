@@ -15,8 +15,8 @@
             Tipo de entrega:
         </span>
         <form tuiGroup [orientation]="'vertical'" [collapsed]="false" [formGroup]="facade.formDelivery">
-            <label tuiBlock>
-                <input formControlName="deliveryType" tuiRadio type="radio" value="pickup" />
+            <label tuiBlock tuiBlock="s">
+                <input formControlName="deliveryType" tuiRadio type="radio" value="pickup" size="s" />
                 <grid [direction]="'row'" [gap]="[4,16]">
                     <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
                         <span class="material-symbols-outlined f-20 f-02">
@@ -31,8 +31,8 @@
                     </span>
                 </grid>
             </label>
-            <label tuiBlock>
-                <input formControlName="deliveryType" tuiRadio type="radio" value="delivery" />
+            <label tuiBlock tuiBlock="s">
+                <input formControlName="deliveryType" tuiRadio type="radio" value="delivery" size="s" />
                 <grid [gap]="[4,8]" [direction]="'row'">
                     <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
                         <span class="material-symbols-outlined f-20 f-02">
@@ -53,16 +53,17 @@
             </label>
         </form>
 
-        <grid [direction]="'row'" [gap]="[16,16]">
+        <grid *ngIf="isDelivery" [direction]="'row'" [gap]="[16,16]">
             <form [formGroup]="facade.formDelivery">
                 <grid [direction]="'row'" [gap]="[16,16]">
                     <form-input [label]="'Costo del envío'" [type]="'number'" [placeholder]="'Costo del envío'"
-                        [min]="0" [step]="1.0" [formControlName]="'deliveryCost'" [prefixIcon]="'dollar-sign'" />
+                        [min]="0" [step]="1.0" [formControlName]="'deliveryCost'" [prefixIcon]="'dollar-sign'"
+                        [required]="true" />
                     <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
                         <form-input [label]="'Fecha de entrega'" [type]="'date'" [placeholder]="'Fecha de entrega'"
-                            [formControlName]="'deliveryDate'" />
-                        <form-input [label]="'Hora de entrega'" [type]="'time'" [placeholder]="'Hora de entrega'"
-                            [formControlName]="'deliveryTime'" />
+                            [formControlName]="'deliveryDate'" [required]="true" />
+                        <form-input [label]="'Hora de entrega'" [type]="'time'" [placeholder]="'HH:MM'"
+                            [formControlName]="'deliveryTime'" [required]="true" />
                     </grid>
                     <form-input [label]="'Instrucciones'" [type]="'textarea'" [placeholder]="'Instrucciones'"
                         [formControlName]="'deliveryInstructions'" />

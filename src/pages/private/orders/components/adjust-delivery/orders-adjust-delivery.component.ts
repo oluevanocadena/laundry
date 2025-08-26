@@ -3,7 +3,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { TuiDay, TuiTime } from '@taiga-ui/cdk';
+import { TuiDay } from '@taiga-ui/cdk';
 
 @Component({
   selector: 'orders-adjust-delivery',
@@ -19,8 +19,9 @@ export class OrdersAdjustDeliveryComponent extends HelperPage {
     if (value) {
       this.facade.formDelivery.reset({
         deliveryType: this.facade.orderDelivery.value?.DeliveryType,
-        deliveryDate: this.facade.orderDelivery.value?.Date as unknown as TuiDay,
-        deliveryTime: this.facade.orderDelivery.value?.Time as unknown as TuiTime,
+        deliveryDate: this.facade.orderDelivery.value
+          ?.Date as unknown as TuiDay,
+        deliveryTime: this.facade.orderDelivery.value?.Time ?? null,
         deliveryCost: this.facade.orderDelivery.value?.Cost,
         deliveryInstructions: this.facade.orderDelivery.value?.Indications,
       });
@@ -54,8 +55,12 @@ export class OrdersAdjustDeliveryComponent extends HelperPage {
    * Getters
    */
 
+  get isDelivery() {
+    return this.facade.deliveryType.value === 'delivery';
+  }
+
   get canSave() {
-    return this.facade.formDelivery.valid;
+    return this.isDelivery ? this.facade.formDelivery.valid : true;
   }
 
   /**

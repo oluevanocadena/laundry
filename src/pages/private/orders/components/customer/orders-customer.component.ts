@@ -30,13 +30,6 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
    * Getters
    */
 
-  get googleUrlMap(): string {
-    return this.facade.orderCustomer.value?.Address
-      ? `https://www.google.com/maps/search/${encodeURIComponent(
-          this.facade.orderCustomer.value?.Address
-        )}`
-      : '';
-  }
 
   get hadCustomer(): boolean {
     return this.facade.orderCustomer.value !== null;

@@ -78,7 +78,8 @@ export class OrdersCartDomain {
 
   static calculateTotals(
     orderItems: OrderItem[],
-    discount: number
+    discount: number,
+    delivery: number
   ): OrderTotals {
     // Calculamos el subtotal sumando los precios de los items
     const subtotal = this.calculateSubtotal(orderItems);
@@ -86,9 +87,6 @@ export class OrdersCartDomain {
     // Como el precio del producto ya incluye IVA, necesitamos extraer el impuesto
     // del subtotal en lugar de agregarlo
     const tax = this.extractTaxFromSubtotal(subtotal);
-
-    // El delivery es 0 por ahora
-    const delivery = 0;
 
     // El total es: subtotal + delivery - descuento (el tax ya está incluido en subtotal)
     const total = subtotal + delivery - discount;
@@ -124,6 +122,4 @@ export class OrdersCartDomain {
       ? discount
       : (orderTotals.Total * discount) / 100;
   }
-
-  
 }

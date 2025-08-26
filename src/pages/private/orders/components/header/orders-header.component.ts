@@ -1,17 +1,15 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { Router } from '@angular/router';
 import moment from 'moment';
 
-import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { HelperPage } from '@components/common/helper.page';
 import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
 import { OrderTotals } from '@bussiness/orders/orders.interfaces';
+import { HelperPage } from '@components/common/helper.page';
+import { TuiAppearanceOptions } from '@taiga-ui/core';
 
 @Component({
   selector: 'orders-header',
@@ -20,8 +18,18 @@ import { OrderTotals } from '@bussiness/orders/orders.interfaces';
   styleUrls: ['./orders-header.component.scss'],
 })
 export class OrdersHeaderComponent extends HelperPage implements OnInit {
+  dateCreated = '';
+
   constructor(public facade: OrdersDraftFacade, public router: Router) {
     super();
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.facade.order.onChange((order) => {
+      this.dateCreated =
+        order?.createdAt || moment().locale('es').toDate().toString();
+    });
   }
 
   onBack() {
@@ -31,13 +39,6 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   /**
    * Getters
    */
-
-  get dateCreated(): string {
-    return (
-      this.facade.order.value?.createdAt ||
-      moment().locale('es').toDate().toString()
-    );
-  }
 
   get busy(): boolean {
     return this.facade.api.busy.value;
@@ -57,7 +58,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
       : 'success';
   }
 
-  get canSave(): boolean { 
+  get canSave(): boolean {
     return (
       this.paid === false &&
       this.itemsCount > 0 &&

@@ -14,16 +14,15 @@ import {
   NG_VALUE_ACCESSOR,
   NgControl,
 } from '@angular/forms';
+import { type MaskitoTimeMode } from '@maskito/kit';
 import {
   TUI_IS_IOS,
   TuiDay,
   TuiIdentityMatcher,
-  TuiStringHandler,
-  TuiTime,
+  TuiStringHandler
 } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
-
 @Component({
   selector: 'form-input',
   standalone: false,
@@ -53,10 +52,10 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() postFix: string = '';
   @Input() required: boolean = false;
   @Input() size: TuiSizeL | TuiSizeS = 's';
-  @Input() timeItems: TuiTime[] = [];
   @Input() type: InputType = 'text';
   @Input() maxRows: number = 6;
   @Input() prefixIcon: string = 'hash';
+  @Input() timeMask: MaskitoTimeMode = 'HH:MM';
 
   //Options
   private _options: UISelectOption[] | null = [];

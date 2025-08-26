@@ -15,10 +15,6 @@ export class OrdersDeliveryComponent implements OnInit {
   constructor(public facade: OrdersDraftFacade) {}
 
   /**
-   * UI Events
-   */
-
-  /**
    * Geters
    */
 
@@ -44,12 +40,20 @@ export class OrdersDeliveryComponent implements OnInit {
 
   get deliveryTypeText() {
     return this.deliveryType === DeliveryTypesEnum.Pickup
-      ? 'Recoger en sucursal'
+      ? 'Recolección en sucursal'
       : 'Envío a domicilio';
   }
 
   get canAdjustDelivery() {
     return !(this.facade.order.value?.ItemCount ?? 0 > 0);
+  }
+
+  get googleUrlMap(): string {
+    return this.facade.orderCustomer.value?.Address
+      ? `https://www.google.com/maps/search/${encodeURIComponent(
+          this.facade.orderCustomer.value?.Address
+        )}`
+      : '';
   }
 
   /**

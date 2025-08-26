@@ -18,7 +18,6 @@ import {
   DiscountTypesEnum,
   OrderStatusEnum,
   PaymentMethodsEnum,
-  PaymentStatusEnum,
 } from '../orders.enums';
 
 import { OrdersCartDomain } from '@bussiness/orders/domains/orders.cart.domain';
@@ -30,12 +29,10 @@ import {
   OrderItem,
   OrderTotals,
 } from '@bussiness/orders/orders.interfaces';
-import moment from 'moment';
-import { FormProp } from '@type/form.type';
 import { TuiDay } from '@taiga-ui/cdk';
-import { tuiCreateTimePeriods } from '@taiga-ui/kit';
+import { FormProp } from '@type/form.type';
+import moment from 'moment';
 
-const timeItems = tuiCreateTimePeriods(8, 20, [0, 30, 59]);
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
 @Injectable({
@@ -70,7 +67,6 @@ export class OrdersDraftFacade extends FacadeBase {
     Deleted: false,
   });
 
-  timeItems = timeItems;
   orderItemSelected = new SubjectProp<OrderItem>(null);
   orderItems = new SubjectProp<OrderItem[]>([]);
   orderTotals = new SubjectProp<OrderTotals>(null);
@@ -86,23 +82,24 @@ export class OrdersDraftFacade extends FacadeBase {
 
   formDelivery = new FormGroup({
     deliveryType: new FormControl('', [Validators.required]),
-    deliveryInstructions: new FormControl(''),
     deliveryCost: new FormControl(0, [Validators.required]),
     deliveryDate: new FormControl(tuiToday, Validators.required),
-    deliveryTime: new FormControl(this.timeItems[0], Validators.required),
+    deliveryTime: new FormControl<string | null>(null, Validators.required),
+    deliveryInstructions: new FormControl(''),
   });
 
   discount = new FormProp<number>(this.formGroup, 'discount', 0);
-  deliveryCost = new FormProp<number>(this.formGroup, 'deliveryCost', 0);
-  deliveryType = new FormProp<DeliveryTypes>(
-    this.formGroup,
-    'deliveryType',
-    'pickup'
-  );
   discountType = new FormProp<DiscountTypes>(
     this.formGroup,
     'discountType',
     'amount'
+  );
+
+  deliveryCost = new FormProp<number>(this.formDelivery, 'deliveryCost', 0);
+  deliveryType = new FormProp<DeliveryTypes>(
+    this.formDelivery,
+    'deliveryType',
+    'pickup'
   );
 
   constructor(
@@ -121,10 +118,7 @@ export class OrdersDraftFacade extends FacadeBase {
 
   bindEvents() {
     this.orderItems.onChange((items) => {
-      this.orderTotals.value = OrdersCartDomain.calculateTotals(
-        this.orderItems.value ?? [],
-        this.formGroup.value.discount ?? 0
-      );
+      this.calcTotals();
     });
   }
 
@@ -150,23 +144,36 @@ export class OrdersDraftFacade extends FacadeBase {
    * Methods
    */
 
+  calcTotals() {
+    this.orderTotals.value = OrdersCartDomain.calculateTotals(
+      this.orderItems.value ?? [],
+      this.discount.value ?? 0,
+      this.deliveryCost.value ?? 0
+    );
+  }
+
   /**
    * Ui Events
    */
 
   onSelectDelivery() {
     const delivery = this.formDelivery.value;
+    const date = delivery.deliveryDate;
+    const formattedDate =
+      typeof date === 'string' && date
+        ? moment(date).format('YYYY-MM-DD')
+        : moment(date?.toLocalNativeDate()).format('YYYY-MM-DD') ?? null;
     this.orderDelivery.value = {
       DeliveryType: delivery.deliveryType as DeliveryTypes,
-      Date:
-        moment(delivery.deliveryDate?.toLocalNativeDate()).format(
-          'YYYY-MM-DD'
-        ) ?? null,
-      Time: delivery.deliveryTime?.toString() ?? null,
+      Date: formattedDate,
+      Time: delivery.deliveryTime ?? null,
       Cost: delivery.deliveryCost ?? 0,
-      Indications: delivery.deliveryInstructions ?? undefined,
+      Indications: delivery.deliveryInstructions ?? '',
       Address: this.orderCustomer.value?.Address ?? '',
     };
+    console.log('orderDelivery', this.orderDelivery.value);
+    this.calcTotals();
+    this.formDelivery.reset();
     this.showAdjustDelivery = false;
   }
 
@@ -250,19 +257,13 @@ export class OrdersDraftFacade extends FacadeBase {
       this.discount.value ?? 0,
       this.discountType.value ?? DiscountTypesEnum.Amount
     );
-    this.orderTotals.value = OrdersCartDomain.calculateTotals(
-      this.orderItems.value ?? [],
-      this.order.value!.Discount
-    );
+    this.calcTotals();
     this.showAdjustDiscountModal = false;
   }
 
   onRemoveDiscount() {
     this.order.value!.Discount = 0;
-    this.orderTotals.value = OrdersCartDomain.calculateTotals(
-      this.orderItems.value ?? [],
-      this.order.value!.Discount ?? 0 //ya es cero por que se le asigno cero 2 lineas arriba
-    );
+    this.calcTotals();
     this.showAdjustDiscountModal = false;
   }
 
@@ -299,6 +300,10 @@ export class OrdersDraftFacade extends FacadeBase {
 
   openAdjustDelivery() {
     this.showAdjustDelivery = true;
+  }
+
+  openCustomerModal() {
+    this.showCustomerModal = true;
   }
 
   /**

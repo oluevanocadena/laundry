@@ -97,7 +97,8 @@
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
         <tui-textfield [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size">
-            <textarea [placeholder]="placeholder" tuiTextarea [formControl]="valueControl" [min]="maxRows" [max]="maxRows"></textarea>
+            <textarea [placeholder]="placeholder" tuiTextarea [formControl]="valueControl" [min]="maxRows"
+                [max]="maxRows"></textarea>
         </tui-textfield>
     </grid>
 
@@ -155,7 +156,8 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable">
+        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
+            class="{{hadError ? 't-input_error' : ''}}">
             <input tuiInputDate [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
             <tui-calendar *tuiTextfieldDropdown />
         </tui-textfield>
@@ -168,7 +170,8 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable">
+        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
+            class="{{hadError ? 't-input_error' : ''}}">
             <input tuiInputDateRange [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
             <tui-calendar-range *tuiTextfieldDropdown />
         </tui-textfield>
@@ -181,8 +184,9 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable">
-            <input tuiInputTime [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
+        <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
+            class="{{hadError ? 't-input_error' : ''}}">
+            <input tuiInputTime [placeholder]="placeholder" [formControl]="valueControl" />
         </tui-textfield>
     </grid>
 
@@ -194,7 +198,7 @@
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
         <tui-textfield iconStart="@tui.search" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
-            [tuiTextfieldCleaner]="clearable">
+            [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
             <input [attr.placeholder]="placeholder" tuiTextfield [formControl]="valueControl"
                 (input)="onInputSearch($event.target)" />
         </tui-textfield>

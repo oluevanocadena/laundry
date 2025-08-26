@@ -19,13 +19,6 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
    * Getters
    */
 
-  get canPaid(): boolean {
-    return (
-      this.facade.order.value?.Paid === false &&
-      (this.facade.orderTotals?.value?.Total ?? 0) > 0
-    );
-  }
-
   get canAddDiscount(): boolean {
     return (
       this.facade.order.value?.Paid === false &&
@@ -41,8 +34,8 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
     return this.facade.orderItems.value?.length ?? 0;
   }
 
-  get paid(): boolean {
-    return this.facade.order.value?.Paid ?? false;
+  get discountApplied(): boolean {
+    return (this.facade.orderTotals.value?.Discount ?? 0) > 0;
   }
 
   /**

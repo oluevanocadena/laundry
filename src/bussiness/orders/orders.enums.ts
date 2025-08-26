@@ -1,5 +1,3 @@
-
-
 export enum OrderStatusEnum {
   Draft = 1,
   Pending = 2,
@@ -31,4 +29,9 @@ export enum PaymentMethodsEnum {
 export enum DiscountTypesEnum {
   Percentage = 'percentage',
   Amount = 'amount',
+}
+
+export enum DeliveryTypesEnum {
+  Pickup = 'pickup',
+  Delivery = 'delivery',
 }

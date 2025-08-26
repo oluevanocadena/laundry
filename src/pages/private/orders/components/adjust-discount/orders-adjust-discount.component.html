@@ -1,75 +1,66 @@
-<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
-    (nzOnCancel)="close()">
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="buttonLabel" [confirmStyle]="'success'"
+    (onConfirm)="applyDiscount()" (onClose)="close()" [disableConfirm]="!canSave">
+    <span title>
+        Aplicar descuento
+    </span>
 
-    <ng-container *nzModalContent>
-        <grid [direction]="'row'" [gap]="[24,16]" padding="0.5rem">
-            <modal-title [title]="'Apply Discount'" (onClose)="close()" />
-            <grid [direction]="'column'" [align]="'center-left'">
-                <span class="f-15 fw-400 f-03 f-lh-17">
-                    Select the
-                    <label class="fw-500 f-01">
-                        discount type
-                    </label> to apply to the order.
-                </span>
-            </grid>
-            <form tuiGroup [orientation]="'horizontal'" class="group" [collapsed]="false" [formGroup]="formGroup">
-                <label tuiBlock>
-                    <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
-                        [value]="1" />
-                    <grid [direction]="'row'" [gap]="[0,16]">
-                        <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
-                            <tui-icon icon="@tui.dollar-sign" class="f-16 f-02" />
-                            <span class="f-15 fw-600 f-02 f-lh-17">
-                                Amount
-                            </span>
-                        </grid>
-                        <span class="f-15 fw-400 f-04 f-lh-17">
-                            Is the amount you want to discount from the order.
-                        </span>
-                    </grid>
-                </label>
-                <label tuiBlock>
-                    <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
-                        [value]="1" />
-                    <grid [gap]="[0,8]" [direction]="'row'">
-                        <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
-                            <tui-icon icon="@tui.percent" class="f-16 f-02" />
-                            <span class="f-15 fw-600 f-02 f-lh-17">
-                                Percentage
-                            </span>
-                        </grid>
-                        <span class="f-15 fw-400 f-04 f-lh-17">
-                            Percentage value to discount from the order.
-                        </span>
-                    </grid>
-                </label>
-            </form>
-            <grid [direction]="'row'" [gap]="[16,16]">
-                <form [formGroup]="formGroup">
-                    <form-input [label]="placeholder" [type]="'number'" [placeholder]="placeholder" [min]="0"
-                        [max]="maxNumber" [step]="stepIncrement" [formControlName]="'amount'" [postFix]="postFixText" />
-                </form>
-            </grid>
-            <grid [direction]="'column'" [align]="'center-left'">
-                <span class="f-15 fw-400 f-03 f-lh-17">
-                    Click on the
-                    <label class="fw-500 f-01">
-                        Apply Discount
-                    </label>
-                    button to update the
-                    <label class="fw-500 f-01">
-                        discount total
-                    </label>.
-                </span>
-            </grid>
-
-            <grid [direction]="'column'" [align]="'center-right'" padding="1rem 0 0 0" class="border-top-06">
-                <button tuiButton [disabled]="canSave === false" (click)="applyDiscount()" [appearance]="'primary'"
-                    [size]="'m'">
-                    Apply Discount
-                </button>
-            </grid>
+    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">
+        <grid [direction]="'column'" [align]="'center-left'">
+            <span class="f-15 fw-400 f-03 f-lh-17">
+                Selecciona el tipo de descuento que quieres aplicar al pedido.
+            </span>
         </grid>
-    </ng-container>
+        <form tuiGroup [orientation]="'horizontal'" class="group" [collapsed]="false" [formGroup]="facade.formGroup">
+            <label tuiBlock>
+                <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
+                    [value]="'amount'" />
+                <grid [direction]="'row'" [gap]="[0,16]">
+                    <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
+                        <tui-icon icon="@tui.dollar-sign" class="f-16 f-02" />
+                        <span class="f-14 fw-600 f-02 f-lh-17">
+                            Monto fijo
+                        </span>
+                    </grid>
+                    <span class="f-13 fw-400 f-06 f-lh-17">
+                        Es el monto que quieres descontar del pedido.
+                    </span>
+                </grid>
+            </label>
+            <label tuiBlock>
+                <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
+                    [value]="'percentage'" />
+                <grid [gap]="[0,8]" [direction]="'row'">
+                    <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
+                        <tui-icon icon="@tui.percent" class="f-16 f-02" />
+                        <span class="f-14 fw-600 f-02 f-lh-17">
+                            Porcentaje
+                        </span>
+                    </grid>
+                    <span class="f-13 fw-400 f-06 f-lh-17">
+                        Es el porcentaje que quieres descontar del total delpedido.
+                    </span>
+                </grid>
+            </label>
+        </form>
+        <grid [direction]="'row'" [gap]="[16,16]">
+            <form [formGroup]="facade.formGroup">
+                <form-input [label]="placeholder" [type]="'number'" [placeholder]="placeholder" [min]="0"
+                    [max]="maxNumber" [step]="stepIncrement" [formControlName]="'discount'" [prefixIcon]="postFixText" />
+            </form>
+        </grid>
+        <grid [direction]="'column'" [align]="'center-left'">
+            <span class="f-15 fw-400 f-03 f-lh-17">
+                Da clic en el botón
+                <label class="fw-500 f-01">
+                    aplicar descuento
+                </label>para
+                <label class="fw-500 f-01">
+                    aplicar el descuento
+                </label>
+                al pedido.
+            </span>
+        </grid>
+    </grid>
 
-</nz-modal>
+
+</modal>

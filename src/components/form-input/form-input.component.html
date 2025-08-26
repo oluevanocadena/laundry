@@ -97,7 +97,7 @@
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
         <tui-textfield [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size">
-            <textarea [placeholder]="placeholder" tuiTextarea [formControl]="valueControl" [max]="maxRows"></textarea>
+            <textarea [placeholder]="placeholder" tuiTextarea [formControl]="valueControl" [min]="maxRows" [max]="maxRows"></textarea>
         </tui-textfield>
     </grid>
 
@@ -108,7 +108,7 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <tui-textfield iconStart="@tui.hash" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
+        <tui-textfield iconStart="@tui.{{prefixIcon}}" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
             <input tuiInputNumber [min]="min" [max]="max" [step]="step" [postfix]="postFix"
                 [formControl]="valueControl" />

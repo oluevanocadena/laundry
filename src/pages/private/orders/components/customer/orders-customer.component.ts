@@ -23,17 +23,7 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
    */
 
   onSelectCustomer(customer: Customer | null) {
-    if (customer !== null) {
-      this.facade.orderCustomer.value = customer;
-      this.facade.showCustomerModal = false;
-      this.facade.orderDelivery.value = {
-        Address: customer.Address || '',
-        Date: '',
-        EstimatedDate: '',
-        Fee: 0,
-        DistanceKm: 0,
-      };
-    }
+    this.facade.onSelectCustomer(customer);
   }
 
   /**

@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { DiscountTypes, Order } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({
@@ -23,23 +21,6 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //Order
-  private _order: Order | null = null;
-  @Input() set order(value: Order | null) {
-    this._order = value;
-  }
-  get order(): Order | null {
-    return this._order;
-  }
-  @Output() orderChange: EventEmitter<Order | null> =
-    new EventEmitter<Order | null>();
-
-  // FormGroup
-  formGroup = new FormGroup({
-    discountType: new FormControl<DiscountTypes>('amount'),
-    amount: new FormControl(0, [Validators.required]),
-  });
-
   constructor(
     public facade: OrdersDraftFacade,
     public nzmessage: NzMessageService
@@ -48,22 +29,16 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   }
 
   /**
-   * APi Calls
-   */
-
-  load() {}
-
-  /**
    * Ui Events
    */
 
   applyDiscount() {
-     
+    this.facade.onApplyDiscount();
     this.close();
   }
 
   resetAmount() {
-    this.formGroup.controls.amount.setValue(0);
+    this.facade.discount.value = 0;
   }
 
   close() {
@@ -74,39 +49,40 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   /**
    * Getters
    */
-
   get discountType() {
-    return this.formGroup.controls.discountType.value ?? 1;
-  }
-
-  get amount() {
-    return this.formGroup.controls.amount.value ?? 0;
+    return this.facade.discountType.value;
   }
 
   get placeholder() {
-    return this.discountType === 1 ? 'Amount' : 'Percentage';
+    return this.discountType === 'amount' ? 'Monto' : 'Porcentaje';
   }
 
   get maxNumber() {
-    return this.discountType === 1 ? 99999 : 100;
+    return this.discountType === 'amount'
+      ? this.facade.orderTotals.value?.Total ?? 99999
+      : 100;
   }
 
   get stepIncrement() {
-    return this.discountType === 1 ? 1 : 0.1;
+    return this.discountType === 'amount' ? 1.0 : 1;
   }
 
   get postFixText() {
-    return this.discountType === 1 ? '$' : '%';
+    return this.discountType === 'amount' ? 'dollar-sign' : 'percent';
   }
 
   get canSave() {
-    return this.formGroup.valid;
+    return this.facade.discount.value ?? 0 > 0;
+  }
+
+  get buttonLabel() {
+    return this.discountType === 'amount'
+      ? 'Aplicar monto'
+      : 'Aplicar porcentaje';
   }
 
   /**
    * Life cycle method
    */
-  ngOnInit() {
-    this.load();
-  }
+  ngOnInit() {}
 }

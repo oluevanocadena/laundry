@@ -14,6 +14,8 @@ import { ProductsDraftFacade } from '@bussiness/products/controllers/products.dr
 import { ProductsApiService } from '@bussiness/products/products.api.service';
 import { Product } from '@bussiness/products/products.interfaces';
 import {
+  DeliveryTypesEnum,
+  DiscountTypesEnum,
   OrderStatusEnum,
   PaymentMethodsEnum,
   PaymentStatusEnum,
@@ -22,11 +24,19 @@ import {
 import { OrdersCartDomain } from '@bussiness/orders/domains/orders.cart.domain';
 import {
   Delivery,
+  DeliveryTypes,
+  DiscountTypes,
   Order,
   OrderItem,
   OrderTotals,
 } from '@bussiness/orders/orders.interfaces';
 import moment from 'moment';
+import { FormProp } from '@type/form.type';
+import { TuiDay } from '@taiga-ui/cdk';
+import { tuiCreateTimePeriods } from '@taiga-ui/kit';
+
+const timeItems = tuiCreateTimePeriods(8, 20, [0, 30, 59]);
+const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +51,8 @@ export class OrdersDraftFacade extends FacadeBase {
   showConfirmDelete: boolean = false;
   showAdjustDiscountModal: boolean = false;
   showCollectPaymentModal: boolean = false;
+  showCustomerCreateModal: boolean = false;
+  showAdjustDelivery: boolean = false;
 
   order = new SubjectProp<Order>({
     StatusId: OrderStatusEnum.Draft,
@@ -58,6 +70,7 @@ export class OrdersDraftFacade extends FacadeBase {
     Deleted: false,
   });
 
+  timeItems = timeItems;
   orderItemSelected = new SubjectProp<OrderItem>(null);
   orderItems = new SubjectProp<OrderItem[]>([]);
   orderTotals = new SubjectProp<OrderTotals>(null);
@@ -66,16 +79,31 @@ export class OrdersDraftFacade extends FacadeBase {
   orderDelivery = new SubjectProp<Delivery>(null);
 
   formGroup = new FormGroup({
-    number: new FormControl('', [Validators.required]),
-    status: new FormControl('', [Validators.required]),
-    customerId: new FormControl('', [Validators.required]),
-    deliveryId: new FormControl('', [Validators.required]),
     notes: new FormControl(''),
-    items: new FormControl('', [Validators.required]),
-    total: new FormControl('', [Validators.required]),
-    paymentStatus: new FormControl('', [Validators.required]),
+    discountType: new FormControl<DiscountTypes>('amount'),
     discount: new FormControl(0, [Validators.required]),
   });
+
+  formDelivery = new FormGroup({
+    deliveryType: new FormControl('', [Validators.required]),
+    deliveryInstructions: new FormControl(''),
+    deliveryCost: new FormControl(0, [Validators.required]),
+    deliveryDate: new FormControl(tuiToday, Validators.required),
+    deliveryTime: new FormControl(this.timeItems[0], Validators.required),
+  });
+
+  discount = new FormProp<number>(this.formGroup, 'discount', 0);
+  deliveryCost = new FormProp<number>(this.formGroup, 'deliveryCost', 0);
+  deliveryType = new FormProp<DeliveryTypes>(
+    this.formGroup,
+    'deliveryType',
+    'pickup'
+  );
+  discountType = new FormProp<DiscountTypes>(
+    this.formGroup,
+    'discountType',
+    'amount'
+  );
 
   constructor(
     public api: OrdersApiService,
@@ -93,7 +121,6 @@ export class OrdersDraftFacade extends FacadeBase {
 
   bindEvents() {
     this.orderItems.onChange((items) => {
-      console.log('items', items);
       this.orderTotals.value = OrdersCartDomain.calculateTotals(
         this.orderItems.value ?? [],
         this.formGroup.value.discount ?? 0
@@ -126,6 +153,23 @@ export class OrdersDraftFacade extends FacadeBase {
   /**
    * Ui Events
    */
+
+  onSelectDelivery() {
+    const delivery = this.formDelivery.value;
+    this.orderDelivery.value = {
+      DeliveryType: delivery.deliveryType as DeliveryTypes,
+      Date:
+        moment(delivery.deliveryDate?.toLocalNativeDate()).format(
+          'YYYY-MM-DD'
+        ) ?? null,
+      Time: delivery.deliveryTime?.toString() ?? null,
+      Cost: delivery.deliveryCost ?? 0,
+      Indications: delivery.deliveryInstructions ?? undefined,
+      Address: this.orderCustomer.value?.Address ?? '',
+    };
+    this.showAdjustDelivery = false;
+  }
+
   onSelectProduct(product: Product, quantity: number) {
     this.orderItems.value = OrdersCartDomain.addProductItem(
       this.orderItems.value ?? [],
@@ -135,6 +179,20 @@ export class OrdersDraftFacade extends FacadeBase {
 
     this.order.value!.ItemCount = this.orderItems.value?.length ?? 0;
     this.showSearchProduct = false;
+  }
+
+  onSelectCustomer(customer: Customer | null) {
+    if (customer !== null) {
+      this.orderCustomer.value = customer;
+      this.showCustomerModal = false;
+      this.orderDelivery.value = {
+        Address: customer.Address || '',
+        Date: null,
+        Time: null,
+        Cost: 0,
+        DeliveryType: DeliveryTypesEnum.Pickup,
+      };
+    }
   }
 
   onAdjustQuantity(quantity: number) {
@@ -180,6 +238,34 @@ export class OrdersDraftFacade extends FacadeBase {
     this.order.value!.PaymentDate = undefined;
   }
 
+  onApplyDiscount() {
+    this.order.value!.Discount = OrdersCartDomain.calculateDiscount(
+      this.orderTotals.value ?? {
+        Total: 0,
+        Subtotal: 0,
+        Taxes: 0,
+        Delivery: 0,
+        Discount: 0,
+      },
+      this.discount.value ?? 0,
+      this.discountType.value ?? DiscountTypesEnum.Amount
+    );
+    this.orderTotals.value = OrdersCartDomain.calculateTotals(
+      this.orderItems.value ?? [],
+      this.order.value!.Discount
+    );
+    this.showAdjustDiscountModal = false;
+  }
+
+  onRemoveDiscount() {
+    this.order.value!.Discount = 0;
+    this.orderTotals.value = OrdersCartDomain.calculateTotals(
+      this.orderItems.value ?? [],
+      this.order.value!.Discount ?? 0 //ya es cero por que se le asigno cero 2 lineas arriba
+    );
+    this.showAdjustDiscountModal = false;
+  }
+
   goToProducts() {
     this.facadeProducts.product.value = null;
     window.open(routes.ProductDraft, '_blank');
@@ -207,11 +293,24 @@ export class OrdersDraftFacade extends FacadeBase {
     this.showRefundModal = true;
   }
 
+  openCreateCustomerModal() {
+    this.showCustomerCreateModal = true;
+  }
+
+  openAdjustDelivery() {
+    this.showAdjustDelivery = true;
+  }
+
   /**
    * Getters
    */
 
   get canExit(): boolean {
-    return !((this.order.value?.ItemCount ?? 0) > 0);
+    const result = !(
+      (this.order.value?.ItemCount ?? 0) > 0 ||
+      this.orderCustomer.value !== null
+    );
+    console.log('canExit', result);
+    return result;
   }
 }

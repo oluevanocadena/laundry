@@ -1,82 +1,85 @@
-<nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
-    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'">
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Ajustar entrega'" [confirmStyle]="'success'"
+    [disableConfirm]="!canSave" (onConfirm)="saveDelivery()" (onClose)="close()">
+    <span title>
+        Ajustar entrega
+    </span>
 
-    <ng-container *nzModalContent>
-        <grid [direction]="'row'" [gap]="[16,16]" padding="0.5rem">
-            <modal-title [title]="'Adjust Delivery'" (onClose)="close()" />
+    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">
+        <grid [direction]="'column'" [align]="'center-left'">
+            <span class="f-13 fw-400 f-03 f-lh-17">
+                Selecciona el tipo de entrega que quieres cambiar.
+            </span>
+        </grid>
 
-            <grid [direction]="'row'" [gap]="[24,16]" padding="0 0 1rem 0">
-                <grid [direction]="'row'" [gap]="[8,16]">
-                    <span class="f-15 fw-500 f-02 f-lh-14">Delivery Address</span>
-                    <grid [direction]="'column'" [template]="'1fr max-content'">
-                        <grid [gap]="[4,12]" [direction]="'column'" [align]="'center-left'" height="100%">
-                            <tui-icon icon="@tui.house" class="f-20 f-02" />
-                            <span class="f-16 fw-400 f-03 f-lh-16">
-                                Avenida de la reforma 233, Col. Centro, CDMX, México, 06000 &nbsp;
-                            </span>
-                        </grid>
-                        <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                            <button (click)="openEditionCustomerAddress()" tuiButton tuiIconButton
-                                [appearance]="'secondary'" [size]="'s'">
-                                <tui-icon icon="@tui.pencil" class="f-16 fw-600 f-02" />
-                            </button>
-                        </grid>
+        <span class="f-14 fw-400 f-02 f-lh-14">
+            Tipo de entrega:
+        </span>
+        <form tuiGroup [orientation]="'vertical'" [collapsed]="false" [formGroup]="facade.formDelivery">
+            <label tuiBlock>
+                <input formControlName="deliveryType" tuiRadio type="radio" value="pickup" />
+                <grid [direction]="'row'" [gap]="[4,16]">
+                    <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                        <span class="material-symbols-outlined f-20 f-02">
+                            door_sliding
+                        </span>
+                        <span class="f-13 fw-600 f-02 f-lh-17">
+                            Recoger en sucursal
+                        </span>
                     </grid>
-                </grid>
-                <form [formGroup]="formGroup">
-                    <grid [direction]="'row'" [gap]="[16,16]">
-                        <grid [direction]="'column'" [align]="'center-left'">
-                            <span class="f-15 fw-400 f-02 f-lh-16">
-                                The current distance to this customer is
-                                <span class="f-15 fw-600 f-02 f-lh-17">
-                                    {{ 0 | numeralFormat: '0,0.0'}} km
-                                </span>
-                                and the delivery price is
-                                <span class="f-15 fw-600 f-02 f-lh-17">
-                                    {{ 100 | numeralFormat:
-                                    '$0,0.00'}}
-                                    MXN
-                                    per Km
-                                </span>
-                                the total delivery fee will be with taxes:
-                                <span class="f-15 fw-600 f-primary f-lh-17">
-                                    {{ deliveryFee | numeralFormat: '$0,0.00'}}
-                                    MXN
-                                </span>
-                            </span>
-                        </grid>
-                        <form-input [label]="'Distance'" [type]="'number'" [placeholder]="'Distance on kilometers'"
-                            formControlName="distanceKm" [size]="'m'" [postFix]="'km'" [min]="1" [max]="200"
-                            [step]="1" />
-                        <form-input [label]="'Indications'" [type]="'textarea'"
-                            [placeholder]="'Type the delivery indications'" formControlName="deliveryInstructions" />
-                        <tui-root>
-                            <ng-container ngProjectAs="tuiOverDialogs">
-                                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
-                                    <form-input [label]="'Estimated Date'" [type]="'date'" [placeholder]="'Choose date'"
-                                        formControlName="deliveryDate" />
-                                    <form-input [label]="'Estimated Time'" [type]="'time'" [placeholder]="'Choose time'"
-                                        formControlName="deliveryTime" [timeItems]="timeItems.slice()" />
-                                </grid>
-                            </ng-container>
-                        </tui-root>
-                    </grid>
-                </form>
-            </grid>
-            <grid [direction]="'column'" [template]="'1fr max-content'" padding="1rem 0 0rem 0 " class="border-top-06">
-                <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                    <span class="f-15 fw-500 f-04 f-lh-16">
-                        After save the changes, the distance of the address will be updated.
+                    <span class="f-13 fw-400 f-06 f-lh-17">
+                        Acude a la sucursal para recoger el pedido.
                     </span>
                 </grid>
-                <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                    <button (click)="saveDelivery()" tuiButton [disabled]="canSave === false" [appearance]="'primary'"
-                        [size]="'m'">
-                        Save Changes
-                    </button>
+            </label>
+            <label tuiBlock>
+                <input formControlName="deliveryType" tuiRadio type="radio" value="delivery" />
+                <grid [gap]="[4,8]" [direction]="'row'">
+                    <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                        <span class="material-symbols-outlined f-20 f-02">
+                            moped_package
+                        </span>
+                        <span class="f-13 fw-600 f-02 f-lh-17">
+                            Envío a domicilio
+                        </span>
+                    </grid>
+                    <grid [direction]="'row'" [gap]="[16,16]">
+                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                            <span class="f-13 fw-400 f-06 f-lh-17">
+                                Envío a domicilio en la dirección:
+                            </span>
+                        </grid>
+                    </grid>
                 </grid>
-            </grid>
+            </label>
+        </form>
 
+        <grid [direction]="'row'" [gap]="[16,16]">
+            <form [formGroup]="facade.formDelivery">
+                <grid [direction]="'row'" [gap]="[16,16]">
+                    <form-input [label]="'Costo del envío'" [type]="'number'" [placeholder]="'Costo del envío'"
+                        [min]="0" [step]="1.0" [formControlName]="'deliveryCost'" [prefixIcon]="'dollar-sign'" />
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                        <form-input [label]="'Fecha de entrega'" [type]="'date'" [placeholder]="'Fecha de entrega'"
+                            [formControlName]="'deliveryDate'" />
+                        <form-input [label]="'Hora de entrega'" [type]="'time'" [placeholder]="'Hora de entrega'"
+                            [formControlName]="'deliveryTime'" />
+                    </grid>
+                    <form-input [label]="'Instrucciones'" [type]="'textarea'" [placeholder]="'Instrucciones'"
+                        [formControlName]="'deliveryInstructions'" />
+                </grid>
+            </form>
         </grid>
-    </ng-container>
-</nz-modal>
+
+        <grid [direction]="'column'" [align]="'center-left'">
+            <span class="f-13 fw-400 f-06 f-lh-17">
+                Da clic en el botón
+                <label class="fw-500 f-success">
+                    ajustar entrega
+                </label>
+                para ajustar la entrega del pedido.
+            </span>
+        </grid>
+    </grid>
+
+
+</modal>

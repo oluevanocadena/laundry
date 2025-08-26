@@ -15,7 +15,7 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">
-                <button primary small (click)="facade.showSearchProduct = true">
+                <button secondary small (click)="facade.showSearchProduct = true">
                     Buscar producto
                 </button>
             </grid>
@@ -56,7 +56,7 @@
                     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
                         <button small icon outline icon-google (click)="facade.openAdjustQuantity(item)">
                             <span class="material-symbols-outlined f-16 f-05">
-                                numbers
+                                add
                             </span>
                         </button>
                         <button (click)="facade.openConfirmDelete(item)" small icon outline icon-google>
@@ -69,7 +69,7 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">
-                <button primary small (click)="facade.showSearchProduct = true">
+                <button secondary small (click)="facade.showSearchProduct = true">
                     Buscar producto
                 </button>
             </grid>

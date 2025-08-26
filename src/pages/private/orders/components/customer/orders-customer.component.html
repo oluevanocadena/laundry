@@ -6,15 +6,10 @@
                 <span class="f-13 fw-500 f-05 f-lh-17">
                     Aún no has asignado un cliente, da click en el botón de buscar o crear.
                 </span>
-                <grid [direction]="'row'" [align]="'center-right'" width="100%">
-                    <button secondary small (click)="facade.showCustomerModal = true">
-                        Crear nuevo
-                    </button>
-                </grid>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">
-                <button primary small (click)="facade.showCustomerModal = true">
+                <button secondary small (click)="facade.showCustomerModal = true">
                     Buscar cliente
                 </button>
             </grid>

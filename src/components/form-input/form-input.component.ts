@@ -55,7 +55,8 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() size: TuiSizeL | TuiSizeS = 's';
   @Input() timeItems: TuiTime[] = [];
   @Input() type: InputType = 'text';
-  @Input() maxRows: number = 8;
+  @Input() maxRows: number = 6;
+  @Input() prefixIcon: string = 'hash';
 
   //Options
   private _options: UISelectOption[] | null = [];

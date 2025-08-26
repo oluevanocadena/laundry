@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import moment from 'moment';
 
@@ -6,20 +11,16 @@ import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
 import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
+import { OrderTotals } from '@bussiness/orders/orders.interfaces';
 
 @Component({
   selector: 'orders-header',
   standalone: false,
   templateUrl: './orders-header.component.html',
   styleUrls: ['./orders-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersHeaderComponent extends HelperPage implements OnInit {
-  constructor(
-    public facade: OrdersDraftFacade,
-    public router: Router,
-    public cdr: ChangeDetectorRef
-  ) {
+  constructor(public facade: OrdersDraftFacade, public router: Router) {
     super();
   }
 
@@ -51,15 +52,37 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get orderStatusAppearance(): TuiAppearanceOptions['appearance'] {
-    return this.facade.order.value?.Status?.Name === 'Draft' ? 'warning' : 'success';
+    return this.facade.order.value?.Status?.Name === 'Draft'
+      ? 'warning'
+      : 'success';
   }
 
-  get canSave(): boolean {
-    return this.facade.formGroup.valid;
+  get canSave(): boolean { 
+    return (
+      this.paid === false &&
+      this.itemsCount > 0 &&
+      !!this.facade.orderCustomer.value?.id
+    );
   }
 
   get paid(): boolean {
     return this.facade.order.value?.Paid ?? false;
+  }
+
+  get orderTotals(): OrderTotals | null {
+    return this.facade.orderTotals.value;
+  }
+
+  get itemsCount(): number {
+    return this.facade.orderItems.value?.length ?? 0;
+  }
+
+  get total(): number {
+    return this.facade.orderTotals?.value?.Total ?? 0;
+  }
+
+  get canPaid(): boolean {
+    return this.facade.order.value?.Paid === false && (this.total ?? 0) > 0;
   }
 
   /**

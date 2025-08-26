@@ -4,7 +4,7 @@
     </grid>
 
     <ng-template tuiAccordionItemContent>
-        <grid [direction]="'row'" [gap]="[16,16]">
+        <grid [direction]="'row'" [gap]="[8,16]" [padding]="'0.5rem 0 0 0'">
 
             <grid [direction]="'column'" [template]="'1fr max-content'" width="100%">
                 <span class="f-13 fw-400 f-06 f-lh-14">Subtotal</span>
@@ -42,17 +42,15 @@
                 </span>
             </grid>
             <grid *ngIf="itemsCount > 0" [direction]="'column'" [template]="'1fr'" padding="1rem 0 0 0"
-                class="border-top-06">
+                class="border-top-02">
                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
-                    <button (click)="facade.openDiscount()" secondary small [disabled]="canAddDiscount=== false">
+                    <button *ngIf="!discountApplied" (click)="facade.openDiscount()" secondary small
+                        [disabled]="canAddDiscount=== false">
                         Agregar descuento
                     </button>
-                    <button *ngIf="!paid" (click)="facade.openCollectPayment()" primary small
-                        [disabled]="canPaid=== false">
-                        Cobrar pago {{orderTotals?.Total ?? 0 | numeralFormat: '$0,0.00'}}
-                    </button>
-                    <button *ngIf="paid" (click)="facade.openRefund()" danger small>
-                        Reembolsar pago
+                    <button *ngIf="discountApplied" (click)="facade.onRemoveDiscount()" secondary small
+                        [disabled]="canAddDiscount=== false">
+                        Quitar descuento
                     </button>
                 </grid>
             </grid>
@@ -63,20 +61,3 @@
 
 <orders-collect-payment [(show)]="facade.showCollectPaymentModal" />
 <orders-adjust-discount [(show)]="facade.showAdjustDiscountModal" />
-
-<modal-confirm [(show)]="facade.showRefundModal" (onConfirm)="facade.onRefund()">
-    <span title>
-        Reembolsar pago
-    </span>
-    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">
-        <span class="f-14 fw-600 f-01">
-            ¿Estás seguro de querer reembolsar el pago?
-        </span>
-        <span class="f-14 f-lh-17 fw-400 f-05">
-            Al reembolsar el pago, se actualizará el estado de la orden a
-            <label class="f-warning">
-                pendiente
-            </label>.
-        </span>
-    </grid>
-</modal-confirm>

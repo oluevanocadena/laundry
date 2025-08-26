@@ -16,8 +16,13 @@
             <form [formGroup]="formGroup" width="100%">
                 <grid [direction]="'row'" [gap]="[24,16]" width="100%" [padding]="'0 0 1rem 0'" [maxHeight]="'450px'"
                     class="scroll-v">
-                    <form-input [type]="'search'" [placeholder]="'Comienza a escribir para buscar'"
-                        formControlName="search" (onSearch)="facade.fetchCustomers($event)" />
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr max-content'" width="100%">
+                        <form-input [type]="'search'" [placeholder]="'Comienza a escribir para buscar'"
+                            formControlName="search" (onSearch)="facade.fetchCustomers($event)" />
+                        <button info small flex (click)="facade.openCreateCustomerModal()">
+                            Crear nuevo
+                        </button>
+                    </grid>
 
                     <ng-container *ngIf="customers.length === 0">
                         <grid [direction]="'row'" [gap]="[16,16]" width="100%" padding="0 0 0.5rem 0">

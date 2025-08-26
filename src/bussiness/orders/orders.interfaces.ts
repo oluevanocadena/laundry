@@ -6,12 +6,11 @@ import { UnitMeasure } from '@bussiness/products/products.interfaces';
 import { Customer } from '../customers/customers.interfaces';
 
 export interface Delivery {
-  Date: string;
-  Indications?: string;
-  EstimatedDate: string;
-  EstimatedTime?: string;
-  Fee: number;
-  DistanceKm: number;
+  DeliveryType: DeliveryTypes;
+  Date: Date | string | null;
+  Time: string | null;
+  Indications?: string; 
+  Cost: number; 
   Address: string;
 }
 
@@ -107,3 +106,4 @@ export interface OrderTotals {
 
 export type PaymentMethods = 'cash' | 'card';
 export type DiscountTypes = 'percentage' | 'amount';
+export type DeliveryTypes = 'pickup' | 'delivery';

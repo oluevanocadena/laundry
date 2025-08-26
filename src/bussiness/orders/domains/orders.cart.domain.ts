@@ -1,5 +1,11 @@
 import { Product } from '@bussiness/products/products.interfaces';
-import { OrderItem, OrderTotals } from '../orders.interfaces';
+import {
+  DiscountTypes,
+  Order,
+  OrderItem,
+  OrderTotals,
+} from '../orders.interfaces';
+import { DiscountTypesEnum } from '../orders.enums';
 
 const TAX_RATE_IVA = 0.16;
 
@@ -108,4 +114,16 @@ export class OrdersCartDomain {
       0
     );
   }
+
+  static calculateDiscount(
+    orderTotals: OrderTotals,
+    discount: number,
+    discountType: DiscountTypes
+  ) {
+    return discountType === DiscountTypesEnum.Amount
+      ? discount
+      : (orderTotals.Total * discount) / 100;
+  }
+
+  
 }

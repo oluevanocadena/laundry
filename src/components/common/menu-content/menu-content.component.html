@@ -3,7 +3,7 @@
         <menu width="100%">
             <menu-item [collapsed]="collapsed" [icon]="'location_away'" [iconType]="'google'" [label]="'Inicio'"
                 [urlBase]="routes.Home" [link]="routes.Home" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'box'" [iconType]="'google'" [label]="'Pedidos'"
+            <menu-item [collapsed]="collapsed" [icon]="'local_mall'" [iconType]="'google'" [label]="'Ordenes'"
                 [urlBase]="routes.Orders" [link]="routes.Orders" [isGroup]="false" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'" [label]="'Clientes'"
                 [urlBase]="routes.Customers" [link]="routes.Customers" [isGroup]="false" [level]="0" />
@@ -21,8 +21,15 @@
 
             <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
 
-            <menu-item [collapsed]="collapsed" [icon]="'bar_chart'" [iconType]="'google'" [label]="'Reportes'"
+            <menu-item [collapsed]="collapsed" [icon]="'show_chart'" [iconType]="'google'" [label]="'Reportes'"
                 [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'analytics'" [iconType]="'google'" [label]="'Analitica'"
+                [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="'receipt'" [iconType]="'google'" [label]="'Facturación'"
+                [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
+
+            <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
+
             <menu-item [collapsed]="collapsed" [icon]="'support_agent'" [iconType]="'google'" [label]="'Soporte'"
                 [urlBase]="routes.Support" [link]="routes.Support" [isGroup]="false" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'settings'" [iconType]="'google'" [label]="'Configuración'"

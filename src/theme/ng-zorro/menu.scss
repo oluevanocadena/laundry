@@ -93,7 +93,10 @@
 .ant-menu-item.ant-menu-item-selected {
     .ant-menu-title-content {
 
-        .menu-item-icon,
+        .menu-item-icon {
+            color: var(--text-01) !important;
+            font-weight: 300 !important;
+        }
         .menu-item-label {
             color: var(--text-01) !important;
             font-weight: 500 !important;

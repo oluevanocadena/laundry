@@ -7,8 +7,8 @@
             </span>
             <span class="fw-500 f-06 f-14" padding="0.25rem 0 0 0">
                 Por ahora solo puedes agregar
-                <span class="fw-600 f-02 f-14">1 sucursal de 1</span>
-                disponible en tu plan.
+                <span class="fw-600 f-02 f-14">1 sucursal de 1 disponible</span>
+                en tu plan.
             </span>
         </grid>
         <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
@@ -75,7 +75,7 @@
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Default ? 'Predeterminado' : 'No predeterminado'"
-                                        [appearance]="item?.Default ? 'success' : 'warning'" [size]="'m'" />
+                                        [appearance]="item?.Default ? 'success' : 'default'" [size]="'m'" />
                                 </grid>
                             </td>
                             <td>

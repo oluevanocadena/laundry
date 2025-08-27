@@ -45,7 +45,7 @@ export class OrdersCartDomain {
       UnitMeasure: product.UnitMeasure,
       Price: product.Price,
       Total: product.Price * quantity,
-      StatusId: OrderItemStatusEnum.NotProccesed,
+      ItemStatusId: OrderItemStatusEnum.NotProccesed,
       ProductId: product.id,
       Deleted: false,
     };

@@ -37,7 +37,6 @@ import {
   OrderTotals,
 } from '@bussiness/orders/orders.interfaces';
 
-
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
 @Injectable({
@@ -66,6 +65,7 @@ export class OrdersDraftFacade extends FacadeBase {
     CustomerId: undefined,
     OrderItems: [],
     Deleted: false,
+    DiscountRate: 0,
     DeliveryType: DeliveryTypesEnum.Pickup,
     DeliveryDate: null,
     DeliveryTime: null,
@@ -156,6 +156,8 @@ export class OrdersDraftFacade extends FacadeBase {
   saveOrder() {
     const now = moment().format('YYYY-MM-DD HH:mm:ss');
     const orderValue = this.order.value!;
+    const currentLocationId =
+      this.sessionService.SessionInfo.value?.Location.id;
     const organizationId = this.sessionService.organizationId;
     const order: Order = {
       id: orderValue.id ?? undefined,
@@ -203,7 +205,7 @@ export class OrdersDraftFacade extends FacadeBase {
       StatusId: orderValue.StatusId ?? OrderStatusEnum.Draft,
 
       OrganizationId: orderValue.OrganizationId ?? organizationId,
-      LocationId: orderValue.LocationId ?? '',
+      LocationId: orderValue.LocationId ?? currentLocationId,
 
       Deleted: orderValue.Deleted ?? false,
     };
@@ -219,13 +221,15 @@ export class OrdersDraftFacade extends FacadeBase {
         UnitMeasureId: item.UnitMeasureId,
         Price: item.Price,
         Total: item.Total,
-        StatusId: item.StatusId ?? OrderItemStatusEnum.NotProccesed,
+        ItemStatusId: item.ItemStatusId ?? OrderItemStatusEnum.NotProccesed,
         ProductId: item.ProductId,
         Deleted: item.Deleted ?? false,
       })) ?? [];
     this.api.updateOrder(order, orderItems).then((order) => {
       if (order) {
+        this.order.value!.id = order.id;
         this.nzMessageService.success('Pedido guardado correctamente');
+        this.router.navigate([routes.Orders]);
       }
     });
   }
@@ -401,10 +405,11 @@ export class OrdersDraftFacade extends FacadeBase {
    */
 
   get canExit(): boolean {
-    const result = !(
-      (this.order.value?.ItemCount ?? 0) > 0 ||
-      this.orderCustomer.value !== null
-    );
+    const result =
+      !(
+        (this.order.value?.ItemCount ?? 0) > 0 ||
+        this.orderCustomer.value !== null
+      ) || this.order.value!.id === undefined;
     console.log('canExit', result);
     return result;
   }

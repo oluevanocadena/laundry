@@ -23,10 +23,10 @@ export interface Order {
   OrderNumber?: string;
 
   StatusId: number;
-  Status?: OrderStatus; // For UI only
+  OrderStatus?: OrderStatus; // For UI only
 
   DiscountType?: DiscountTypes;
-  DiscountRate?: number; //For percentage o amount
+  DiscountRate: number; //For percentage o amount
   Discount: number; //Result of the discount conversion
 
   Taxes: number;
@@ -78,8 +78,8 @@ export interface OrderItem {
   Price: number;
   Total: number; 
 
-  StatusId: number;
-  Status?: OrderItemStatus; // For UI only
+  ItemStatusId: number;
+  ItemStatus?: OrderItemStatus; // For UI only
 
   OrderId?: string;
   ProductId?: string;

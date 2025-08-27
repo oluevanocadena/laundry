@@ -16,6 +16,7 @@ import {
   UnitMeasure,
 } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
+import { SupabaseBuckets, SupabaseTables } from '../../globals/supabase-tables';
 
 @Injectable({
   providedIn: 'root',
@@ -23,15 +24,6 @@ import { SessionService } from '@bussiness/session/services/session.service';
 export class ProductsApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
   public client: SupabaseClient;
-
-  private bucket = 'products';
-  private table = 'Products';
-  private tableLocations = 'Locations';
-  private tableProductLocations = 'ProductLocations';
-  private tableProductCategories = 'ProductCategories';
-  private tableProductImages = 'ProductImages';
-  private tableProductLocationPrice = 'ProductLocationPrices';
-  private tableUnitMeasures = 'UnitMeasures';
 
   products = new SubjectProp<Product[]>([]);
   productCategories = new SubjectProp<ProductCategory[]>([]);
@@ -67,7 +59,7 @@ export class ProductsApiService implements FacadeApiBase {
   getUnitMeasures() {
     this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.tableUnitMeasures)
+        .from(SupabaseTables.UnitMeasures)
         .select('*')
         .eq('Deleted', false);
       if (error) throw error;
@@ -78,7 +70,7 @@ export class ProductsApiService implements FacadeApiBase {
   getProductCategories() {
     this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.tableProductCategories)
+        .from(SupabaseTables.ProductCategories)
         .select('*')
         .eq('Deleted', false);
       if (error) throw error;
@@ -89,13 +81,13 @@ export class ProductsApiService implements FacadeApiBase {
   getProducts(search: string, page: number = 1, pageSize: number = 50) {
     this.executeWithBusy(async () => {
       let query = this.client
-        .from(this.table)
+        .from(SupabaseTables.Products)
         .select(
-          `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
-              ProductCategory: ${this.tableProductCategories}(Name),
-              ProductImages: ${this.tableProductImages}(*),
-              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)),
-              UnitMeasure: ${this.tableUnitMeasures}(*) `
+          `*, ProductLocations: ${SupabaseTables.ProductLocations}(*, Location: ${SupabaseTables.Locations}(*)), 
+              ProductCategory: ${SupabaseTables.ProductCategories}(Name),
+              ProductImages: ${SupabaseTables.ProductImages}(*),
+              ProductLocationPrice: ${SupabaseTables.ProductLocationPrices}(*, Location: ${SupabaseTables.Locations}(*)),
+              UnitMeasure: ${SupabaseTables.UnitMeasures}(*) `
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
@@ -118,13 +110,13 @@ export class ProductsApiService implements FacadeApiBase {
   getProduct(productId: string) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Products)
         .select(
-          `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
-              ProductCategory: ${this.tableProductCategories}(Name), 
-              ProductImages: ${this.tableProductImages}(*),
-              ProductLocationPrice: ${this.tableProductLocationPrice}(*, Location: ${this.tableLocations}(*)),
-              UnitMeasure: ${this.tableUnitMeasures}(Name, UnitType) `
+          `*, ProductLocations: ${SupabaseTables.ProductLocations}(*, Location: ${SupabaseTables.Locations}(*)), 
+              ProductCategory: ${SupabaseTables.ProductCategories}(Name), 
+              ProductImages: ${SupabaseTables.ProductImages}(*),
+              ProductLocationPrice: ${SupabaseTables.ProductLocationPrices}(*, Location: ${SupabaseTables.Locations}(*)),
+              UnitMeasure: ${SupabaseTables.UnitMeasures}(Name, UnitType) `
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
@@ -144,14 +136,14 @@ export class ProductsApiService implements FacadeApiBase {
 
       // Subir con ruta en carpeta "public" (por RLS)
       const { data, error } = await this.client.storage
-        .from(this.bucket)
+        .from(SupabaseBuckets.Products)
         .upload(`public/${uniqueName}`, file);
 
       if (error) throw error;
 
       // Obtener la URL pública
       const { data: publicUrl } = this.client.storage
-        .from(this.bucket)
+        .from(SupabaseBuckets.Products)
         .getPublicUrl(`public/${uniqueName}`);
 
       return publicUrl.publicUrl;
@@ -167,7 +159,7 @@ export class ProductsApiService implements FacadeApiBase {
     return this.executeWithBusy(async () => {
       // 1️⃣ Guardar o actualizar producto
       const { data: productData, error: productError } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Products)
         .upsert(product)
         .select()
         .single();
@@ -179,7 +171,7 @@ export class ProductsApiService implements FacadeApiBase {
       if (locations.length > 0) {
         // 2️⃣ Eliminar relaciones previas para evitar duplicados
         const { error: deleteError } = await this.client
-          .from(this.tableProductLocations)
+          .from(SupabaseTables.ProductLocations)
           .delete()
           .eq('ProductId', productId);
 
@@ -198,7 +190,7 @@ export class ProductsApiService implements FacadeApiBase {
 
         if (productLocations.length) {
           const { error: locationError } = await this.client
-            .from(this.tableProductLocations)
+            .from(SupabaseTables.ProductLocations)
             .upsert(productLocations, { onConflict: 'id' });
 
           if (locationError) throw locationError;
@@ -210,7 +202,7 @@ export class ProductsApiService implements FacadeApiBase {
       if (images.length > 0) {
         // 5️⃣ Eliminar imágenes previas
         const { error: deleteErrorImages } = await this.client
-          .from(this.tableProductImages)
+          .from(SupabaseTables.ProductImages)
           .delete()
           .eq('ProductId', productId);
         if (deleteErrorImages) throw deleteErrorImages;
@@ -224,7 +216,7 @@ export class ProductsApiService implements FacadeApiBase {
         }));
 
         const { error: imageError } = await this.client
-          .from(this.tableProductImages)
+          .from(SupabaseTables.ProductImages)
           .upsert(productImages);
 
         if (imageError) throw imageError;
@@ -235,7 +227,7 @@ export class ProductsApiService implements FacadeApiBase {
       if (locationPrices.length > 0) {
         // 7️⃣ Eliminar precios previos
         const { error: deleteErrorLocationPrice } = await this.client
-          .from(this.tableProductLocationPrice)
+          .from(SupabaseTables.ProductLocationPrices)
           .delete()
           .eq('ProductId', productId);
         if (deleteErrorLocationPrice) throw deleteErrorLocationPrice;
@@ -243,7 +235,7 @@ export class ProductsApiService implements FacadeApiBase {
 
         // 8️⃣ Insertar nuevos precios
         const { error: locationPriceError } = await this.client
-          .from(this.tableProductLocationPrice)
+          .from(SupabaseTables.ProductLocationPrices)
           .upsert(
             locationPrices.map((loc) => ({
               ProductId: productId,
@@ -263,7 +255,7 @@ export class ProductsApiService implements FacadeApiBase {
   deleteProduct(productId: string) {
     return this.executeWithBusy(async () => {
       const { error } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Products)
         .update({ Disabled: true, Deleted: true })
         .eq('id', productId);
       if (error) throw error;

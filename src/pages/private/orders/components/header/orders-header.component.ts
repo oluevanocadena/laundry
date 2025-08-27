@@ -53,7 +53,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get orderStatusAppearance(): TuiAppearanceOptions['appearance'] {
-    return this.facade.order.value?.Status?.Name === 'Draft'
+    return this.facade.order.value?.OrderStatus?.Name === 'Draft'
       ? 'warning'
       : 'success';
   }

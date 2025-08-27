@@ -8,6 +8,7 @@ import { FacadeApiBase } from '@type/facade.base';
 import { SubjectProp } from '@type/subject.type';
 
 import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
+import { SupabaseTables } from '../../globals/supabase-tables';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,6 @@ import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
 export class OrdersApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
   public client: SupabaseClient;
-
-  private table = 'Orders';
-  private tableItems = 'OrderItems';
 
   orders = new SubjectProp<Order[]>([]);
 
@@ -47,16 +45,30 @@ export class OrdersApiService implements FacadeApiBase {
 
   getOrders() {
     this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(this.table).select('*');
+      const { data, error } = await this.client
+        .from(SupabaseTables.Orders)
+        .select(
+          `*, 
+          OrderItems: ${SupabaseTables.OrderItems}(*, 
+            Product: ${SupabaseTables.Products}(*),  
+            ItemStatus: ${SupabaseTables.OrderItemStatuses}(*)
+          ),
+          Customer:${SupabaseTables.Customers}(*),
+          Location:${SupabaseTables.Locations}(*),
+          Organization:${SupabaseTables.Organizations}(*),
+          OrderStatus: ${SupabaseTables.OrderStatuses}(*)`
+        )
+        .order('OrderNumber', { ascending: false });
       if (error) throw error;
-      this.orders.value = data || [];
+
+      this.orders.value = (data as unknown as Order[]) || [];
     }, 'Fetching Orders');
   }
 
   updateOrder(order: Order, orderItems: OrderItem[]) {
     return this.executeWithBusy(async () => {
       const { data: orderSaved, error } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Orders)
         .upsert(order)
         .select()
         .single();
@@ -66,7 +78,7 @@ export class OrdersApiService implements FacadeApiBase {
         orderItems.forEach(async (item) => {
           item.OrderId = orderSaved.id;
           const { data: itemSaved, error } = await this.client
-            .from(this.tableItems)
+            .from(SupabaseTables.OrderItems)
             .upsert(item)
             .select()
             .single();

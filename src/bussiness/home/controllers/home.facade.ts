@@ -47,7 +47,9 @@ export class HomeFacade extends FacadeBase {
   override initialize(): void {
     super.initialize();
     this.validateRoute();
-    this.apiLocations.getLocations();
+    if (this.apiLocations.locations.value?.length === 0) {
+      this.apiLocations.getLocations();
+    }
   }
 
   bindEvents(): void {

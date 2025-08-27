@@ -45,6 +45,11 @@ export class OrdersMonitorFacade extends FacadeBase {
    * UI Events
    */
 
+  onOrderClick(order: Order) {
+    this.draftFacade.order.value = order;
+    this.router.navigate([routes.OrderDraft]);
+  }
+
   onNewOrder() {
     this.draftFacade.clearState();
     this.router.navigate([routes.OrderDraft]);

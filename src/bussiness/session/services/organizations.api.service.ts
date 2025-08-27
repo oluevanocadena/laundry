@@ -46,32 +46,32 @@ export class OrganizationsApiService implements FacadeApiBase {
 
   saveOrganization(organization: Organization) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .upsert(organization)
         .select()
         .single();
       if (error) throw error;
-      return orderSaved;
+      return data;
     });
   }
 
   getOrganizations() {
     this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client.from(this.table).select('*');
+      const { data, error } = await this.client.from(this.table).select('*');
       if (error) throw error;
-      return orderSaved;
+      return data;
     });
   }
 
   getOrganization(id: string) {
     this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .select('*')
         .eq('id', id);
       if (error) throw error;
-      return orderSaved;
+      return data;
     });
   }
 }

@@ -44,45 +44,45 @@ export class AccountsApiService implements FacadeApiBase {
 
   saveAccount(account: Account) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .upsert(account, { onConflict: 'Email' })
         .select()
         .single();
       if (error) throw error;
-      return orderSaved;
+      return data;
     });
   }
 
   getAccounts() {
     this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .select(`*, Organization: ${this.tableOrganizations}(*)`);
       if (error) throw error;
-      return orderSaved;
+      return data;
     });
   }
 
   getAccount(email: string) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .select(`*, Organization: ${this.tableOrganizations}(*)`)
         .eq('Email', email)
         .single();
-      return orderSaved as unknown as Account;
+      return data as unknown as Account;
     });
   }
 
   deleteAccount(id: string) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .update({ Deleted: true })
         .eq('id', id);
       if (error) throw error;
-      return orderSaved;
+      return data;
     });
   }
 }

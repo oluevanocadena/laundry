@@ -29,7 +29,7 @@ export class OrdersApiService implements FacadeApiBase {
     callback: () => Promise<T>,
     message?: string
   ): Promise<T | null> {
-    console.log(`🚀 [Products API] ${message || 'Executing operation'}`);
+    console.log(`🚀 [Orders API] ${message || 'Executing operation'}`);
     this.busy.value = true;
     try {
       const result = await callback();
@@ -47,17 +47,15 @@ export class OrdersApiService implements FacadeApiBase {
 
   getOrders() {
     this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
-        .from(this.table)
-        .select('*');
+      const { data, error } = await this.client.from(this.table).select('*');
       if (error) throw error;
-      this.orders.value = orderSaved || [];
+      this.orders.value = data || [];
     }, 'Fetching Orders');
   }
 
   updateOrder(order: Order, orderItems: OrderItem[]) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data: orderSaved, error } = await this.client
         .from(this.table)
         .upsert(order)
         .select()
@@ -67,13 +65,13 @@ export class OrdersApiService implements FacadeApiBase {
       if (orderSaved.id) {
         orderItems.forEach(async (item) => {
           item.OrderId = orderSaved.id;
-          const { error } = await this.client
+          const { data: itemSaved, error } = await this.client
             .from(this.tableItems)
             .upsert(item)
             .select()
             .single();
           if (error) throw error;
-          return null;
+          return itemSaved;
         });
       } else {
         throw new Error(

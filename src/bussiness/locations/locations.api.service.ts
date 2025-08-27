@@ -49,7 +49,7 @@ export class LocationsApiService implements FacadeApiBase {
 
   getLocations(disabled: boolean | null = null) {
     this.executeWithBusy(async () => {
-      const { orderSaved, error } =
+      const { data, error } =
         disabled === null
           ? await this.client.from(this.table).select('*').eq('Deleted', false)
           : await this.client
@@ -58,26 +58,26 @@ export class LocationsApiService implements FacadeApiBase {
               .eq('OrganizationId', this.sessionService.organizationId)
               .eq('Deleted', false)
               .eq('Disabled', disabled);
-      this.locations.value = orderSaved || [];
+      this.locations.value = data || [];
     }, 'Fetching locations');
   }
 
   getDefaultLocation(organizationId: string) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .select('*')
         .eq('OrganizationId', organizationId)
         .eq('Default', true)
         .eq('Deleted', false)
         .single();
-      return orderSaved;
+      return data;
     }, 'Fetching default location');
   }
 
   async saveLocation(location: Location) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .upsert(location)
         .select()
@@ -88,13 +88,13 @@ export class LocationsApiService implements FacadeApiBase {
         );
         return false;
       }
-      return orderSaved;
+      return data;
     }, 'Saving Location');
   }
 
   async disableLocation(id: string, disabled: boolean) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .update({ Disabled: !disabled })
         .eq('id', id);
@@ -104,13 +104,13 @@ export class LocationsApiService implements FacadeApiBase {
         );
         return false;
       }
-      return orderSaved;
+      return data;
     }, 'Disabling Location');
   }
 
   async deleteLocation(id: string) {
     return this.executeWithBusy(async () => {
-      const { orderSaved, error } = await this.client
+      const { data, error } = await this.client
         .from(this.table)
         .delete()
         .eq('id', id);
@@ -120,7 +120,7 @@ export class LocationsApiService implements FacadeApiBase {
         );
         return false;
       }
-      return orderSaved;
+      return data;
     }, 'Deleting Location');
   }
 }

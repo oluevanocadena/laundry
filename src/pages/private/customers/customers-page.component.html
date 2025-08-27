@@ -23,6 +23,8 @@
                     <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
                     Ordenado por email
                 </button>
+                Longitud
+                {{facade.api.customers.value?.length}}
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
                 <button primary small (click)="facade.onNewCustomer()">
@@ -30,7 +32,6 @@
                 </button>
             </grid>
         </grid>
-
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
             <table>

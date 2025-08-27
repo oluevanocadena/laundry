@@ -24,7 +24,7 @@
     "@angular/ssr": "^19.0.0",
     "@ctrl/tinycolor": "^4.1.0",
     "@ng-web-apis/common": "^4.11.1",
-    "@supabase/supabase-js": "^2.53.0",
+    "@supabase/supabase-js": "^2.56.0",
     "@taiga-ui/addon-charts": "^4.19.0",
     "@taiga-ui/addon-commerce": "^4.19.0",
     "@taiga-ui/addon-doc": "^4.19.0",

@@ -9,7 +9,7 @@
                     <span class="fw-600 f-01 f-18">
                         {{facade.edition ? '' : 'Nuevo pedido'}}
                         <label *ngIf="!busy" [ngClass]="{'skeleton': busy}">
-                            {{orderName || ''}}
+                            {{orderName}}
                         </label>
                     </span>
                     <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">

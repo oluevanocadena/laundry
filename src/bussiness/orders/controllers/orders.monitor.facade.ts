@@ -46,17 +46,12 @@ export class OrdersMonitorFacade extends FacadeBase {
    */
 
   onOrderClick(order: Order) {
-    this.draftFacade.order.value = order;
+    this.draftFacade.selectedOrder.value = order;
     this.router.navigate([routes.OrderDraft]);
   }
 
   onNewOrder() {
     this.draftFacade.clearState();
-    this.router.navigate([routes.OrderDraft]);
-  }
-
-  onEditOrder(order: Order) {
-    this.draftFacade.order.value = order;
     this.router.navigate([routes.OrderDraft]);
   }
 }

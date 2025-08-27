@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
-import { OrderTotals } from '@bussiness/orders/orders.interfaces';
+import { Order, OrderTotals } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 
@@ -45,7 +45,11 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get orderName() {
-    return this.facade.order.value?.OrderNumber || '';
+    return this.order?.OrderNumber ? `#${this.order?.OrderNumber}` : '';
+  }
+
+  get order(): Order | null {
+    return this.facade.order.value;
   }
 
   get orderStatus(): string {

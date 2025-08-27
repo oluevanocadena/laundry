@@ -36,6 +36,7 @@ import {
   OrderItem,
   OrderTotals,
 } from '@bussiness/orders/orders.interfaces';
+import { StorageProp } from '@type/storage.type';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
@@ -113,6 +114,8 @@ export class OrdersDraftFacade extends FacadeBase {
     'pickup'
   );
 
+  selectedOrder = new StorageProp<Order>(null, 'EDITION_SELECTED_ORDER');
+
   constructor(
     public api: OrdersApiService,
     public apiCustomers: CustomersApiService,
@@ -127,6 +130,10 @@ export class OrdersDraftFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
+    if (this.selectedOrder.value) {
+      this.order.value = this.selectedOrder.value;
+      this.edition = true;
+    }
   }
 
   bindEvents() {
@@ -136,7 +143,7 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   clearState() {
-    this.api.orders.value = [];
+    this.selectedOrder.value = null;
   }
 
   submitForm() {}

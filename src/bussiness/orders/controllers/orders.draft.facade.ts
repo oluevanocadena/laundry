@@ -209,7 +209,7 @@ export class OrdersDraftFacade extends FacadeBase {
         '',
 
       Notes: orderValue.Notes ?? this.formGroup.value.notes ?? '',
-      StatusId: orderValue.StatusId ?? OrderStatusEnum.Draft,
+      StatusId: orderValue.StatusId ?? OrderStatusEnum.Pending,
 
       OrganizationId: orderValue.OrganizationId ?? organizationId,
       LocationId: orderValue.LocationId ?? currentLocationId,

@@ -73,23 +73,6 @@ export class StatusBadgeComponent implements OnInit {
             break;
         }
         break;
-      case StatusTypeBadgeEnum.Payment:
-        // OrderPaymentStatusEnum
-        switch (this.statusId) {
-          case 1: //Pending
-            status = 'warning';
-            break;
-          case 2: //Paid
-            status = 'success';
-            break;
-          case 3: //Refunded
-            status = 'error';
-            break;
-          default:
-            status = 'default';
-            break;
-        }
-        break;
       default:
         status = 'default';
         break;

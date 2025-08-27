@@ -5,7 +5,7 @@ import {
   OrderItem,
   OrderTotals,
 } from '../orders.interfaces';
-import { DiscountTypesEnum } from '../orders.enums';
+import { DiscountTypesEnum, OrderItemStatusEnum } from '../orders.enums';
 
 const TAX_RATE_IVA = 0.16;
 
@@ -37,7 +37,6 @@ export class OrdersCartDomain {
     }
 
     const newItem: OrderItem = {
-      id: 0,
       Name: product.Name,
       Description: product.Description,
       ImageUrl: product.ImageUrl,
@@ -46,12 +45,9 @@ export class OrdersCartDomain {
       UnitMeasure: product.UnitMeasure,
       Price: product.Price,
       Total: product.Price * quantity,
-      Tax: 0,
-      Subtotal: product.Price * quantity,
-      StatusId: 1,
-      Deleted: false,
-      createdAt: new Date().toISOString(),
+      StatusId: OrderItemStatusEnum.NotProccesed,
       ProductId: product.id,
+      Deleted: false,
     };
 
     return [...orderItems, newItem];
@@ -108,7 +104,7 @@ export class OrdersCartDomain {
 
   static calculateSubtotal(orderItems: OrderItem[]) {
     return orderItems.reduce(
-      (acc, item) => acc + item.Subtotal * item.Quantity,
+      (acc, item) => acc + item.Price * item.Quantity,
       0
     );
   }

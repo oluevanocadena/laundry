@@ -7,7 +7,7 @@ import { BusyProp } from '@type/busy.type';
 import { FacadeApiBase } from '@type/facade.base';
 import { SubjectProp } from '@type/subject.type';
 
-import { Order } from '@bussiness/orders/orders.interfaces';
+import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,7 @@ export class OrdersApiService implements FacadeApiBase {
   public client: SupabaseClient;
 
   private table = 'Orders';
+  private tableItems = 'OrderItems';
 
   orders = new SubjectProp<Order[]>([]);
 
@@ -46,9 +47,40 @@ export class OrdersApiService implements FacadeApiBase {
 
   getOrders() {
     this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(this.table).select('*');
+      const { orderSaved, error } = await this.client
+        .from(this.table)
+        .select('*');
       if (error) throw error;
-      this.orders.value = data || [];
+      this.orders.value = orderSaved || [];
     }, 'Fetching Orders');
+  }
+
+  updateOrder(order: Order, orderItems: OrderItem[]) {
+    return this.executeWithBusy(async () => {
+      const { orderSaved, error } = await this.client
+        .from(this.table)
+        .upsert(order)
+        .select()
+        .single();
+      if (error) throw error;
+
+      if (orderSaved.id) {
+        orderItems.forEach(async (item) => {
+          item.OrderId = orderSaved.id;
+          const { error } = await this.client
+            .from(this.tableItems)
+            .upsert(item)
+            .select()
+            .single();
+          if (error) throw error;
+          return null;
+        });
+      } else {
+        throw new Error(
+          'Ocurrió un error al guardar el pedido, intente nuevamente.'
+        );
+      }
+      return orderSaved;
+    }, 'Updating Order');
   }
 }

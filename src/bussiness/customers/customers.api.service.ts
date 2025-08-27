@@ -53,19 +53,19 @@ export class CustomersApiService implements FacadeApiBase {
         query = query.ilike('FullName', `%${search}%`);
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
-      const { data, error } = await query;
+      const { orderSaved, error } = await query;
       if (error) throw error;
-      this.customers.value = data;
+      this.customers.value = orderSaved;
     }, 'fetching customers');
   }
 
   async saveCustomer(customer: Customer) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
+      const { orderSaved, error } = await this.client
         .from(this.table)
         .upsert(customer);
       if (error) throw error;
-      return data;
+      return orderSaved;
     }, 'saving customer');
   }
 

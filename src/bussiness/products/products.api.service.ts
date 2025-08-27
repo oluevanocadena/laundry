@@ -66,23 +66,23 @@ export class ProductsApiService implements FacadeApiBase {
 
   getUnitMeasures() {
     this.executeWithBusy(async () => {
-      const { data, error } = await this.client
+      const { orderSaved, error } = await this.client
         .from(this.tableUnitMeasures)
         .select('*')
         .eq('Deleted', false);
       if (error) throw error;
-      this.unitMeasures.value = data || [];
+      this.unitMeasures.value = orderSaved || [];
     }, 'Fetching Unit Measures');
   }
 
   getProductCategories() {
     this.executeWithBusy(async () => {
-      const { data, error } = await this.client
+      const { orderSaved, error } = await this.client
         .from(this.tableProductCategories)
         .select('*')
         .eq('Deleted', false);
       if (error) throw error;
-      this.productCategories.value = data || [];
+      this.productCategories.value = orderSaved || [];
     }, 'Fetching Product Categories');
   }
 
@@ -106,18 +106,18 @@ export class ProductsApiService implements FacadeApiBase {
         );
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
-      const { data, error } = await query.overrideTypes<
+      const { orderSaved, error } = await query.overrideTypes<
         Product[],
         { merge: false }
       >();
       if (error) throw error;
-      this.products.value = data || [];
+      this.products.value = orderSaved || [];
     }, 'Fetching Products');
   }
 
   getProduct(productId: string) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
+      const { orderSaved, error } = await this.client
         .from(this.table)
         .select(
           `*, ProductLocations: ${this.tableProductLocations}(*, Location: ${this.tableLocations}(*)), 
@@ -132,7 +132,7 @@ export class ProductsApiService implements FacadeApiBase {
         .eq('Id', productId)
         .single();
       if (error) throw error;
-      return data || [];
+      return orderSaved || [];
     }, 'Fetching Product Images');
   }
 
@@ -166,7 +166,7 @@ export class ProductsApiService implements FacadeApiBase {
   ) {
     return this.executeWithBusy(async () => {
       // 1️⃣ Guardar o actualizar producto
-      const { data: productData, error: productError } = await this.client
+      const { orderSaved: productData, error: productError } = await this.client
         .from(this.table)
         .upsert(product)
         .select()

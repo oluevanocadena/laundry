@@ -10,15 +10,10 @@ export enum OrderStatusEnum {
 export enum OrderItemStatusEnum {
   NotProccesed = 1,
   Processing = 2,
-  Completed = 3,
-  Cancelled = 4,
-  Refunded = 5,
-}
-
-export enum PaymentStatusEnum {
-  Pending = 1,
-  Paid = 2,
-  Refunded = 3,
+  Delivering = 3,
+  Completed = 4,
+  Cancelled = 5,
+  Refunded = 6,
 }
 
 export enum PaymentMethodsEnum {

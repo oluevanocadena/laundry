@@ -16,6 +16,7 @@ import { Product } from '@bussiness/products/products.interfaces';
 import {
   DeliveryTypesEnum,
   DiscountTypesEnum,
+  OrderItemStatusEnum,
   OrderStatusEnum,
   PaymentMethodsEnum,
 } from '../orders.enums';
@@ -29,9 +30,11 @@ import {
   OrderItem,
   OrderTotals,
 } from '@bussiness/orders/orders.interfaces';
+import { SessionService } from '@bussiness/session/services/session.service';
 import { TuiDay } from '@taiga-ui/cdk';
 import { FormProp } from '@type/form.type';
 import moment from 'moment';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
@@ -53,18 +56,24 @@ export class OrdersDraftFacade extends FacadeBase {
 
   order = new SubjectProp<Order>({
     StatusId: OrderStatusEnum.Draft,
-    Paid: false,
-    PaymentMethod: undefined,
-    PaymentDate: undefined,
-    PaymentCardTransactionNumber: undefined,
     Discount: 0,
     Taxes: 0,
     Subtotal: 0,
     Total: 0,
     ItemCount: 0,
-    CustomerId: 0,
+    CustomerId: undefined,
     OrderItems: [],
     Deleted: false,
+    DeliveryType: DeliveryTypesEnum.Pickup,
+    DeliveryDate: null,
+    DeliveryTime: null,
+    DeliveryCost: 0,
+    DeliveryAddress: '',
+    DeliveryIndications: '',
+    Paid: false,
+    PaymentMethod: undefined,
+    PaymentDate: undefined,
+    PaymentCardTransactionNumber: undefined,
   });
 
   orderItemSelected = new SubjectProp<OrderItem>(null);
@@ -107,7 +116,9 @@ export class OrdersDraftFacade extends FacadeBase {
     public apiCustomers: CustomersApiService,
     public apiProducts: ProductsApiService,
     public facadeProducts: ProductsDraftFacade,
-    public router: Router
+    public nzMessageService: NzMessageService,
+    public router: Router,
+    public sessionService: SessionService
   ) {
     super(api);
   }
@@ -138,6 +149,83 @@ export class OrdersDraftFacade extends FacadeBase {
 
   fetchProducts(search: string) {
     this.apiProducts.getProducts(search, 1, 5);
+  }
+
+  saveOrder() {
+    const now = moment().format('YYYY-MM-DD HH:mm:ss');
+    const orderValue = this.order.value!;
+    const organizationId = this.sessionService.organizationId;
+    const order: Order = {
+      id: orderValue.id ?? undefined,
+      createdAt: orderValue.createdAt ?? now,
+      updatedAt: now,
+      CustomerId: this.orderCustomer.value?.id ?? '',
+
+      DiscountType: this.discountType.value ?? DiscountTypesEnum.Amount,
+      DiscountRate: this.discount.value ?? 0,
+      Discount: this.orderTotals.value?.Discount ?? 0,
+
+      ItemCount: this.orderItems.value?.length ?? 0,
+      Taxes: this.orderTotals.value?.Taxes ?? 0,
+      Subtotal: this.orderTotals.value?.Subtotal ?? 0,
+      Total: this.orderTotals.value?.Total ?? 0,
+
+      Paid: orderValue.Paid ?? false,
+      PaymentMethod: orderValue.PaymentMethod ?? PaymentMethodsEnum.Cash,
+      PaymentDate: orderValue.PaymentDate ?? undefined,
+      PaymentCardTransactionNumber:
+        orderValue.PaymentCardTransactionNumber ?? undefined,
+
+      DeliveryType:
+        this.orderDelivery.value?.DeliveryType ?? DeliveryTypesEnum.Pickup,
+      DeliveryDate:
+        this.orderDelivery.value?.Date ??
+        this.order.value?.DeliveryDate ??
+        null,
+      DeliveryTime:
+        this.orderDelivery.value?.Time ??
+        this.order.value?.DeliveryTime ??
+        null,
+      DeliveryCost:
+        this.orderDelivery.value?.Cost ?? this.order.value?.DeliveryCost ?? 0,
+      DeliveryAddress:
+        this.orderDelivery.value?.Address ??
+        this.order.value?.DeliveryAddress ??
+        '',
+      DeliveryIndications:
+        this.orderDelivery.value?.Indications ??
+        this.order.value?.DeliveryIndications ??
+        '',
+
+      Notes: orderValue.Notes ?? this.formGroup.value.notes ?? '',
+      StatusId: orderValue.StatusId ?? OrderStatusEnum.Draft,
+
+      OrganizationId: orderValue.OrganizationId ?? organizationId,
+      LocationId: orderValue.LocationId ?? '',
+
+      Deleted: orderValue.Deleted ?? false,
+    };
+
+    const orderItems: OrderItem[] =
+      this.orderItems.value?.map((item) => ({
+        id: item.id,
+        createdAt: item.createdAt,
+        Name: item.Name,
+        Description: item.Description,
+        ImageUrl: item.ImageUrl,
+        Quantity: item.Quantity,
+        UnitMeasureId: item.UnitMeasureId,
+        Price: item.Price,
+        Total: item.Total,
+        StatusId: item.StatusId ?? OrderItemStatusEnum.NotProccesed,
+        ProductId: item.ProductId,
+        Deleted: item.Deleted ?? false,
+      })) ?? [];
+    this.api.updateOrder(order, orderItems).then((order) => {
+      if (order) {
+        this.nzMessageService.success('Pedido guardado correctamente');
+      }
+    });
   }
 
   /**
@@ -171,7 +259,6 @@ export class OrdersDraftFacade extends FacadeBase {
       Indications: delivery.deliveryInstructions ?? '',
       Address: this.orderCustomer.value?.Address ?? '',
     };
-    console.log('orderDelivery', this.orderDelivery.value);
     this.calcTotals();
     this.formDelivery.reset();
     this.showAdjustDelivery = false;
@@ -235,6 +322,7 @@ export class OrdersDraftFacade extends FacadeBase {
     this.order.value!.PaymentMethod = paymentMethod;
     this.order.value!.PaymentCardTransactionNumber = transactionNumber;
     this.order.value!.PaymentDate = moment().format('YYYY-MM-DD HH:mm:ss');
+    this.saveOrder();
   }
 
   onRefund() {

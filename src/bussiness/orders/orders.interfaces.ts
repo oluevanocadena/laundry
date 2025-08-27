@@ -2,26 +2,28 @@
 // Models
 // ::::::::::::::::::::::::::::::::::::::
 
-import { UnitMeasure } from '@bussiness/products/products.interfaces';
+import { Product, UnitMeasure } from '@bussiness/products/products.interfaces';
 import { Customer } from '../customers/customers.interfaces';
+import { Organization } from '@bussiness/session/organizations.interface';
 
 export interface Delivery {
   DeliveryType: DeliveryTypes;
   Date: Date | string | null;
   Time: string | null;
-  Indications?: string; 
-  Cost: number; 
+  Indications?: string;
+  Cost: number;
   Address: string;
 }
 
 export interface Order {
   id?: string;
   createdAt?: string;
+  updatedAt?: string;
 
   OrderNumber?: string;
 
   StatusId: number;
-  Status?: OrderStatus;
+  Status?: OrderStatus; // For UI only
 
   DiscountType?: DiscountTypes;
   DiscountRate?: number; //For percentage o amount
@@ -39,17 +41,30 @@ export interface Order {
   PaymentDate: Date | string | undefined;
   PaymentCardTransactionNumber: string | undefined;
 
-  CustomerId: number;
+  CustomerId: string | undefined;
   Customer?: Customer; // For UI only
 
-  OrderItems: OrderItem[]; // For UI only
+  OrderItems?: OrderItem[]; // For UI only
 
+  DeliveryType: DeliveryTypes;
+  DeliveryDate: Date | string | null;
+  DeliveryTime: string | null;
+  DeliveryIndications?: string;
+  DeliveryCost: number;
+  DeliveryAddress: string;
+
+  LocationId?: string;
+  Location?: Location; // For UI only
+
+  OrganizationId?: string;
+  Organization?: Organization; // For UI only
+  
   Deleted: boolean;
 }
 
 export interface OrderItem {
-  id: number;
-  createdAt: string;
+  id?: number;
+  createdAt?: string;
 
   Name: string;
   Description: string;
@@ -61,47 +76,38 @@ export interface OrderItem {
   UnitMeasure?: UnitMeasure; // Only for UI
 
   Price: number;
-  Total: number;
-  Tax: number;
-  Subtotal: number;
+  Total: number; 
 
   StatusId: number;
-  Status?: OrderItemStatus;
+  Status?: OrderItemStatus; // For UI only
 
   OrderId?: string;
   ProductId?: string;
+  Product?: Product; // For UI only
 
   Deleted: boolean;
 }
 
 export interface OrderStatus {
   id: number;
-  createdAt: string;
-
   Name: string;
-
   Deleted: boolean;
 }
 
 export interface OrderItemStatus {
   id: number;
-  createdAt: string;
-
   Name: string;
-
   Deleted: boolean;
 }
 
- 
 export interface OrderTotals {
-  DiscountRate?: number; //Stores percentage (0-1) or fixed amount depending on discount type   
+  DiscountRate?: number; //Stores percentage (0-1) or fixed amount depending on discount type
   Discount: number; //Result of the discount conversion
 
   Delivery: number;
   Taxes: number;
   Subtotal: number;
   Total: number; //Total after discount and taxes
-    
 }
 
 export type PaymentMethods = 'cash' | 'card';

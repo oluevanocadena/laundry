@@ -42,20 +42,20 @@
                     </grid>
                     <grid [direction]="'row'" [gap]="[16,16]">
                         <form-input [label]="'Número de autorización'" [type]="'text'"
-                            [placeholder]="'Número de autorización'" [formControlName]="'transactionNumber'" />
+                            [placeholder]="'Número de autorización'" [formControlName]="'transactionNumber'"
+                            [required]="true" />
                     </grid>
                 </grid>
             </label>
         </form>
         <grid [direction]="'column'" [align]="'center-left'">
-            <span class="f-13 fw-400 f-04 f-lh-17">
-                Haz clic en el botón
+            <span class="f-13 fw-500 f-04 f-lh-17">
+                Al hacer clic en el botón
                 <label class=" f-success">
                     recibir pago
                 </label>
-                para crear la orden y cambiar el estado a
-                <label class="f-success">
-                    pagada
+                se <label class="f-info">
+                    creará la orden y cambiará el estado a pagada*
                 </label>.
             </span>
         </grid>

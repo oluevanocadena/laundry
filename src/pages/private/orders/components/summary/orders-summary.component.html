@@ -64,3 +64,22 @@
 
 <orders-collect-payment [(show)]="facade.showCollectPaymentModal" />
 <orders-adjust-discount [(show)]="facade.showAdjustDiscountModal" />
+
+
+
+<modal-confirm [(show)]="facade.showRefundModal" (onConfirm)="facade.onRefund()">
+    <span title>
+        Reembolsar pago
+    </span>
+    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">
+        <span class="f-14 fw-600 f-01">
+            ¿Estás seguro de querer reembolsar el pago?
+        </span>
+        <span class="f-14 f-lh-17 fw-400 f-05">
+            Al reembolsar el pedido podrás cambiar el método de pago y
+            <label class="f-error">
+                realizar modificaciones al pedido
+            </label> según sea necesario.
+        </span>
+    </grid>
+</modal-confirm>

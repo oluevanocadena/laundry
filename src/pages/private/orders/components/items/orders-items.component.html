@@ -13,7 +13,7 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">
-                <button secondary small (click)="facade.showSearchProduct = true">
+                <button *ngIf="canSearchProduct" secondary small (click)="facade.showSearchProduct = true">
                     Buscar producto
                 </button>
             </grid>
@@ -51,7 +51,7 @@
                             {{item.Price | numeralFormat: '$0,0.00'}}
                         </span>
                     </grid>
-                    <grid *ngIf="canProcessOrder === false" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'"
+                    <grid *ngIf="canSearchProduct" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'"
                         height="100%">
                         <button small icon outline icon-google (click)="facade.openAdjustQuantity(item)">
                             <span class="material-symbols-outlined f-16 f-05">
@@ -71,7 +71,7 @@
                 <button *ngIf="canProcessOrder === true" success small (click)="facade.showSearchProduct = true">
                     Procesar partidas
                 </button>
-                <button *ngIf="canProcessOrder === false" secondary small (click)="facade.showSearchProduct = true">
+                <button *ngIf="canSearchProduct" secondary small (click)="facade.showSearchProduct = true">
                     Buscar producto
                 </button>
             </grid>

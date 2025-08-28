@@ -40,11 +40,11 @@
                 <thead>
                     <tr>
                         <th> </th>
-                        <th>Order #</th>
-                        <th width="120px">Fecha</th>
+                        <th width="90px">Order #</th>
+                        <th width="100px">Fecha</th>
+                        <th width="100px">Estatus</th>
                         <th>Cliente</th>
-                        <th>Estado del pedido</th>
-                        <th>Estado de pago</th>
+                        <th width="90px">Pago</th>
                         <th>Tipo de entrega</th>
                         <th>Partidas</th>
                         <th>Total</th>
@@ -79,19 +79,25 @@
                             </td>
                             <td>{{item.OrderNumber}}</td>
                             <td>{{(item.createdAt || '') | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
+                            <td>
+                                <grid [direction]="'column'" [align]="'center-center'">
+                                    <status-badge [label]="statusName(item)" [statusId]="item?.StatusId"
+                                        [type]="'order'" [size]="'m'" />
+                                </grid>
+                            </td>
                             <td>{{item.Customer?.FullName}}</td>
                             <td>
-                                <status-badge [label]="statusName(item)" [statusId]="item?.StatusId" [type]="'order'"
-                                    [size]="'m'" />
+                                <grid [direction]="'column'" [align]="'center-center'">
+                                    <status-badge [label]="item?.Paid ? 'Pagado' : 'Sin pago'"
+                                        [appearance]="item?.Paid ? 'success' : 'error'" [size]="'m'" />
+                                </grid>
                             </td>
                             <td>
-                                <status-badge [label]="item?.Paid ? 'Pagado' : 'Pendiente'"
-                                    [appearance]="item?.Paid ? 'success' : 'warning'" [size]="'m'" />
-                            </td>
-                            <td>
-                                <status-badge
-                                    [label]="item?.DeliveryType === 'delivery' ? 'Entrega a domicilio' : 'Recolección en sucursal'"
-                                    [appearance]="'info'" [type]="'orderItems'" [size]="'m'" />
+                                <grid [direction]="'column'" [align]="'center-center'">
+                                    <status-badge
+                                        [label]="item?.DeliveryType === 'delivery' ? 'Entrega a domicilio' : 'Recolección en sucursal'"
+                                        [appearance]="'default'" [type]="'orderItems'" [size]="'m'" />
+                                </grid>
                             </td>
                             <td>
                                 {{item.ItemCount| numeralFormat: '0,0'}}

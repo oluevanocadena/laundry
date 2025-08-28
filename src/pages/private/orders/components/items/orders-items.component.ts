@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+import {
+  OrderItemStatusEnum,
+  OrderStatusEnum,
+} from '@bussiness/orders/orders.enums';
+import { Order } from '@bussiness/orders/orders.interfaces';
 import { Product } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperPage } from '@components/common/helper.page';
@@ -48,8 +53,25 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
     return this.facade.order.value?.Paid === false;
   }
 
+  get order(): Order | null {
+    return this.facade.order.value;
+  }
+
   get canProcessOrder(): boolean {
-    return this.isPendingPayment === false && this.itemsCount > 0 && this.facade.edition === true;
+    return (
+      this.isPendingPayment === false &&
+      this.itemsCount > 0 &&
+      this.facade.edition === true &&
+      this.order?.StatusId === OrderStatusEnum.Pending
+    );
+  }
+
+  get canSearchProduct(): boolean {
+    return (
+      (this.isPendingPayment === true ||
+        this.order?.StatusId === OrderStatusEnum.Draft) &&
+      this.order?.StatusId !== OrderStatusEnum.Cancelled
+    );
   }
 
   /**

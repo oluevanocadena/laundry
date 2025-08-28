@@ -58,6 +58,7 @@ export class OrdersDraftFacade extends FacadeBase {
   showCollectPaymentModal: boolean = false;
   showCustomerCreateModal: boolean = false;
   showAdjustDelivery: boolean = false;
+  showCancelOrderModal: boolean = false;
 
   order = new SubjectProp<Order>(OrderEmpty);
 
@@ -113,7 +114,6 @@ export class OrdersDraftFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
-    console.log('👉🏽 initialize', this.selectedOrder.value);
     if (this.selectedOrder.value) {
       this.order.value = this.selectedOrder.value;
       this.edition = true;
@@ -159,9 +159,13 @@ export class OrdersDraftFacade extends FacadeBase {
 
     this.api.updateOrder(order, orderItems).then((order) => {
       if (order) {
-        this.order.value!.id = order.id;
-        this.nzMessageService.success('Pedido guardado correctamente');
-        this.router.navigate([routes.Orders]);
+        if (this.edition === false) {
+          this.router.navigate([routes.Orders]);
+        } else {
+          this.selectedOrder.value = order;
+          this.fillOrderItems();
+          this.nzMessageService.success('Pedido guardado correctamente');
+        }
       }
     });
   }
@@ -229,7 +233,6 @@ export class OrdersDraftFacade extends FacadeBase {
 
   onSelectDelivery() {
     const delivery = this.formDelivery.value;
-    console.log('orderDelivery value', delivery);
     const date = delivery.deliveryDate;
     this.orderDelivery.value = {
       DeliveryType: delivery.deliveryType as DeliveryTypes,
@@ -312,6 +315,7 @@ export class OrdersDraftFacade extends FacadeBase {
     this.order.value!.PaymentMethod = undefined;
     this.order.value!.PaymentCardTransactionNumber = undefined;
     this.order.value!.PaymentDate = undefined;
+    this.submitForm();
   }
 
   onApplyDiscount() {
@@ -334,6 +338,12 @@ export class OrdersDraftFacade extends FacadeBase {
     this.order.value!.Discount = 0;
     this.calcTotals();
     this.showAdjustDiscountModal = false;
+  }
+
+  onCancelOrder() {
+    this.order.value!.StatusId = OrderStatusEnum.Cancelled;
+    this.submitForm();
+    this.showCancelOrderModal = false;
   }
 
   goToProducts() {
@@ -375,13 +385,16 @@ export class OrdersDraftFacade extends FacadeBase {
     this.showCustomerModal = true;
   }
 
+  openCancelOrderModal() {
+    this.showCancelOrderModal = true;
+  }
+
   /**
    * Getters
    */
 
   get canExit(): boolean {
     const result = this.order.value?.StatusId !== OrderStatusEnum.Draft;
-    console.log('canExit', result);
     return result;
   }
 }

@@ -1,4 +1,4 @@
-<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'" [confirmStyle]="'danger'"
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="confirmLabel" [confirmStyle]="'danger'"
     (onConfirm)="confirm()" (onClose)="close()" [title]="'13'">
     <span class="f-16 fw-600 f-01" title>
         <ng-content select="[title]"></ng-content>

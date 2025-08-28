@@ -65,6 +65,28 @@ export class OrdersApiService implements FacadeApiBase {
     }, 'Fetching Orders');
   }
 
+  getOrder(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(SupabaseTables.Orders)
+        .select(
+          `*, 
+          OrderItems: ${SupabaseTables.OrderItems}(*, 
+            Product: ${SupabaseTables.Products}(*),  
+            ItemStatus: ${SupabaseTables.OrderItemStatuses}(*)
+          ),
+          Customer:${SupabaseTables.Customers}(*),
+          Location:${SupabaseTables.Locations}(*),
+          Organization:${SupabaseTables.Organizations}(*),
+          OrderStatus: ${SupabaseTables.OrderStatuses}(*)`
+        )
+        .eq('id', id)
+        .single();
+      if (error) throw error;
+      return data as unknown as Order;
+    }, 'Fetching Order');
+  }
+
   updateOrder(order: Order, orderItems: OrderItem[]) {
     return this.executeWithBusy(async () => {
       const { data: orderSaved, error } = await this.client
@@ -90,7 +112,7 @@ export class OrdersApiService implements FacadeApiBase {
           'Ocurrió un error al guardar el pedido, intente nuevamente.'
         );
       }
-      return orderSaved;
+      return this.getOrder(orderSaved.id);
     }, 'Updating Order');
   }
 }

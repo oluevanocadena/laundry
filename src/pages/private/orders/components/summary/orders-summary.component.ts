@@ -62,6 +62,7 @@ export class OrdersSummaryComponent extends HelperPage implements OnInit {
       this.paid &&
       this.facade.edition === true &&
       this.order?.StatusId !== OrderStatusEnum.Cancelled &&
+      this.order?.StatusId !== OrderStatusEnum.Completed &&
       this.order?.StatusId !== OrderStatusEnum.Refunded
     );
   }

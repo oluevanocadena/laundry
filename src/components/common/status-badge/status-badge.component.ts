@@ -16,7 +16,7 @@ export class StatusBadgeComponent implements OnInit {
   @Input() statusId?: number = 0;
   @Input() type: StatusTypeBadge = 'order';
   @Input() size: 'm' | 's' | 'l' | 'xl' = 'l';
-  @Input() appearance: TuiAppearanceOptions['appearance'] = 'warning';
+  @Input() appearance?: TuiAppearanceOptions['appearance'];
 
   constructor() {}
 
@@ -32,7 +32,6 @@ export class StatusBadgeComponent implements OnInit {
     let status: TuiAppearanceOptions['appearance'];
     switch (this.type) {
       case StatusTypeBadgeEnum.Order:
-        // OrderStatusEnum
         switch (this.statusId) {
           case OrderStatusEnum.Draft: //Draft
             status = 'warning';
@@ -46,7 +45,7 @@ export class StatusBadgeComponent implements OnInit {
           case OrderStatusEnum.Completed: //Completed
             status = 'success';
             break;
-          case OrderStatusEnum.Cancelled: //Cancelled
+          case OrderStatusEnum.Cancelled: //Cancelled 
             status = 'error';
             break;
           case OrderStatusEnum.Refunded: //Refunded
@@ -79,7 +78,7 @@ export class StatusBadgeComponent implements OnInit {
       default:
         status = 'default';
         break;
-    }
+    } 
     return status;
   }
 

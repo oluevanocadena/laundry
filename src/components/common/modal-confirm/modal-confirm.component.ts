@@ -19,6 +19,8 @@ export class ModalConfirmComponent implements OnInit {
   @Output() onConfirm = new EventEmitter<void>();
   @Output() onClose = new EventEmitter<void>();
 
+  @Input() confirmLabel = 'Confirmar';
+
   constructor() {}
 
   /**

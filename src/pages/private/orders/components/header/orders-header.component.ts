@@ -80,12 +80,27 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
     return this.facade.order.value?.Paid === false && (this.total ?? 0) > 0;
   }
 
+  get saveLabelButton(): string {
+    switch (this.order?.StatusId) {
+      case OrderStatusEnum.Draft:
+        return 'Crear y cobrar pedido';
+      case OrderStatusEnum.Pending:
+        if (this.paid) {
+          return 'Guardar pedido';
+        } else {
+          return 'Guardar y cobrar pedido';
+        }
+      default:
+        return 'Desconocido';
+    }
+  }
+
   get orderStatusName(): string {
     switch (this.order?.StatusId) {
       case OrderStatusEnum.Draft:
         return 'Borrador';
       case OrderStatusEnum.Pending:
-        return 'Pendiente';
+        return 'Pendiente de procesar';
       case OrderStatusEnum.Completed:
         return 'Completado';
       case OrderStatusEnum.Cancelled:

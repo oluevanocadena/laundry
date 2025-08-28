@@ -97,6 +97,16 @@ export class OrdersCollectPaymentComponent extends HelperPage {
     return this.facade.orderTotals.value;
   }
 
+  get orderId() {
+    return this.facade.order.value?.OrderNumber ?? null;
+  }
+
+  get collectPaymentLabel() {
+    return this.paymentMethod.value === PaymentMethodsEnum.None
+      ? `${this.orderId ? 'Guardar' : 'Crear'} orden sin pago`
+      : 'Recibir pago';
+  }
+
   /**
    * Life cycle method
    */

@@ -1,4 +1,4 @@
-<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Recibir pago'" [confirmStyle]="'success'"
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="collectPaymentLabel" [confirmStyle]="'success'"
     (onConfirm)="collectPayment()" (onClose)="close()" [disableConfirm]="!canSave">
     <span title>
         Recibir pago

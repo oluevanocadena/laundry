@@ -16,7 +16,10 @@ import {
   UnitMeasure,
 } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { SupabaseBuckets, SupabaseTables } from '../../globals/constants/supabase-tables.constants';
+import {
+  SupabaseBuckets,
+  SupabaseTables,
+} from '../../globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +43,6 @@ export class ProductsApiService implements FacadeApiBase {
     callback: () => Promise<T>,
     message?: string
   ): Promise<T | null> {
-    console.log(`🚀 [Products API] ${message || 'Executing operation'}`);
     this.busy.value = true;
     try {
       const result = await callback();

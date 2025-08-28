@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { DeliveryTypesEnum } from '@bussiness/orders/orders.enums';
+import {
+  DeliveryTypesEnum,
+  OrderStatusEnum,
+} from '@bussiness/orders/orders.enums';
 
 @Component({
   selector: 'orders-delivery',
@@ -54,6 +57,14 @@ export class OrdersDeliveryComponent implements OnInit {
           this.facade.orderCustomer.value?.Address
         )}`
       : '';
+  }
+
+  get canChangeDelivery(): boolean {
+    return (
+      this.facade.order.value?.StatusId !== OrderStatusEnum.Cancelled &&
+      this.facade.order.value?.StatusId !== OrderStatusEnum.Completed &&
+      this.facade.order.value?.StatusId !== OrderStatusEnum.Refunded
+    );
   }
 
   /**

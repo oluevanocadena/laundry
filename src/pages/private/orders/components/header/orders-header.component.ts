@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import moment from 'moment';
 
@@ -9,7 +6,6 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
 import { Order, OrderTotals } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
-import { TuiAppearanceOptions } from '@taiga-ui/core';
 
 @Component({
   selector: 'orders-header',
@@ -52,14 +48,12 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
     return this.facade.order.value;
   }
 
-  get orderStatus(): string {
-    return OrderStatusEnum[this.facade.order.value?.StatusId ?? 0] || 'Pending';
+  get paid(): boolean {
+    return this.facade.order.value?.Paid ?? false;
   }
 
-  get orderStatusAppearance(): TuiAppearanceOptions['appearance'] {
-    return this.facade.order.value?.OrderStatus?.Name === 'Draft'
-      ? 'warning'
-      : 'success';
+  get orderStatus(): string {
+    return OrderStatusEnum[this.facade.order.value?.StatusId ?? 0] || 'Pending';
   }
 
   get canSave(): boolean {
@@ -68,10 +62,6 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
       this.itemsCount > 0 &&
       !!this.facade.orderCustomer.value?.id
     );
-  }
-
-  get paid(): boolean {
-    return this.facade.order.value?.Paid ?? false;
   }
 
   get orderTotals(): OrderTotals | null {
@@ -88,6 +78,21 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
 
   get canPaid(): boolean {
     return this.facade.order.value?.Paid === false && (this.total ?? 0) > 0;
+  }
+
+  get orderStatusName(): string {
+    switch (this.order?.StatusId) {
+      case OrderStatusEnum.Draft:
+        return 'Borrador';
+      case OrderStatusEnum.Pending:
+        return 'Pendiente';
+      case OrderStatusEnum.Completed:
+        return 'Completado';
+      case OrderStatusEnum.Cancelled:
+        return 'Cancelado';
+      default:
+        return 'Desconocido';
+    }
   }
 
   /**

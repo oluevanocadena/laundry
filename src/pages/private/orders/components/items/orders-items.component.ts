@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
 import { Product } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperPage } from '@components/common/helper.page';
@@ -46,7 +45,11 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
   }
 
   get isPendingPayment() {
-    return this.facade.order.value?.StatusId === OrderStatusEnum.Pending;
+    return this.facade.order.value?.Paid === false;
+  }
+
+  get canProcessOrder(): boolean {
+    return this.isPendingPayment === false && this.itemsCount > 0 && this.facade.edition === true;
   }
 
   /**

@@ -1,4 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {
+  OrderItemStatusEnum,
+  OrderStatusEnum,
+} from '@bussiness/orders/orders.enums';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 
 @Component({
@@ -30,22 +34,22 @@ export class StatusBadgeComponent implements OnInit {
       case StatusTypeBadgeEnum.Order:
         // OrderStatusEnum
         switch (this.statusId) {
-          case 1: //Draft
+          case OrderStatusEnum.Draft: //Draft
             status = 'warning';
             break;
-          case 2: //Pending
+          case OrderStatusEnum.Pending: //Pending
             status = 'warning';
             break;
-          case 3: //Processing
+          case OrderStatusEnum.Processing: //Processing
             status = 'info';
             break;
-          case 4: //Completed
+          case OrderStatusEnum.Completed: //Completed
             status = 'success';
             break;
-          case 5: //Cancelled
+          case OrderStatusEnum.Cancelled: //Cancelled
             status = 'error';
             break;
-          case 6: //Refunded
+          case OrderStatusEnum.Refunded: //Refunded
             status = 'error';
             break;
           default:
@@ -54,18 +58,17 @@ export class StatusBadgeComponent implements OnInit {
         }
         break;
       case StatusTypeBadgeEnum.OrderItems:
-        // OrderItemsStatusEnum
         switch (this.statusId) {
-          case 1: //NotProccesed
+          case OrderItemStatusEnum.NotProccesed: //NotProccesed
             status = 'warning';
             break;
-          case 2: //Processing
+          case OrderItemStatusEnum.Processing: //Processing
             status = 'info';
             break;
-          case 3: //Completed
+          case OrderItemStatusEnum.Completed: //Completed
             status = 'success';
             break;
-          case 4: //Cancelled
+          case OrderItemStatusEnum.Cancelled: //Cancelled
             status = 'error';
             break;
           default:

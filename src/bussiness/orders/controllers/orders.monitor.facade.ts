@@ -51,7 +51,8 @@ export class OrdersMonitorFacade extends FacadeBase {
   }
 
   onNewOrder() {
-    this.draftFacade.clearState();
+    console.log('👉🏽 onNewOrder');
+    this.draftFacade.selectedOrder.value = null;
     this.router.navigate([routes.OrderDraft]);
   }
 }

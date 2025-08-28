@@ -8,7 +8,7 @@ import { FacadeApiBase } from '@type/facade.base';
 import { SubjectProp } from '@type/subject.type';
 
 import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
-import { SupabaseTables } from '../../globals/supabase-tables';
+import { SupabaseTables } from '../../globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',

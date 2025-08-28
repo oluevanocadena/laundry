@@ -16,10 +16,12 @@
                         <tui-loader *ngIf="busy" />
                         <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
                             [appearance]="'warning'" />
-                        <status-badge *ngIf="!busy && facade.edition === true" [label]="orderStatus" [size]="'s'"
-                            [appearance]="orderStatusAppearance" />
-                        <status-badge [label]="paid ? 'Pagado' : 'Pendiente de pago'" [size]="'s'"
-                            [appearance]="paid ? 'success': 'warning'" />
+                        <ng-container *ngIf="!busy && facade.edition === true">
+                            <status-badge [label]="orderStatusName" [size]="'s'" [statusId]="order?.StatusId"
+                                [type]="'order'" />
+                            <status-badge [label]="paid ? 'Pagado' : 'Pendiente de pago'" [size]="'s'"
+                                [appearance]="paid ? 'success': 'warning'" />
+                        </ng-container>
                     </grid>
                 </grid>
                 <span class="f-13 fw-400 f-06 f-lh-13">
@@ -37,9 +39,6 @@
                 {{ total> 0 ? (total | numeralFormat: '$0,0.00') : '' }}
             </span>
         </button>
-        <button *ngIf="paid" (click)="facade.openRefund()" danger small>
-            Reembolsar pago
-        </button>
         <button *ngIf="facade.edition === true" outline small icon flex [disabled]="busy" [showLoader]="busy"
             nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
             <span class="material-symbols-outlined f-20 f-lh-22 f-01 fw-400">
@@ -52,8 +51,8 @@
                     Acciones
                 </span>
                 <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.showDeleteModal = true">
-                    <tui-icon icon="@tui.trash" class="f-12 fw-100 f-error" />
-                    Eliminar
+                    <tui-icon icon="@tui.x" class="f-12 fw-100 f-error" />
+                    Cancelar pedido
                 </button>
             </grid>
         </nz-dropdown-menu>
@@ -70,10 +69,10 @@
             ¿Estás seguro de querer reembolsar el pago?
         </span>
         <span class="f-14 f-lh-17 fw-400 f-05">
-            Al reembolsar el pago, se actualizará el estado de la orden a
-            <label class="f-warning">
-                pendiente
-            </label>.
+            Al reembolsar el pedido, se seguira mostrando en tu lista de pedidos, pero dejará de formar parte de la
+            <label class="f-error">
+                estadistica contable
+            </label> de ingresos.
         </span>
     </grid>
 </modal-confirm>

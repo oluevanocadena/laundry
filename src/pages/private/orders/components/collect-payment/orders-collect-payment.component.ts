@@ -85,16 +85,12 @@ export class OrdersCollectPaymentComponent extends HelperPage {
    */
 
   get canSave() {
-    if (this.paymentMethod.value === PaymentMethodsEnum.Cash) {
-      return true;
-    } else if (
-      this.paymentMethod.value === PaymentMethodsEnum.Card &&
-      this.transactionNumber.value
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    return (
+      this.paymentMethod.value === PaymentMethodsEnum.Cash ||
+      this.paymentMethod.value === PaymentMethodsEnum.None ||
+      (this.paymentMethod.value === PaymentMethodsEnum.Card &&
+        this.transactionNumber.value)
+    );
   }
 
   get orderTotals() {

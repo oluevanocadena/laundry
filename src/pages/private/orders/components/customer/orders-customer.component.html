@@ -60,7 +60,7 @@
 
             </grid>
             <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                <button secondary small flex (click)="facade.openCustomerModal()">
+                <button *ngIf="canChangeCustomer" secondary small flex (click)="facade.openCustomerModal()">
                     Cambiar cliente
                 </button>
             </grid>

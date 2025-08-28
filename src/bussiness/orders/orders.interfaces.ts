@@ -8,8 +8,8 @@ import { Organization } from '@bussiness/session/organizations.interface';
 
 export interface Delivery {
   DeliveryType: DeliveryTypes;
-  Date: Date | string | null;
-  Time: string | null;
+  Date: Date | string | undefined;
+  Time: string | undefined;
   Indications?: string;
   Cost: number;
   Address: string;
@@ -110,6 +110,6 @@ export interface OrderTotals {
   Total: number; //Total after discount and taxes
 }
 
-export type PaymentMethods = 'cash' | 'card';
+export type PaymentMethods = 'cash' | 'card' | 'none';
 export type DiscountTypes = 'percentage' | 'amount';
 export type DeliveryTypes = 'pickup' | 'delivery';

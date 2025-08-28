@@ -185,13 +185,18 @@ input {
     }
 }
 
-form {
-    &[tuiGroup]>*:first-child {
-        border: 1px solid var(--border) !important;
-    }
+form[tuigroup] {
+    label {
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: var(--border) !important;
 
-    &[tuiGroup]>*:last-child {
-        border: 1px solid var(--border) !important;
-    }
+        &:first-child {
+            border-width: 1px 1px 0 1px !important;
+        }
 
+        &:last-child {
+            border-width: 0 1px 1px 1px !important;
+        }
+    }
 }

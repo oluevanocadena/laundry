@@ -3,6 +3,7 @@ import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
+import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
 
 @Component({
   selector: 'orders-customer',
@@ -30,7 +31,6 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
    * Getters
    */
 
-
   get hadCustomer(): boolean {
     return this.facade.orderCustomer.value !== null;
   }
@@ -41,6 +41,10 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
 
   get customer() {
     return this.facade.orderCustomer.value;
+  }
+
+  get canChangeCustomer(): boolean {
+    return this.facade.order.value?.StatusId === OrderStatusEnum.Draft;
   }
 
   get customerStatus(): string {

@@ -2,8 +2,6 @@
 
     <grid [gap]="[16,12]" [direction]="'column'" [align]="'center-left'">
         <span class="f-14 fw-500 f-05 f-lh-12">Partidas del pedido</span>
-        <status-badge *ngIf="itemsCount > 0" [size]="'s'" [label]="itemsCount.toString() + ' partidas'"
-            [appearance]="'success'" />
     </grid>
 
     <ng-template tuiAccordionItemContent>
@@ -23,7 +21,7 @@
         <grid *ngIf="itemsCount > 0" [direction]="'row'" [gap]="[16,16]" [padding]="'0.5rem 0.25rem 0'">
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" height="100%">
                 <span class="f-14 fw-500 f-06 f-lh-17">
-                    Productos:
+                    Articulos:
                 </span>
             </grid>
             <grid *ngFor="let item of orderItems" [gap]="[0,16]" [direction]="'column'"
@@ -53,7 +51,8 @@
                             {{item.Price | numeralFormat: '$0,0.00'}}
                         </span>
                     </grid>
-                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                    <grid *ngIf="canProcessOrder === false" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'"
+                        height="100%">
                         <button small icon outline icon-google (click)="facade.openAdjustQuantity(item)">
                             <span class="material-symbols-outlined f-16 f-05">
                                 add
@@ -69,7 +68,10 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">
-                <button secondary small (click)="facade.showSearchProduct = true">
+                <button *ngIf="canProcessOrder === true" success small (click)="facade.showSearchProduct = true">
+                    Procesar partidas
+                </button>
+                <button *ngIf="canProcessOrder === false" secondary small (click)="facade.showSearchProduct = true">
                     Buscar producto
                 </button>
             </grid>

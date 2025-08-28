@@ -19,6 +19,7 @@ export enum OrderItemStatusEnum {
 export enum PaymentMethodsEnum {
   Cash = 'cash',
   Card = 'card',
+  None = 'none',
 }
 
 export enum DiscountTypesEnum {

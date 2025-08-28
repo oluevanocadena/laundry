@@ -7,7 +7,7 @@ import moment from 'moment';
 })
 export class DateFormatPipe implements PipeTransform {
   transform(
-    date: string,
+    date: string | Date | undefined,
     format: string = 'YYYY-MM-DD',
     showElapsed: boolean = false,
     inputFormat: string | undefined = undefined,

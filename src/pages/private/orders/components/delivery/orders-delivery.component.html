@@ -39,7 +39,7 @@
                                 Fecha de entrega:
                             </span>
                             <span class="f-14 fw-400 f-02 f-lh-14">
-                                {{orderDelivery?.Date}}
+                                {{ orderDelivery?.Date ? (orderDelivery?.Date | dateFormat: 'DD/MM/YYYY') : 'Sin fecha'}}
                             </span>
                         </grid>
                         <grid [direction]="'row'" [gap]="[8,8]">
@@ -82,7 +82,8 @@
 
 
                 <grid [direction]="'column'" [align]="'center-right'">
-                    <button (click)="facade.openAdjustDelivery()" secondary small [disabled]="canAdjustDelivery">
+                    <button *ngIf="canChangeDelivery" (click)="facade.openAdjustDelivery()" secondary small
+                        [disabled]="canAdjustDelivery">
                         Cambiar entrega
                     </button>
                 </grid>

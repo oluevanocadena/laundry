@@ -27,6 +27,22 @@
                 </grid>
             </label>
             <label tuiBlock [tuiBlock]="'s'">
+                <input formControlName="paymentMethod" tuiRadio type="radio" value="none" size="s" />
+                <grid [direction]="'row'" [gap]="[0,16]">
+                    <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
+                        <span class="material-symbols-outlined f-18 f-02">
+                            block
+                        </span>
+                        <span class="f-14 fw-600 f-02 f-lh-17">
+                            Sin cobro
+                        </span>
+                    </grid>
+                    <span class="f-13 fw-400 f-06 f-lh-17">
+                        El pago se realizará manualmente en la entrega.
+                    </span>
+                </grid>
+            </label>
+            <label tuiBlock [tuiBlock]="'s'">
                 <input formControlName="paymentMethod" tuiRadio type="radio" value="card" size="s" />
                 <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0 0 0.5rem 0'">
                     <grid [direction]="'row'" [gap]="[0,0]">

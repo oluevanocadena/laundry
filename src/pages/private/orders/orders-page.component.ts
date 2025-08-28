@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
 import { Order } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
@@ -9,7 +9,7 @@ import { HelperPage } from '@components/common/helper.page';
   templateUrl: './orders-page.component.html',
   styleUrls: ['./orders-page.component.scss'],
 })
-export class OrdersPageComponent extends HelperPage implements OnInit {
+export class OrdersPageComponent extends HelperPage implements AfterViewInit {
   constructor(public facade: OrdersMonitorFacade) {
     super();
   }
@@ -41,7 +41,7 @@ export class OrdersPageComponent extends HelperPage implements OnInit {
    * Lifecycle
    */
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.facade.initialize();
   }
 }

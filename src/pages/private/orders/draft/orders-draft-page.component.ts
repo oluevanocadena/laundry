@@ -12,7 +12,7 @@ import { HelperPage } from '@components/common/helper.page';
 })
 export class OrdersDraftPageComponent
   extends HelperPage
-  implements OnInit, CanDeactivate<OrdersDraftPageComponent>
+  implements CanDeactivate<OrdersDraftPageComponent>
 {
   constructor(public facade: OrdersDraftFacade) {
     super();
@@ -29,14 +29,17 @@ export class OrdersDraftPageComponent
   /**
    * Life cycle method
    */
-  ngOnInit() {
+  ngAfterViewInit() {
     this.facade.initialize();
   }
 
   canDeactivate(): boolean {
-    console.log(this.facade.canExit);
     if (this.facade.canExit === false) {
-      return confirm('Tienes cambios sin guardar. ¿Seguro que quieres salir?');
+      const response = confirm(
+        'Tienes cambios sin guardar. ¿Seguro que quieres salir?'
+      );
+      this.facade.clearState();
+      return response;
     }
     return true;
   }

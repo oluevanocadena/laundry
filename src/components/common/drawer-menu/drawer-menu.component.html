@@ -1,33 +1,37 @@
-<nz-drawer [nzClosable]="false" [(nzVisible)]="show" nzPlacement="right" [nzTitle]="undefined"
+<nz-drawer [nzClosable]="false" [(nzVisible)]="show" nzPlacement="left" [nzTitle]="undefined"
     (nzOnClose)="closeShortMenu()" [nzWidth]="isMobile ? '100%' : '300px'">
     <ng-container *nzDrawerContent>
-        <grid [direction]="'row'" [gap]="[0,16]" [template]="'1fr max-content'" height="100%">
+        <grid [direction]="'row'" [gap]="[0,16]" [template]="'1fr max-content'" [padding]="'1rem'" height="100%" class="brdr-right">
             <grid [gap]="[24,16]" [direction]="'row'" [template]="'max-content 1fr'" height="100%" width="100%">
-                <grid [direction]="'column'" [template]="'1fr max-content'" padding="0 0 0 0.5rem">
-                    <grid [direction]="'column'" [align]="'center-left'">
+                <grid [direction]="'column'" [template]="'1fr max-content'">
+                    <grid [gap]="[0,16]" [direction]="'column'" [align]="'center-left'">
                         <logo />
+                        <span class="f-14 fw-500 f-lh-13 f-08">|</span>
+                        <grid [gap]="[0,16]" [direction]="'column'" [align]="'center-left'">
+                            <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                                <span class="material-symbols-outlined f-20 f-lh-13 f-08 fill-icon">
+                                    business_center
+                                </span>
+                                <span class="f-14 fw-500 f-lh-13 f-02">
+                                    {{facade.organizationName}}
+                                </span>
+                            </grid>
+                        </grid>
                     </grid>
                     <grid [direction]="'column'" [align]="'center-right'">
-                        <button (click)="closeShortMenu()" tuiButton tuiRoundButton tuiIconButton
-                            [appearance]="'secondary'" [size]="'s'">
-                            <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
+                        <button (click)="closeShortMenu()" outline xsmall icon-google>
+                            <tui-icon icon="@tui.x" class="f-14 fw-600 f-06" />
                         </button>
                     </grid>
                 </grid>
-                <menu-content />              
-            </grid>
-            <grid [direction]="'column'" [template]="'1fr 1fr'" padding="0 0.5rem">
-                <grid [gap]="[16,8]" [direction]="'column'" [align]="'center-left'" height="100%">
-                    <span class="f-12 fw-400 f-02">Version 
-                        <span class="f-12 fw-600 ">
-                            {{system.version}}
-                        </span>
-                    </span>
+
+                <grid [gap]="[16,16]"  [direction]="'column'" [align]="'center-left'">
+                    <top-bar-organization />
+                    <status-badge [appearance]="'warning'" [label]="'Gratuito'"></status-badge>
                 </grid>
-                <grid [gap]="[16,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                    <img src="/assets/beta.webp" alt="logo" class="h-32" />
-                </grid>
+                <menu-content />
             </grid>
+
         </grid>
     </ng-container>
 </nz-drawer>

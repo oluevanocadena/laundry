@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HomeFacade } from "@bussiness/home/controllers/home.facade";
+import { HelperPage } from "../helper.page";
 
 @Component({
   selector: "top-bar-organization",
@@ -8,10 +9,10 @@ import { HomeFacade } from "@bussiness/home/controllers/home.facade";
   styleUrls: ["./top-bar-organization.component.scss"]
 })
 
-export class TopBarOrganizationComponent implements OnInit {
+export class TopBarOrganizationComponent extends HelperPage implements OnInit  {
   
   constructor(public facade: HomeFacade) { 
-    
+    super();
   }
 
   ngOnInit() {

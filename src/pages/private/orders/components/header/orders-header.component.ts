@@ -110,6 +110,13 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
     }
   }
 
+  get canShowMoreMenu(): boolean {
+    return (
+      this.facade.edition === true &&
+      this.order?.StatusId !== OrderStatusEnum.Cancelled
+    );
+  }
+
   /**
    * Life cycle method
    */

@@ -9,6 +9,8 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./top-bar.component.scss'],
 })
 export class TopBarComponent extends HelperPage {
+  showShortMenu: boolean = false;
+
   //form
   form = new FormGroup({
     search: new FormControl(''),
@@ -24,6 +26,18 @@ export class TopBarComponent extends HelperPage {
   /**
    * UI Events
    */
+
+  /**
+   * UI Events
+   */
+  //Flag Management
+  openMenu() {
+    this.showShortMenu = true;
+  }
+
+  closeMenu() {
+    this.showShortMenu = false;
+  }
 
   /**
    * Lifecycle

@@ -8,8 +8,7 @@ import { HelperPage } from '../helper.page';
   styleUrls: ['./top-bar-buttons.component.scss'],
 })
 export class TopBarButtonsComponent extends HelperPage implements OnInit {
-  //Flag Management
-  showShortMenu: boolean = false;
+  
   showNotifications: boolean = false;
 
   @Input() loading: boolean = false;
@@ -20,15 +19,7 @@ export class TopBarButtonsComponent extends HelperPage implements OnInit {
 
   /**
    * UI Events
-   */
-
-  openMenu() {
-    this.showShortMenu = true;
-  }
-
-  closeMenu() {
-    this.showShortMenu = false;
-  }
+   */ 
 
   openNotifications() {
     this.showNotifications = true;

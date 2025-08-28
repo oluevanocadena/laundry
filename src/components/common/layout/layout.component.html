@@ -1,8 +1,8 @@
 <grid [gap]="[0,24]" [direction]="'column'" [template]="'1fr'" width="100%" class="bg-01">
     <top-bar width="100%" />
-    <grid [direction]="'column'" [template]="'max-content 1fr'">
+    <grid [direction]="'column'" [template]="isMobileOrTablet ? '1fr' :'max-content 1fr'">
         <side-menu *ngIf="isMobileOrTablet === false" />
-        <grid [height]="'calc(100vh - 49px)'" class="baseline scroll-v">
+        <grid [height]="'calc(100vh - 49px)'" width="100%" class="baseline scroll-v">
             <ng-content></ng-content>
         </grid>
     </grid>

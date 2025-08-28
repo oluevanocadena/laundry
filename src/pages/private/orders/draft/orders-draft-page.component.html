@@ -1,10 +1,10 @@
 <layout>
     <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content max-content'"
-        [padding]="isMobile ? '1.5rem 1rem':'1.5rem'" height="100%">
+        [padding]="isMobile ? '1.5rem 1rem':'1.5rem'" height="100%" width="100%">
         <orders-header />
 
         <grid [gap]="[24,24]" [direction]="'column'"
-            [template]="isMobileOrTablet ? '1fr': isLargeDesktop? '1fr minmax(650px, 0.25fr)': '1fr 350px'"
+            [template]="isLargeDesktop ? '1fr minmax(450px, 350px)': isMobileOrTablet ? '1fr': '1fr 350px'"
             height="fit-content">
             <grid [direction]="'row'" [gap]="[24,24]">
                 <orders-items />

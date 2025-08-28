@@ -1,16 +1,18 @@
 <grid [direction]="'column'" [template]="'1fr'" height="100%">
     <grid [gap]="[8,16]" [direction]="'column'" [align]="'top-right'" height="100%">
-        <button *ngIf="isMobileOrTablet === true" (click)="openMenu()" tuiButton tuiRoundButton tuiIconButton
-            [appearance]="'flat'" [size]="'s'">
-            <tui-icon icon="@tui.menu" class="f-18 fw-600 f-04" />
-        </button>
-        <button outline small rounded>
-            Feddback
+
+        <button *ngIf="isMobileOrTablet === false" outline small rounded>
+            Danos tu opinión
         </button>
         <grid [direction]="'column'" [align]="'center-left'">
             <button outline rounded small icon-google prefix (click)="openNotifications()">
                 <span class="material-symbols-outlined f-20 f-lh-16 f-06">
                     help
+                </span>
+            </button>
+            <button *ngIf="isMobileOrTablet === true" outline rounded small icon-google middle (click)="openNotifications()">
+                <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                    feedback
                 </span>
             </button>
             <button outline rounded small icon-google middle (click)="openNotifications()">
@@ -32,5 +34,4 @@
 </grid>
 
 
-<drawer-menu-options [(show)]="showShortMenu" ngSkipHydration></drawer-menu-options>
 <drawer-notifications [(show)]="showNotifications" ngSkipHydration></drawer-notifications>

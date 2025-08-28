@@ -6,6 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { HelperPage } from '../helper.page';
+import { HomeFacade } from '@bussiness/home/controllers/home.facade';
 @Component({
   selector: 'drawer-menu-options',
   standalone: false,
@@ -13,8 +14,6 @@ import { HelperPage } from '../helper.page';
   styleUrls: ['./drawer-menu.component.scss'],
 })
 export class DrawerMenuComponent extends HelperPage {
-  
-
   //Flag Management
 
   private _show: boolean = false;
@@ -26,37 +25,15 @@ export class DrawerMenuComponent extends HelperPage {
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //Arrays
-  menuOptions: IBoardDrawerMenuComponent[] = [
-    { id: 1, label: 'Customer', show: true },
-    { id: 2, label: 'Products', show: true },
-    { id: 3, label: 'Orders', show: true },
-    { id: 4, label: 'Notifications', show: false },
-    { id: 5, label: 'Settings', show: true },
-  ];
-
-  constructor() {
+ 
+  constructor(public facade: HomeFacade) {
     super();
   }
-
-  @HostListener('window:resize', ['$event'])
-  override onResize(event: UIEvent): void {
-    this.validateOptions();
-    super.onResize(event);
-  }
-
+ 
   /**
    * UI Events
    */
-
-  validateOptions() {
-    if (this.isMobile === false) {
-      const hiddenOptions = new Set([3, 4, 5]);
-      this.menuOptions.forEach((option) => {
-        option.show = !hiddenOptions.has(option.id);
-      });
-    }
-  }
+ 
 
   openShortMenu() {
     this.show = true;
@@ -71,8 +48,7 @@ export class DrawerMenuComponent extends HelperPage {
   /**
    * Life Cycle
    */
-  ngOnInit() {
-    this.validateOptions();
+  ngOnInit() { 
   }
 }
 

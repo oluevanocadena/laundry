@@ -36,7 +36,7 @@
         <button *ngIf="!paid" (click)="facade.openCollectPayment()" primary small [disabled]="canSave === false">
             {{saveLabelButton}}
         </button>
-        <button *ngIf="facade.edition === true" outline small icon flex [disabled]="busy" [showLoader]="busy"
+        <button *ngIf="canShowMoreMenu" outline small icon flex [disabled]="busy" [showLoader]="busy"
             nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
             <span class="material-symbols-outlined f-20 f-lh-22 f-01 fw-400">
                 more_vert

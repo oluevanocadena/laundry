@@ -1,17 +1,20 @@
 <grid [gap]="[0,16]" [direction]="'column'" [align]="'center-left'">
-    <span class="f-14 fw-500 f-lh-13 f-08">|</span>
-    <grid [gap]="[0,16]" [direction]="'column'" [align]="'center-left'">
-        <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
-            <span class="material-symbols-outlined f-20 f-lh-13 f-08 fill-icon">
-                business_center
-            </span>
-            <span class="f-14 fw-500 f-lh-13 f-02">
-                {{facade.organizationName}}
-            </span>
+    <ng-container *ngIf="isMobileOrTablet === false">
+        <span class="f-14 fw-500 f-lh-13 f-08">|</span>
+        <grid [gap]="[0,16]" [direction]="'column'" [align]="'center-left'">
+            <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                <span class="material-symbols-outlined f-20 f-lh-13 f-08 fill-icon">
+                    business_center
+                </span>
+                <span class="f-14 fw-500 f-lh-13 f-02">
+                    {{facade.organizationName}}
+                </span>
+            </grid>
+            <status-badge [appearance]="'warning'" [label]="'Gratuito'"></status-badge>
         </grid>
-        <status-badge [appearance]="'warning'" [label]="'Gratuito'"></status-badge>
-    </grid>
-    <span class="f-14 fw-500 f-lh-13 f-08">|</span>
+        <span class="f-14 fw-500 f-lh-13 f-08">|</span>
+    </ng-container>
+
     <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
         <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
             <span class="material-symbols-outlined f-22 f-lh-13 f-08 fill-icon">

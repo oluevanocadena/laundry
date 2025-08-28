@@ -16,6 +16,22 @@
         </span>
         <form tuiGroup [orientation]="'vertical'" [collapsed]="false" [formGroup]="facade.formDelivery">
             <label tuiBlock tuiBlock="s">
+                <input formControlName="deliveryType" tuiRadio type="radio" value="showroom" size="s" />
+                <grid [direction]="'row'" [gap]="[4,16]">
+                    <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                        <span class="material-symbols-outlined f-20 f-02">
+                            barcode
+                        </span>
+                        <span class="f-13 fw-600 f-02 f-lh-17">
+                            Venta de mostrador
+                        </span>
+                    </grid>
+                    <span class="f-13 fw-400 f-06 f-lh-17">
+                        Vende el producto en mostrador no necesita preparación.
+                    </span>
+                </grid>
+            </label>
+            <label tuiBlock tuiBlock="s">
                 <input formControlName="deliveryType" tuiRadio type="radio" value="pickup" size="s" />
                 <grid [direction]="'row'" [gap]="[4,16]">
                     <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
@@ -45,7 +61,7 @@
                     <grid [direction]="'row'" [gap]="[16,16]">
                         <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
                             <span class="f-13 fw-400 f-06 f-lh-17">
-                                Envío a domicilio en la dirección:
+                                Envío a domicilio a domicilio del cliente.
                             </span>
                         </grid>
                     </grid>
@@ -75,7 +91,7 @@
             <span class="f-13 fw-400 f-06 f-lh-17">
                 Da clic en el botón
                 <label class="fw-500 f-success">
-                    ajustar entrega
+                    Ajustar Entrega
                 </label>
                 para ajustar la entrega del pedido.
             </span>

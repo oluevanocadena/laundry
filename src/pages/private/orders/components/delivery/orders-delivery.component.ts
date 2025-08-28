@@ -42,9 +42,16 @@ export class OrdersDeliveryComponent implements OnInit {
   }
 
   get deliveryTypeText() {
-    return this.deliveryType === DeliveryTypesEnum.Pickup
-      ? 'Recolección en sucursal'
-      : 'Envío a domicilio';
+    switch (this.deliveryType) {
+      case DeliveryTypesEnum.Pickup:
+        return 'Recolección en sucursal';
+      case DeliveryTypesEnum.Delivery:
+        return 'Envío a domicilio';
+      case DeliveryTypesEnum.Showroom:
+        return 'Venta de mostrador';
+      default:
+        return '';
+    }
   }
 
   get canAdjustDelivery() {

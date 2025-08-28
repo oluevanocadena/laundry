@@ -55,8 +55,8 @@ export class OrdersDomain {
         order.PaymentCardTransactionNumber ?? undefined,
 
       DeliveryType: orderDelivery.DeliveryType ?? DeliveryTypesEnum.Pickup,
-      DeliveryDate: orderDelivery.Date ?? order.DeliveryDate ?? null,
-      DeliveryTime: orderDelivery.Time ?? order.DeliveryTime ?? null,
+      DeliveryDate: orderDelivery.Date || order.DeliveryDate || null,
+      DeliveryTime: orderDelivery.Time || order.DeliveryTime || null,
       DeliveryCost: orderDelivery.Cost ?? order.DeliveryCost ?? 0,
       DeliveryAddress: orderDelivery.Address ?? order.DeliveryAddress ?? '',
       DeliveryIndications:

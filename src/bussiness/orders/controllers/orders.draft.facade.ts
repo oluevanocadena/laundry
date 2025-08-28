@@ -38,8 +38,8 @@ import {
 } from '@bussiness/orders/orders.interfaces';
 import { StorageProp } from '@type/storage.type';
 import { OrderEmpty } from '../../../globals/constants/orders.constants';
-import { OrdersDomain } from '../domains/orders.domain';
 import { TuiTimeDomain } from '../../../globals/domains/tui-time.domain';
+import { OrdersDomain } from '../domains/orders.domain';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
@@ -95,7 +95,7 @@ export class OrdersDraftFacade extends FacadeBase {
   deliveryType = new FormProp<DeliveryTypes>(
     this.formDelivery,
     'deliveryType',
-    'pickup'
+    'showroom'
   );
 
   selectedOrder = new StorageProp<Order>(null, 'EDITION_SELECTED_ORDER');
@@ -158,15 +158,16 @@ export class OrdersDraftFacade extends FacadeBase {
     );
 
     this.api.updateOrder(order, orderItems).then((order) => {
-      if (order) {
-        if (this.edition === false) {
-          this.router.navigate([routes.Orders]);
-        } else {
-          this.selectedOrder.value = order;
-          this.fillOrderItems();
-          this.nzMessageService.success('Pedido guardado correctamente');
-        }
+      if (!order) return;
+      console.log(this.order.value?.StatusId, order.StatusId);
+      if (this.order.value?.StatusId === OrderStatusEnum.Draft) {
+        this.router.navigate([routes.Orders]);
+        return;
       }
+
+      this.selectedOrder.value = order;
+      this.fillOrderItems();
+      this.nzMessageService.success('Pedido guardado correctamente');
     });
   }
 
@@ -203,10 +204,8 @@ export class OrdersDraftFacade extends FacadeBase {
       discountType: order?.DiscountType ?? DiscountTypesEnum.Amount,
       notes: order?.Notes ?? '',
     });
-    this.deliveryCost.value = order?.DeliveryCost ?? 0;
-    this.deliveryType.value = order?.DeliveryType ?? DeliveryTypesEnum.Pickup;
     this.orderDelivery.value = {
-      DeliveryType: order?.DeliveryType ?? DeliveryTypesEnum.Pickup,
+      DeliveryType: order?.DeliveryType ?? DeliveryTypesEnum.Showroom,
       Date: order?.DeliveryDate
         ? (TuiDay.fromLocalNativeDate(
             moment(order.DeliveryDate).toDate()
@@ -233,7 +232,6 @@ export class OrdersDraftFacade extends FacadeBase {
 
   onSelectDelivery() {
     const delivery = this.formDelivery.value;
-    const date = delivery.deliveryDate;
     this.orderDelivery.value = {
       DeliveryType: delivery.deliveryType as DeliveryTypes,
       Date: TuiTimeDomain.castTuiDay(delivery.deliveryDate as TuiDay),
@@ -267,7 +265,7 @@ export class OrdersDraftFacade extends FacadeBase {
         Date: undefined,
         Time: undefined,
         Cost: 0,
-        DeliveryType: DeliveryTypesEnum.Pickup,
+        DeliveryType: DeliveryTypesEnum.Showroom,
       };
     }
   }
@@ -394,7 +392,7 @@ export class OrdersDraftFacade extends FacadeBase {
    */
 
   get canExit(): boolean {
-    const result = this.order.value?.StatusId !== OrderStatusEnum.Draft;
+    const result = this.order.value?.StatusId === OrderStatusEnum.Draft;
     return result;
   }
 }

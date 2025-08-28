@@ -185,7 +185,7 @@ input {
     }
 }
 
-form[tuigroup] {
+form[tuigroup][data-orientation=vertical] {
     label {
         border-width: 1px !important;
         border-style: solid !important;
@@ -197,6 +197,23 @@ form[tuigroup] {
 
         &:last-child {
             border-width: 0 1px 1px 1px !important;
+        }
+    }
+
+}
+
+form[tuigroup][data-orientation=horizontal] {
+    label {
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: var(--border) !important;
+
+        &:first-child {
+            border-width: 1px 1px 1px 1px !important;
+        }
+
+        &:last-child {
+            border-width: 1px 1px 1px 0 !important;
         }
     }
 }

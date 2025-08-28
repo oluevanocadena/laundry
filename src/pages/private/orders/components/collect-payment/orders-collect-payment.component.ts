@@ -1,15 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { PaymentMethodsEnum } from '@bussiness/orders/orders.enums';
+import {
+  DeliveryTypesEnum,
+  PaymentMethodsEnum,
+} from '@bussiness/orders/orders.enums';
 import { PaymentMethods } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { FormProp } from '@type/form.type';
@@ -25,6 +21,7 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
+
   }
   get show() {
     return this._show;

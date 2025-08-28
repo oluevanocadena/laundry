@@ -1,10 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { HelperPage } from '@components/common/helper.page';
-import { Order } from '@bussiness/orders/orders.interfaces';
+import { Component, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'orders-notes',

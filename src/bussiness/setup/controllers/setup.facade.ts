@@ -9,8 +9,8 @@ import { Organization } from '@bussiness/session/organizations.interface';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SessionInfo } from '@bussiness/session/session.interface';
 import { system } from '@environments/environment';
-import { FacadeBase } from '@type/facade.base';
-import { SubjectProp } from '@type/subject.type';
+import { FacadeBase } from '../../../globals/types/facade.base';
+import { SubjectProp } from '../../../globals/types/subject.type';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
@@ -114,7 +114,7 @@ export class SetupFacade extends FacadeBase {
           throw new Error('Error al crear la cuenta');
         }
 
-        const location = await this.locationsApi.saveLocation({
+        const response = await this.locationsApi.saveLocation({
           Name: this.formGroupLocation.value.name!,
           Phone: this.formGroupLocation.value.phone!,
           Country: country,
@@ -129,17 +129,17 @@ export class SetupFacade extends FacadeBase {
           OrganizationId: organization.id!,
         });
 
-        if (!location) {
+        if (response?.success === false) {
           throw new Error('Error al crear la ubicación');
         }
 
         this.sessionService.SessionInfo.value = {
           ...this.sessionService.SessionInfo.value,
           Account: {
-            ...account, 
+            ...account,
             Organization: organization,
           },
-          Location: location,
+          Location: response?.response,
         } as SessionInfo;
 
         this.nzMessageService.success(

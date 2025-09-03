@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeFacade } from '@bussiness/home/controllers/home.facade';
 import { ProductsMonitorFacade } from '@bussiness/products/controllers/products.monitor.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { UtilsDomain } from '@utils/utils.domain';
+import { UtilsDomain } from '../../../globals/utils/utils.domain';
 
 @Component({
   selector: 'app-products-page',
@@ -12,7 +13,7 @@ import { UtilsDomain } from '@utils/utils.domain';
 export class ProductsPageComponent extends HelperPage implements OnInit {
   utils = UtilsDomain;
 
-  constructor(public facade: ProductsMonitorFacade) {
+  constructor(public facade: ProductsMonitorFacade, public homeFacade: HomeFacade) {
     super();
   }
 
@@ -25,6 +26,11 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
   /**
    * Getters
    */ 
+
+  get totalStores() {
+    return this.homeFacade.locations.value?.length ?? 0;
+  }
+
   /**
    * Lifecycle
    */

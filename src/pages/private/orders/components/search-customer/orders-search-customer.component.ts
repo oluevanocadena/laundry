@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { FormProp } from '@type/form.type';
+import { FormProp } from '../../../../../globals/types/form.type';
 import { HelperTablePage } from '@components/common/helper.table.page';
 
 @Component({

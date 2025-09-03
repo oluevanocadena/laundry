@@ -50,9 +50,13 @@ export interface Order {
   DeliveryDate: Date | string | null;
   DeliveryTime: string | null;
   DeliveryIndications?: string;
-  DeliveryCost: number;
-  DeliveryAddress: string;
+  DeliveryCost?: number;
+  DeliveryAddress?: string;
+  DeliveryTrackingNumber?: string;
+  DeliveryTransportCompany?: string;
 
+  NotifyDelivery?: boolean;  //For UI only
+  
   LocationId?: string;
   Location?: Location; // For UI only
 

@@ -21,6 +21,8 @@
 @use 'theme/taiga/accordion.scss' as *;
 @use 'theme/taiga/select.scss' as *;
 @use 'theme/taiga/modals.scss' as *;
+@use 'theme/taiga/checkbox.scss' as *;
+@use 'theme/taiga/stepper.scss' as *;
 
 // Ng-Zorro
 @use 'theme/ng-zorro/modal.scss' as *;
@@ -30,4 +32,6 @@
 @use 'theme/ng-zorro/segments.scss' as *;
 @use 'theme/ng-zorro/drawer.scss' as *;
 @use 'theme/ng-zorro/messages.scss' as *;
+@use 'theme/ng-zorro/tooltip.scss' as *;
+@use 'theme/ng-zorro/radio.scss' as *;
  

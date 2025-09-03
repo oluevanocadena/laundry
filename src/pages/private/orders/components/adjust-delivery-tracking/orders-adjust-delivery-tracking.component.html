@@ -1,0 +1,30 @@
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'" [confirmStyle]="'success'"
+    (onConfirm)="confirm()" (onClose)="close()" [disableConfirm]="false">
+    <span title>
+        Seguimiento de entrega
+    </span>
+    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">      
+
+        <grid [direction]="'row'" [gap]="[16,16]">
+            <span class="f-14 fw-500 f-02">
+                INFORMACIÓN DE SEGUIMIENTO DE ENTREGA
+            </span>
+            <span class="f-14 fw-400 f-06">
+                Ajusta el número de seguimiento de la entrega o la empresa de transporte.
+            </span>
+            <form [formGroup]="formGroup" width="100%">
+                <grid [direction]="'row'" [gap]="[16,16]">
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'" [width]="'100%'">
+                        <form-input [label]="'Número de seguimiento'" [type]="'text'" [placeholder]="'Numero de guía'"
+                            formControlName="deliveryTrackingNumber" />
+                        <form-input [label]="'Empresa transportista'" [type]="'text'"
+                            [placeholder]="'Empresa transportista'" formControlName="deliveryTransportCompany" />
+                    </grid>
+                    <form-input [label]="'¿Notificar al cliente sobre el estatus de su pedido?'" [type]="'checkbox'"
+                        formControlName="notifyDelivery" />
+                </grid>
+            </form>
+
+        </grid>
+    </grid>
+</modal>

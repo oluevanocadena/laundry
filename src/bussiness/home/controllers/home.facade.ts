@@ -10,8 +10,9 @@ import { SessionApiService } from '@bussiness/session/services/session.api.servi
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SessionInfo } from '@bussiness/session/session.interface';
 import { UISelectOption } from '@components/form-input/form-input.component';
-import { FacadeBase } from '@type/facade.base';
-import { FormProp } from '@type/form.type';
+import { FacadeBase } from '../../../globals/types/facade.base';
+import { FormProp } from '../../../globals/types/form.type';
+import { SubjectProp } from '../../../globals/types/subject.type';
 
 const routesNotAllowed = [routes.OrderDraft, routes.OrderDetails];
 
@@ -31,6 +32,7 @@ export class HomeFacade extends FacadeBase {
   ];
 
   period = new FormProp(this.formGroup, 'period', '1');
+  locations = new SubjectProp<Location[]>([]);
 
   canChangeLocation = true;
 
@@ -47,8 +49,11 @@ export class HomeFacade extends FacadeBase {
   override initialize(): void {
     super.initialize();
     this.validateRoute();
-    if (this.apiLocations.locations.value?.length === 0) {
-      this.apiLocations.getLocations();
+    if (this.locations.value?.length === 0) {
+      this.apiLocations.getLocations().then((locations) => {
+        console.log('👉🏽 locations', locations);
+        this.locations.value = locations;
+      });
     }
   }
 

@@ -57,8 +57,8 @@
         </span>
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
             class="{{hadError ? 't-input_error' : ''}}">
-            <input [placeholder]="placeholder" autocomplete="tel" [mask]="countryCode + '### ###-##-##'" tuiInputPhone
-                [formControl]="valueControl" />
+            <input [formControl]="valueControl" type="text" autocomplete="tel" [mask]="countryCode + '### ###-##-##'"
+                [placeholder]="placeholder" tuiInputPhone />
         </tui-textfield>
     </grid>
 
@@ -202,5 +202,21 @@
             <input [attr.placeholder]="placeholder" tuiTextfield [formControl]="valueControl"
                 (input)="onInputSearch($event.target)" />
         </tui-textfield>
+    </grid>
+
+
+    <!-- Checkbox -->
+    <grid *ngSwitchCase="'checkbox'" [gap]="[6, 16]" [direction]="'column'"
+        [template]="orientation === 'horizontal' ? 'max-content 1fr' : 'fr'">
+
+        <label>
+            <grid [gap]="[6, 8]" [direction]="'column'" [align]="'center-left'">
+                <input size="s" tuiCheckbox type="checkbox" [formControl]="valueControl" />
+                <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                    {{ label }}
+                    <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+                </span>
+            </grid>
+        </label>
     </grid>
 </ng-container>

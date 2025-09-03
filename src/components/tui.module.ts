@@ -15,6 +15,7 @@ import {
   TuiIcon,
   TuiInitialsPipe,
   TuiLoader,
+  TuiNotification,
   TuiNumberFormat,
   TuiPopup,
   TuiRoot,
@@ -36,8 +37,11 @@ import {
   TuiDataListDropdownManager,
   TuiDrawer,
   TuiFade,
+  TuiInputDate,
+  TuiInputDateRange,
   TuiInputNumber,
   TuiInputPhone,
+  TuiInputTime,
   TuiLineClamp,
   TuiPagination,
   TuiPassword,
@@ -45,11 +49,9 @@ import {
   TuiSegmented,
   TuiSelect,
   TuiSkeleton,
+  TuiStepper,
   TuiSwitch,
   TuiTextarea,
-  TuiInputDate,
-  TuiInputDateRange,
-  TuiInputTime,
 } from '@taiga-ui/kit';
 import {
   TuiInputModule,
@@ -57,6 +59,7 @@ import {
   TuiMultiSelectModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/legacy';
+
 
 @NgModule({
   imports: [
@@ -75,6 +78,8 @@ import {
     ...TuiInputDate,
     ...TuiInputDateRange,
     ...TuiInputTime,
+    ...TuiStepper,
+    TuiNotification,
     TuiAppearance,
     TuiAutoColorPipe,
     TuiAvatar,
@@ -129,6 +134,8 @@ import {
     ...TuiInputDate,
     ...TuiInputDateRange,
     ...TuiInputTime,
+    ...TuiStepper,
+    TuiNotification,
     TuiAppearance,
     TuiAutoColorPipe,
     TuiAvatar,

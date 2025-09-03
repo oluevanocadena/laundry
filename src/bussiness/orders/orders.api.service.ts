@@ -3,9 +3,9 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { supabase } from '@environments/environment';
-import { BusyProp } from '@type/busy.type';
-import { FacadeApiBase } from '@type/facade.base';
-import { SubjectProp } from '@type/subject.type';
+import { BusyProp } from '../../globals/types/busy.type';
+import { FacadeApiBase } from '../../globals/types/facade.base';
+import { SubjectProp } from '../../globals/types/subject.type';
 
 import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
 import { SupabaseTables } from '../../globals/constants/supabase-tables.constants';

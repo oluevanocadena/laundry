@@ -4,11 +4,12 @@ import {
   OrderItemStatusEnum,
   OrderStatusEnum,
 } from '@bussiness/orders/orders.enums';
-import { Order } from '@bussiness/orders/orders.interfaces';
+import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
 import { Product } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperPage } from '@components/common/helper.page';
-import { UtilsDomain } from '@utils/utils.domain';
+import { UtilsDomain } from '../../../../../globals/utils/utils.domain';
+import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
 
 @Component({
   selector: 'orders-items',
@@ -18,6 +19,7 @@ import { UtilsDomain } from '@utils/utils.domain';
 })
 export class OrdersItemsComponent extends HelperPage implements OnInit {
   utils = UtilsDomain;
+  itemsDomain = OrdersItemsDomain;
 
   constructor(
     public facade: OrdersDraftFacade,
@@ -36,6 +38,8 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
     );
     return productPrice?.Price ?? 0;
   }
+
+  
 
   /**
    * Getters

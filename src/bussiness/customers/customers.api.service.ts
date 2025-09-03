@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { supabase } from '@environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-import { BusyProp } from '@type/busy.type';
-import { FacadeApiBase } from '@type/facade.base';
-import { SubjectProp } from '@type/subject.type';
+import { BusyProp } from '../../globals/types/busy.type';
+import { FacadeApiBase } from '../../globals/types/facade.base';
+import { SubjectProp } from '../../globals/types/subject.type';
 
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';

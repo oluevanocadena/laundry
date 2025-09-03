@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ModalConfirmStyleButton } from '../modal/modal.component';
 
 @Component({
   selector: 'modal-confirm',
@@ -20,6 +21,8 @@ export class ModalConfirmComponent implements OnInit {
   @Output() onClose = new EventEmitter<void>();
 
   @Input() confirmLabel = 'Confirmar';
+
+  @Input() confirmStyle: ModalConfirmStyleButton = 'danger';
 
   constructor() {}
 

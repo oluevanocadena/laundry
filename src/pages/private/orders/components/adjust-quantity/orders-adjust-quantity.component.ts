@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HelperPage } from '@components/common/helper.page';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { FormProp } from '@type/form.type';
+import { HelperPage } from '@components/common/helper.page';
+import { FormProp } from '../../../../../globals/types/form.type';
 
 @Component({
   selector: 'orders-adjust-quantity',

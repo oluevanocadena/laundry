@@ -13,8 +13,8 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { Product } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperTablePage } from '@components/common/helper.table.page';
-import { FormProp } from '@type/form.type';
-import { UtilsDomain } from '@utils/utils.domain';
+import { FormProp } from '../../../../../globals/types/form.type';
+import { UtilsDomain } from '../../../../../globals/utils/utils.domain';
 
 @Component({
   selector: 'orders-search-product',
@@ -101,13 +101,13 @@ export class OrdersSearchProductComponent
 
   get products(): Product[] {
     return (
-      this.facade.apiProducts.products.value?.filter((product) =>
-        product.ProductLocationPrice?.find(
+      this.facade.apiProducts.products.value?.filter((product) => {
+        return product.ProductLocationPrice?.find(
           (price) =>
             price.LocationId ===
             this.sessionService.SessionInfo.value?.Location?.id
-        )
-      ) ?? []
+        );
+      }) ?? []
     );
   }
 

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { FacadeBase } from '@type/facade.base';
-import { StorageProp } from '@type/storage.type';
+import { FacadeBase } from '../../../globals/types/facade.base';
+import { StorageProp } from '../../../globals/types/storage.type';
 
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
 import { Location } from '@bussiness/locations/locations.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { system } from '@environments/environment';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class LocationsDraftFacade extends FacadeBase {
 
   public formGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    phone: new FormControl('', [Validators.required]),
+    phone: new FormControl(''),
     country: new FormControl({ value: system.defaultCountry, disabled: true }),
     externalNumber: new FormControl(''),
     internalNumber: new FormControl(''),
@@ -37,7 +38,8 @@ export class LocationsDraftFacade extends FacadeBase {
 
   constructor(
     public api: LocationsApiService,
-    public sessionService: SessionService
+    public sessionService: SessionService,
+    public nzMessageService: NzMessageService
   ) {
     super(api);
   }

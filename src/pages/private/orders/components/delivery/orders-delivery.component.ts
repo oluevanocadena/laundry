@@ -70,7 +70,8 @@ export class OrdersDeliveryComponent implements OnInit {
     return (
       this.facade.order.value?.StatusId !== OrderStatusEnum.Cancelled &&
       this.facade.order.value?.StatusId !== OrderStatusEnum.Completed &&
-      this.facade.order.value?.StatusId !== OrderStatusEnum.Refunded
+      this.facade.order.value?.StatusId !== OrderStatusEnum.Refunded &&
+      this.facade.order.value?.Paid === false
     );
   }
 

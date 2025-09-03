@@ -19,7 +19,7 @@ import {
   TUI_IS_IOS,
   TuiDay,
   TuiIdentityMatcher,
-  TuiStringHandler
+  TuiStringHandler,
 } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
@@ -64,18 +64,6 @@ export class FormInputComponent implements ControlValueAccessor {
   }
   get options() {
     return this._options || [];
-  }
-
-  //Disabled
-  private _disabled = false;
-  @Input() set disabled(value: boolean) {
-    this._disabled = value;
-    if (value) {
-      this.valueControl.disable();
-    }
-  }
-  get disabled() {
-    return this._disabled;
   }
 
   //Outputs
@@ -143,10 +131,6 @@ export class FormInputComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
   onInputSearch(value: any): void {
     const text = value?.value ?? '';
     this.searchSubject.next(text);
@@ -206,6 +190,7 @@ export interface UISelectOption {
 
 export type InputType =
   | 'text'
+  | 'checkbox'
   | 'email'
   | 'phone'
   | 'password'

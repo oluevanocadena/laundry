@@ -1,5 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
+import { DeliveryTypesEnum } from '@bussiness/orders/orders.enums';
 import { Order } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 
@@ -23,7 +24,7 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
       case 1:
         return 'Borrador';
       case 2:
-        return 'Pendiente';
+        return 'Sin procesar';
       case 3:
         return 'En proceso';
       case 4:
@@ -33,8 +34,20 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
       case 6:
         return 'Reembolsado';
       default:
-        return 'Pendiente';
+        return 'Sin procesar';
     }
+  }
+
+  deliveryTypeName(item: Order): string {
+    switch (item?.DeliveryType) {
+      case DeliveryTypesEnum.Showroom:
+        return 'Venta de mostrador';
+      case DeliveryTypesEnum.Delivery:
+        return 'Entrega a domicilio';
+      case DeliveryTypesEnum.Pickup:
+        return 'Recolección en sucursal';
+    }
+    return '';
   }
 
   /**

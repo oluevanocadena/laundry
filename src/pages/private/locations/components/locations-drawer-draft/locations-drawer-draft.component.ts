@@ -13,12 +13,8 @@ export class LocationsDrawerDraftComponent implements OnInit {
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
-    if (value) {
-      if (this.facade.selectedLocation.value) {
-        this.facade.fillForm();
-      } else {
-        this.facade.clearState();
-      }
+    if (value && this.facade.selectedLocation.value) {
+      this.facade.fillForm();
     } else {
       this.facade.clearState();
     }
@@ -46,22 +42,27 @@ export class LocationsDrawerDraftComponent implements OnInit {
       this.nzMessageService.info('¡No se guardó ningún cambio! ℹ️');
     }
     this.show = false;
-    this.showChange.emit(this.show);
+    this.showChange.emit(false);
   }
 
   confirm() {
-    if (this.facade.formGroup.valid) {
-      this.facade.submitForm().then((success: boolean | null) => {
-        if (success === true) {
-          this.facade.api.getLocations();
-          this.close(true);
-        }
-      });
-    } else {
+    if (!this.facade.formGroup.valid) {
       this.nzMessageService.error(
         'Por favor, completa todos los campos requeridos.😉'
       );
+      return;
     }
+
+    this.facade.submitForm().then((response) => {
+      if (response?.success) {
+        this.facade.api.getLocations();
+        this.close(true);
+      } else {
+        this.nzMessageService.error(
+          '¡Ocurrió un error al guardar los cambios! ⛔'
+        );
+      }
+    });
   }
 
   onDisableOrEnableClick() {

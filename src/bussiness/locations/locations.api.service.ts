@@ -3,12 +3,13 @@ import { supabase } from '@environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { BusyProp } from '@type/busy.type';
-import { FacadeApiBase } from '@type/facade.base';
-import { SubjectProp } from '@type/subject.type';
+import { BusyProp } from '../../globals/types/busy.type';
+import { FacadeApiBase } from '../../globals/types/facade.base';
+import { SubjectProp } from '../../globals/types/subject.type';
 
 import { Location } from '@bussiness/locations/locations.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
+import { SupabaseResponse } from '../../globals/interfaces/supabase.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +49,7 @@ export class LocationsApiService implements FacadeApiBase {
   }
 
   getLocations(disabled: boolean | null = null) {
-    this.executeWithBusy(async () => {
+    return this.executeWithBusy(async () => {
       const { data, error } =
         disabled === null
           ? await this.client.from(this.table).select('*').eq('Deleted', false)
@@ -58,7 +59,7 @@ export class LocationsApiService implements FacadeApiBase {
               .eq('OrganizationId', this.sessionService.organizationId)
               .eq('Deleted', false)
               .eq('Disabled', disabled);
-      this.locations.value = data || [];
+      return this.locations.value = data || [];
     }, 'Fetching locations');
   }
 
@@ -75,7 +76,9 @@ export class LocationsApiService implements FacadeApiBase {
     }, 'Fetching default location');
   }
 
-  async saveLocation(location: Location) {
+  async saveLocation(
+    location: Location
+  ): Promise<SupabaseResponse<Location> | null> {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(this.table)
@@ -83,12 +86,9 @@ export class LocationsApiService implements FacadeApiBase {
         .select()
         .single();
       if (error) {
-        this.nzMessageService.error(
-          '¡Ocurrió un error al guardar los cambios! ⛔'
-        );
-        return false;
+        return { success: false, error: error };
       }
-      return data;
+      return { response: data, success: true };
     }, 'Saving Location');
   }
 

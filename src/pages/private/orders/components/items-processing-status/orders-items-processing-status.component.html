@@ -1,0 +1,80 @@
+<modal [(show)]="show" [confirmLabel]="'Actualizar'" [confirmStyle]="'success'" (onConfirm)="confirmProcess()"
+    (onClose)="close()" [width]="'400px'">
+    <span title>
+        Procesamiento de partida
+    </span>
+    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">
+        <span class="f-14 fw-400 f-06">
+            Selecciona un estatus para la partida.
+        </span>
+
+        <tui-stepper orientation="vertical" tuiConnected [activeItemIndex]="selectedStatus - 1"
+            [height]="'calc(100% + 8px)'">
+            <button tuiStep>
+                <grid [direction]="'row'" [gap]="[0,0]">
+                    <span class="f-14 fw-500 f-02 f-lh-10">
+                        Sin Procesar
+                    </span>
+                    <span class="f-14 fw-500 f-06 f-lh-10">
+                        Indica que la partida no ha sido procesada para la entrega.
+                    </span>
+                </grid>
+            </button>
+            <button tuiStep>
+                <grid [direction]="'row'" [gap]="[0,0]">
+                    <span class="f-14 fw-500 f-02 f-lh-10">
+                        En Proceso
+                    </span>
+                    <span class="f-14 fw-500 f-06 f-lh-10">
+                        Indica que la partida está en proceso de preparación para la entrega.
+                    </span>
+                </grid>
+            </button>
+            <button tuiStep>
+                <grid [direction]="'row'" [gap]="[0,0]">
+                    <span class="f-14 fw-500 f-02 f-lh-10">
+                        Listo para entregar
+                    </span>
+                    <span class="f-14 fw-500 f-06 f-lh-10">
+                        Indica que la partida está lista para ser entregada.
+                    </span>
+                </grid>
+            </button>
+            <button tuiStep>
+                <grid [direction]="'row'" [gap]="[0,0]">
+                    <span class="f-14 fw-500 f-02 f-lh-10">
+                        En entrega
+                    </span>
+                    <span class="f-14 fw-500 f-06 f-lh-10">
+                        Indica que la partida está en proceso de entrega.
+                    </span>
+                </grid>
+            </button>
+            <button tuiStep>
+                <grid [direction]="'row'" [gap]="[0,0]">
+                    <span class="f-14 fw-500 f-02 f-lh-10">
+                        Completado
+                    </span>
+                    <span class="f-14 fw-500 f-06 f-lh-10">
+                        Indica que la partida ha sido entregada al cliente.
+                    </span>
+                </grid>
+            </button>
+            <button tuiStep stepState="error">
+                <grid [direction]="'row'" [gap]="[0,0]">
+                    <span class="f-14 fw-500 f-02 f-lh-10">
+                        Cancelado
+                    </span>
+                    <span class="f-14 fw-500 f-06 f-lh-10">
+                        Indica que la partida ha sido cancelada.
+                    </span>
+                </grid>
+            </button>
+        </tui-stepper>
+
+        <span class="f-14 f-lh-16 fw-400 f-06">
+            Da clic en el estatus para actualizar la partida para cambiar su estatus.
+        </span>
+
+    </grid>
+</modal>

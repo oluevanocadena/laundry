@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FacadeBase } from '@type/facade.base';
-import { FormProp } from '@type/form.type';
-import { validators } from '@type/validators.type';
+import { FacadeBase } from '../../../globals/types/facade.base';
+import { FormProp } from '../../../globals/types/form.type';
+import { validators } from '../../../globals/types/validators.type';
 import moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 

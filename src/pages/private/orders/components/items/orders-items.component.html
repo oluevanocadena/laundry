@@ -30,13 +30,25 @@
                     <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="48" height="48"
                         (error)="utils.onImageError($event)" class="brdr-radius-4 img-cover" />
                 </grid>
-                <grid [direction]="'row'" [gap]="[0,8]" [padding]="'0 0 0.5rem 0'">
-                    <span class="f-14 fw-600 f-01 f-lh-17 t-left">
-                        {{item.Name}}
-                    </span>
-                    <span class="f-13 fw-400 f-06 f-lh-16 t-left">
-                        {{item.Description}}
-                    </span>
+                <grid [direction]="'row'" [gap]="[4,4]" [padding]="'0.125rem 0 0.5rem 0'">
+                    <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
+                        <status-badge *ngIf="canProcessOrder === true" [label]="itemsDomain.statusName(item)"
+                            [statusId]="item.ItemStatusId" [type]="'orderItems'" [size]="'m'" />
+                        <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
+                            class="f-13 fw-400 f-lh-14 t-left" />
+                        <ng-template #titleClamp>
+                            <span class="f-14 fw-600 f-01 f-lh-17 t-left">
+                                {{item.Name}}
+                            </span>
+                        </ng-template>
+                    </grid>
+                    <tui-line-clamp [content]="descriptionClamp" [lineHeight]="18" [linesLimit]="2"
+                        class="f-13 fw-400 f-lh-14 t-left" />
+                    <ng-template #descriptionClamp>
+                        <span class="f-06">
+                            {{item.Description}}
+                        </span>
+                    </ng-template>
                 </grid>
                 <grid [direction]="'row'" [gap]="[4,4]">
                     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
@@ -68,7 +80,7 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">
-                <button *ngIf="canProcessOrder === true" success small (click)="facade.showSearchProduct = true">
+                <button *ngIf="canProcessOrder === true" success small (click)="facade.showItemsProcessing = true">
                     Procesar partidas
                 </button>
                 <button *ngIf="canSearchProduct" secondary small (click)="facade.showSearchProduct = true">
@@ -81,6 +93,7 @@
 
 <orders-search-product [(show)]="facade.showSearchProduct" />
 <orders-adjust-quantity [(show)]="facade.showAdjustQuantity" />
+<orders-items-processing [(show)]="facade.showItemsProcessing" />
 
 
 <modal-confirm [(show)]="facade.showConfirmDelete" (onConfirm)="facade.onDeleteItem()">

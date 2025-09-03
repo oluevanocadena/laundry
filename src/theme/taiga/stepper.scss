@@ -1,0 +1,32 @@
+tui-stepper {
+
+    button {
+
+        &._vertical _active {
+            .t-marker {
+                background-color: var(--primary) !important;
+            }
+        }
+
+
+        .t-marker:not(tui-icon) {
+            inline-size: 1.75rem !important;
+            block-size: 1.75rem !important;
+            font-size: 13px !important;
+            padding-left: 1px !important;
+            padding-top: 3px !important;
+            font-weight: 600 !important;
+        }
+
+        
+        tui-icon.t-marker {
+            padding: 0px !important;
+            inline-size: 1.75rem !important;
+            block-size: 1.75rem !important;
+        }
+
+        tui-icon.t-marker::after {
+            font-size: 18px !important;
+        }
+    }
+}

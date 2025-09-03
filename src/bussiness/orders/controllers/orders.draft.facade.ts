@@ -3,13 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { TuiDay, TuiTimeLike } from '@taiga-ui/cdk';
-import { FormProp } from '@type/form.type';
+import { FormProp } from '../../../globals/types/form.type';
 import moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { routes } from '@app/routes';
-import { FacadeBase } from '@type/facade.base';
-import { SubjectProp } from '@type/subject.type';
+import { FacadeBase } from '../../../globals/types/facade.base';
+import { SubjectProp } from '../../../globals/types/subject.type';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/customers.interfaces';
@@ -36,7 +36,7 @@ import {
   OrderTotals,
   PaymentMethods,
 } from '@bussiness/orders/orders.interfaces';
-import { StorageProp } from '@type/storage.type';
+import { StorageProp } from '../../../globals/types/storage.type';
 import { OrderEmpty } from '../../../globals/constants/orders.constants';
 import { TuiTimeDomain } from '../../../globals/domains/tui-time.domain';
 import { OrdersDomain } from '../domains/orders.domain';
@@ -52,6 +52,7 @@ export class OrdersDraftFacade extends FacadeBase {
   showDeleteModal: boolean = false;
   showRefundModal: boolean = false;
   showSearchProduct: boolean = false;
+  showItemsProcessing: boolean = false;
   showAdjustQuantity: boolean = false;
   showConfirmDelete: boolean = false;
   showAdjustDiscountModal: boolean = false;
@@ -159,7 +160,6 @@ export class OrdersDraftFacade extends FacadeBase {
 
     this.api.updateOrder(order, orderItems).then((order) => {
       if (!order) return;
-      console.log(this.order.value?.StatusId, order.StatusId);
       if (this.order.value?.StatusId === OrderStatusEnum.Draft) {
         this.router.navigate([routes.Orders]);
         return;

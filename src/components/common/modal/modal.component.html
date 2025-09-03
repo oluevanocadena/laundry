@@ -1,5 +1,5 @@
 <nz-modal [(nzVisible)]="show" [nzTitle]="undefined" [nzFooter]="null" [nzClosable]="false" [nzMaskClosable]="true"
-    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : '650px'" [nzCentered]="centered">
+    (nzOnCancel)="close()" [nzWidth]="isMobile ? '100vw' : width" [nzCentered]="centered">
 
     <ng-container *nzModalContent>
         <grid [direction]="'row'" [gap]="[0,0]" [padding]="'0rem'">

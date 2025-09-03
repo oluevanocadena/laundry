@@ -12,7 +12,7 @@ import { TuiAppearanceOptions } from '@taiga-ui/core';
   styleUrls: ['./status-badge.component.scss'],
 })
 export class StatusBadgeComponent implements OnInit {
-  @Input() label?: string = '';
+  @Input() label?:  string = '';
   @Input() statusId?: number = 0;
   @Input() type: StatusTypeBadge = 'order';
   @Input() size: 'm' | 's' | 'l' | 'xl' = 'l';

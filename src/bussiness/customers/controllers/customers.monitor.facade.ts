@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
-import { FacadeBase } from '@type/facade.base';
+import { FacadeBase } from '../../../globals/types/facade.base';
 
 import { CustomersDraftFacade } from '@bussiness/customers/controllers/customers.draft.facade';
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';

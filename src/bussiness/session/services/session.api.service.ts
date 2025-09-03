@@ -3,9 +3,9 @@ import { routes } from '@app/routes';
 import { supabase } from '@environments/environment';
 import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 
-import { BusyProp } from '@type/busy.type';
-import { FacadeApiBase } from '@type/facade.base';
-import { StorageProp } from '@type/storage.type';
+import { BusyProp } from '../../../globals/types/busy.type';
+import { FacadeApiBase } from '../../../globals/types/facade.base';
+import { StorageProp } from '../../../globals/types/storage.type';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({

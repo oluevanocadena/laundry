@@ -6,9 +6,10 @@ import {
   DeliveryTypesEnum,
   PaymentMethodsEnum,
 } from '@bussiness/orders/orders.enums';
-import { PaymentMethods } from '@bussiness/orders/orders.interfaces';
+import { DeliveryTypes, PaymentMethods } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
-import { FormProp } from '@type/form.type';
+import { FormProp } from '../../../../../globals/types/form.type';
+import numeral from 'numeral';
 
 @Component({
   selector: 'orders-collect-payment',
@@ -101,7 +102,24 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   get collectPaymentLabel() {
     return this.paymentMethod.value === PaymentMethodsEnum.None
       ? `${this.orderId ? 'Guardar' : 'Crear'} orden sin pago`
-      : 'Recibir pago';
+      : `Cobrar ${numeral(this.orderTotals?.Total ?? 0).format('$0,0.00')} `;
+  }
+
+  get deliveryType() {
+    return this.facade.order.value?.DeliveryType! as DeliveryTypes;
+  }
+
+  get cashMessage() {
+    switch (this.deliveryType) {
+      case DeliveryTypesEnum.Showroom:
+        return 'El total de la orden de se pagará en efectivo en mostrador.';
+      case DeliveryTypesEnum.Delivery:
+        return 'El total de la orden de se pagará en contra-entrega.';
+      case DeliveryTypesEnum.Pickup:
+        return 'El total de la orden de se pagará en la recogida de producto en la sucursal.';
+      default:
+        return 'El total de la orden de se pagará en efectivo.';
+    }
   }
 
   /**

@@ -29,10 +29,10 @@
             <tui-icon icon="@tui.chevrons-up-down" class="f-14 f-lh-13 f-08" />
         </button>
         <nz-dropdown-menu #dropdown="nzDropdownMenu">
-            <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0.5rem'" [width]="'200px'"
-                class="bg-02 brdr-radius-6 shadow-01">
-                <span class="f-12 f-05 fw-300 t-left" padding="0.5rem 0.5rem 0 0.5rem">
-                    Sucursales
+            <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0.5rem'" [width]="'200px'" [maxHeight]="'300px'"
+                class="bg-02 brdr-radius-6 shadow-01 scroll-v brdr">
+                <span class="f-11 f-07 fw-400 t-left" padding="0.5rem 0.5rem 0 0.5rem">
+                    SUCURSALES
                 </span>
                 <grid [direction]="'row'" [gap]="[1,1]">
                     <button flat small flex *ngFor="let location of facade.apiLocations.locations.value"

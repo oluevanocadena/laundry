@@ -10,6 +10,7 @@ import {
 } from '../orders.enums';
 import {
   Delivery,
+  DeliveryTypes,
   DiscountTypes,
   Order,
   OrderItem,
@@ -63,7 +64,7 @@ export class OrdersDomain {
         orderDelivery.Indications ?? order.DeliveryIndications ?? '',
 
       Notes: notes ?? order.Notes ?? '',
-      StatusId: this.getOrderStatus(order.StatusId),
+      StatusId: this.getOrderStatus(order.StatusId, orderDelivery.DeliveryType),
 
       OrganizationId: order.OrganizationId ?? organizationId,
       LocationId: order.LocationId ?? currentLocationId,
@@ -74,7 +75,10 @@ export class OrdersDomain {
     return orderToSave;
   }
 
-  static getOrderStatus(statusId: OrderStatusEnum): OrderStatusEnum {
+  static getOrderStatus(statusId: OrderStatusEnum, oderDeliveryType: DeliveryTypes): OrderStatusEnum {
+    if(oderDeliveryType === DeliveryTypesEnum.Showroom) {
+      return OrderStatusEnum.Completed;
+    }
     if (statusId === OrderStatusEnum.Draft) {
       return OrderStatusEnum.Pending;
     } else {

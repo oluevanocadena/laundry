@@ -44,8 +44,8 @@
                         <th width="100px">Fecha</th>
                         <th width="100px">Estatus</th>
                         <th>Cliente</th>
-                        <th width="90px">Pago</th>
                         <th>Tipo de entrega</th>
+                        <th width="90px">Pago</th>
                         <th>Partidas</th>
                         <th>Total</th>
                     </tr>
@@ -56,7 +56,7 @@
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
                                     <tui-loader [size]="'m'" />
-                                    Loading...
+                                    Cargando...
                                 </grid>
                             </grid>
                         </td>
@@ -87,16 +87,12 @@
                             </td>
                             <td>{{item.Customer?.FullName}}</td>
                             <td>
-                                <grid [direction]="'column'" [align]="'center-center'">
-                                    <status-badge [label]="item?.Paid ? 'Pagado' : 'Sin pago'"
-                                        [appearance]="item?.Paid ? 'success' : 'error'" [size]="'m'" />
-                                </grid>
+                                {{deliveryTypeName(item)}}
                             </td>
                             <td>
                                 <grid [direction]="'column'" [align]="'center-center'">
-                                    <status-badge
-                                        [label]="item?.DeliveryType === 'delivery' ? 'Entrega a domicilio' : 'Recolección en sucursal'"
-                                        [appearance]="'default'" [type]="'orderItems'" [size]="'m'" />
+                                    <status-badge [label]="item?.Paid ? 'Pagado' : 'Sin pago'"
+                                        [appearance]="item?.Paid ? 'success' : 'error'" [size]="'m'" />
                                 </grid>
                             </td>
                             <td>

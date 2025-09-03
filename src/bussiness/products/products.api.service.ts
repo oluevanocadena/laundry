@@ -4,9 +4,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { v4 as uuidv4 } from 'uuid';
 
 import { supabase } from '@environments/environment';
-import { BusyProp } from '@type/busy.type';
-import { FacadeApiBase } from '@type/facade.base';
-import { SubjectProp } from '@type/subject.type';
+import { BusyProp } from '../../globals/types/busy.type';
+import { FacadeApiBase } from '../../globals/types/facade.base';
+import { SubjectProp } from '../../globals/types/subject.type';
 
 import {
   Product,
@@ -160,15 +160,15 @@ export class ProductsApiService implements FacadeApiBase {
   ) {
     return this.executeWithBusy(async () => {
       // 1️⃣ Guardar o actualizar producto
-      const { data: productData, error: productError } = await this.client
+      const { data: productSaved, error: productError } = await this.client
         .from(SupabaseTables.Products)
         .upsert(product)
         .select()
         .single();
 
       if (productError) throw productError;
-      console.log('🤔 productData', productData);
-      const productId = productData.id;
+      console.log('🤔 productData', productSaved);
+      const productId = productSaved.id;
 
       if (locations.length > 0) {
         // 2️⃣ Eliminar relaciones previas para evitar duplicados
@@ -180,7 +180,7 @@ export class ProductsApiService implements FacadeApiBase {
         if (deleteError) throw deleteError;
         console.log('🤔 Location availability deleted');
 
-        // 3️⃣ Insertar nuevas relaciones
+        // 3️⃣ Eliminar e insertar nuevas relaciones
         const productLocations = locations.map((loc) => {
           delete loc.Location; //eliminar la relación con la ubicación
           return {
@@ -191,6 +191,7 @@ export class ProductsApiService implements FacadeApiBase {
         console.log('🤔 productLocations cleaned', productLocations);
 
         if (productLocations.length) {
+          // Insertar nuevas relaciones
           const { error: locationError } = await this.client
             .from(SupabaseTables.ProductLocations)
             .upsert(productLocations, { onConflict: 'id' });
@@ -250,7 +251,7 @@ export class ProductsApiService implements FacadeApiBase {
       }
 
       // 9️⃣ Retornar el producto ya guardado con relaciones
-      return { ...productData };
+      return { ...productSaved };
     }, 'Saving Product');
   }
 

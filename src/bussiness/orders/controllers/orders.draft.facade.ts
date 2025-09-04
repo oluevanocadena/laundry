@@ -357,13 +357,7 @@ export class OrdersDraftFacade extends FacadeBase {
 
   onApplyDiscount() {
     this.order.value!.Discount = OrdersCartDomain.calculateDiscount(
-      this.orderTotals.value ?? {
-        Total: 0,
-        Subtotal: 0,
-        Taxes: 0,
-        Delivery: 0,
-        Discount: 0,
-      },
+      this.orderTotals.value,
       this.discount.value ?? 0,
       this.discountType.value ?? DiscountTypesEnum.Amount
     );
@@ -379,9 +373,20 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   onCancelOrder() {
-    this.order.value!.StatusId = OrderStatusEnum.Cancelled;
-    this.submitForm();
-    this.showCancelOrderModal = false;
+    if (this.order.value?.id) {
+      try {
+        this.api
+          .updateOrderStatus(this.order.value?.id, OrderStatusEnum.Cancelled)
+          .then((orderSaved) => {
+            if (orderSaved) {
+              this.showCancelOrderModal = false;
+              this.router.navigate([routes.Orders]);
+            }
+          });
+      } catch (error) {
+        this.nzMessageService.error(error as string);
+      }
+    }
   }
 
   goToProducts() {

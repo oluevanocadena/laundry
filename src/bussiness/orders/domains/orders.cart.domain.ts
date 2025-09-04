@@ -110,10 +110,17 @@ export class OrdersCartDomain {
   }
 
   static calculateDiscount(
-    orderTotals: OrderTotals,
+    orderTotals: OrderTotals | null,
     discount: number,
     discountType: DiscountTypes
   ) {
+    orderTotals = orderTotals ?? {
+      Total: 0,
+      Subtotal: 0,
+      Taxes: 0,
+      Delivery: 0,
+      Discount: 0,
+    };
     return discountType === DiscountTypesEnum.Amount
       ? discount
       : (orderTotals.Total * discount) / 100;

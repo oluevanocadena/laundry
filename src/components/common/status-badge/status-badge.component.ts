@@ -12,9 +12,7 @@ import { TuiAppearanceOptions } from '@taiga-ui/core';
   styleUrls: ['./status-badge.component.scss'],
 })
 export class StatusBadgeComponent implements OnInit {
-  @Input() label?:  string = '';
-  @Input() statusId?: number = 0;
-  @Input() type: StatusTypeBadge = 'order';
+  @Input() label?:  string = ''; 
   @Input() size: 'm' | 's' | 'l' | 'xl' = 'l';
   @Input() appearance?: TuiAppearanceOptions['appearance'];
 
@@ -27,60 +25,10 @@ export class StatusBadgeComponent implements OnInit {
   /**
    * Getters
    */
-
-  get statusClassColor() {
-    let status: TuiAppearanceOptions['appearance'];
-    switch (this.type) {
-      case StatusTypeBadgeEnum.Order:
-        switch (this.statusId) {
-          case OrderStatusEnum.Draft: //Draft
-            status = 'warning';
-            break;
-          case OrderStatusEnum.Pending: //Pending
-            status = 'warning';
-            break;
-          case OrderStatusEnum.Processing: //Processing
-            status = 'info';
-            break;
-          case OrderStatusEnum.Completed: //Completed
-            status = 'success';
-            break;
-          case OrderStatusEnum.Cancelled: //Cancelled 
-            status = 'error';
-            break;
-          case OrderStatusEnum.Refunded: //Refunded
-            status = 'error';
-            break;
-          default:
-            status = 'default';
-            break;
-        }
-        break; 
-      default:
-        status = 'default';
-        break;
-    } 
-    return status;
-  }
+ 
 
   /**
    * Life cycle method
    */
   ngOnInit() {}
-}
-
-export type StatusTypeBadge =
-  | 'order' 
-  | 'payment'
-  | 'delivery'
-  | 'customer-marketing'
-  | 'customer-status-creation';
-
-export enum StatusTypeBadgeEnum {
-  Order = 'order',
-  OrderItems = 'orderItems',
-  Payment = 'payment',
-  Refund = 'refund',
-  Customer = 'customer',
-  CustomerMarketing = 'customer-marketing',
-}
+} 

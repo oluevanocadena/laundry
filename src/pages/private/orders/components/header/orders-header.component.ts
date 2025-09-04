@@ -6,6 +6,7 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
 import { Order, OrderTotals } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
+import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 
 @Component({
   selector: 'orders-header',
@@ -14,6 +15,9 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./orders-header.component.scss'],
 })
 export class OrdersHeaderComponent extends HelperPage implements OnInit {
+  //Domains
+  ordersDomain = OrdersDomain;
+
   dateCreated = '';
 
   constructor(public facade: OrdersDraftFacade, public router: Router) {

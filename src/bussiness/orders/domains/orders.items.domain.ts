@@ -1,7 +1,8 @@
-import { OrderItem } from '../orders.interfaces';
-import { OrderItemStatusEnum } from '../orders.enums';
-import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
+
+import { OrderItemStatusEnum } from '@bussiness/orders/orders.enums';
+import { OrderItem } from '@bussiness/orders/orders.interfaces';
 
 export class OrdersItemsDomain {
   static statusesOptions(): NzSegmentedOption[] {

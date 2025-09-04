@@ -17,8 +17,8 @@
                         <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
                             [appearance]="'warning'" />
                         <ng-container *ngIf="!busy && facade.edition === true">
-                            <status-badge [label]="orderStatusName" [size]="'s'" [statusId]="order?.StatusId"
-                                [type]="'order'" /> 
+                            <status-badge [label]="ordersDomain.statusName(order)" [size]="'m'"
+                                [appearance]="ordersDomain.statusColor(order)" />
                             <status-badge [label]="paid ? 'Pagado' : 'Pendiente de pago'" [size]="'s'"
                                 [appearance]="paid ? 'success': 'error'" />
                         </ng-container>
@@ -36,8 +36,8 @@
         <button *ngIf="!paid" (click)="facade.openCollectPayment()" primary small [disabled]="canSave === false">
             {{saveLabelButton}}
         </button>
-        <button *ngIf="canShowMoreMenu" outline small icon flex [disabled]="busy" [showLoader]="busy"
-            nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+        <button *ngIf="canShowMoreMenu" outline small icon flex [disabled]="busy" [showLoader]="busy" nz-dropdown
+            nzTrigger="click" [nzDropdownMenu]="menu">
             <span class="material-symbols-outlined f-20 f-lh-22 f-01 fw-400">
                 more_vert
             </span>

@@ -193,13 +193,11 @@ export class OrdersDraftFacade extends FacadeBase {
           this.orderItems.value?.map((item) =>
             item.id === orderItem.id ? orderItem : item
           ) ?? [];
-
-        if (this.order.value) {
-          console.log('orderItems', this.orderItems.value);
-          this.order.value.OrderItems = this.orderItems.value ?? [];
-          this.selectedOrder.value = this.order.value;
-          console.log('selectedOrder', this.selectedOrder.value);
-        }
+        this.api.getOrder(this.order.value?.id ?? '').then((order) => {
+          if (!order) return;
+          this.order.value = order;
+          this.selectedOrder.value = order;
+        });
       });
     }
   }

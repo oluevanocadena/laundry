@@ -81,8 +81,8 @@
                             <td>{{(item.createdAt || '') | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
                             <td>
                                 <grid [direction]="'column'" [align]="'center-center'">
-                                    <status-badge [label]="statusName(item)" [statusId]="item?.StatusId"
-                                        [type]="'order'" [size]="'m'" />
+                                    <status-badge [label]="ordersDomain.statusName(item)" [size]="'m'"
+                                        [appearance]="ordersDomain.statusColor(item)" />
                                 </grid>
                             </td>
                             <td>{{item.Customer?.FullName}}</td>

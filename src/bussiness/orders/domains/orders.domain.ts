@@ -1,13 +1,16 @@
+import { TuiAppearanceOptions } from '@taiga-ui/core';
+import moment from 'moment';
+
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
-import moment from 'moment';
+
 import {
   DeliveryTypesEnum,
   DiscountTypesEnum,
   OrderItemStatusEnum,
   OrderStatusEnum,
   PaymentMethodsEnum,
-} from '../orders.enums';
+} from '@bussiness/orders/orders.enums';
 import {
   Delivery,
   DeliveryTypes,
@@ -15,7 +18,7 @@ import {
   Order,
   OrderItem,
   OrderTotals,
-} from '../orders.interfaces';
+} from '@bussiness/orders/orders.interfaces';
 
 export class OrdersDomain {
   //Methods
@@ -75,8 +78,11 @@ export class OrdersDomain {
     return orderToSave;
   }
 
-  static getOrderStatus(statusId: OrderStatusEnum, oderDeliveryType: DeliveryTypes): OrderStatusEnum {
-    if(oderDeliveryType === DeliveryTypesEnum.Showroom) {
+  static getOrderStatus(
+    statusId: OrderStatusEnum,
+    oderDeliveryType: DeliveryTypes
+  ): OrderStatusEnum {
+    if (oderDeliveryType === DeliveryTypesEnum.Showroom) {
       return OrderStatusEnum.Completed;
     }
     if (statusId === OrderStatusEnum.Draft) {
@@ -103,5 +109,52 @@ export class OrdersDomain {
         Deleted: item.Deleted ?? false,
       })) ?? []
     );
-  } 
+  }
+
+  static statusColor(item: Order | null): TuiAppearanceOptions['appearance'] {
+    let status: TuiAppearanceOptions['appearance'];
+    switch (item?.StatusId) {
+      case OrderStatusEnum.Draft: //Draft
+        status = 'warning';
+        break;
+      case OrderStatusEnum.Pending: //Pending
+        status = 'warning';
+        break;
+      case OrderStatusEnum.Processing: //Processing
+        status = 'info';
+        break;
+      case OrderStatusEnum.Completed: //Completed
+        status = 'success';
+        break;
+      case OrderStatusEnum.Cancelled: //Cancelled
+        status = 'error';
+        break;
+      case OrderStatusEnum.Refunded: //Refunded
+        status = 'error';
+        break;
+      default:
+        status = 'default';
+        break;
+    }
+    return status;
+  }
+
+  static statusName(item: Order | null): string {
+    switch (item?.StatusId) {
+      case OrderStatusEnum.Draft:
+        return 'Borrador';
+      case OrderStatusEnum.Pending:
+        return 'Sin procesar';
+      case OrderStatusEnum.Processing:
+        return 'En proceso';
+      case OrderStatusEnum.Completed:
+        return 'Completado';
+      case OrderStatusEnum.Cancelled:
+        return 'Cancelado';
+      case OrderStatusEnum.Refunded:
+        return 'Reembolsado';
+      default:
+        return 'Sin procesar';
+    }
+  }
 }

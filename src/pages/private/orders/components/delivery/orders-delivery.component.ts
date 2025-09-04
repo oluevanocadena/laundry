@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
 import {
   DeliveryTypesEnum,
   OrderStatusEnum,
@@ -12,6 +13,9 @@ import {
   styleUrls: ['./orders-delivery.component.scss'],
 })
 export class OrdersDeliveryComponent implements OnInit {
+  //Domains
+  deliveryDomain = DeliveryDomain;
+
   //Input
   @Input() edition: boolean = false;
 
@@ -41,38 +45,12 @@ export class OrdersDeliveryComponent implements OnInit {
     return this.orderDelivery?.DeliveryType;
   }
 
-  get deliveryTypeText() {
-    switch (this.deliveryType) {
-      case DeliveryTypesEnum.Pickup:
-        return 'Recolección en sucursal';
-      case DeliveryTypesEnum.Delivery:
-        return 'Envío a domicilio';
-      case DeliveryTypesEnum.Showroom:
-        return 'Venta de mostrador';
-      default:
-        return '';
-    }
-  }
-
   get canAdjustDelivery() {
     return !(this.facade.order.value?.ItemCount ?? 0 > 0);
   }
 
-  get googleUrlMap(): string {
-    return this.facade.orderCustomer.value?.Address
-      ? `https://www.google.com/maps/search/${encodeURIComponent(
-          this.facade.orderCustomer.value?.Address
-        )}`
-      : '';
-  }
-
-  get canChangeDelivery(): boolean {
-    return (
-      this.facade.order.value?.StatusId !== OrderStatusEnum.Cancelled &&
-      this.facade.order.value?.StatusId !== OrderStatusEnum.Completed &&
-      this.facade.order.value?.StatusId !== OrderStatusEnum.Refunded &&
-      this.facade.order.value?.Paid === false
-    );
+  get order() {
+    return this.facade.order.value;
   }
 
   /**

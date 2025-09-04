@@ -146,9 +146,6 @@ export class OrdersDomain {
       case OrderStatusEnum.Cancelled: //Cancelled
         status = 'error';
         break;
-      case OrderStatusEnum.Refunded: //Refunded
-        status = 'error';
-        break;
       default:
         status = 'default';
         break;
@@ -165,11 +162,9 @@ export class OrdersDomain {
       case OrderStatusEnum.Processing:
         return 'En proceso';
       case OrderStatusEnum.Completed:
-        return 'Completado';
+        return 'Entregado';
       case OrderStatusEnum.Cancelled:
         return 'Cancelado';
-      case OrderStatusEnum.Refunded:
-        return 'Reembolsado';
       default:
         return 'Sin procesar';
     }

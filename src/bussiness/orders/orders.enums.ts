@@ -4,7 +4,6 @@ export enum OrderStatusEnum {
   Processing = 3,
   Completed = 4,
   Cancelled = 5,
-  Refunded = 6,
 }
 
 export enum OrderItemStatusEnum {

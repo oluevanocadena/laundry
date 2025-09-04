@@ -15,7 +15,7 @@
                             Tipo de entrega elegido:
                         </span>
                         <span class="f-14 fw-400 f-02 f-lh-14">
-                            {{deliveryTypeText}}
+                            {{deliveryDomain.deliveryTypeName(orderDelivery)}}
                         </span>
                     </grid>
 
@@ -39,7 +39,8 @@
                                 Fecha de entrega:
                             </span>
                             <span class="f-14 fw-400 f-02 f-lh-14">
-                                {{ orderDelivery?.Date ? (orderDelivery?.Date | dateFormat: 'DD/MM/YYYY') : 'Sin fecha'}}
+                                {{ orderDelivery?.Date ? (orderDelivery?.Date | dateFormat: 'DD/MM/YYYY') : 'Sin
+                                fecha'}}
                             </span>
                         </grid>
                         <grid [direction]="'row'" [gap]="[8,8]">
@@ -64,8 +65,8 @@
                             <span class="material-symbols-outlined f-16 f-primary ">
                                 directions
                             </span>
-                            <a [href]="googleUrlMap" target="_blank" class="f-13 f-lh-16 f-primary pointer"
-                                [padding]="'3px 0 0 0'">
+                            <a [href]="deliveryDomain.getUrlMap(orderDelivery?.Address)" target="_blank"
+                                class="f-13 f-lh-16 f-primary pointer" [padding]="'3px 0 0 0'">
                                 Ver en mapa
                             </a>
                         </grid>
@@ -82,8 +83,8 @@
 
 
                 <grid [direction]="'column'" [align]="'center-right'">
-                    <button *ngIf="canChangeDelivery" (click)="facade.openAdjustDelivery()" secondary small
-                        [disabled]="canAdjustDelivery">
+                    <button *ngIf="deliveryDomain.canChangeDelivery(order)" (click)="facade.openAdjustDelivery()"
+                        secondary small [disabled]="canAdjustDelivery">
                         Cambiar entrega
                     </button>
                 </grid>

@@ -92,6 +92,23 @@ export class OrdersDomain {
     }
   }
 
+  static canProcessOrder(order: Order | null): boolean {
+    if (!order) return false;
+    const itemsCount = order.OrderItems?.length ?? 0;
+    const edition = !!order.id;
+    const noIsDraftOrCancelled =
+      order.StatusId !== OrderStatusEnum.Draft &&
+      order.StatusId !== OrderStatusEnum.Cancelled;
+    return itemsCount > 0 && edition && noIsDraftOrCancelled;
+  }
+
+  static canSearchProduct(order: Order | null): boolean {
+    if (!order) return false;
+    const isDraft = order.StatusId === OrderStatusEnum.Draft;
+    const isPending = order.StatusId === OrderStatusEnum.Pending;
+    return order.Paid === false && (isDraft || isPending);
+  }
+
   static buildOrderItems(orderItems: OrderItem[]): OrderItem[] {
     return (
       orderItems.map((item) => ({

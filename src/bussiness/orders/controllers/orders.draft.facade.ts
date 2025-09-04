@@ -132,15 +132,26 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   clearState() {
-    this.selectedOrder.value = null;
     this.order.value = OrderEmpty;
-    this.orderDelivery.value = null;
     this.orderCustomer.value = null;
+    this.orderDelivery.value = null;
     this.orderItems.value = [];
     this.orderTotals.value = null;
+    this.selectedOrder.value = null;
     this.formDelivery.reset();
     this.formGroup.reset();
     this.edition = false;
+    this.showAdjustDelivery = false;
+    this.showAdjustDiscountModal = false;
+    this.showAdjustQuantity = false;
+    this.showCancelOrderModal = false;
+    this.showCollectPaymentModal = false;
+    this.showConfirmDelete = false;
+    this.showCustomerCreateModal = false;
+    this.showCustomerModal = false;
+    this.showItemsProcessing = false;
+    this.showRefundModal = false;
+    this.showSearchProduct = false;
   }
 
   submitForm() {
@@ -243,6 +254,15 @@ export class OrdersDraftFacade extends FacadeBase {
       this.discount.value ?? 0,
       this.deliveryCost.value ?? 0
     );
+    if (this.order.value) {
+      this.order.value.Total = this.orderTotals.value?.Total ?? 0;
+      this.order.value.Subtotal = this.orderTotals.value?.Subtotal ?? 0;
+      this.order.value.Taxes = this.orderTotals.value?.Taxes ?? 0;
+      this.order.value.DeliveryCost = this.orderTotals.value?.Delivery ?? 0;
+      this.order.value.Discount = this.orderTotals.value?.Discount ?? 0;
+      this.order.value.DiscountRate = this.orderTotals.value?.DiscountRate ?? 0;
+      this.order.value.ItemCount = this.orderItems.value?.length ?? 0;
+    }
   }
 
   /**
@@ -353,6 +373,7 @@ export class OrdersDraftFacade extends FacadeBase {
 
   onRemoveDiscount() {
     this.order.value!.Discount = 0;
+    this.discount.value = 0;
     this.calcTotals();
     this.showAdjustDiscountModal = false;
   }

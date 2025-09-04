@@ -95,24 +95,9 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
           return 'Guardar y cobrar pedido';
         }
       default:
-        return 'Desconocido';
+        return 'Guardar cambios';
     }
-  }
-
-  get orderStatusName(): string {
-    switch (this.order?.StatusId) {
-      case OrderStatusEnum.Draft:
-        return 'Borrador';
-      case OrderStatusEnum.Pending:
-        return 'Pendiente de procesar';
-      case OrderStatusEnum.Completed:
-        return 'Completado';
-      case OrderStatusEnum.Cancelled:
-        return 'Cancelado';
-      default:
-        return 'Desconocido';
-    }
-  }
+  } 
 
   get canShowMoreMenu(): boolean {
     return (

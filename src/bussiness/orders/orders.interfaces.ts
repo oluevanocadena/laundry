@@ -67,7 +67,7 @@ export interface Order {
 }
 
 export interface OrderItem {
-  id?: number;
+  id?: string;
   createdAt?: string;
 
   Name: string;

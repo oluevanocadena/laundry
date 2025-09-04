@@ -254,6 +254,7 @@ export class ProductsApiService implements FacadeApiBase {
       return { ...productSaved };
     }, 'Saving Product');
   }
+ 
 
   deleteProduct(productId: string) {
     return this.executeWithBusy(async () => {

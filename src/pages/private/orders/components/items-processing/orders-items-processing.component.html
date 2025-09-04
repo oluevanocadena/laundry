@@ -1,4 +1,4 @@
-<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Confirmar'" [confirmStyle]="'success'"
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Cerrar'" [confirmStyle]="'success'"
     (onConfirm)="confirm()" (onClose)="close()" [disableConfirm]="false">
     <span title>
         Procesamiento de pedidos y entrega
@@ -23,8 +23,8 @@
                     </grid>
                     <grid [direction]="'row'" [gap]="[4,4]" [padding]="'0.125rem 0 0.5rem 0'">
                         <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
-                            <status-badge [label]="itemsDomain.statusName(item)" [statusId]="item.ItemStatusId"
-                                [type]="'orderItems'" [size]="'m'" />
+                            <status-badge [label]="itemsDomain.statusName(item)" [size]="'m'"
+                                [appearance]="itemsDomain.statusColor(item)" />
                             <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
                                 class="f-13 fw-400 f-lh-14 t-left" />
                             <ng-template #titleClamp>

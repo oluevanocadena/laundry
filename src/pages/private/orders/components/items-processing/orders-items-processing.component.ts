@@ -38,9 +38,7 @@ export class OrdersItemsProcessingComponent
   /**
    * UI Events
    */
-  confirm() {
-    this.facade.onSelectDelivery();
-  }
+  confirm() {}
 
   processAllItems() {
     this.showProcessItem = true;

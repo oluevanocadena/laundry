@@ -9,6 +9,7 @@ import { SubjectProp } from '../../globals/types/subject.type';
 
 import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
 import { SupabaseTables } from '../../globals/constants/supabase-tables.constants';
+import { OrderItemStatusEnum } from './orders.enums';
 
 @Injectable({
   providedIn: 'root',
@@ -114,5 +115,30 @@ export class OrdersApiService implements FacadeApiBase {
       }
       return this.getOrder(orderSaved.id);
     }, 'Updating Order');
+  }
+
+  updateOrderItem(orderItem: OrderItem) {
+    return this.executeWithBusy(async () => {
+      const { data: orderItemSaved, error } = await this.client
+        .from(SupabaseTables.OrderItems)
+        .upsert(orderItem)
+        .select()
+        .single();
+      if (error) throw error;
+      return orderItemSaved;
+    }, 'Updating Order Item');
+  }
+
+  updateOrderItemStatus(id: string, status: OrderItemStatusEnum) {
+    return this.executeWithBusy(async () => {
+      const { data: orderItemSaved, error } = await this.client
+        .from(SupabaseTables.OrderItems)
+        .update({ ItemStatusId: status })
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) throw error;
+      return orderItemSaved;
+    }, 'Updating Order Item Status');
   }
 }

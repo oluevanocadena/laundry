@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { TuiDay, TuiTimeLike } from '@taiga-ui/cdk';
-import { FormProp } from '../../../globals/types/form.type';
 import moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { FormProp } from '../../../globals/types/form.type';
 
 import { routes } from '@app/routes';
 import { FacadeBase } from '../../../globals/types/facade.base';
@@ -24,6 +24,7 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import {
   DeliveryTypesEnum,
   DiscountTypesEnum,
+  OrderItemStatusEnum,
   OrderStatusEnum,
   PaymentMethodsEnum,
 } from '@bussiness/orders/orders.enums';
@@ -36,9 +37,9 @@ import {
   OrderTotals,
   PaymentMethods,
 } from '@bussiness/orders/orders.interfaces';
-import { StorageProp } from '../../../globals/types/storage.type';
 import { OrderEmpty } from '../../../globals/constants/orders.constants';
 import { TuiTimeDomain } from '../../../globals/domains/tui-time.domain';
+import { StorageProp } from '../../../globals/types/storage.type';
 import { OrdersDomain } from '../domains/orders.domain';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
@@ -181,6 +182,26 @@ export class OrdersDraftFacade extends FacadeBase {
 
   fetchProducts(search: string) {
     this.apiProducts.getProducts(search, 1, 5);
+  }
+
+  updateOrderItemStatus(status: OrderItemStatusEnum) {
+    const orderItem = this.orderItemSelected.value;
+    if (orderItem && orderItem.id) {
+      this.api.updateOrderItemStatus(orderItem.id, status).then((orderItem) => {
+        if (!orderItem) return;
+        this.orderItems.value =
+          this.orderItems.value?.map((item) =>
+            item.id === orderItem.id ? orderItem : item
+          ) ?? [];
+
+        if (this.order.value) {
+          console.log('orderItems', this.orderItems.value);
+          this.order.value.OrderItems = this.orderItems.value ?? [];
+          this.selectedOrder.value = this.order.value;
+          console.log('selectedOrder', this.selectedOrder.value);
+        }
+      });
+    }
   }
 
   /**

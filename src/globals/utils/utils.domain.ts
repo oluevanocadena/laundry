@@ -7,4 +7,8 @@ export class UtilsDomain {
     const target = event.target as HTMLImageElement;
     target.src = defaultImage;
   }
+
+  static clone<T>(object: T): T {
+    return JSON.parse(JSON.stringify(object));
+  }
 }

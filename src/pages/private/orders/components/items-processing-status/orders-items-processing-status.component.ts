@@ -11,19 +11,23 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
   templateUrl: './orders-items-processing-status.component.html',
   styleUrls: ['./orders-items-processing-status.component.scss'],
 })
-export class OrdersItemsProcessingStatusComponent extends HelperPage implements OnInit {
+export class OrdersItemsProcessingStatusComponent
+  extends HelperPage
+  implements OnInit
+{
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
     if (value) {
-      this.selectedStatus = this.ItemStatusId;
+      this.selectedStatus = this.ItemStatusId - 1;
     }
   }
   get show() {
     return this._show;
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onConfirm: EventEmitter<OrderItemStatusEnum> = new EventEmitter<OrderItemStatusEnum>();
+  @Output() onConfirm: EventEmitter<OrderItemStatusEnum> =
+    new EventEmitter<OrderItemStatusEnum>();
 
   //Models
   selectedStatus: OrderItemStatusEnum = OrderItemStatusEnum.NotProccesed;
@@ -39,8 +43,8 @@ export class OrdersItemsProcessingStatusComponent extends HelperPage implements 
    * UI Events
    */
   confirmProcess() {
-    this.onConfirm.emit(this.selectedStatus);
-    console.log('onConfirmProcess');
+    this.onConfirm.emit(this.selectedStatus + 1);
+    this.facade.updateOrderItemStatus(this.selectedStatus + 1);
   }
 
   close() {

@@ -55,26 +55,7 @@ export class StatusBadgeComponent implements OnInit {
             status = 'default';
             break;
         }
-        break;
-      case StatusTypeBadgeEnum.OrderItems:
-        switch (this.statusId) {
-          case OrderItemStatusEnum.NotProccesed: //NotProccesed
-            status = 'warning';
-            break;
-          case OrderItemStatusEnum.Processing: //Processing
-            status = 'info';
-            break;
-          case OrderItemStatusEnum.Completed: //Completed
-            status = 'success';
-            break;
-          case OrderItemStatusEnum.Cancelled: //Cancelled
-            status = 'error';
-            break;
-          default:
-            status = 'default';
-            break;
-        }
-        break;
+        break; 
       default:
         status = 'default';
         break;
@@ -89,8 +70,7 @@ export class StatusBadgeComponent implements OnInit {
 }
 
 export type StatusTypeBadge =
-  | 'order'
-  | 'orderItems'
+  | 'order' 
   | 'payment'
   | 'delivery'
   | 'customer-marketing'

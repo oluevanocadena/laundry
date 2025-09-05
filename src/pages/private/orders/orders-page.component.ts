@@ -2,7 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { DeliveryTypesEnum } from '@bussiness/orders/orders.enums';
-import { Order } from '@bussiness/orders/orders.interfaces';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({

@@ -7,7 +7,8 @@ import { BusyProp } from '../../globals/types/busy.type';
 import { FacadeApiBase } from '../../globals/types/facade.base';
 import { SubjectProp } from '../../globals/types/subject.type';
 
-import { Order, OrderItem } from '@bussiness/orders/orders.interfaces';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { SupabaseTables } from '../../globals/constants/supabase-tables.constants';
 import { OrderItemStatusEnum, OrderStatusEnum } from './orders.enums';
 
@@ -156,5 +157,27 @@ export class OrdersApiService implements FacadeApiBase {
       if (error) throw error;
       return orderItemSaved;
     }, 'Updating Order Item Status');
+  }
+
+  updateOrderItemStatusAll(orderId: string, status: OrderItemStatusEnum) {
+    return this.executeWithBusy(async () => {
+      const { data: orderItemsSaved, error } = await this.client
+        .from(SupabaseTables.OrderItems)
+        .update({ ItemStatusId: status })
+        .eq('OrderId', orderId)
+        .select();
+      if (error) throw error;
+      if (orderItemsSaved.length > 0) {
+        const isCompletedOrder = orderItemsSaved.every(
+          (item) =>
+            item.ItemStatusId === OrderItemStatusEnum.Completed ||
+            item.ItemStatusId === OrderItemStatusEnum.Cancelled
+        );
+        if (isCompletedOrder) {
+          this.updateOrderStatus(orderId, OrderStatusEnum.Completed);
+        }
+      }
+      return orderItemsSaved;
+    }, 'Updating Order Item Status All');
   }
 }

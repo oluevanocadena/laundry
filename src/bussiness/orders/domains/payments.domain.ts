@@ -1,5 +1,5 @@
 import { OrderStatusEnum } from '../orders.enums';
-import { Order } from '../orders.interfaces';
+import { Order } from '../interfaces/orders.interfaces';
 
 export class PaymentsDomain {
   static canRefund(order: Order | null): boolean {

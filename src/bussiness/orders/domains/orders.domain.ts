@@ -5,20 +5,19 @@ import { Customer } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 import {
+  Delivery,
+  Order,
+  OrderTotals,
+} from '@bussiness/orders/interfaces/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
+import {
   DeliveryTypesEnum,
   DiscountTypesEnum,
   OrderItemStatusEnum,
   OrderStatusEnum,
   PaymentMethodsEnum,
 } from '@bussiness/orders/orders.enums';
-import {
-  Delivery,
-  DeliveryTypes,
-  DiscountTypes,
-  Order,
-  OrderItem,
-  OrderTotals,
-} from '@bussiness/orders/orders.interfaces';
+import { DeliveryTypes, DiscountTypes } from '../types/orders.types';
 
 export class OrdersDomain {
   //Methods

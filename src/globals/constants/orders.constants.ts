@@ -2,7 +2,7 @@ import {
   DeliveryTypesEnum,
   OrderStatusEnum,
 } from '@bussiness/orders/orders.enums';
-import { Order } from '@bussiness/orders/orders.interfaces';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 
 export const OrderEmpty: Order = {
   CustomerId: undefined,

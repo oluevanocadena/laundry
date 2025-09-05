@@ -1,15 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import numeral from 'numeral';
+
+import { HelperPage } from '@components/common/helper.page';
+import { FormProp } from '@globals/types/form.type';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import {
   DeliveryTypesEnum,
   PaymentMethodsEnum,
 } from '@bussiness/orders/orders.enums';
-import { DeliveryTypes, PaymentMethods } from '@bussiness/orders/orders.interfaces';
-import { HelperPage } from '@components/common/helper.page';
-import { FormProp } from '../../../../../globals/types/form.type';
-import numeral from 'numeral';
+import {
+  DeliveryTypes,
+  PaymentMethods,
+} from '@bussiness/orders/types/orders.types';
 
 @Component({
   selector: 'orders-collect-payment',
@@ -22,7 +26,6 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
-
   }
   get show() {
     return this._show;

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
-import { OrderItem } from '@bussiness/orders/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 
@@ -42,15 +42,12 @@ export class OrdersItemsProcessingComponent
 
   processAllItems() {
     this.showProcessItem = true;
+    this.facade.orderItemSelected.value = null;
   }
 
   processItem(item: OrderItem) {
     this.facade.orderItemSelected.value = item;
     this.showProcessItem = true;
-  }
-
-  onConfirmProcess() {
-    // this.facade.onProcessItem(this.facade.orderItemSelected.value);
   }
 
   close() {

@@ -18,7 +18,7 @@
 
             <grid [gap]="[0,8]" [direction]="'row'">
                 <grid [direction]="'column'" [template]="'1fr max-content'">
-                    <span class="f-16 fw-600 f-01 f-lh-14">
+                    <span class="f-14 fw-600 f-01 f-lh-14">
                         {{customer?.FullName || '-'}}
                     </span>
                     <status-badge [label]="customerStatus" [size]="'s'" [appearance]="customerStatusAppearance" />

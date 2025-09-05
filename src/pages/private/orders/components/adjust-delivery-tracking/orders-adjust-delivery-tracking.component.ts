@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
-import { OrderItem } from '@bussiness/orders/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { FormProp } from '@globals/types/form.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';

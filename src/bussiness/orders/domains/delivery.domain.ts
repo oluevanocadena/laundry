@@ -1,5 +1,5 @@
 import { DeliveryTypesEnum, OrderStatusEnum } from '../orders.enums';
-import { Delivery, Order } from '../orders.interfaces';
+import { Delivery, Order } from '../interfaces/orders.interfaces';
 
 export class DeliveryDomain {
   static canAdjustDelivery(order: Order | null): boolean {
@@ -10,10 +10,10 @@ export class DeliveryDomain {
 
   static canChangeDelivery(order: Order | null): boolean {
     if (!order) return false;
-    const isCompleted = order.StatusId === OrderStatusEnum.Completed;
-    const isCancelled = order.StatusId === OrderStatusEnum.Cancelled;
-    const paid = order.Paid;
-    return (isCompleted || isCancelled) && paid;
+    const isDraft = order.StatusId === OrderStatusEnum.Draft;
+    const itemCount = order.ItemCount;
+    const isPendingPayment = order.Paid === false;
+    return isDraft ? (itemCount > 0) : isPendingPayment;
   }
 
   static getUrlMap(address?: string | null): string {

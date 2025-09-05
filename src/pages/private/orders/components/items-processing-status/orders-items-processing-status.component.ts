@@ -42,6 +42,7 @@ export class OrdersItemsProcessingStatusComponent
   /**
    * UI Events
    */
+
   confirmProcess() {
     this.onConfirm.emit(this.selectedStatus + 1);
     this.facade.updateOrderItemStatus(this.selectedStatus + 1);

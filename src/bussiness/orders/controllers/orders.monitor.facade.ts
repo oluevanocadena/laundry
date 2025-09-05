@@ -6,7 +6,7 @@ import { FacadeBase } from '../../../globals/types/facade.base';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersApiService } from '@bussiness/orders/orders.api.service';
-import { Order } from '@bussiness/orders/orders.interfaces';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 
 @Injectable({
   providedIn: 'root',

@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { TuiDay, TuiTimeLike } from '@taiga-ui/cdk';
-import moment from 'moment';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { FormProp } from '../../../globals/types/form.type';
+
+import moment from 'moment';
 
 import { routes } from '@app/routes';
-import { FacadeBase } from '../../../globals/types/facade.base';
-import { SubjectProp } from '../../../globals/types/subject.type';
+import { OrderEmpty } from '@globals/constants/orders.constants';
+import { TuiTimeDomain } from '@globals/domains/tui-time.domain';
+import { FacadeBase } from '@globals/types/facade.base';
+import { FormProp } from '@globals/types/form.type';
+import { StorageProp } from '@globals/types/storage.type';
+import { SubjectProp } from '@globals/types/subject.type';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/customers.interfaces';
@@ -21,6 +24,14 @@ import { ProductsApiService } from '@bussiness/products/products.api.service';
 import { Product } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
+import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
+
+import {
+  Delivery,
+  Order,
+  OrderTotals,
+} from '@bussiness/orders/interfaces/orders.interfaces';
 import {
   DeliveryTypesEnum,
   DiscountTypesEnum,
@@ -29,18 +40,10 @@ import {
   PaymentMethodsEnum,
 } from '@bussiness/orders/orders.enums';
 import {
-  Delivery,
   DeliveryTypes,
   DiscountTypes,
-  Order,
-  OrderItem,
-  OrderTotals,
   PaymentMethods,
-} from '@bussiness/orders/orders.interfaces';
-import { OrderEmpty } from '../../../globals/constants/orders.constants';
-import { TuiTimeDomain } from '../../../globals/domains/tui-time.domain';
-import { StorageProp } from '../../../globals/types/storage.type';
-import { OrdersDomain } from '../domains/orders.domain';
+} from '@bussiness/orders/types/orders.types';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
@@ -198,6 +201,7 @@ export class OrdersDraftFacade extends FacadeBase {
   updateOrderItemStatus(status: OrderItemStatusEnum) {
     const orderItem = this.orderItemSelected.value;
     if (orderItem && orderItem.id) {
+      //Update single item
       this.api.updateOrderItemStatus(orderItem.id, status).then((orderItem) => {
         if (!orderItem) return;
         this.orderItems.value =
@@ -210,6 +214,19 @@ export class OrdersDraftFacade extends FacadeBase {
           this.selectedOrder.value = order;
         });
       });
+    } else {
+      //Update all items
+      console.log(this.order.value?.id);
+      this.api
+        .updateOrderItemStatusAll(this.order.value?.id ?? '', status)
+        .then((orderItems) => {
+          this.orderItems.value = orderItems;
+          this.api.getOrder(this.order.value?.id ?? '').then((order) => {
+            if (!order) return;
+            this.order.value = order;
+            this.selectedOrder.value = order;
+          });
+        });
     }
   }
 

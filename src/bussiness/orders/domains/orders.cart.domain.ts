@@ -1,11 +1,8 @@
+import { OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
+import { DiscountTypesEnum, OrderItemStatusEnum } from '@bussiness/orders/orders.enums';
+import { DiscountTypes } from '@bussiness/orders/types/orders.types';
 import { Product } from '@bussiness/products/products.interfaces';
-import {
-  DiscountTypes,
-  Order,
-  OrderItem,
-  OrderTotals,
-} from '../orders.interfaces';
-import { DiscountTypesEnum, OrderItemStatusEnum } from '../orders.enums';
 
 const TAX_RATE_IVA = 0.16;
 

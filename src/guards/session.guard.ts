@@ -10,6 +10,7 @@ export class SessionGuard implements CanActivate {
   constructor(private sessionService: SessionService, private router: Router) {}
 
   async canActivate(): Promise<boolean> {
+    console.log('loggedin', this.sessionService.isLoggedIn);
     if (this.sessionService.isLoggedIn) {
       console.log('🔒 Usuario autenticado');
       return true;

@@ -5,12 +5,15 @@
     </span>
 
     <grid body [direction]="'row'" [gap]="[8,8]" padding="1rem 1.5rem">
-        <grid [direction]="'row'" width="100%">
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
             <span class="f-14 fw-400 f-05 f-lh-15">
                 ¿Qué producto vas a agregar al pedido?
             </span>
+            <span class="material-symbols-outlined f-info f-16 pointer" nz-tooltip
+                nzTooltipTitle="Algunos productos pueden no estar disponibles en la sucursal seleccionada del menú superior, revise la disponibilidad de los productos para cada sucursal.">
+                info
+            </span>
         </grid>
-
         <!-- Dry Cleaning -->
         <grid [direction]="'row'" [gap]="[16,16]" width="100%">
             <form [formGroup]="formGroup" width="100%">
@@ -85,8 +88,7 @@
                         <form-input [label]="'Cantidad'"
                             [type]="product.UnitMeasure?.UnitType === 'decimal' ? 'decimal' : 'number'"
                             [placeholder]="'Cantidad'" formControlName="quantity"
-                            [min]="product.UnitMeasure?.UnitType === 'decimal' ? 0.01 : 1"
-                            [postFix]="postFixText" />
+                            [min]="product.UnitMeasure?.UnitType === 'decimal' ? 0.01 : 1" [postFix]="postFixText" />
 
                     </grid>
                 </grid>

@@ -77,7 +77,11 @@ html {
     font-family: var(--font);
     font-optical-sizing: auto;
     color: var(--text-01);
+
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 1.5px rgba(0, 0, 0, 0.4);
 }
+
 
 p {
     margin: 0;

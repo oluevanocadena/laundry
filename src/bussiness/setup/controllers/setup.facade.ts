@@ -77,7 +77,7 @@ export class SetupFacade extends FacadeBase {
 
   async onClickComplete() {
     try {
-      let account = this.sessionService.SessionInfo.value?.Account;
+      let account = this.sessionService.sessionInfo.value?.Account;
       let organization = account?.Organization;
       if (organization && organization.id && account) {
         organization = await this.organizationApi.saveOrganization({
@@ -133,8 +133,8 @@ export class SetupFacade extends FacadeBase {
           throw new Error('Error al crear la ubicación');
         }
 
-        this.sessionService.SessionInfo.value = {
-          ...this.sessionService.SessionInfo.value,
+        this.sessionService.sessionInfo.value = {
+          ...this.sessionService.sessionInfo.value,
           Account: {
             ...account,
             Organization: organization,

@@ -83,7 +83,7 @@ export class SessionFacade extends FacadeBase {
       };
 
       console.log('👉🏽 Logged In SessionInfo', sessionInfo);
-      this.sessionService.SessionInfo.value = sessionInfo;
+      this.sessionService.sessionInfo.value = sessionInfo;
       this.router.navigate([routes.Home]);
     } catch (error) {
       console.error('Error during login:', error);
@@ -100,6 +100,7 @@ export class SessionFacade extends FacadeBase {
         this.router.navigate([routes.Login]);
       }
     });
+    this.sessionService.clearSession();
   }
 
   /**
@@ -108,7 +109,7 @@ export class SessionFacade extends FacadeBase {
 
   checkProfileCompletion() {
     if (this.sessionService.isLoggedIn) {
-      const user = this.sessionService.SessionInfo.value;
+      const user = this.sessionService.sessionInfo.value;
       console.log('🚀 Usuario autenticado', user);
       if (!user?.Location && this.router.url !== routes.Setup) {
         console.log('🔒 Usuario pero sin datos completos', user);

@@ -6,19 +6,23 @@ import { SessionInfo } from '../session.interface';
   providedIn: 'root',
 })
 export class SessionService {
-  public SessionInfo = new StorageProp<SessionInfo>(null, 'USER_SESSION_INFO');
+  public sessionInfo = new StorageProp<SessionInfo>(null, 'USER_SESSION_INFO');
 
   constructor() {}
+
+  clearSession() {
+    this.sessionInfo.value = null;
+  }
 
   /**
    * Getters
    */
 
   get isLoggedIn() {
-    return this.SessionInfo.value?.Session;
+    return this.sessionInfo.value?.Session;
   }
 
   get organizationId() {
-    return this.SessionInfo.value?.Account.OrganizationId ?? '';
+    return this.sessionInfo.value?.Account.OrganizationId ?? '';
   }
 }

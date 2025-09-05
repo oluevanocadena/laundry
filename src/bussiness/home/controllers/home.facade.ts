@@ -79,8 +79,8 @@ export class HomeFacade extends FacadeBase {
   }
 
   onLocationClick(location: Location) {
-    this.sessionService.SessionInfo.value = {
-      ...this.sessionService.SessionInfo.value,
+    this.sessionService.sessionInfo.value = {
+      ...this.sessionService.sessionInfo.value,
       Location: location,
     } as SessionInfo;
   }
@@ -90,14 +90,14 @@ export class HomeFacade extends FacadeBase {
    */
 
   get organizationName() {
-    return this.sessionService.SessionInfo.value?.Account.Organization?.Name;
+    return this.sessionService.sessionInfo.value?.Account.Organization?.Name;
   }
 
   get defaultLocation() {
-    return this.sessionService.SessionInfo.value?.Location?.Name;
+    return this.sessionService.sessionInfo.value?.Location?.Name;
   }
 
   get currentLocationId() {
-    return this.sessionService.SessionInfo.value?.Location?.id;
+    return this.sessionService.sessionInfo.value?.Location?.id;
   }
 }

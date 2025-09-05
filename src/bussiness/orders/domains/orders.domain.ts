@@ -34,7 +34,7 @@ export class OrdersDomain {
     sessionService: SessionService
   ) {
     const now = moment().format('YYYY-MM-DD HH:mm:ss');
-    const currentLocationId = sessionService.SessionInfo.value?.Location.id;
+    const currentLocationId = sessionService.sessionInfo.value?.Location.id;
     const organizationId = sessionService.organizationId;
 
     const orderToSave: Order = {

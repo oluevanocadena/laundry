@@ -33,7 +33,7 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
    * UI Events
    */
   getPriceAtStore(product: Product): number {
-    const locationId = this.sessionService.SessionInfo.value?.Location?.id;
+    const locationId = this.sessionService.sessionInfo.value?.Location?.id;
     const productPrice = product?.ProductLocationPrice?.find(
       (price) => price.LocationId === locationId
     );

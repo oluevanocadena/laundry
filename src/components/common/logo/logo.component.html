@@ -1,17 +1,1 @@
-<grid *ngIf="direction === 'vertical'" [gap]="[0,6]" [direction]="'row'" [align]="'center-center'" height="100%"
-    class="pointer" [routerLink]="routes.Home">
-    <grid [direction]="'column'" [align]="'center-center'" height="100%">
-        <img src="/logo_simple_2.svg" alt="logo" class="{{size}}" />
-    </grid>
-    <!-- <grid *ngIf="!isMobile" [direction]="'column'" [align]="'center-center'" height="100%">
-        <img src="/logo.svg" alt="logo" [ngClass]="{'h-30':isMobile, 'h-22':!isMobile}" />
-    </grid> -->
-    <!-- <span *ngIf="!isMobile" class="f-14 fw-700 f-01 f-lh-14">Wofloo</span> -->
-</grid>
-
-<grid *ngIf="direction === 'horizontal'" [gap]="[0,8]" [direction]="'column'" [align]="'center-left'" height="100%"
-    class="pointer" [routerLink]="routes.Home">
-    <grid [direction]="'column'" [align]="'center-left'" height="100%">
-        <img src="/logo_simple.svg" alt="logo" class="h-28" />
-    </grid>
-</grid>
+<img src="/logo_simple_2.svg" alt="logo" class="{{size}}" />

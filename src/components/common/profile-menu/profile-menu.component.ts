@@ -15,12 +15,12 @@ export class ProfileMenuComponent implements OnInit {
    */
   get userName() {
     return (
-      this.facade.sessionService.SessionInfo.value?.Account?.FullName || '-'
+      this.facade.sessionService.sessionInfo.value?.Account?.FullName || '-'
     );
   }
 
   get email() {
-    return this.facade.sessionService.SessionInfo.value?.Account?.Email;
+    return this.facade.sessionService.sessionInfo.value?.Account?.Email;
   }
 
   /**

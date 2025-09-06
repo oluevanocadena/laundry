@@ -1,0 +1,17 @@
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Guardar cliente'" [confirmStyle]="'success'"
+    (onConfirm)="onConfirm()" (onClose)="close()" [disableConfirm]="!canSave">
+    <span title>
+        Crear cliente
+    </span>
+    <grid body [gap]="[24,24]" [padding]="'1rem 1.5rem'" height="fit-content" [maxHeight]="isMobileOrTablet ? '95vh' : '60vh'"
+        class="scroll-v">
+        <span class="f-14 fw-500 f-06 f-lh-12">
+            Crea un nuevo cliente para poder registrarlo en la orden.
+        </span>
+        <grid [direction]="'row'" [gap]="[24,24]">
+            <customers-summary [collapsed]="false" />
+            <customers-address [collapsed]="true" />
+            <customers-notes [collapsed]="true" />
+        </grid>
+    </grid>
+</modal>

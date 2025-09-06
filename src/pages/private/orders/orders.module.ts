@@ -28,6 +28,7 @@ import { OrdersTopBarComponent } from '@pages/private/orders/components/top-bar/
 import { OrdersDetailPageComponent } from '@pages/private/orders/detail/order-detail-page.component';
 import { OrdersDraftPageComponent } from '@pages/private/orders/draft/orders-draft-page.component';
 import { OrdersPageComponent } from '@pages/private/orders/orders-page.component';
+import { CustomersModule } from '../customers/customers.module';
 import { OrdersAdjustDeliveryTrackingComponent } from './components/adjust-delivery-tracking/orders-adjust-delivery-tracking.component';
 
 const components: any[] = [
@@ -65,6 +66,7 @@ const components: any[] = [
     DirectivesModule,
     TUIModule,
     NgZorroModule,
+    CustomersModule,
   ],
   declarations: components,
   exports: components,

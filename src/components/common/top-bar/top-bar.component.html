@@ -1,12 +1,12 @@
 <grid [gap]="isMobileOrTablet ? [8,8] :[24,24]" [direction]="'column'" padding="0.5rem 1rem"
     [template]="'max-content 1fr'" height="100%" width="100%" class="bg-01 brdr-bottom">
     <grid [gap]="[0,16]" [direction]="'column'" [align]="'center-left'" height="100%">
-        <logo />
+        <logo *ngIf="isMobileOrTablet === false" />
         <top-bar-organization *ngIf="isMobileOrTablet === false" />
-        <button *ngIf="isMobileOrTablet === true" (click)="openMenu()" tuiButton tuiRoundButton tuiIconButton
-            [appearance]="'flat'" [size]="'s'">
-            <tui-icon icon="@tui.menu" class="f-18 fw-600 f-04" />
+        <button *ngIf="isMobileOrTablet === true" (click)="openMenu()" outline icon small>
+            <tui-icon icon="@tui.menu" class="f-20 fw-600 f-02" />
         </button>
+        <logo *ngIf="isMobileOrTablet === true" />
     </grid>
     <grid [direction]="'column'" [align]="'center-right'" height="100%">
         <top-bar-buttons />

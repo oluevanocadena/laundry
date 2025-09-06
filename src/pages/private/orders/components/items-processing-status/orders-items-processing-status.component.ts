@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
+
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
 import { OrderItemStatusEnum } from '@bussiness/orders/orders.enums';
 import { HelperPage } from '@components/common/helper.page';
-import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'orders-items-processing-status',
@@ -15,6 +17,8 @@ export class OrdersItemsProcessingStatusComponent
   extends HelperPage
   implements OnInit
 {
+  deliveryDomain = DeliveryDomain;
+
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
@@ -61,6 +65,10 @@ export class OrdersItemsProcessingStatusComponent
       this.facade.orderItemSelected.value?.ItemStatusId ??
       OrderItemStatusEnum.NotProccesed
     );
+  }
+
+  get order() {
+    return this.facade.order.value;
   }
 
   /**

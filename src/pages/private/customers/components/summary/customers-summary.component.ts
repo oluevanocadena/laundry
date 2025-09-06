@@ -9,10 +9,19 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./customers-summary.component.scss'],
 })
 export class CustomersSummaryComponent extends HelperPage implements OnInit {
-  @Input() edition: boolean = false;
+
+  @Input() collapsed: boolean = false;
 
   constructor(public facade: CustomersDraftFacade) {
     super();
+  }
+
+  /**
+   * Getters
+   */
+
+  get hadPhone(): boolean {
+    return this.facade.phone.value !== null && this.facade.phone.value.length > 0;
   }
 
   ngOnInit() {}

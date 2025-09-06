@@ -8,12 +8,14 @@
             height="fit-content">
             <grid [direction]="'row'" [gap]="[24,24]">
                 <orders-items />
-                <orders-summary />
-                <orders-notes />
+                <orders-summary *ngIf="!isMobileOrTablet" />
+                <orders-notes *ngIf="!isMobileOrTablet" />
             </grid>
             <grid [direction]="'row'" [gap]="[24,24]">
                 <orders-customer />
                 <orders-delivery />
+                <orders-summary *ngIf="isMobileOrTablet" />
+                <orders-notes *ngIf="isMobileOrTablet" />
             </grid>
         </grid>
 

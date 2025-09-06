@@ -87,12 +87,12 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   get saveLabelButton(): string {
     switch (this.order?.StatusId) {
       case OrderStatusEnum.Draft:
-        return 'Crear y cobrar pedido';
+        return 'Crear y cobrar';
       case OrderStatusEnum.Pending:
         if (this.paid) {
           return 'Guardar pedido';
         } else {
-          return 'Guardar y cobrar pedido';
+          return 'Guardar y cobrar';
         }
       default:
         return 'Guardar cambios';

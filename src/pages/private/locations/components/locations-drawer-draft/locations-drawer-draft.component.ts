@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LocationsDraftFacade } from '@bussiness/locations/controllers/locations.draft.facade';
+import { HelperPage } from '@components/common/helper.page';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { LocationsMonitorFacade } from '@bussiness/locations/controllers/locations.monitor.facade';
 
 @Component({
   selector: 'locations-drawer-draft',
@@ -9,7 +9,7 @@ import { LocationsMonitorFacade } from '@bussiness/locations/controllers/locatio
   templateUrl: './locations-drawer-draft.component.html',
   styleUrls: ['./locations-drawer-draft.component.scss'],
 })
-export class LocationsDrawerDraftComponent implements OnInit {
+export class LocationsDrawerDraftComponent extends HelperPage implements OnInit {
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
@@ -31,7 +31,9 @@ export class LocationsDrawerDraftComponent implements OnInit {
   constructor(
     public facade: LocationsDraftFacade,
     public nzMessageService: NzMessageService
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * UI Events
@@ -39,7 +41,7 @@ export class LocationsDrawerDraftComponent implements OnInit {
 
   close(avoidMessage: boolean = false) {
     if (avoidMessage === false) {
-      this.nzMessageService.info('¡No se guardó ningún cambio! ℹ️');
+      this.nzMessageService.info('¡No se guardó ningún cambio!');
     }
     this.show = false;
     this.showChange.emit(false);
@@ -59,7 +61,7 @@ export class LocationsDrawerDraftComponent implements OnInit {
         this.close(true);
       } else {
         this.nzMessageService.error(
-          '¡Ocurrió un error al guardar los cambios! ⛔'
+          '¡Ocurrió un error al guardar los cambios!'
         );
       }
     });
@@ -68,7 +70,7 @@ export class LocationsDrawerDraftComponent implements OnInit {
   onDisableOrEnableClick() {
     if (this.facade.api.locations.value?.length === 1) {
       this.nzMessageService.error(
-        '¡No se puede deshabilitar la única sucursal! ⛔'
+        '¡No se puede deshabilitar la única sucursal!'
       );
       return;
     }
@@ -78,7 +80,7 @@ export class LocationsDrawerDraftComponent implements OnInit {
   onDeleteClick() {
     if (this.facade.api.locations.value?.length === 1) {
       this.nzMessageService.error(
-        '¡No se puede eliminar la única sucursal! ⛔'
+        '¡No se puede eliminar la única sucursal!'
       );
       return;
     }
@@ -98,7 +100,7 @@ export class LocationsDrawerDraftComponent implements OnInit {
               (this.facade.selectedLocation.value!.Disabled
                 ? 'habilitada'
                 : 'deshabilitada') +
-              ' correctamente! ✅'
+              ' correctamente!'
           );
           this.close(true);
         });

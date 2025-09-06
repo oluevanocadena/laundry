@@ -13,7 +13,7 @@ export class DeliveryDomain {
     const isDraft = order.StatusId === OrderStatusEnum.Draft;
     const itemCount = order.ItemCount;
     const isPendingPayment = order.Paid === false;
-    return isDraft ? (itemCount > 0) : isPendingPayment;
+    return isDraft ? itemCount > 0 : isPendingPayment;
   }
 
   static getUrlMap(address?: string | null): string {
@@ -33,5 +33,10 @@ export class DeliveryDomain {
       default:
         return '';
     }
+  }
+
+  static isDelivery(order?: Order | null): boolean {
+    if (!order) return false;
+    return order.DeliveryType === DeliveryTypesEnum.Delivery;
   }
 }

@@ -12,14 +12,14 @@
                                 <span class="material-symbols-outlined f-20 f-lh-13 f-08 fill-icon">
                                     business_center
                                 </span>
-                                <span class="f-14 fw-500 f-lh-13 f-02">
+                                <span class="fw-500 f-02 {{isMobileOrTablet ? 'f-18 f-lh-21' : 'f-14 f-lh-17'}}">
                                     {{facade.organizationName}}
                                 </span>
                             </grid>
                         </grid>
                     </grid>
                     <grid [direction]="'column'" [align]="'center-right'">
-                        <button (click)="closeShortMenu()" outline xsmall icon-google>
+                        <button (click)="closeShortMenu()" outline small icon-google>
                             <tui-icon icon="@tui.x" class="f-14 fw-600 f-06" />
                         </button>
                     </grid>

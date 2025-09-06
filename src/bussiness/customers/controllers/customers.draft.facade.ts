@@ -10,6 +10,7 @@ import { CustomersApiService } from '@bussiness/customers/customers.api.service'
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { system } from '@environments/environment';
+import { FormProp } from '@globals/types/form.type';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,7 @@ export class CustomersDraftFacade extends FacadeBase {
 
   //Subjects
   public customer = new StorageProp<Customer>(null, 'CUSTOMER_EDITION');
+  public phone = new FormProp<string>(this.formGroup, 'phone');
 
   constructor(
     public api: CustomersApiService,
@@ -51,7 +53,18 @@ export class CustomersDraftFacade extends FacadeBase {
     super.initialize();
   }
 
-  bindEvents() {}
+  bindEvents() {
+    this.phone.onChange((value) => {
+      if (value && value.length > 0) {
+        this.formGroup.controls.phone.setValidators([
+          Validators.required,
+          Validators.minLength(10),
+        ]);
+      } else {
+        this.formGroup.controls.phone.clearValidators();
+      }
+    });
+  }
 
   clearState() {
     this.formGroup.reset();

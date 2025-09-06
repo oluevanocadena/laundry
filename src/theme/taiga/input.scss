@@ -113,8 +113,10 @@ tui-textfield {
 
     >.t-content,
     >.t-template {
-        padding-top: 0 !important;
         color: var(--text-01) !important;
+    }
+    >.t-template {
+        padding-top: 4px !important;
     }
 
     button[tuiicons]::before,
@@ -126,11 +128,16 @@ tui-textfield {
 
     >textarea::placeholder,
     >input::placeholder {
-        color: var(--text-08) !important;
+        color: var(--text-07) !important;
     }
 
     &[tuiInputRound] {
         border-radius: 2rem !important;
+    }
+
+    input[disabled] {
+        opacity: 0.5 !important;
+        border: 1px solid var(--border) !important;
     }
 }
 

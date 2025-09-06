@@ -6,11 +6,12 @@
             [template]="isMobileOrTablet ? '1fr': isLargeDesktop? '1fr minmax(650px, 0.25fr)': '1fr 350px'"
             height="fit-content">
             <grid [direction]="'row'" [gap]="[24,24]">
-                <customers-summary [edition]="true" />
-                <customers-notes [edition]="true" />
+                <customers-summary />
+                <customers-notes *ngIf="!isMobileOrTablet" />
             </grid>
             <grid [direction]="'row'" [gap]="[24,24]">
-                <customers-address #delivery [edition]="true" />
+                <customers-address />
+                <customers-notes *ngIf="isMobileOrTablet" />
             </grid>
         </grid>
     </grid>

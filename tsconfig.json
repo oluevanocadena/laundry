@@ -23,6 +23,7 @@
       "@directives/*": ["./src/directives/*"],
       "@components/*": ["./src/components/*"],
       "@pages/*": ["./src/pages/*"], 
+      "@private/*": ["./src/pages/private/*"],
       "@services/*": ["./src/services/*"],
       "@globals/*": ["./src/globals/*"],
       "@utils/*": ["./src/globals/utils/*"], 

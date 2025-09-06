@@ -7,6 +7,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { HelperPage } from '../helper.page';
 
 @Component({
   selector: 'drawer',
@@ -14,7 +15,7 @@ import {
   templateUrl: './drawer.component.html',
   styleUrls: ['./drawer.component.scss'],
 })
-export class DrawerComponent {
+export class DrawerComponent extends HelperPage {
   @ViewChild('buttonConfirm') buttonConfirm!: ElementRef;
 
   private _show: boolean = false;
@@ -41,7 +42,9 @@ export class DrawerComponent {
   @Output() onClose = new EventEmitter<void>();
   @Output() onConfirm = new EventEmitter<void>();
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+    super();
+  }
 
   /**
    * UI Events

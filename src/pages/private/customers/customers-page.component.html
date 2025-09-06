@@ -9,7 +9,7 @@
 
         <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
             class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+            <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
                 <nz-select ngModel="all" [width]="'150px'">
                     <nz-option nzValue="all" nzLabel="Todos los clientes"></nz-option>
                     <nz-option nzValue="active" nzLabel="Clientes activos"></nz-option>
@@ -23,8 +23,23 @@
                     <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
                     Ordenado por email
                 </button>
-                Longitud
-                {{facade.api.customers.value?.length}}
+            </grid>
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        filter_list
+                    </span>
+                </button>
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        view_column
+                    </span>
+                </button>
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        flex_direction
+                    </span>
+                </button>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
                 <button primary small (click)="facade.onNewCustomer()">
@@ -34,10 +49,10 @@
         </grid>
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
-            <table>
+            <table [width]="isMobileOrTablet ? '1300px' : '100%'">
                 <thead>
                     <tr>
-                        <th> </th>
+                        <th width="40px"> </th>
                         <th width="150px">Fecha de creación</th>
                         <th>Nombre</th>
                         <th>Teléfono</th>

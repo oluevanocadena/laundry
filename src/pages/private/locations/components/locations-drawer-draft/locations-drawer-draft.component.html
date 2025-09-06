@@ -1,4 +1,4 @@
-<drawer [(show)]="show" (onClose)="close()" (onConfirm)="confirm()" [large]="'500px'" [confirmStyle]="'success'"
+<drawer [(show)]="show" (onClose)="close()" (onConfirm)="confirm()" [large]="isMobileOrTablet ? '100%' : '500px'" [confirmStyle]="'success'"
     [closable]="false" [busy]="busy">
     <grid title [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
         <span class="f-16 f-03 fw-600 t-left">
@@ -21,19 +21,19 @@
                         [required]="false" />
                     <form-input [label]="'Calle'" [type]="'text'" [placeholder]="'Calle'" formControlName="street"
                         [required]="true" />
-                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 1fr'">
                         <form-input [label]="'# Exterior'" [type]="'text'" [placeholder]="'# Exterior'"
                             formControlName="externalNumber" />
                         <form-input [label]="'# Interior'" [type]="'text'" [placeholder]="'# Interior'"
                             formControlName="internalNumber" />
                     </grid>
-                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 1fr'">
                         <form-input [label]="'Colonia'" [type]="'text'" [placeholder]="'Colonia'"
                             formControlName="neighborhood" [required]="true" />
                         <form-input [label]="'Municipio/Delegación'" [type]="'text'" [placeholder]="'Municipio'"
                             formControlName="municipality" [required]="true" />
                     </grid>
-                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                    <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 1fr'">
                         <form-input [label]="'Estado/Ciudad'" [type]="'text'" [placeholder]="'Estado'"
                             formControlName="state" [required]="true" />
                         <form-input [label]="'Código postal'" [type]="'text'" [placeholder]="'Código postal'"

@@ -1,4 +1,4 @@
-<tui-accordion-item class="container" [open]="true" [size]="'s'">
+<tui-accordion-item class="container" [open]="!collapsed" [size]="'s'">
     <span class="f-14 fw-500 f-06 f-lh-12">Dirección</span>
 
     <ng-template tuiAccordionItemContent>
@@ -6,7 +6,7 @@
             <grid [direction]="'row'" [gap]="[16,16]">
                 <form-input [label]="'Calle'" [type]="'text'" [placeholder]="'Calle'" formControlName="street"
                     [required]="true" />
-                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 1fr'">
                     <form-input [label]="'# Exterior'" [type]="'text'" [placeholder]="'# Exterior'"
                         formControlName="externalNumber" />
                     <form-input [label]="'# Interior'" [type]="'text'" [placeholder]="'# Interior'"
@@ -16,7 +16,7 @@
                     [required]="true" />
                 <form-input [label]="'Municipio'" [type]="'text'" [placeholder]="'Municipio'"
                     formControlName="municipality" [required]="true" />
-                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr 1fr'">
+                <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 1fr'">
                     <form-input [label]="'Estado'" [type]="'text'" [placeholder]="'Estado'" formControlName="state"
                         [required]="true" />
                     <form-input [label]="'Código postal'" [type]="'text'" [placeholder]="'Código postal'"

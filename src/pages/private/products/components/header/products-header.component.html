@@ -2,25 +2,27 @@
     <grid [gap]="[16,16]" [direction]="'row'">
         <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'" height="fit-content">
             <grid [direction]="'row'" [gap]="[8,8]">
-                <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,16]">
+                <grid [direction]="'column'" [align]="'top-left'" [gap]="[8,16]">
                     <button (click)="onBack()" outline xsmall icon>
                         <tui-icon icon="@tui.chevron-left" class="f-14 f-04" />
                     </button>
-                    <span class="fw-600 f-01 f-18">
-                        {{facade.edition ? '' : 'Nuevo producto'}}
-                        <label *ngIf="!busy" [ngClass]="{'skeleton': busy}">
-                            {{productName || ''}}
-                        </label>
-                    </span>
-                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
-                        <tui-loader *ngIf="busy" />
-                        <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
-                            [appearance]="'warning'" />
-                        <status-badge *ngIf="!busy && facade.edition === true" [label]="productStatus" [size]="'s'"
-                            [appearance]="productStatusAppearance" />
+                    <grid [gap]="[4,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr max-content'">
+                        <span class="fw-600 f-01 f-18">
+                            {{facade.edition ? '' : 'Nuevo producto'}}
+                            <label *ngIf="!busy" [ngClass]="{'skeleton': busy}">
+                                {{productName || ''}}
+                            </label>
+                        </span>
+                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
+                            <tui-loader *ngIf="busy" />
+                            <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
+                                [appearance]="'warning'" />
+                            <status-badge *ngIf="!busy && facade.edition === true" [label]="productStatus" [size]="'s'"
+                                [appearance]="productStatusAppearance" />
+                        </grid>
                     </grid>
                 </grid>
-                <span class="f-13 fw-400 f-06 f-lh-13">
+                <span class="f-13 fw-400 f-06 f-lh-13" [padding]="'0 0 0 2.35rem'">
                     {{dateCreated | dateFormat: 'DD/MM/yyyy [a las] hh:mm A' }}
                 </span>
             </grid>

@@ -8,8 +8,8 @@ import { HelperPage } from '@components/common/helper.page';
   templateUrl: './customers-address.component.html',
   styleUrls: ['./customers-address.component.scss'],
 })
-export class CustomersAddressComponent extends HelperPage implements OnInit {
-  @Input() edition: boolean = false;
+export class CustomersAddressComponent extends HelperPage implements OnInit { 
+  @Input() collapsed: boolean = false;
 
   constructor(public facade: CustomersDraftFacade) {
     super();

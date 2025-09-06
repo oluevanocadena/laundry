@@ -9,7 +9,7 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./customers-notes.component.scss'],
 })
 export class CustomersNotesComponent extends HelperPage implements OnInit {
-  @Input() edition: boolean = false;
+  @Input() collapsed: boolean = false;
 
   constructor(public facade: CustomersDraftFacade) {
     super();

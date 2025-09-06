@@ -8,14 +8,31 @@
         </grid>
         <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
             class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
-                <nz-select ngModel="all" [width]="'220px'">
+            <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <nz-select ngModel="all" [width]="'150px'">
                     <nz-option nzValue="all" nzLabel="Todos los productos"></nz-option>
                     <nz-option nzValue="active" nzLabel="Productos con mayores ventas"></nz-option>
                     <nz-option nzValue="disabled" nzLabel="Productos con menos ventas"></nz-option>
                 </nz-select>
                 <nz-segmented [nzOptions]="facade.segments" [nzSize]="'small'"
                     (nzValueChange)="facade.onSegmentChange($event)"></nz-segmented>
+            </grid>
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        filter_list
+                    </span>
+                </button>
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        view_column
+                    </span>
+                </button>
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        flex_direction
+                    </span>
+                </button>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
                 <button primary small (click)="facade.onNewProductClick()">
@@ -25,10 +42,10 @@
         </grid>
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
-            <table>
+            <table [width]="isMobileOrTablet ? '1100px' : '100%'">
                 <thead>
                     <tr>
-                        <th> </th>
+                        <th [width]="'40px'"> </th>
                         <th [width]="'80px'">Imagen</th>
                         <th width="150px">Fecha de creación</th>
                         <th>Nombre</th>

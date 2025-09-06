@@ -40,7 +40,7 @@
                     </span>
                 </grid>
             </button>
-            <button tuiStep>
+            <button *ngIf="deliveryDomain.isDelivery(order)" tuiStep>
                 <grid [direction]="'row'" [gap]="[0,0]">
                     <span class="f-14 fw-500 f-02 f-lh-10">
                         En entrega

@@ -52,18 +52,18 @@ const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 })
 export class OrdersDraftFacade extends FacadeBase {
   edition: boolean = false;
+  showAdjustDelivery: boolean = false;
+  showAdjustDiscountModal: boolean = false;
+  showAdjustQuantity: boolean = false;
+  showCancelOrderModal: boolean = false;
+  showCollectPaymentModal: boolean = false;
+  showConfirmDelete: boolean = false;
+  showCustomerCreateModal: boolean = false;
   showCustomerModal: boolean = false;
   showDeleteModal: boolean = false;
+  showItemsProcessing: boolean = false;
   showRefundModal: boolean = false;
   showSearchProduct: boolean = false;
-  showItemsProcessing: boolean = false;
-  showAdjustQuantity: boolean = false;
-  showConfirmDelete: boolean = false;
-  showAdjustDiscountModal: boolean = false;
-  showCollectPaymentModal: boolean = false;
-  showCustomerCreateModal: boolean = false;
-  showAdjustDelivery: boolean = false;
-  showCancelOrderModal: boolean = false;
 
   order = new SubjectProp<Order>(OrderEmpty);
 
@@ -296,6 +296,7 @@ export class OrdersDraftFacade extends FacadeBase {
       Indications: delivery.deliveryInstructions ?? '',
       Address: this.orderCustomer.value?.Address ?? '',
     };
+    this.order.value!.DeliveryType = delivery.deliveryType as DeliveryTypes;
     this.calcTotals();
     this.formDelivery.reset();
     this.showAdjustDelivery = false;
@@ -448,6 +449,7 @@ export class OrdersDraftFacade extends FacadeBase {
   openCancelOrderModal() {
     this.showCancelOrderModal = true;
   }
+  
 
   /**
    * Getters

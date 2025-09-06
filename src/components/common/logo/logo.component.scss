@@ -1,5 +1,9 @@
-:host{
+:host {
     height: 100%;
+    display: flex;
+    gap: 0px;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 [alt="logo"] {
@@ -13,5 +17,5 @@
 
     &.large {
         height: 40px;
-    }   
+    }
 }

@@ -1,14 +1,13 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'calc(100vh - 49px)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'row'" [padding]="'1rem'">
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'1rem'">
             <span class="fw-500 f-01 f-20 f-lh-22" padding="0.25rem 0 0 0">
                 Sucursales
             </span>
-            <span class="fw-500 f-06 f-14" padding="0.25rem 0 0 0">
-                Por ahora solo puedes agregar
-                <span class="fw-600 f-02 f-14">1 sucursal de 1 disponible</span>
-                en tu plan.
+            <span class="material-symbols-outlined f-info f-16 pointer" nz-tooltip
+                nzTooltipTitle="Tienes hasta {{maxLocations}} sucursal disponible en tu plan.">
+                info
             </span>
         </grid>
         <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
@@ -26,16 +25,16 @@
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
-            <table>
+            <table [width]="isMobileOrTablet ? '900px' : '100%'">
                 <thead>
                     <tr>
-                        <th> </th>
-                        <th width="150px">Fecha de creación</th>
-                        <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th width="200px">Dirección</th>
-                        <th>Predeterminada</th>
+                        <th width="40px"> </th>
                         <th width="80px">Estatus</th>
+                        <th minWidth="150px">Nombre</th>
+                        <th width="130px">Fecha de creación</th>
+                        <th width="130px">Teléfono</th>
+                        <th minWidth="200px">Dirección</th>
+                        <th>Predeterminada</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,8 +64,14 @@
                             <td>
                                 <label nz-checkbox></label>
                             </td>
-                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
+                            <td>
+                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
+                                    <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"
+                                        [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
+                                </grid>
+                            </td>
                             <td>{{item.Name}}</td>
+                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
                             <td>{{item.Phone}}</td>
                             <td>
                                 <tui-line-clamp [content]="item.Address || '-' | capitalization" [lineHeight]="20"
@@ -76,12 +81,6 @@
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Default ? 'Predeterminado' : 'No predeterminado'"
                                         [appearance]="item?.Default ? 'success' : 'default'" [size]="'m'" />
-                                </grid>
-                            </td>
-                            <td>
-                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
-                                    <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"
-                                        [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
                                 </grid>
                             </td>
                         </tr>

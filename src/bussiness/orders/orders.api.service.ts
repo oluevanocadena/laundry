@@ -53,7 +53,8 @@ export class OrdersApiService implements FacadeApiBase {
           `*, 
           OrderItems: ${SupabaseTables.OrderItems}(*, 
             Product: ${SupabaseTables.Products}(*),  
-            ItemStatus: ${SupabaseTables.OrderItemStatuses}(*)
+            ItemStatus: ${SupabaseTables.OrderItemStatuses}(*),
+            UnitMeasure: ${SupabaseTables.UnitMeasures}(*)
           ),
           Customer:${SupabaseTables.Customers}(*),
           Location:${SupabaseTables.Locations}(*),
@@ -75,7 +76,8 @@ export class OrdersApiService implements FacadeApiBase {
           `*, 
           OrderItems: ${SupabaseTables.OrderItems}(*, 
             Product: ${SupabaseTables.Products}(*),  
-            ItemStatus: ${SupabaseTables.OrderItemStatuses}(*)
+            ItemStatus: ${SupabaseTables.OrderItemStatuses}(*),
+            UnitMeasure: ${SupabaseTables.UnitMeasures}(*)
           ),
           Customer:${SupabaseTables.Customers}(*),
           Location:${SupabaseTables.Locations}(*),

@@ -36,6 +36,13 @@ export class OrdersItemsProcessingComponent
   }
 
   /**
+   * Getters
+   */
+  get order() {
+    return this.facade.order.value;
+  }
+
+  /**
    * UI Events
    */
   confirm() {}

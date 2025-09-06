@@ -27,57 +27,12 @@
             </grid>
             <grid *ngFor="let item of orderItems" [gap]="[0,16]" [direction]="'column'"
                 [template]="'max-content 1fr max-content'" width="100%">
-                <grid [padding]="'0.25rem 0 0.5rem 0'">
-                    <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="48" height="48"
+                <grid [padding]="'0 0 0.5rem 0'">
+                    <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="56" height="56"
                         (error)="utils.onImageError($event)" class="brdr-radius-4 img-cover" />
                 </grid>
-                <grid [direction]="'row'" [gap]="[4,4]" [padding]="'0.125rem 0 0.5rem 0'">
-                    <grid [gap]="[0,8]" [direction]="'column'" [align]="'center-left'">
-                        <status-badge *ngIf="ordersDomain.canProcessOrder(order)" [label]="itemsDomain.statusName(item)"
-                            [appearance]="itemsDomain.statusColor(item)" [size]="'m'" />
-                        <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
-                            class="f-13 fw-400 f-lh-14 t-left" />
-                        <ng-template #titleClamp>
-                            <span class="f-14 fw-600 f-01 f-lh-17 t-left">
-                                {{item.Name}}
-                            </span>
-                        </ng-template>
-                    </grid>
-                    <tui-line-clamp [content]="descriptionClamp" [lineHeight]="18" [linesLimit]="2"
-                        class="f-13 fw-400 f-lh-14 t-left" />
-                    <ng-template #descriptionClamp>
-                        <span class="f-06">
-                            {{item.Description}}
-                        </span>
-                    </ng-template>
-                </grid>
-                <grid [direction]="'row'" [gap]="[4,4]">
-                    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                        <span class="f-13 fw-600 f-03">
-                            {{item.Quantity | numeralFormat: '0,0.0'}}
-                            {{item.UnitMeasure?.Abbreviation}}
-                        </span>
-                        <span class="f-13 fw-100 f-03">
-                            X
-                        </span>
-                        <span class="f-13 fw-600 f-03">
-                            {{item.Price | numeralFormat: '$0,0.00'}}
-                        </span>
-                    </grid>
-                    <grid *ngIf="ordersDomain.canSearchProduct(order)" [gap]="[8,8]" [direction]="'column'"
-                        [align]="'center-right'" height="100%">
-                        <button small icon outline icon-google (click)="facade.openAdjustQuantity(item)">
-                            <span class="material-symbols-outlined f-16 f-05">
-                                add
-                            </span>
-                        </button>
-                        <button (click)="facade.openConfirmDelete(item)" small icon outline icon-google>
-                            <span class="material-symbols-outlined f-16 f-error">
-                                delete
-                            </span>
-                        </button>
-                    </grid>
-                </grid>
+                <orders-item-description [item]="item" [order]="order" />
+                <orders-item-pricing [item]="item" [order]="order" />
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
                 class="border-top-02">

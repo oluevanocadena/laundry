@@ -34,8 +34,8 @@ export class OrdersItemsDomain {
     ];
   }
 
-  static statusName(item: OrderItem): string {
-    switch (item.ItemStatusId) {
+  static statusName(item?: OrderItem | null): string {
+    switch (item?.ItemStatusId) {
       case OrderItemStatusEnum.NotProccesed:
         return 'Sin procesar';
       case OrderItemStatusEnum.Processing:
@@ -52,9 +52,9 @@ export class OrdersItemsDomain {
     return 'Desconocido';
   }
 
-  static statusColor(item: OrderItem): TuiAppearanceOptions['appearance'] {
+  static statusColor(item?: OrderItem | null): TuiAppearanceOptions['appearance'] {
     let status: TuiAppearanceOptions['appearance'];
-    switch (item.ItemStatusId) {
+    switch (item?.ItemStatusId) {
       case OrderItemStatusEnum.NotProccesed: //NotProccesed
         status = 'default';
         break;

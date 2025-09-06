@@ -1,0 +1,41 @@
+<grid [direction]="'row'" [gap]="[4,4]">
+    <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+        <span class="f-13 fw-600 f-03">
+            {{item?.Quantity ?? 0 | numeralFormat: '0,0.0'}}
+            {{item?.UnitMeasure?.Abbreviation}}
+        </span>
+        <span class="f-13 fw-100 f-03">
+            X
+        </span>
+        <span class="f-13 fw-600 f-03">
+            {{item?.Price ?? 0 | numeralFormat: '$0,0.00'}}
+        </span>
+    </grid>
+    <grid *ngIf="isMobileOrTablet" [gap]="[0,0]" height="100%">
+        <span class="f-14 fw-600 f-03 f-lh-17 t-right">
+            {{item?.Price ?? 0 | numeralFormat: '$0,0.00'}}
+        </span>
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
+            <span class="f-13 fw-100 f-03">
+                X
+            </span>
+            <span class="f-14 fw-600 f-03 f-lh-17">
+                {{item?.Quantity ?? 0 | numeralFormat: '0,0.0'}}
+                {{item?.UnitMeasure?.Abbreviation}}
+            </span>
+        </grid>
+    </grid>
+    <grid *ngIf="ordersDomain.canSearchProduct(order)" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'"
+        height="100%">
+        <button small icon outline icon-google (click)="facade.openAdjustQuantity(item!)">
+            <span class="material-symbols-outlined f-16 f-05">  
+                add
+            </span>
+        </button>
+        <button (click)="facade.openConfirmDelete(item!)" small icon outline icon-google>
+            <span class="material-symbols-outlined f-16 f-error">
+                delete
+            </span>
+        </button>
+    </grid>
+</grid>

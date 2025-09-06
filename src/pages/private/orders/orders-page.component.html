@@ -53,7 +53,7 @@
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
             class="scroll-h scroll-v bg-02 baseline">
-            <table [width]="isMobileOrTablet ? '1300px' : '100%'">
+            <table [width]="isMobileOrTablet ? '1100px' : '100%'">
                 <thead>
                     <tr>
                         <th width="40px"> </th>
@@ -61,10 +61,10 @@
                         <th width="100px">Fecha</th>
                         <th width="100px">Estatus</th>
                         <th>Cliente</th>
-                        <th>Tipo de entrega</th>
+                        <th width="170px">Tipo de entrega</th>
                         <th width="90px">Pago</th>
-                        <th>Partidas</th>
-                        <th>Total</th>
+                        <th width="100px">Partidas</th>
+                        <th width="90px">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,7 +95,7 @@
                                 <label nz-checkbox></label>
                             </td>
                             <td>{{item.OrderNumber}}</td>
-                            <td>{{(item.createdAt || '') | dateFormat: 'DD MMM[,] YYYY' | capitalization }}</td>
+                            <td>{{(item.createdAt || '') | dateFormat: 'DD MMM YYYY' | capitalization }}</td>
                             <td>
                                 <grid [direction]="'column'" [align]="'center-center'">
                                     <status-badge [label]="ordersDomain.statusName(item)" [size]="'m'"

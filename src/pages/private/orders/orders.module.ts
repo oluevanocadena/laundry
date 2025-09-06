@@ -30,9 +30,12 @@ import { OrdersDraftPageComponent } from '@pages/private/orders/draft/orders-dra
 import { OrdersPageComponent } from '@pages/private/orders/orders-page.component';
 import { CustomersModule } from '../customers/customers.module';
 import { OrdersAdjustDeliveryTrackingComponent } from './components/adjust-delivery-tracking/orders-adjust-delivery-tracking.component';
+import { OrdersItemDescriptionComponent } from './components/item-description/orders-item-description.component';
+import { OrdersItemPricingComponent } from './components/item-pricing/orders-item-pricing.component';
 
 const components: any[] = [
   OrdersAdjustDeliveryComponent,
+  OrdersAdjustDeliveryTrackingComponent,
   OrdersAdjustDiscountComponent,
   OrdersAdjustQuantityComponent,
   OrdersCollectPaymentComponent,
@@ -41,6 +44,8 @@ const components: any[] = [
   OrdersDetailPageComponent,
   OrdersDraftPageComponent,
   OrdersHeaderComponent,
+  OrdersItemDescriptionComponent,
+  OrdersItemPricingComponent,
   OrdersItemsComponent,
   OrdersItemsProcessingComponent,
   OrdersItemsProcessingStatusComponent,
@@ -51,7 +56,6 @@ const components: any[] = [
   OrdersSearchProductComponent,
   OrdersSummaryComponent,
   OrdersTopBarComponent,
-  OrdersAdjustDeliveryTrackingComponent,
 ];
 
 @NgModule({

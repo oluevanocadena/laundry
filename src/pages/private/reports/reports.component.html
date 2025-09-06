@@ -1,26 +1,123 @@
 <layout>
-    <grid [gap]="[0,24]" [direction]="'row'" [height]="'calc(100vh - 49px)'"
-        [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
-                Reportes
-            </span>
+    <grid [direction]="'row'" [gap]="[0,16]" class="baseline scroll-v">
+        <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'1rem 1.5rem'" class="brdr-bottom">
+            <grid [direction]="'row'" [padding]="'0.5rem 0 0 0'">
+                <span class="f-01 f-21 f-lh-14 fw-400">
+                    {{facade.organizationName}}
+                </span>
+                <span class="f-12 fw-600 f-07">
+                    Organización | Unidad de negocio
+                </span>
+            </grid>
+            <grid [direction]="'column'" [align]="'center-right'">
+                <status-badge [appearance]="'success'" [label]="'Activo'"></status-badge>
+            </grid>
         </grid>
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por fecha de apertura
-                </button>
-                <button outline small flex>
-                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-                    Columnas
-                </button>
+        <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 1.5rem'">
+            <grid [gap]="[8,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr' : 'max-content max-content'"
+                [width]="'100%'">
+                <form [formGroup]="facade.formGroup" [width]="'180px'">
+                    <form-input formControlName="period" [type]="'select'" [placeholder]="'Seleccione'"
+                        [options]="facade.periods" />
+                </form>
+                <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                    <span class="f-12 fw-600 f-lh-15 f-06">
+                        Estadísticas de los últimos 60 minutos.
+                    </span>
+                </grid>
+            </grid>
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr' : '1fr 1fr'"
+                [width]="'100%'" class="brdr-bottom baseline">
+                <grid [direction]="'row'" [minHeight]="'350px'" card default class="baseline">
+                    <grid [direction]="'row'" [gap]="[16,0]">
+                        <grid [direction]="'column'" [template]="'1fr max-content'">
+                            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                                <button secondary small icon>
+                                    <tui-icon icon="@tui.dollar-sign" class="f-14 f-06"></tui-icon>
+                                </button>
+                                <span class="f-02 f-18 fw-500">
+                                    Ventas
+                                </span>
+                            </grid>
+                            <grid [direction]="'column'" [align]="'center-right'" [height]="'100%'">
+                                <span class="material-symbols-outlined f-18 fw-400 f-06">
+                                    info
+                                </span>
+                            </grid>
+                        </grid>
+                        <grid [direction]="'row'" [gap]="[4,4]">
+                            <span class="f-06 fw-400 f-14">
+                                Ingresos totales
+                            </span>
+                            <span class="f-02 fw-500 f-20">
+                                {{16 | numeralFormat: '$0,0.00'}}
+                            </span>
+                        </grid>
+                    </grid>
+                </grid>
+                <grid [height]="'350px'" card default class="baseline">
+                    <grid [direction]="'row'" [gap]="[16,16]">
+                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                            <button secondary small icon>
+                                <tui-icon icon="@tui.zap" class="f-14 f-06"></tui-icon>
+                            </button>
+                            <span class="f-02 f-18 fw-500">
+                                Pedidos
+                            </span>
+                        </grid>
+                        <grid [direction]="'row'" [gap]="[4,4]">
+                            <span class="f-06 fw-400 f-14">
+                                Órdenes totales
+                            </span>
+                            <span class="f-02 fw-500 f-20">
+                                {{1600 | numeralFormat: '0,0'}}
+                            </span>
+                        </grid>
+                    </grid>
+                </grid>
+                <grid [height]="'350px'" card default class="baseline">
+                    <grid [direction]="'row'" [gap]="[16,16]">
+                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                            <button secondary small icon>
+                                <tui-icon icon="@tui.users" class="f-14 f-06"></tui-icon>
+                            </button>
+                            <span class="f-02 f-18 fw-500">
+                                Clientes
+                            </span>
+                        </grid>
+                        <grid [direction]="'row'" [gap]="[4,4]">
+                            <span class="f-06 fw-400 f-14">
+                                Total de clientes
+                            </span>
+                            <span class="f-02 fw-500 f-20">
+                                {{1600 | numeralFormat: '0,0'}}
+                            </span>
+                        </grid>
+                    </grid>
+                </grid>
+                <grid [height]="'350px'" card default class="baseline">
+                    <grid [direction]="'row'" [gap]="[16,16]">
+                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                            <button secondary small icon>
+                                <tui-icon icon="@tui.users" class="f-14 f-06"></tui-icon>
+                            </button>
+                            <span class="f-02 f-18 fw-500">
+                                Clientes
+                            </span>
+                        </grid>
+                        <grid [direction]="'row'" [gap]="[4,4]">
+                            <span class="f-06 fw-400 f-14">
+                                Total de clientes
+                            </span>
+                            <span class="f-02 fw-500 f-20">
+                                {{1600 | numeralFormat: '0,0'}}
+                            </span>
+                        </grid>
+                    </grid>
+                </grid>
+
             </grid>
         </grid>
     </grid>
-
-
 
 </layout>

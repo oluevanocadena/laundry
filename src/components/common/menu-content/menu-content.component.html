@@ -1,4 +1,5 @@
-<grid [direction]="'column'" [align]="'top-left'" [height]="isMobileOrTablet ? 'calc(-129px + 100vh)' : 'calc(100vh - 59px)'">
+<grid [direction]="'column'" [align]="'top-left'"
+    [height]="isMobileOrTablet ? 'calc(-129px + 100vh)' : 'calc(100vh - 59px)'">
     <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%" width="100%">
         <menu width="100%">
             <menu-item [collapsed]="collapsed" [icon]="'location_away'" [iconType]="'google'" [label]="'Inicio'"
@@ -24,12 +25,12 @@
             <menu-item [collapsed]="collapsed" [icon]="'show_chart'" [iconType]="'google'" [label]="'Reportes'"
                 [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'analytics'" [iconType]="'google'" [label]="'Analitica'"
-                [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'receipt'" [iconType]="'google'" [label]="'Facturación'"
-                [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
+                [urlBase]="routes.Analytics" [link]="routes.Analytics" [isGroup]="false" [level]="0" />
 
             <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
 
+            <menu-item [collapsed]="collapsed" [icon]="'deployed_code'" [iconType]="'google'" [label]="'Plugins'"
+                [urlBase]="routes.Plugins" [link]="routes.Plugins" [isGroup]="false" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'support_agent'" [iconType]="'google'" [label]="'Soporte'"
                 [urlBase]="routes.Support" [link]="routes.Support" [isGroup]="false" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'settings'" [iconType]="'google'" [label]="'Configuración'"

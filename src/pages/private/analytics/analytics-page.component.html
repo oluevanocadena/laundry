@@ -1,0 +1,31 @@
+<layout>
+    <grid [direction]="'row'" [gap]="[0,16]" class="baseline scroll-v">
+        <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'1rem 1.5rem'" class="brdr-bottom">
+            <grid [direction]="'row'" [padding]="'0.5rem 0 0 0'">
+                <span class="f-01 f-21 f-lh-14 fw-400">
+                    {{facade.organizationName}}
+                </span>
+                <span class="f-12 fw-600 f-07">
+                    Organización | Unidad de negocio
+                </span>
+            </grid>
+            <grid [direction]="'column'" [align]="'center-right'">
+                <status-badge [appearance]="'success'" [label]="'Activo'"></status-badge>
+            </grid>
+        </grid>
+        <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 1.5rem'">
+            <grid [gap]="[8,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr' : 'max-content max-content'"
+                [width]="'100%'">
+                <form [formGroup]="facade.formGroup" [width]="'180px'">
+                    <form-input formControlName="period" [type]="'select'" [placeholder]="'Seleccione'"
+                        [options]="facade.periods" />
+                </form>
+                <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                    <span class="f-12 fw-600 f-lh-15 f-06">
+                        Estadísticas de los últimos 60 minutos.
+                    </span>
+                </grid>
+            </grid>
+        </grid>
+    </grid>
+</layout>

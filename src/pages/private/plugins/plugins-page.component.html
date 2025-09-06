@@ -1,0 +1,15 @@
+<layout>
+    <grid [direction]="'row'" [gap]="[0,16]" class="baseline scroll-v">
+        <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'1rem 1.5rem'" class="brdr-bottom">
+            <grid [direction]="'row'" [padding]="'0.5rem 0 0 0'">
+
+                <span class="f-12 fw-600 f-07">
+                    Organización | Unidad de negocio
+                </span>
+            </grid>
+            <grid [direction]="'column'" [align]="'center-right'">
+                <status-badge [appearance]="'success'" [label]="'Activo'"></status-badge>
+            </grid>
+        </grid>
+    </grid>
+</layout>

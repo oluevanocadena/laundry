@@ -7,11 +7,11 @@ import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
-
-import { ReportsPageComponent } from './reports.component';
 import { PipesModule } from '@pipes/pipes.module';
 
-const components = [ReportsPageComponent];
+import { PluginsPageComponent } from '@pages/private/plugins/plugins-page.component';
+
+const components = [PluginsPageComponent];
 
 @NgModule({
   imports: [
@@ -28,4 +28,4 @@ const components = [ReportsPageComponent];
   declarations: components,
   exports: components,
 })
-export class ReportsModule {}
+export class PluginsModule {}

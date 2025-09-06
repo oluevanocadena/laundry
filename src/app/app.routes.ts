@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { CanDeactivateGuard } from '@guards/deactivate.guard';
-import { LoginGuard } from '@guards/login.guard';
 
 import { SessionGuard } from '@guards/session.guard';
+import { AnalyticsPageComponent } from '@pages/private/analytics/analytics-page.component';
 
 import { CustomersPageComponent } from '@pages/private/customers/customers-page.component';
 import { CustomersDraftComponent } from '@pages/private/customers/draft/customers-draft.component';
@@ -11,6 +11,7 @@ import { LocationsPageComponent } from '@pages/private/locations/locations.compo
 import { NotificationsPageComponent } from '@pages/private/notifications/notifications.component';
 import { OrdersDraftPageComponent } from '@pages/private/orders/draft/orders-draft-page.component';
 import { OrdersPageComponent } from '@pages/private/orders/orders-page.component';
+import { PluginsPageComponent } from '@pages/private/plugins/plugins-page.component';
 import { ProductsDraftComponent } from '@pages/private/products/draft/products-draft.component';
 import { ProductsPageComponent } from '@pages/private/products/products-page.component';
 import { ReportsPageComponent } from '@pages/private/reports/reports.component';
@@ -21,6 +22,7 @@ import { SettingsPageComponent } from '@pages/private/settings/settings-page.com
 import { SetupPageComponent } from '@pages/private/setup/setup.component';
 import { SupportPageComponent } from '@pages/private/support/support.component';
 import { UsersPageComponent } from '@pages/private/users/users.component';
+
 import { LandingComponent } from '@pages/public/landing/landing.component';
 import { PricingComponent } from '@pages/public/pricing/pricing.component';
 
@@ -28,6 +30,17 @@ export const routes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'home', canActivate: [SessionGuard], component: HomeComponent },
   { path: 'setup', canActivate: [SessionGuard], component: SetupPageComponent },
+
+  {
+    path: 'analytics',
+    canActivate: [SessionGuard],
+    component: AnalyticsPageComponent,
+  },
+  {
+    path: 'plugins',
+    canActivate: [SessionGuard],
+    component: PluginsPageComponent,
+  },
   {
     path: 'customers',
     canActivate: [SessionGuard],

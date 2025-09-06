@@ -14,6 +14,8 @@ export const SupabaseTables = {
   Products: 'Products',
   UnitMeasures: 'UnitMeasures',
   Notifications: 'Notifications',
+  Statistics: 'Statistics',
+  Analytics: 'Analytics',
 };
 
 export const SupabaseBuckets = {

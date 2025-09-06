@@ -1,6 +1,7 @@
 export const routes = {
   Root: '/',
   Home: '/home',
+  Analytics: '/analytics',
   CustomerDetails: '/customers/detail/:id',
   CustomerDraft: '/customers/draft',
   Customers: '/customers',
@@ -26,6 +27,7 @@ export const routes = {
   Settings: '/settings',
   Setup: '/setup',
   Support: '/support',
+  Plugins: '/plugins',
   UserDetails: '/users/detail/:id',
   UserDraft: '/users/draft',
   UserEdit: '/users/edit/:id',

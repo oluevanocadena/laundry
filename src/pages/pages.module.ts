@@ -10,6 +10,7 @@ import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
+import { AnalyticsModule } from '@pages/private/analytics/analytics.module';
 import { CustomersModule } from '@pages/private/customers/customers.module';
 import { HomeModule } from '@pages/private/home/home.module';
 import { LocationsModule } from '@pages/private/locations/locations.module';
@@ -25,6 +26,7 @@ import { UsersModule } from '@pages/private/users/users.module';
 
 import { LandingModule } from '@pages/public/landing/landing.module';
 import { PricingModule } from '@pages/public/pricing/pricing.module';
+import { PluginsModule } from './private/plugins/plugins.module';
 
 const components: any[] = [];
 
@@ -40,21 +42,23 @@ const components: any[] = [];
     DirectivesModule,
     TUIModule,
     NgZorroModule,
-    LoginModule,
 
+    AnalyticsModule,
     CustomersModule,
+    HomeModule,
+    LandingModule,
     LocationsModule,
+    LoginModule,
     NotificationsModule,
     OrdersModule,
+    PricingModule,
     ProductsModule,
     ReportsModule,
     SettingsModule,
-    UsersModule,
-    SupportModule,
-    LandingModule,
-    PricingModule,
-    HomeModule,
     SetupModule,
+    SupportModule,
+    UsersModule,
+    PluginsModule,
   ],
   declarations: components,
   exports: components,

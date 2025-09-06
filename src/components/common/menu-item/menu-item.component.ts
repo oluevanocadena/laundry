@@ -1,5 +1,6 @@
 import { Component, ContentChildren, Input, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'menu-item',
@@ -7,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './menu-item.component.html',
   styleUrls: ['./menu-item.component.scss'],
 })
-export class MenuItemComponent {
+export class MenuItemComponent extends HelperPage {
   @Input() icon?: string;
   @Input() label?: string;
   @Input() urlBase?: string;
@@ -33,7 +34,9 @@ export class MenuItemComponent {
   private _hasContent = false;
   public levelPadding = '0.25rem 0rem';
 
-  constructor(public activatedRoute: ActivatedRoute) {}
+  constructor(public activatedRoute: ActivatedRoute) {
+    super();
+  }
 
   /**
    * UI Methods

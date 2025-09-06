@@ -2,22 +2,33 @@
     nzTrigger="click" [nzDropdownMenu]="menu" />
 
 <nz-dropdown-menu #menu="nzDropdownMenu">
-    <grid [gap]="[2,8]" [direction]="'row'" [padding]="'0.5rem'" [width]="'250px'"
+    <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0.5rem'" [width]="'268px'"
         class="bg-02 brdr-radius-6 shadow-01 brdr">
 
         <button flat small [width]="'100%'" class="f-13 f-03" (click)="facade.signOut()">
             <grid [direction]="'row'" [gap]="[0,0]">
                 <tui-line-clamp [content]="userName | capitalization" [lineHeight]="20" [linesLimit]="1"
-                    class="f-15 f-03 fw-600 t-left" />
-                <span class="f-12 f-05 fw-300 t-left">
+                    class="f-15 f-lh-18 f-03 fw-600 t-left" />
+                <span class="f-05 f-lh-10 fw-300 t-left {{isMobileOrTablet ? 'f-14' : 'f-12'}}">
                     {{ email }}
                 </span>
             </grid>
         </button>
-        <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.signOut()">
-            <tui-icon icon="@tui.log-out" class="f-12 fw-100 f-error" />
-            Cerrar sesión
-        </button>
+
+        <grid [height]="'1px'" class="brdr-top"></grid>
+
+        <grid [direction]="'row'" [gap]="[(isMobileOrTablet ? 4 : 0),0]">
+            <button flat small flex [width]="'100%'" class="f-03 {{isMobileOrTablet ? 'f-16' : 'f-13'}}"
+                (click)="facade.signOut()">
+                <tui-icon icon="@tui.settings" class="fw-100 f-06 {{isMobileOrTablet ? 'f-16' : 'f-13'}}" />
+                Configuración
+            </button>
+            <button flat small flex [width]="'100%'" class="f-03 {{isMobileOrTablet ? 'f-16' : 'f-13'}}"
+                (click)="facade.signOut()">
+                <tui-icon icon="@tui.log-out" class="fw-100 f-error {{isMobileOrTablet ? 'f-16' : 'f-13'}}" />
+                Cerrar sesión
+            </button>
+        </grid>
     </grid>
 
 </nz-dropdown-menu>

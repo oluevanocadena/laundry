@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionFacade } from '@bussiness/session/controllers/session.facade';
+import { HelperPage } from '../helper.page';
 
 @Component({
   selector: 'profile-menu',
@@ -7,8 +8,10 @@ import { SessionFacade } from '@bussiness/session/controllers/session.facade';
   templateUrl: './profile-menu.component.html',
   styleUrls: ['./profile-menu.component.scss'],
 })
-export class ProfileMenuComponent implements OnInit {
-  constructor(public facade: SessionFacade) {}
+export class ProfileMenuComponent extends HelperPage implements OnInit {
+  constructor(public facade: SessionFacade) {
+    super();
+  }
 
   /**
    * Getters

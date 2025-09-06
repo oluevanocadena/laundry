@@ -9,8 +9,8 @@ import { Organization } from '@bussiness/session/organizations.interface';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SessionInfo } from '@bussiness/session/session.interface';
 import { system } from '@environments/environment';
-import { FacadeBase } from '../../../globals/types/facade.base';
-import { SubjectProp } from '../../../globals/types/subject.type';
+import { FacadeBase } from '@globals/types/facade.base';
+import { SubjectProp } from '@globals/types/subject.type';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { supabase } from '@environments/environment';
-import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
-
-import { BusyProp } from '../../../globals/types/busy.type';
-import { FacadeApiBase } from '../../../globals/types/facade.base';
-import { StorageProp } from '../../../globals/types/storage.type';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Account } from '../accounts.interface';
+
+import { Account } from '@bussiness/users/users.interfaces';
+import { BusyProp } from '@globals/types/busy.type';
+import { FacadeApiBase } from '@globals/types/facade.base';
+import { StorageProp } from '@globals/types/storage.type';
 
 @Injectable({
   providedIn: 'root',

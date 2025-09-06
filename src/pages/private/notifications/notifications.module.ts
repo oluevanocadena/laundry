@@ -9,6 +9,7 @@ import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
 import { NotificationsPageComponent } from './notifications.component';
+import { PipesModule } from '@pipes/pipes.module';
 
 const components = [NotificationsPageComponent];
 
@@ -20,6 +21,7 @@ const components = [NotificationsPageComponent];
     UIModule,
     UICommonModule,
     DirectivesModule,
+    PipesModule,
     TUIModule,
     NgZorroModule,
   ],

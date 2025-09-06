@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { routes } from '@app/routes';
-import { FacadeBase } from '../../../globals/types/facade.base';
-import { StorageProp } from '../../../globals/types/storage.type';
+import { FacadeBase } from '@globals/types/facade.base';
+import { StorageProp } from '@globals/types/storage.type';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/customers.interfaces';

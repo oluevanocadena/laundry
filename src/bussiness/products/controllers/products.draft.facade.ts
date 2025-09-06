@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { routes } from '@app/routes';
-import { FacadeBase } from '../../../globals/types/facade.base';
-import { FormProp } from '../../../globals/types/form.type';
-import { StorageProp } from '../../../globals/types/storage.type';
+import { FacadeBase } from '@globals/types/facade.base';
+import { FormProp } from '@globals/types/form.type';
+import { StorageProp } from '@globals/types/storage.type';
 
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
 import { Location } from '@bussiness/locations/locations.interfaces';

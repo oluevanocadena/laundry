@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { FormProp } from '../../../../../globals/types/form.type';
+import { FormProp } from '@globals/types/form.type';
 
 @Component({
   selector: 'orders-adjust-quantity',

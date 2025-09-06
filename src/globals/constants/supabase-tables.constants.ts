@@ -1,4 +1,5 @@
 export const SupabaseTables = {
+  Accounts: 'Accounts',
   Customers: 'Customers',
   Locations: 'Locations',
   OrderItems: 'OrderItems',
@@ -12,6 +13,7 @@ export const SupabaseTables = {
   ProductLocations: 'ProductLocations',
   Products: 'Products',
   UnitMeasures: 'UnitMeasures',
+  Notifications: 'Notifications',
 };
 
 export const SupabaseBuckets = {

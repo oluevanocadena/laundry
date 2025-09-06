@@ -1,19 +1,22 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component } from '@angular/core';
+import { UsersMonitorFacade } from '@bussiness/users/controllers/users.monitor.facade';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
-  selector: "app-users",
+  selector: 'app-users',
   standalone: false,
-  templateUrl: "./users.component.html",
-  styleUrls: ["./users.component.scss"]
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss'],
 })
-
-export class UsersPageComponent implements OnInit {
-  
-  constructor() { 
-
+export class UsersPageComponent extends HelperPage implements AfterViewInit {
+  constructor(public facade: UsersMonitorFacade) {
+    super();
   }
+  /**
+   * Lifecycle
+   */
 
-  ngOnInit() {
-
+  ngAfterViewInit() {
+    this.facade.fetchUsers();
   }
 }

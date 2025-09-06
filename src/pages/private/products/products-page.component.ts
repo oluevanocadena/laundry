@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomeFacade } from '@bussiness/home/controllers/home.facade';
 import { ProductsMonitorFacade } from '@bussiness/products/controllers/products.monitor.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { UtilsDomain } from '../../../globals/utils/utils.domain';
+import { UtilsDomain } from '@globals/utils/utils.domain';
 
 @Component({
   selector: 'app-products-page',

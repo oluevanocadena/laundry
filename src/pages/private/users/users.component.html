@@ -8,19 +8,120 @@
         </grid>
         <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
             class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por fecha de apertura
-                </button>
+            <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <nz-select ngModel="all" [width]="'150px'">
+                    <nz-option nzValue="all" nzLabel="Todos los clientes"></nz-option>
+                    <nz-option nzValue="active" nzLabel="Clientes activos"></nz-option>
+                    <nz-option nzValue="disabled" nzLabel="Clientes inactivos" nzDisabled></nz-option>
+                </nz-select>
                 <button outline small flex>
                     <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
                     Columnas
                 </button>
+                <button outline small flex>
+                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
+                    Ordenado por email
+                </button>
+            </grid>
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        filter_list
+                    </span>
+                </button>
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        view_column
+                    </span>
+                </button>
+                <button outline small icon-google>
+                    <span class="material-symbols-outlined f-20 f-02">
+                        flex_direction
+                    </span>
+                </button>
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button primary small>
+                <button primary small (click)="facade.onNewUser()">
                     Nuevo usuario
+                </button>
+            </grid>
+        </grid>
+        <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
+            class="scroll-h scroll-v bg-02 baseline">
+            <table [width]="isMobileOrTablet ? '1300px' : '100%'">
+                <thead>
+                    <tr>
+                        <th width="40px"> </th>
+                        <th width="150px">Fecha de creación</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th> 
+                        <th>Tipo</th>
+                        <th width="80px">Estatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="facade.api.busy.value">
+                        <td colspan="9">
+                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                    <tui-loader [size]="'m'" />
+                                    Cargando...
+                                </grid>
+                            </grid>
+                        </td>
+                    </tr>
+                    <tr *ngIf="facade.api.busy.value === false && facade.api.accounts.value?.length === 0">
+                        <td colspan="9">
+                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
+                                    <tui-icon icon="@tui.inbox" class="f-20 f-06" />
+                                    <span class="fw-400 f-06">No hay clientes disponibles</span>
+                                </grid>
+                            </grid>
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="facade.api.busy.value === false">
+                        <tr hoverable *ngFor="let item of facade.api.accounts.value; let i = index"
+                            (click)="facade.onUserClick(item)">
+                            <td>
+                                <label nz-checkbox></label>
+                            </td>
+                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
+                            <td>{{item.FullName}}</td>
+                            <td>{{item.Email}}</td>
+                            <td>{{item.Phone}}</td>
+                            <td>
+                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
+                                    <status-badge [label]="item?.IsOwner ? 'Administrador' : 'Usuario'"
+                                        [appearance]="item?.IsOwner ? 'success' : 'default'" [size]="'m'" />
+                                </grid>
+                            </td>
+                            <td>
+                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
+                                    <status-badge [label]="item?.Disabled ? 'Inactivo' : 'Activo'"
+                                        [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
+                                </grid>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </grid>
+
+        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
+            <grid [direction]="'column'" [align]="'center-left'">
+                <button outline small flex prefix>
+                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
+                </button>
+                <button outline small flex suffix>
+                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
+                </button>
+            </grid>
+            <grid [direction]="'column'" [align]="'center-right'">
+                <button (click)="facade.fetchUsers()" flat small flex>
+                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-02" />
+                    Actualizar
                 </button>
             </grid>
         </grid>

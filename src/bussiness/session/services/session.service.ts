@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StorageProp } from '../../../globals/types/storage.type';
+import { StorageProp } from '@globals/types/storage.type';
 import { SessionInfo } from '../session.interface';
 
 @Injectable({

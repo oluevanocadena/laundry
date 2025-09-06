@@ -9,6 +9,8 @@ import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
 import { UsersPageComponent } from './users.component';
+import { RouterModule } from '@angular/router';
+import { PipesModule } from '@pipes/pipes.module';
 
 const components = [UsersPageComponent];
 
@@ -17,8 +19,10 @@ const components = [UsersPageComponent];
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     UIModule,
     UICommonModule,
+    PipesModule,
     DirectivesModule,
     TUIModule,
     NgZorroModule,

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { FacadeBase } from '../../../globals/types/facade.base';
-import { StorageProp } from '../../../globals/types/storage.type';
+import { FacadeBase } from '@globals/types/facade.base';
+import { StorageProp } from '@globals/types/storage.type';
 
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
 import { Location } from '@bussiness/locations/locations.interfaces';

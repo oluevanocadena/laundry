@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FacadeBase } from '../../../globals/types/facade.base';
+import { FacadeBase } from '@globals/types/facade.base';
 
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';

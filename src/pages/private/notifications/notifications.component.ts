@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
+import { NotificationsMonitorFacade } from '@bussiness/notifications/controllers/notifications.monitor.facade';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'page-notifications',
@@ -6,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
 })
-export class NotificationsPageComponent implements OnInit {
-  constructor() {}
+export class NotificationsPageComponent extends HelperPage implements AfterViewInit {
+  constructor(public facade: NotificationsMonitorFacade) {
+    super();
+  }
 
-  ngOnInit() {}
+  /**
+   * Lifecycle
+   */
+  ngAfterViewInit() {
+    this.facade.fetchNotifications();
+  }
 }

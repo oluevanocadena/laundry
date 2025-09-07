@@ -1,48 +1,35 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '@environments/environment';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { Notification } from '@bussiness/notifications/interfaces/notifications.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
+import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationsApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client: SupabaseClient;
-
+export class NotificationsApiService extends ApiBaseService {
   public notifications = new SubjectProp<Notification[]>([]);
+  public unReadNotifications = new SubjectProp<number>(0);
 
-  constructor(
-    public nzMessageService: NzMessageService,
-    public sessionService: SessionService
-  ) {
-    this.client = createClient(supabase.url, supabase.key);
+  constructor(public sessionService: SessionService) {
+    super();
   }
 
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error(
-        '¡Ocurrió un error al intentar realizar la acción! ⛔'
-      );
-      console.error('⛔ Error:', error);
-      return null;
-    } finally {
-      this.busy.value = false;
-    }
+  getCountUnreadNotifications() {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(SupabaseTables.Notifications)
+        .select('*')
+        .eq(
+          'AccountId',
+          this.sessionService.sessionInfo.value?.Account?.id ?? ''
+        )
+        .eq('Readed', false);
+      this.unReadNotifications.value = data?.length ?? 0;
+      return super.handleResponse(data as unknown as Notification[], error);
+    });
   }
 
   getNotifications() {
@@ -52,7 +39,7 @@ export class NotificationsApiService implements FacadeApiBase {
         .select('*');
       if (error) throw error;
       this.notifications.value = data as unknown as Notification[];
-      return data;
+      return super.handleResponse(data as unknown as Notification[], error);
     });
   }
 
@@ -62,9 +49,43 @@ export class NotificationsApiService implements FacadeApiBase {
         .from(SupabaseTables.Notifications)
         .update({ Readed: true })
         .eq('Readed', false);
-      if (error) throw error;
-      this.notifications.value = data as unknown as Notification[];
-      return data;
+      return super.handleResponse(data as unknown as Notification[], error);
     });
+  }
+
+  /**
+   * Broacast Listen Notifications
+   */
+
+  listenNotifications(callback: (payload: any) => void) {
+    const accountId = this.sessionService.sessionInfo.value?.Account?.id ?? '';
+    this.client
+      .channel('notifications-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'Notifications',
+          filter: `AccountId=eq.${accountId}`,
+        },
+        (payload) => {
+          const n: Notification = {
+            id: payload.new['id'],
+            created_At: payload.new['created_At'],
+            updated_At: payload.new['updated_At'],
+            Title: payload.new['Title'],
+            Message: payload.new['Message'],
+            Entity: payload.new['Entity'],
+            Event: payload.new['Event'],
+            Metadata: payload.new['Metadata'],
+            Readed: payload.new['Readed'],
+            AccountId: payload.new['AccountId'],
+            OrganizationId: payload.new['OrganizationId'],
+          };
+          callback(n);
+        }
+      )
+      .subscribe();
   }
 }

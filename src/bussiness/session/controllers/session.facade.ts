@@ -67,28 +67,36 @@ export class SessionFacade extends FacadeBase {
         throw new Error('Session not found');
       }
 
-      const account = await this.apiAccounts.getAccount(session.user?.email!);
+      const account = await this.apiAccounts.getAccount(
+        session.data!.user?.email!
+      );
       if (!account) {
         throw new Error('Account not found');
       }
 
+      const roles = await this.apiAccounts.getAccountRoles(account.data!.id!);
+      if (!roles) {
+        throw new Error('Roles not found');
+      }
+
       const location = await this.apiLocations.getDefaultLocation(
-        account.OrganizationId
+        account.data!.OrganizationId
       );
 
       const sessionInfo: SessionInfo = {
-        Session: session.session,
-        Account: account,
+        Session: session.data!,
+        Account: account.data!,
         Location: location ?? null,
+        Roles: roles.data ?? [],
       };
-
       console.log('👉🏽 Logged In SessionInfo', sessionInfo);
       this.sessionService.sessionInfo.value = sessionInfo;
       this.router.navigate([routes.Home]);
-    } catch (error) {
-      console.error('Error during login:', error);
+    } catch (error: any) {
+      console.error(error);
       this.nzMessageService.error(
-        'Ocurrió un error al iniciar sesión, intenta nuevamente.'
+        error?.message ||
+          'Ocurrió un error al iniciar sesión, intenta nuevamente.'
       );
     }
   }

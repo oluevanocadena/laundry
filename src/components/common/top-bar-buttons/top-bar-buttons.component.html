@@ -10,16 +10,20 @@
                     help
                 </span>
             </button>
-            <button *ngIf="isMobileOrTablet === true" outline rounded small icon-google middle (click)="openNotifications()">
+            <button *ngIf="isMobileOrTablet === true" outline rounded small icon-google middle
+                (click)="openNotifications()">
                 <span class="material-symbols-outlined f-20 f-lh-16 f-06">
                     feedback
                 </span>
             </button>
-            <button outline rounded small icon-google middle (click)="openNotifications()">
-                <span class="material-symbols-outlined f-20 f-lh-16 f-06">
-                    inbox
-                </span>
-            </button>
+
+            <nz-badge [nzCount]="notifService.unReadNotifications.value ?? 0" nzShowZero nzSize="small">
+                <button outline rounded small icon-google middle (click)="openNotifications()">
+                    <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                        inbox
+                    </span>
+                </button>
+            </nz-badge>
             <button outline rounded small icon-google suffix (click)="openNotifications()">
                 <span class="material-symbols-outlined f-20 f-lh-16 f-06">
                     support_agent

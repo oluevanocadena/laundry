@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'top-bar',
@@ -9,6 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./top-bar.component.scss'],
 })
 export class TopBarComponent extends HelperPage {
+  //Flag Management
   showShortMenu: boolean = false;
 
   //form
@@ -42,5 +43,5 @@ export class TopBarComponent extends HelperPage {
   /**
    * Lifecycle
    */
-  ngOnInit() {}
+  ngAfterViewInit() {}
 }

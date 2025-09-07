@@ -36,7 +36,7 @@ export class AnalyticsApiService implements FacadeApiBase {
         return result;
       } catch (error) {
         this.nzMessageService.error(
-          '¡Ocurrió un error al intentar realizar la acción! ⛔'
+          '¡Ocurrió un error al intentar realizar la acción!'
         );
         console.error('⛔ Error:', error);
         return null;

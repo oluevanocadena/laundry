@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -26,9 +27,10 @@ let MODULES = [
   NzModalModule,
   NzRadioModule,
   NzSegmentedModule,
-  NzSelectModule, 
+  NzSelectModule,
   NzSwitchModule,
-  NzToolTipModule, 
+  NzToolTipModule,
+  NzBadgeModule,
 ];
 
 @NgModule({

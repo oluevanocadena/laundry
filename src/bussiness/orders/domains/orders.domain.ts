@@ -71,6 +71,9 @@ export class OrdersDomain {
       OrganizationId: order.OrganizationId ?? organizationId,
       LocationId: order.LocationId ?? currentLocationId,
 
+      AccountId:
+        order.AccountId ?? sessionService.sessionInfo.value?.Account?.id,
+
       Deleted: order.Deleted ?? false,
     };
 

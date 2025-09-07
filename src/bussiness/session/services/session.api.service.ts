@@ -1,52 +1,15 @@
 import { Injectable } from '@angular/core';
 import { routes } from '@app/routes';
-import { supabase } from '@environments/environment';
-import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
-import { StorageProp } from '@globals/types/storage.type';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { ApiBaseService } from '@globals/services/api.service.base';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SessionApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client: SupabaseClient;
-
-  public session = new StorageProp<Session | null>(null, 'SESSION_COOKIE');
-
-  constructor(public nzMessageService: NzMessageService) {
-    this.client = createClient(supabase.url, supabase.key);
-
-    // Mantener la sesión en memoria
-    this.client.auth.getSession().then(({ data }) => {
-      this.session.value = data.session;
-    });
-
-    // Escuchar cambios en la sesión (login, logout, refresh)
-    this.client.auth.onAuthStateChange((_event, session) => {
-      this.session.value = session;
-    });
-  }
-
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    console.log(`🚀 [Session API] ${message || 'Executing operation'}`);
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error('Ocurrió un error al realizar la acción');
-      console.error('⛔ Error:', error);
-      return error as any;
-    } finally {
-      this.busy.value = false;
-    }
+export class SessionApiService extends ApiBaseService {
+  constructor() {
+    super();
   }
 
   // Login
@@ -56,21 +19,18 @@ export class SessionApiService implements FacadeApiBase {
         email,
         password,
       });
-      console.log('👉🏽 error', error);
-      if (error) {
-        this.nzMessageService.error(
-          error.message === 'Email not confirmed'
-            ? '¡Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!'
-            : '¡Usuario y/o contraseña incorrectos!'
-        );
-        return null;
-      }
-      return data;
+      return super.handleResponse(
+        data as unknown as Session,
+        error,
+        error?.message === 'Email not confirmed'
+          ? '¡Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!'
+          : '¡Usuario y/o contraseña incorrectos!'
+      );
     }, 'Signing in');
   }
 
   // Registrar usuario
-  async signUp(email: string, password: string) {
+  async registerUser(email: string, password: string) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.auth.signUp({
         email,
@@ -79,8 +39,11 @@ export class SessionApiService implements FacadeApiBase {
           emailRedirectTo: window.location.origin + routes.RegisterConfirm,
         },
       });
-      if (error) throw error;
-      return data.session; // Ojo: con confirm email activado, será null hasta confirmar
+      return super.handleResponse(
+        data as unknown as Session,
+        error,
+        'Ocurrió un error al crear la cuenta'
+      );
     }, 'Signing up');
   }
 
@@ -88,11 +51,13 @@ export class SessionApiService implements FacadeApiBase {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.auth.admin.updateUserById(
         email,
-        {
-          email_confirm: true,
-        }
+        { email_confirm: true }
       );
-      return { data, error };
+      return super.handleResponse(
+        data,
+        error,
+        'Ocurrió un error al confirmar el email'
+      );
     }, 'Confirming email');
   }
 
@@ -100,8 +65,11 @@ export class SessionApiService implements FacadeApiBase {
   async signOut() {
     return this.executeWithBusy(async () => {
       const { error } = await this.client.auth.signOut();
-      if (error) throw error;
-      return true;
+      return super.handleResponse(
+        null,
+        error,
+        'Ocurrió un error al cerrar sesión'
+      );
     }, 'Signing out');
   }
 
@@ -110,8 +78,11 @@ export class SessionApiService implements FacadeApiBase {
       const { data, error } = await this.client.auth.signInWithOAuth({
         provider,
       });
-      if (error) throw error;
-      return data;
+      return super.handleResponse(
+        data,
+        error,
+        'Ocurrió un error al iniciar sesión con proveedor'
+      );
     }, 'Signing in with provider');
   }
 
@@ -119,8 +90,11 @@ export class SessionApiService implements FacadeApiBase {
   getUser() {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.auth.getUser();
-      if (error) throw error;
-      return data;
+      return super.handleResponse(
+        data,
+        error,
+        'Ocurrió un error al obtener el usuario'
+      );
     }, 'Getting user');
   }
 }

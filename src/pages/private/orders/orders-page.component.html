@@ -57,14 +57,14 @@
                 <thead>
                     <tr>
                         <th width="40px"> </th>
-                        <th width="90px">Order #</th>
+                        <th width="80px">Order #</th>
                         <th width="100px">Fecha</th>
                         <th width="100px">Estatus</th>
                         <th>Cliente</th>
                         <th width="170px">Tipo de entrega</th>
-                        <th width="90px">Pago</th>
-                        <th width="100px">Partidas</th>
-                        <th width="90px">Total</th>
+                        <th width="80px">Pago</th>
+                        <th width="90px">Partidas</th>
+                        <th width="85px">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,7 +102,15 @@
                                         [appearance]="ordersDomain.statusColor(item)" />
                                 </grid>
                             </td>
-                            <td>{{item.Customer?.FullName}}</td>
+                            <td>
+                                <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
+                                    class="f-13 fw-400 f-lh-14 t-left" />
+                                <ng-template #titleClamp>
+                                    <span class="f-13 fw-400 f-01 f-lh-17 t-left">
+                                        {{item.Customer?.FullName}}
+                                    </span>
+                                </ng-template> 
+                            </td>
                             <td>
                                 {{deliveryTypeName(item)}}
                             </td>

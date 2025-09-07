@@ -6,6 +6,7 @@ import { Organization } from '@bussiness/session/organizations.interface';
 import { Customer } from '../../customers/customers.interfaces';
 import { DeliveryTypes, DiscountTypes, PaymentMethods } from '../types/orders.types';
 import { OrderItem } from './orders.items.interfaces';
+import { Account } from '@bussiness/users/users.interfaces';
 
 export interface Delivery {
   DeliveryType: DeliveryTypes;
@@ -63,6 +64,9 @@ export interface Order {
 
   OrganizationId?: string;
   Organization?: Organization; // For UI only
+
+  AccountId?: string; //Created by account id
+  Account?: Account; // For UI only
 
   Deleted: boolean;
 }

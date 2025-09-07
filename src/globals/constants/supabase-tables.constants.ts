@@ -1,5 +1,7 @@
 export const SupabaseTables = {
   Accounts: 'Accounts',
+  Roles: 'Roles',
+  AccountRoles: 'AccountRoles',
   Customers: 'Customers',
   Locations: 'Locations',
   OrderItems: 'OrderItems',

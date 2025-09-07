@@ -51,7 +51,6 @@ export class HomeFacade extends FacadeBase {
     this.validateRoute();
     if (this.locations.value?.length === 0) {
       this.apiLocations.getLocations().then((locations) => {
-        console.log('👉🏽 locations', locations);
         this.locations.value = locations;
       });
     }
@@ -74,7 +73,6 @@ export class HomeFacade extends FacadeBase {
    */
 
   validateRoute() {
-    console.log('👉🏽 router.url', this.router.url);
     this.canChangeLocation = !routesNotAllowed.includes(this.router.url);
   }
 

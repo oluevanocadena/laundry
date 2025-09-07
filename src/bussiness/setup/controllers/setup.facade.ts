@@ -80,19 +80,21 @@ export class SetupFacade extends FacadeBase {
       let account = this.sessionService.sessionInfo.value?.Account;
       let organization = account?.Organization;
       if (organization && organization.id && account) {
-        organization = await this.organizationApi.saveOrganization({
-          ...organization,
-          Name: this.formGroup.value.organizationName!,
-        });
+        const responseOrganization =
+          await this.organizationApi.saveOrganization({
+            ...organization,
+            Name: this.formGroup.value.organizationName!,
+          });
 
-        if (!organization) {
+        if (responseOrganization.success === false) {
           throw new Error('Error al crear la organización');
         }
 
+        organization = responseOrganization.data!;
         const country =
           this.formGroupLocation.value.country || system.defaultCountry;
 
-        account = await this.accountApi.saveAccount({
+        const responseAccount = await this.accountApi.saveAccount({
           id: account.id,
           Email: account.Email,
           FirstName: this.formGroup.value.firstName!,
@@ -110,7 +112,7 @@ export class SetupFacade extends FacadeBase {
           OrganizationId: organization.id!,
         });
 
-        if (!account) {
+        if (responseAccount.success === false) {
           throw new Error('Error al crear la cuenta');
         }
 

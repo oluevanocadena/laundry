@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
 import { HelperPage } from '../helper.page';
 
 @Component({
@@ -7,19 +8,18 @@ import { HelperPage } from '../helper.page';
   templateUrl: './top-bar-buttons.component.html',
   styleUrls: ['./top-bar-buttons.component.scss'],
 })
-export class TopBarButtonsComponent extends HelperPage implements OnInit {
-  
+export class TopBarButtonsComponent extends HelperPage {
   showNotifications: boolean = false;
 
   @Input() loading: boolean = false;
 
-  constructor() {
+  constructor(public notifService: NotificationsApiService) {
     super();
   }
 
   /**
    * UI Events
-   */ 
+   */
 
   openNotifications() {
     this.showNotifications = true;
@@ -32,5 +32,7 @@ export class TopBarButtonsComponent extends HelperPage implements OnInit {
   /**
    * Life cycle
    */
-  ngOnInit() {}
+  ngAfterViewInit() {
+    this.notifService.getCountUnreadNotifications();
+  }
 }

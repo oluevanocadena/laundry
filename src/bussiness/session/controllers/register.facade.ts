@@ -8,12 +8,10 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { validators } from '@globals/types/validators.type';
 
-import { routes } from '@app/routes';
-import { Organization } from '@bussiness/session/organizations.interface';
+import { RoleEnum } from '@bussiness/session/enums/role.enums';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
 import { OrganizationsApiService } from '@bussiness/session/services/organizations.api.service';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
-import { Account } from '@bussiness/users/users.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +31,11 @@ export class RegisterFacade extends FacadeBase {
 
   pwd = new FormProp<string>(this.formGroup, 'password', '');
   pwdConfirm = new FormProp<string>(this.formGroup, 'confirmPassword', '');
+
+  //Id Created
+  organizationId: string = '';
+  accountId: string = '';
+  accountRoleIds: number[] = [];
 
   constructor(
     public api: SessionApiService,
@@ -61,65 +64,44 @@ export class RegisterFacade extends FacadeBase {
   /**
    * UI Events
    */
-  register() {
+  async register() {
     try {
-      this.api
-        .signUp(this.formGroup.value.email!, this.formGroup.value.password!)
-        .then((res) => {
-          this.apiAccounts
-            .getAccount(this.formGroup.value.email!)
-            .then((account) => {
-              console.log('👉🏽 account', account);
-              if (account && account.OrganizationId) {
-                this.router.navigate([routes.Home]);
-              } else {
-                this.apiOrganizations
-                  .saveOrganization({
-                    Name: '',
-                    PlanId: null,
-                  })
-                  .then((organization: Organization | null) => {
-                    console.log('👉🏽 organization created', organization);
-                    if (organization) {
-                      this.apiAccounts
-                        .saveAccount({
-                          Email: this.formGroup.value.email!,
-                          OrganizationId: organization?.id!,
-                          FirstName: '',
-                          LastName: '',
-                          Phone: '',
-                          Street: '',
-                          Neighborhood: '',
-                          Municipality: '',
-                          State: '',
-                          Country: '',
-                          ZipCode: '',
-                          BillingAddress: '',
-                          IsOwner: true,
-                        })
-                        .then((account: Account | null) => {
-                          console.log('👉🏽 account created', account);
-                          if (account) {
-                            this.registeredSuccess = true;
-                          } else {
-                            this.nzMessageService.error(
-                              'Ocurrió un error al crear la cuenta, intenta nuevamente.'
-                            );
-                          }
-                        });
-                    } else {
-                      throw new Error(
-                        'Ocurrió un error al crear la organización, intenta nuevamente.'
-                      );
-                    }
-                  });
-              }
-            });
-        });
-    } catch (error) {
+      // Auth Register User
+      await this._registerAccount();
+
+      // Check if account already exists and red
+      const accountResponse = await this.apiAccounts.getAccount(
+        this.formGroup.value.email!
+      );
+      this.accountId = accountResponse.data?.id ?? '';
+      if (this.accountId) {
+        const message =
+          'No se puede crear la cuenta, ya existe una cuenta con esta cuenta de correo.';
+        this.nzMessageService.error(message);
+        return;
+      }
+
+      // Create organization
+      await this._createNewOrganization();
+
+      // Create account
+      await this._createNewAccount();
+
+      // Create account roles
+      await this._createNewAccountRoles();
+
+      // Show success message in UI, and wait for email confirmation
+      this.registeredSuccess = true;
+      this.nzMessageService.success(
+        'Felicidades, se completó el registro correctamente'
+      );
+    } catch (error: any) {
       this.apiAccounts.deleteAccount(this.formGroup.value.email!);
+      this.apiOrganizations.deleteOrganization(this.organizationId);
+      this.apiAccounts.deleteAccountRoles(this.accountRoleIds);
       this.nzMessageService.error(
-        'Ocurrió un error al crear la cuenta, intenta nuevamente.'
+        error?.message ||
+          'Ocurrió un error al crear la cuenta, intenta nuevamente.'
       );
     }
   }
@@ -140,6 +122,74 @@ export class RegisterFacade extends FacadeBase {
     } else {
       this.confirming = false;
       this.confirmedSuccess = false;
+    }
+  }
+
+  /**
+   * Private Methods
+   */
+
+  async _registerAccount() {
+    const signUpResponse = await this.api.registerUser(
+      this.formGroup.value.email!,
+      this.formGroup.value.password!
+    );
+    if (signUpResponse?.success === false) {
+      throw new Error(signUpResponse?.error?.message);
+    }
+    return signUpResponse;
+  }
+
+  async _createNewOrganization() {
+    const responseOrg = await this.apiOrganizations.saveOrganization({
+      Name: '',
+      PlanId: null, //TODO: Add plan id
+    });
+    if (responseOrg.success === false) {
+      throw new Error('Ocurrió un error al crear la organización');
+    } else {
+      this.organizationId = responseOrg.data?.id ?? '';
+    }
+  }
+
+  async _createNewAccountRoles() {
+    const rolesResponse = await this.apiAccounts.saveAccountRoles([
+      {
+        AccountId: this.accountId,
+        RoleId: RoleEnum.Owner,
+        OrganizationId: this.organizationId,
+      },
+      {
+        AccountId: this.accountId,
+        RoleId: RoleEnum.Admin,
+        OrganizationId: this.organizationId,
+      },
+    ]);
+    this.accountRoleIds = rolesResponse.data?.map((role) => role.id!) ?? [];
+    if (rolesResponse.success === false) {
+      throw new Error('Ocurrió un error al crear los roles');
+    }
+  }
+
+  async _createNewAccount() {
+    const responseAccount = await this.apiAccounts.saveAccount({
+      Email: this.formGroup.value.email!,
+      OrganizationId: this.organizationId,
+      FirstName: '',
+      LastName: '',
+      Phone: '',
+      Street: '',
+      Neighborhood: '',
+      Municipality: '',
+      State: '',
+      Country: '',
+      ZipCode: '',
+      BillingAddress: '',
+      IsOwner: true,
+    });
+    this.accountId = responseAccount.data?.id ?? '';
+    if (responseAccount.success === false) {
+      throw new Error('Ocurrió un error al crear la cuenta');
     }
   }
 

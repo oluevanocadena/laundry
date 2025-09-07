@@ -61,7 +61,7 @@
                                 <label nz-checkbox></label>
                             </td> 
                             <td>{{item.Title}}</td>
-                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
+                            <td>{{item.created_At || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
                             <td>{{item.Message}}</td> 
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">

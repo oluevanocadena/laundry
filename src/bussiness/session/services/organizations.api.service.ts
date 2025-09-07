@@ -1,77 +1,64 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '@environments/environment';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
+import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { ApiBaseService } from '@globals/services/api.service.base';
 import { StorageProp } from '@globals/types/storage.type';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { Organization } from '../organizations.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrganizationsApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client: SupabaseClient;
-
-  public table = 'Organizations';
-
+export class OrganizationsApiService extends ApiBaseService {
   public organization = new StorageProp<Organization | null>(
     null,
     'ORGANIZATION_COOKIE'
   );
 
-  constructor(public nzMessageService: NzMessageService) {
-    this.client = createClient(supabase.url, supabase.key);
-  }
-
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    console.log(`🚀 [Session API] ${message || 'Executing operation'}`);
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error('Ocurrió un error al realizar la acción');
-      console.error('⛔ Error:', error);
-      return error as any;
-    } finally {
-      this.busy.value = false;
-    }
+  constructor() {
+    super();
   }
 
   saveOrganization(organization: Organization) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Organizations)
         .upsert(organization)
         .select()
         .single();
-      if (error) throw error;
-      return data;
+      if (error) console.log('👉🏽 error', error);
+      return super.handleResponse(data as unknown as Organization, error);
+    });
+  }
+
+  deleteOrganization(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(SupabaseTables.Organizations)
+        .delete()
+        .eq('id', id);
+      return super.handleResponse(data as unknown as Organization, error);
     });
   }
 
   getOrganizations() {
     this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(this.table).select('*');
-      if (error) throw error;
-      return data;
+      const { data, error } = await this.client
+        .from(SupabaseTables.Organizations)
+        .select('*');
+      if (error) console.log('👉🏽 error', error);
+      return super.handleResponse(data as unknown as Organization[], error);
     });
   }
 
   getOrganization(id: string) {
-    this.executeWithBusy(async () => {
+    return this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Organizations)
         .select('*')
-        .eq('id', id);
-      if (error) throw error;
-      return data;
+        .eq('id', id)
+        .single();
+      if (error) console.log('👉🏽 error', error);
+      return super.handleResponse(data as unknown as Organization, error);
     });
   }
 }

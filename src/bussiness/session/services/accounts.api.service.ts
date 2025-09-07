@@ -1,88 +1,89 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '@environments/environment';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { Account } from '@bussiness/users/users.interfaces';
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
+import { Account, AccountRole } from '@bussiness/users/users.interfaces';
+import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { ApiBaseService } from '@globals/services/api.service.base';
 import { StorageProp } from '@globals/types/storage.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AccountsApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client: SupabaseClient;
-
-  public table = 'Accounts';
-  public tableOrganizations = 'Organizations';
-
+export class AccountsApiService extends ApiBaseService {
   public account = new StorageProp<Account | null>(null, 'ACCOUNT_COOKIE');
 
-  constructor(public nzMessageService: NzMessageService) {
-    this.client = createClient(supabase.url, supabase.key);
-  }
-
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    console.log(`🚀 [Session API] ${message || 'Executing operation'}`);
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error('Ocurrió un error al realizar la acción');
-      console.error('⛔ Error:', error);
-      return error as any;
-    } finally {
-      this.busy.value = false;
-    }
+  constructor() {
+    super();
   }
 
   saveAccount(account: Account) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Accounts)
         .upsert(account, { onConflict: 'Email' })
         .select()
         .single();
-      if (error) throw error;
-      return data;
+      return super.handleResponse(data as unknown as Account, error);
+    });
+  }
+
+  saveAccountRoles(accountRoles: AccountRole[]) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(SupabaseTables.AccountRoles)
+        .upsert(accountRoles)
+        .select()
+        .single();
+      return super.handleResponse(data as unknown as AccountRole[], error);
     });
   }
 
   getAccounts() {
     this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.table)
-        .select(`*, Organization: ${this.tableOrganizations}(*)`);
-      if (error) throw error;
-      return data;
+        .from(SupabaseTables.Accounts)
+        .select(`*, Organization: ${SupabaseTables.Organizations}(*)`);
+      return super.handleResponse(data as unknown as Account[], error);
     });
   }
 
   getAccount(email: string) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.table)
-        .select(`*, Organization: ${this.tableOrganizations}(*)`)
+        .from(SupabaseTables.Accounts)
+        .select(`*, Organization: ${SupabaseTables.Organizations}(*)`)
         .eq('Email', email)
         .single();
-      return data as unknown as Account;
+      return super.handleResponse(data as unknown as Account, error);
+    });
+  }
+
+  getAccountRoles(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(SupabaseTables.AccountRoles)
+        .select(`*, Role: ${SupabaseTables.Roles}(*)`)
+        .eq('AccountId', id);
+      return super.handleResponse(data as unknown as AccountRole[], error);
     });
   }
 
   deleteAccount(id: string) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
-        .from(this.table)
+        .from(SupabaseTables.Accounts)
         .update({ Deleted: true })
         .eq('id', id);
-      if (error) throw error;
-      return data;
+      return super.handleResponse(data as unknown as Account, error);
+    });
+  }
+
+  deleteAccountRoles(ids: number[]) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client
+        .from(SupabaseTables.AccountRoles)
+        .delete()
+        .in('id', ids);
+      return super.handleResponse(null, error);
     });
   }
 }

@@ -40,7 +40,7 @@ export const appConfig: ApplicationConfig = {
           new NzMessageNotificationChannel(nz, router),
           new NativeNotificationChannel(),
         ]);
-        return new NotificationsApiService(composite, nz, router, ss, orders);
+        return new NotificationsApiService(composite, ss, orders);
       },
       deps: [NzNotificationService, Router, SessionService, OrdersApiService],
     },

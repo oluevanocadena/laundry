@@ -1,9 +1,15 @@
-
 export type SupabaseResponse<T> = {
   data?: T | null;
   success: boolean;
+  count?: number;
   error?: AppError | null;
 };
+
+export interface SupabasePagedRequest {
+  page: number;
+  pageSize: number;
+}
+
 
 export interface AppError {
   message: string; // Mensaje de error legible

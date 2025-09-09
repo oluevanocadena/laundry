@@ -1,24 +1,27 @@
 import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 import { NotificationsDomain } from '@bussiness/notifications/domains/notifications.domain';
-import { Entities, Notification as INotification } from '@bussiness/notifications/interfaces/notifications.interfaces';
+import {
+  Entities,
+  Notification as INotification,
+  NotificationRequest,
+} from '@bussiness/notifications/interfaces/notifications.interfaces';
 import { NotificationChannel } from '@bussiness/notifications/interfaces/notifications.strategy.interfaces';
 import { NOTIFICATION_CHANNEL } from '@bussiness/notifications/strategy/notifications.composite';
 import { SessionService } from '@bussiness/session/services/session.service';
 
+import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationsApiService extends ApiBaseService {
   public notifications = new SubjectProp<INotification[]>([]);
+  public pageNotifications = new SubjectProp<INotification[]>([]);
   public unReadNotifications = new SubjectProp<number>(0);
 
   private accountId = '';
@@ -28,8 +31,6 @@ export class NotificationsApiService extends ApiBaseService {
   constructor(
     @Inject(NOTIFICATION_CHANNEL)
     private notificationChannel: NotificationChannel,
-    private nzNotificationService: NzNotificationService,
-    private router: Router,
     private sessionService: SessionService,
     private ordersApiService: OrdersApiService,
   ) {
@@ -52,11 +53,31 @@ export class NotificationsApiService extends ApiBaseService {
       const { data, error } = await this.client
         .from(SupabaseTables.Notifications)
         .select('*')
-        .eq('AccountId', this.sessionService.sessionInfo.value?.Account?.id ?? '');
-      if (error) throw error;
+        .eq('AccountId', this.accountId);
       this.notifications.value = data as unknown as INotification[];
       this.unReadNotifications.value = data?.filter((n) => !n.Readed).length ?? 0;
       return super.handleResponse(data as unknown as INotification[], error);
+    });
+  }
+
+  getPageNotifications(request: NotificationRequest) {
+    const from = (request.page - 1) * request.pageSize;
+    const to = from + request.pageSize - 1;
+
+    return this.executeWithBusy(async () => {
+      let query = this.client
+        .from(SupabaseTables.Notifications)
+        .select('*', { count: 'exact' })
+        .eq('AccountId', this.accountId)
+        .range(from, to);
+
+      if (request.readed !== null) {
+        query = query.eq('Readed', request.readed);
+      }
+      const { data, count, error } = await query;
+
+      this.pageNotifications.value = data ?? [];
+      return super.handleResponse(this.pageNotifications.value, error, undefined, count);
     });
   }
 
@@ -65,6 +86,7 @@ export class NotificationsApiService extends ApiBaseService {
       const { data, error } = await this.client
         .from(SupabaseTables.Notifications)
         .update({ Readed: true })
+        .eq('AccountId', this.accountId)
         .eq('Readed', false);
       return super.handleResponse(data as unknown as INotification[], error);
     });
@@ -75,7 +97,6 @@ export class NotificationsApiService extends ApiBaseService {
    */
 
   async listenNotifications() {
-    // this.client.removeAllChannels();
     if (this.channel) {
       console.log('👉 Channel already exists', this.channel);
       return;
@@ -96,17 +117,15 @@ export class NotificationsApiService extends ApiBaseService {
         },
         (payload) => {
           const notification: INotification = NotificationsDomain.mapNotification(payload);
-          this.notify(notification);
+          this._notify(notification);
         },
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('👉 channel status ', status);
-        }
+        console.log('⌛ channel status ', status);
       });
   }
 
-  notify(notification: INotification) {
+  private _notify(notification: INotification) {
     this.notificationChannel.show(notification);
     this.getNotifications();
     if (notification.Entity === Entities.Order) {
@@ -124,7 +143,7 @@ export class NotificationsApiService extends ApiBaseService {
     }
   }
 
-  stopListening() {
+  public stopListening() {
     if (this.channel) {
       this.nzMessageService.warning('⚠️ El canal de notificaciones ha sido desconectado, reintentando conectar...');
       this.client.removeChannel(this.channel);

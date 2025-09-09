@@ -57,7 +57,8 @@ export class ApiBaseService implements FacadeApiBase {
   protected handleResponse<T>(
     data: T,
     error: any,
-    message?: string
+    message?: string,
+    count?: number | null
   ): SupabaseResponse<T> {
     if (error) {
       console.error('⛔ Error:', error);
@@ -65,6 +66,7 @@ export class ApiBaseService implements FacadeApiBase {
     return {
       data: data,
       success: !error ? true : false,
+      count: count ?? 0,
       error: {
         message: message || 'Ocurrió un error al realizar la acción',
         raw: error,

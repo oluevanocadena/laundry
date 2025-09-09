@@ -14,6 +14,14 @@ export class NotificationsPageComponent extends HelperPage implements AfterViewI
   }
 
   /**
+   * Getters
+   */
+
+  get data() {
+    return this.facade.api.pageNotifications.value;
+  }
+
+  /**
    * Lifecycle
    */
   ngAfterViewInit() {

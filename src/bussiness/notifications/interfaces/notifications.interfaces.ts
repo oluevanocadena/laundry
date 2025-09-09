@@ -1,5 +1,6 @@
 import { Organization } from '@bussiness/session/organizations.interface';
 import { Account } from '@bussiness/users/users.interfaces';
+import { SupabasePagedRequest } from '@globals/types/types';
 
 export interface Notification {
   id?: string;
@@ -25,6 +26,10 @@ export interface Notification {
 export interface NotificationMetadata {
   id: string;
   createdBy: string; // uuid with "Accounts" table campo id:string
+}
+
+export interface NotificationRequest extends SupabasePagedRequest {
+  readed: boolean | null;
 }
 
 export enum Entities {

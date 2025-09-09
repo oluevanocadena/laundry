@@ -23,3 +23,7 @@ export const SupabaseTables = {
 export const SupabaseBuckets = {
   Products: 'products',
 };
+
+export const SupabaseTableSettings = {
+  PageSize: 50,
+};

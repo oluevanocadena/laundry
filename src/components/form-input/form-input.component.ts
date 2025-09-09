@@ -8,19 +8,9 @@ import {
   forwardRef,
   inject,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  NgControl,
-} from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { type MaskitoTimeMode } from '@maskito/kit';
-import {
-  TUI_IS_IOS,
-  TuiDay,
-  TuiIdentityMatcher,
-  TuiStringHandler,
-} from '@taiga-ui/cdk';
+import { TUI_IS_IOS, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 @Component({
@@ -81,7 +71,7 @@ export class FormInputComponent implements ControlValueAccessor {
   };
   protected identityMatcher: TuiIdentityMatcher<UISelectOption> = (
     a: UISelectOption | string,
-    b: UISelectOption | string
+    b: UISelectOption | string,
   ) => {
     let result = false;
     if (typeof a === 'string' && typeof b === 'object') {
@@ -111,11 +101,7 @@ export class FormInputComponent implements ControlValueAccessor {
 
   setupSearchDebounce(): void {
     this.searchSubject
-      .pipe(
-        debounceTime(this.debounce),
-        distinctUntilChanged(),
-        takeUntil(this.destroy$)
-      )
+      .pipe(debounceTime(this.debounce), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.onSearch.emit(value);
       });
@@ -153,23 +139,17 @@ export class FormInputComponent implements ControlValueAccessor {
     if (ngControl) {
       ngControl.valueAccessor = this;
       this.valueControl = ngControl.control as FormControl;
-      this.valueControl.valueChanges
-        ?.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-        .subscribe((value: any) => {
-          if (this.type === 'switch') {
-            this.onChange(value);
-          } else if (this.type === 'select') {
-            if (
-              value &&
-              typeof value === 'object' &&
-              this.valueControl.value !== value.id
-            ) {
-              this.onChange(value.id);
-            }
-          } else {
-            this.onChange(value);
+      this.valueControl.valueChanges?.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((value: any) => {
+        if (this.type === 'switch') {
+          this.onChange(value);
+        } else if (this.type === 'select') {
+          if (value && typeof value === 'object' && this.valueControl.value !== value.id) {
+            this.onChange(value.id);
           }
-        });
+        } else {
+          this.onChange(value);
+        }
+      });
     }
 
     if (this.type === 'search') {
@@ -184,7 +164,7 @@ export class FormInputComponent implements ControlValueAccessor {
 }
 
 export interface UISelectOption {
-  id: string;
+  id: string | number;
   Name: string;
 }
 

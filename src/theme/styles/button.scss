@@ -37,12 +37,12 @@ button {
         width: 100%;
     }
 
-    &[icon] {
+    &[icon]:not([flex]) {
         border-radius: 8px;
         padding: 0.35rem 0.5rem 0.25rem !important;
     }
 
-    &[icon-google] {
+    &[icon-google]:not([flex]) {
         border-radius: 8px;
         padding: 0.35rem 0.5rem 0.35rem !important;
         line-height: 0px;
@@ -71,11 +71,20 @@ button {
 
     &[flex] {
         display: flex;
-        align-items: center;
+        justify-content: center;
+        align-items: stretch;
         gap: 0.5rem;
 
-        tui-icon {
-            top: -2px !important;
+        &[icon] {
+            tui-icon {
+                top: 0.5px !important;
+            }
+        }
+
+        &[icon-google] {
+            .material-symbols-outlined {
+                top: 0px !important;
+            }
         }
     }
 
@@ -248,7 +257,7 @@ button {
 
     &[disabled] {
         opacity: 0.5;
-        cursor: not-allowed;         
+        cursor: not-allowed;
     }
 
     &[disabled]:active {

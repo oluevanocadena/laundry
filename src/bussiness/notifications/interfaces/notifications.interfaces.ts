@@ -1,6 +1,6 @@
 import { Organization } from '@bussiness/session/organizations.interface';
 import { Account } from '@bussiness/users/users.interfaces';
-import { SupabasePagedRequest } from '@globals/types/types';
+import { PagedRequest } from '@globals/types/types';
 
 export interface Notification {
   id?: string;
@@ -28,7 +28,7 @@ export interface NotificationMetadata {
   createdBy: string; // uuid with "Accounts" table campo id:string
 }
 
-export interface NotificationRequest extends SupabasePagedRequest {
+export interface NotificationRequest extends PagedRequest {
   readed: boolean | null;
 }
 

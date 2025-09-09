@@ -2,36 +2,40 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import { NgZorroModule } from '@components/ng-zorro.module';
+import { TUIModule } from '@components/tui.module';
+import { UIModule } from '@components/ui.module';
+
 import { DirectivesModule } from '@directives/directives.module';
 import { PipesModule } from '@pipes/pipes.module';
-import { NgZorroModule } from '../ng-zorro.module';
-import { TUIModule } from '../tui.module';
-import { UIModule } from '../ui.module';
-import { ButtonResponsiveComponent } from './button-responsive/button-responsive.component';
-import { DrawerMenuComponent } from './drawer-menu/drawer-menu.component';
-import { DrawerNotificationsComponent } from './drawer-notifications/drawer-notifications.component';
-import { DrawerComponent } from './drawer/drawer.component';
-import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
-import { ImageUploadComponent } from './image-upload/image-upload.component';
-import { LayoutComponent } from './layout/layout.component';
-import { LogoComponent } from './logo/logo.component';
-import { MenuContentComponent } from './menu-content/menu-content.component';
-import { MenuItemComponent } from './menu-item/menu-item.component';
-import { MenuComponent } from './menu/menu.component';
-import { ModalConfirmComponent } from './modal-confirm/modal-confirm.component';
-import { ModalSearchComponent } from './modal-search/modal-search.component';
-import { ModalSortComponent } from './modal-sort/modal-sort.component';
-import { ModalTitleComponent } from './modal-title/modal-title.component';
-import { ModalComponent } from './modal/modal.component';
-import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
-import { SideMenuComponent } from './side-menu/side-menu.component';
-import { StatusBadgeComponent } from './status-badge/status-badge.component';
-import { TableOptionsComponent } from './table-options/table-options.component';
-import { TableSegmentsComponent } from './table-segments/table-segments.component';
-import { TopBarButtonsComponent } from './top-bar-buttons/top-bar-buttons.component';
-import { TopBarOrganizationComponent } from './top-bar-organization/top-bar-organization.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
+
+import { ButtonResponsiveComponent } from '@components/common/button-responsive/button-responsive.component';
+import { DrawerMenuComponent } from '@components/common/drawer-menu/drawer-menu.component';
+import { DrawerNotificationsComponent } from '@components/common/drawer-notifications/drawer-notifications.component';
+import { DrawerComponent } from '@components/common/drawer/drawer.component';
+import { FooterComponent } from '@components/common/footer/footer.component';
+import { HeaderComponent } from '@components/common/header/header.component';
+import { ImageUploadComponent } from '@components/common/image-upload/image-upload.component';
+import { LayoutComponent } from '@components/common/layout/layout.component';
+import { LogoComponent } from '@components/common/logo/logo.component';
+import { MenuContentComponent } from '@components/common/menu-content/menu-content.component';
+import { MenuItemComponent } from '@components/common/menu-item/menu-item.component';
+import { MenuComponent } from '@components/common/menu/menu.component';
+import { ModalConfirmComponent } from '@components/common/modal-confirm/modal-confirm.component';
+import { ModalSearchComponent } from '@components/common/modal-search/modal-search.component';
+import { ModalSortComponent } from '@components/common/modal-sort/modal-sort.component';
+import { ModalTitleComponent } from '@components/common/modal-title/modal-title.component';
+import { ModalComponent } from '@components/common/modal/modal.component';
+import { ProfileMenuComponent } from '@components/common/profile-menu/profile-menu.component';
+import { SideMenuComponent } from '@components/common/side-menu/side-menu.component';
+import { StatusBadgeComponent } from '@components/common/status-badge/status-badge.component';
+import { TableOptionsComponent } from '@components/common/table-options/table-options.component';
+import { TablePaginationComponent } from '@components/common/table-pagination/table-pagination.component';
+import { TableSegmentsComponent } from '@components/common/table-segments/table-segments.component';
+import { TopBarButtonsComponent } from '@components/common/top-bar-buttons/top-bar-buttons.component';
+import { TopBarOrganizationComponent } from '@components/common/top-bar-organization/top-bar-organization.component';
+import { TopBarComponent } from '@components/common/top-bar/top-bar.component';
 
 const components = [
   ButtonResponsiveComponent,
@@ -55,6 +59,7 @@ const components = [
   SideMenuComponent,
   StatusBadgeComponent,
   TableOptionsComponent,
+  TablePaginationComponent,
   TableSegmentsComponent,
   TopBarButtonsComponent,
   TopBarComponent,

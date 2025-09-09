@@ -7,6 +7,7 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
+import { TablePagination } from '@globals/types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,10 @@ export class OrdersMonitorFacade extends FacadeBase {
   /**
    * UI Events
    */
+
+  onTablePaginationChange(filter: TablePagination) {
+    // this.api.getPageOrders(filter);
+  }
 
   onOrderClick(order: Order) {
     this.draftFacade.selectedOrder.value = order;

@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="facade.api.busy.value">
+                    <tr *ngIf="busy">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
@@ -49,7 +49,7 @@
                             </grid>
                         </td>
                     </tr>
-                    <tr *ngIf="facade.api.busy.value === false && data?.length === 0">
+                    <tr *ngIf="busy === false && data?.length === 0">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
@@ -59,7 +59,7 @@
                             </grid>
                         </td>
                     </tr>
-                    <ng-container *ngIf="facade.api.busy.value === false">
+                    <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index"
                             (click)="facade.onNotificationClick(item)">
                             <td>
@@ -79,23 +79,8 @@
                 </tbody>
             </table>
         </grid>
-
-        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
-            <grid [direction]="'column'" [align]="'center-left'">
-                <button outline small flex prefix>
-                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
-                </button>
-                <button outline small flex suffix>
-                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
-                </button>
-            </grid>
-            <grid [direction]="'column'" [align]="'center-right'">
-                <button (click)="facade.fetchNotifications()" flat small flex>
-                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
-                    Actualizar
-                </button>
-            </grid>
-        </grid>
+       
+        <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 
 

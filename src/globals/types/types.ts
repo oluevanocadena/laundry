@@ -5,7 +5,7 @@ export type SupabaseResponse<T> = {
   error?: AppError | null;
 };
 
-export interface SupabasePagedRequest {
+export interface PagedRequest {
   page: number;
   pageSize: number;
 }
@@ -16,4 +16,9 @@ export interface AppError {
   code?: string; // Código de error (ej: "401", "PGRST116")
   details?: any; // Datos adicionales
   raw?: unknown; // Error original (para debug)
+}
+
+export interface TablePagination extends PagedRequest {
+  rowCount: number;
+  totalPages: number;
 }

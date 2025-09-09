@@ -109,7 +109,7 @@
                                     <span class="f-13 fw-400 f-01 f-lh-17 t-left">
                                         {{item.Customer?.FullName}}
                                     </span>
-                                </ng-template> 
+                                </ng-template>
                             </td>
                             <td>
                                 {{deliveryTypeName(item)}}
@@ -131,21 +131,6 @@
             </table>
 
         </grid>
-        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
-            <grid [direction]="'column'" [align]="'center-left'">
-                <button outline small flex prefix>
-                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
-                </button>
-                <button outline small flex suffix>
-                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
-                </button>
-            </grid>
-            <grid [direction]="'column'" [align]="'center-right'">
-                <button (click)="facade.fetchOrders()" flat small flex>
-                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
-                    Actualizar
-                </button>
-            </grid>
-        </grid>
+        <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 </layout>

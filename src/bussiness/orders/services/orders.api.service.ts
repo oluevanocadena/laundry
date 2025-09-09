@@ -19,7 +19,8 @@ export class OrdersApiService implements FacadeApiBase {
   public client = supabaseClient;
 
   orders = new SubjectProp<Order[]>([]);
-
+  pagedOrders = new SubjectProp<Order[]>([]);
+  
   constructor(public nzMessageService: NzMessageService) { 
   }
 

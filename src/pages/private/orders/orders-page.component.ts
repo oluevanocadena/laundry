@@ -34,7 +34,20 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
         return 'Recolección en sucursal';
     }
     return '';
+  } 
+
+  get data() {
+    return this.facade.api.pagedOrders.value;
   }
+
+  get rowCount() {
+    return this.facade.api.pagedOrders.value?.length ?? 0;
+  }
+
+  get busy() {
+    return this.facade.api.busy.value;
+  }
+
 
   /**
    * Lifecycle

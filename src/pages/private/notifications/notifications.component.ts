@@ -21,6 +21,14 @@ export class NotificationsPageComponent extends HelperPage implements AfterViewI
     return this.facade.api.pageNotifications.value;
   }
 
+  get rowCount() {
+    return this.facade.api.pageNotifications.value?.length ?? 0;
+  }
+
+  get busy() {
+    return this.facade.api.busy.value;
+  }
+
   /**
    * Lifecycle
    */

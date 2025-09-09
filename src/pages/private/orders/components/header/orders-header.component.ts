@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
+import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';

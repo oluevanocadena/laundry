@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { PaymentsDomain } from '@bussiness/orders/domains/payments.domain';
-import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
+import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 

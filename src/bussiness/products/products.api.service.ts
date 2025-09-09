@@ -4,9 +4,9 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { v4 as uuidv4 } from 'uuid';
 
 import { supabase } from '@environments/environment';
-import { BusyProp } from '../../globals/types/busy.type';
-import { FacadeApiBase } from '../../globals/types/facade.base';
-import { SubjectProp } from '../../globals/types/subject.type';
+import { BusyProp } from '@globals/types/busy.type';
+import { FacadeApiBase } from '@globals/types/facade.base';
+import { SubjectProp } from '@globals/types/subject.type';
 
 import {
   Product,
@@ -19,7 +19,7 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import {
   SupabaseBuckets,
   SupabaseTables,
-} from '../../globals/constants/supabase-tables.constants';
+} from '@globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
+import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({

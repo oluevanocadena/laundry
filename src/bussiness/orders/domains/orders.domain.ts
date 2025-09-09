@@ -2,22 +2,14 @@ import { TuiAppearanceOptions } from '@taiga-ui/core';
 import moment from 'moment';
 
 import { Customer } from '@bussiness/customers/customers.interfaces';
-import { SessionService } from '@bussiness/session/services/session.service';
-
-import {
-  Delivery,
-  Order,
-  OrderTotals,
-} from '@bussiness/orders/interfaces/orders.interfaces';
+import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
+import { DiscountTypesEnum } from '@bussiness/orders/enums/order.discount.enums';
+import { PaymentMethodsEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
+import { Delivery, Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
-import {
-  DeliveryTypesEnum,
-  DiscountTypesEnum,
-  OrderItemStatusEnum,
-  OrderStatusEnum,
-  PaymentMethodsEnum,
-} from '@bussiness/orders/orders.enums';
-import { DeliveryTypes, DiscountTypes } from '../types/orders.types';
+import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 export class OrdersDomain {
   //Methods
@@ -30,7 +22,7 @@ export class OrdersDomain {
     orderDelivery: Delivery,
     discountType: DiscountTypes,
     notes: string,
-    sessionService: SessionService
+    sessionService: SessionService,
   ) {
     const now = moment().format('YYYY-MM-DD HH:mm:ss');
     const currentLocationId = sessionService.sessionInfo.value?.Location.id;
@@ -54,16 +46,14 @@ export class OrdersDomain {
       Paid: order.Paid ?? false,
       PaymentMethod: order.PaymentMethod ?? PaymentMethodsEnum.Cash,
       PaymentDate: order.PaymentDate ?? undefined,
-      PaymentCardTransactionNumber:
-        order.PaymentCardTransactionNumber ?? undefined,
+      PaymentCardTransactionNumber: order.PaymentCardTransactionNumber ?? undefined,
 
       DeliveryType: orderDelivery.DeliveryType ?? DeliveryTypesEnum.Pickup,
       DeliveryDate: orderDelivery.Date || order.DeliveryDate || null,
       DeliveryTime: orderDelivery.Time || order.DeliveryTime || null,
       DeliveryCost: orderDelivery.Cost ?? order.DeliveryCost ?? 0,
       DeliveryAddress: orderDelivery.Address ?? order.DeliveryAddress ?? '',
-      DeliveryIndications:
-        orderDelivery.Indications ?? order.DeliveryIndications ?? '',
+      DeliveryIndications: orderDelivery.Indications ?? order.DeliveryIndications ?? '',
 
       Notes: notes ?? order.Notes ?? '',
       StatusId: this.getOrderStatus(order.StatusId, orderDelivery.DeliveryType),
@@ -71,8 +61,7 @@ export class OrdersDomain {
       OrganizationId: order.OrganizationId ?? organizationId,
       LocationId: order.LocationId ?? currentLocationId,
 
-      AccountId:
-        order.AccountId ?? sessionService.sessionInfo.value?.Account?.id,
+      AccountId: order.AccountId ?? sessionService.sessionInfo.value?.Account?.id,
 
       Deleted: order.Deleted ?? false,
     };
@@ -80,10 +69,7 @@ export class OrdersDomain {
     return orderToSave;
   }
 
-  static getOrderStatus(
-    statusId: OrderStatusEnum,
-    oderDeliveryType: DeliveryTypes
-  ): OrderStatusEnum {
+  static getOrderStatus(statusId: OrderStatusEnum, oderDeliveryType: DeliveryTypes): OrderStatusEnum {
     if (oderDeliveryType === DeliveryTypesEnum.Showroom) {
       return OrderStatusEnum.Completed;
     }
@@ -99,8 +85,7 @@ export class OrdersDomain {
     const itemsCount = order.OrderItems?.length ?? 0;
     const edition = !!order.id;
     const noIsDraftOrCancelled =
-      order.StatusId !== OrderStatusEnum.Draft &&
-      order.StatusId !== OrderStatusEnum.Cancelled;
+      order.StatusId !== OrderStatusEnum.Draft && order.StatusId !== OrderStatusEnum.Cancelled;
     return itemsCount > 0 && edition && noIsDraftOrCancelled;
   }
 

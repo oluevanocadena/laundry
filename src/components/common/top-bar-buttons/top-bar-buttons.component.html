@@ -16,8 +16,7 @@
                     feedback
                 </span>
             </button>
-
-            <nz-badge [nzCount]="notifService.unReadNotifications.value ?? 0" nzShowZero nzSize="small">
+            <nz-badge [nzShowDot]="showDot" nzDot="true" nzSize="small">
                 <button outline rounded small icon-google middle (click)="openNotifications()">
                     <span class="material-symbols-outlined f-20 f-lh-16 f-06">
                         inbox

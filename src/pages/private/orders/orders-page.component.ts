@@ -1,9 +1,10 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { HelperPage } from '@components/common/helper.page';
+
 import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
-import { DeliveryTypesEnum } from '@bussiness/orders/orders.enums';
+import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'app-orders-page',
@@ -22,7 +23,6 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
   /**
    * Getters
    */
- 
 
   deliveryTypeName(item: Order): string {
     switch (item?.DeliveryType) {

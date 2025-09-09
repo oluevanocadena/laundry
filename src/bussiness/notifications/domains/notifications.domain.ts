@@ -1,4 +1,8 @@
-import { Entities, Events } from '../interfaces/notifications.interfaces';
+import {
+  Entities,
+  Events,
+  Notification as INotification,
+} from '@bussiness/notifications/interfaces/notifications.interfaces';
 
 export class NotificationsDomain {
   static notificationType(event: Events): string {
@@ -37,5 +41,21 @@ export class NotificationsDomain {
       default:
         return '';
     }
+  }
+
+  static mapNotification(payload: any): INotification {
+    return {
+      id: payload.new['id'],
+      created_At: payload.new['created_At'],
+      updated_At: payload.new['updated_At'],
+      Title: payload.new['Title'],
+      Message: payload.new['Message'],
+      Entity: payload.new['Entity'],
+      Event: payload.new['Event'],
+      Metadata: payload.new['Metadata'],
+      Readed: payload.new['Readed'],
+      AccountId: payload.new['AccountId'],
+      OrganizationId: payload.new['OrganizationId'],
+    };
   }
 }

@@ -15,14 +15,15 @@
                                 {{orderName}}
                             </label>
                         </span>
-                        <grid [gap]="[8,8]" [direction]="'column'" [align]="'bottom-left'" [height]="'100%'">
+                        <grid [gap]="[8,8]" [direction]="'column'"
+                            [align]="isMobileOrTablet ? 'bottom-left' :'center-center'" [height]="'100%'">
                             <tui-loader *ngIf="busy" />
                             <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
                                 [appearance]="'warning'" />
                             <ng-container *ngIf="!busy && facade.edition === true">
                                 <status-badge [label]="ordersDomain.statusName(order)" [size]="'m'"
                                     [appearance]="ordersDomain.statusColor(order)" />
-                                <status-badge [label]="paid ? 'Pagado' : 'Pendiente de pago'" [size]="'s'"
+                                <status-badge [label]="paid ? 'Pagado' : 'Pendiente de pago'" [size]="'m'"
                                     [appearance]="paid ? 'success': 'error'" />
                             </ng-container>
                         </grid>
@@ -68,7 +69,7 @@
     </span>
     <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem'">
         <span class="f-14 fw-600 f-01">
-            ¿Estás seguro de querer cancelar el pedido 
+            ¿Estás seguro de querer cancelar el pedido
             <span class="f-error fw-600">
                 {{ orderName }}
             </span>

@@ -5,18 +5,14 @@ import { routes } from '@app/routes';
 import { FacadeBase } from '@globals/types/facade.base';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { OrdersApiService } from '@bussiness/orders/orders.api.service';
+import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersMonitorFacade extends FacadeBase {
-  constructor(
-    public api: OrdersApiService,
-    public draftFacade: OrdersDraftFacade,
-    public router: Router
-  ) {
+  constructor(public api: OrdersApiService, public draftFacade: OrdersDraftFacade, public router: Router) {
     super(api);
   }
 
@@ -27,11 +23,11 @@ export class OrdersMonitorFacade extends FacadeBase {
 
   bindEvents() {}
 
+  submitForm() {}
+
   clearState() {
     this.api.orders.value = [];
   }
-
-  submitForm() {}
 
   /**
    * APi
@@ -51,8 +47,7 @@ export class OrdersMonitorFacade extends FacadeBase {
   }
 
   onNewOrder() {
-    console.log('👉🏽 onNewOrder');
-    this.draftFacade.selectedOrder.value = null;
+    this.draftFacade.clearState();
     this.router.navigate([routes.OrderDraft]);
   }
 }

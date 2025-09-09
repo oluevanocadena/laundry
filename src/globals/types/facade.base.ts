@@ -34,7 +34,6 @@ export abstract class FacadeStepFormBase implements LifecycleStrategyStepForm {
   constructor(api: FacadeApiBase) {
     setTimeout(() => {
       this.bindEvents();
-      this.initialize();
     });
   }
 
@@ -97,9 +96,8 @@ export interface LifecycleStrategy {
   clearState(): void;
   submitForm(): void;
 }
-export interface LifecycleStrategyStepForm<
-  T extends { [key: string]: any } = any
-> extends Omit<LifecycleStrategy, 'initialize'> {
+export interface LifecycleStrategyStepForm<T extends { [key: string]: any } = any>
+  extends Omit<LifecycleStrategy, 'initialize'> {
   steps: FormStep<T>[];
   stepIndex: SubjectProp<number>;
 

@@ -3,15 +3,13 @@ import { Router } from '@angular/router';
 
 import { Notification } from '@bussiness/notifications/interfaces/notifications.interfaces';
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
-import { FacadeBase } from "@globals/types/facade.base";
+import { FacadeBase } from '@globals/types/facade.base';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationsMonitorFacade extends FacadeBase {
-
-    
   segments: NzSegmentedOption[] = [
     { label: 'Todas', value: '0' },
     { label: 'Activas', value: 'false' },
@@ -27,7 +25,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
   }
 
   bindEvents() {}
-  
+
   clearState() {}
 
   submitForm() {}
@@ -35,7 +33,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
   /**
    * API Calls
    */
-  
+
   fetchNotifications() {
     this.api.getNotifications();
   }
@@ -48,10 +46,10 @@ export class NotificationsMonitorFacade extends FacadeBase {
     this.api.markAllAsRead();
   }
 
-  onSegmentChange(value: string | number) { 
+  onSegmentChange(value: string | number) {
     this.fetchNotifications();
   }
-  
+
   onNotificationClick(notification: Notification) {
     console.log('👉🏽 onNotificationClick', notification);
   }

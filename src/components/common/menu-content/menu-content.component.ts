@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HelperPage } from '../helper.page';
+import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
 
 @Component({
   selector: 'menu-content',
@@ -10,8 +11,16 @@ import { HelperPage } from '../helper.page';
 export class MenuContentComponent extends HelperPage implements OnInit {
   @Input() collapsed: boolean = false;
 
-  constructor() {
+  constructor(public notifService: NotificationsApiService) {
     super();
+  }
+
+  /**
+   * Getters
+   */
+
+  get unReadNotifications() {
+    return this.notifService.unReadNotifications.value ?? 0;
   }
 
   ngOnInit() {}

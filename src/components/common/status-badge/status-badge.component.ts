@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   OrderItemStatusEnum,
   OrderStatusEnum,
-} from '@bussiness/orders/orders.enums';
+} from '@bussiness/orders/enums/orders.enums';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 
 @Component({

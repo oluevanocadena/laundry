@@ -1,0 +1,42 @@
+nz-notification {
+
+    >.ant-notification-notice {
+        position: relative;
+        width: 384px;
+        max-width: calc(100vw - 24px * 2);
+        margin-bottom: 16px;
+        padding: 0.75rem 0.5rem !important;
+        line-height: 0.5rem !important;
+        background: var(--background-01) !important;
+        border-radius: 6px !important;
+        box-shadow: var(--shadow-01) !important;
+        border: 1px solid var(--border) !important;
+
+        *>nz-icon {
+            font-size: 20px !important;
+        }
+
+        *>.ant-notification-notice-description {
+            font-size: 12px !important;
+            line-height: 15px !important;
+            margin-left: 38px !important;
+        }
+
+        *>.ant-notification-notice-message {
+            font-size: 14px !important;
+            margin-left: 38px !important;
+        }
+
+        >.ant-notification-notice-close {
+            >.ant-notification-notice-close-x {
+                >.ant-notification-close-icon {
+                    font-size: 14px !important;
+                    color: var(--text-06) !important;
+                }
+            }
+
+        }
+
+    }
+
+}

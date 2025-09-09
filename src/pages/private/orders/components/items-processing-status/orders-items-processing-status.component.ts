@@ -4,7 +4,7 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
-import { OrderItemStatusEnum } from '@bussiness/orders/orders.enums';
+import { OrderItemStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({

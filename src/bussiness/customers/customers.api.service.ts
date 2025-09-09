@@ -1,27 +1,24 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '@environments/environment';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-import { BusyProp } from '../../globals/types/busy.type';
-import { FacadeApiBase } from '../../globals/types/facade.base';
-import { SubjectProp } from '../../globals/types/subject.type';
+import { BusyProp } from '@globals/types/busy.type';
+import { FacadeApiBase } from '@globals/types/facade.base';
+import { SubjectProp } from '@globals/types/subject.type';
 
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
+import { supabaseClient } from '@globals/singleton/supabase.client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomersApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
-  public client: SupabaseClient;
+  public client = supabaseClient;
   private table = 'Customers';
 
   customers = new SubjectProp<Customer[]>([]);
 
-  constructor(public sessionService: SessionService) {
-    this.client = createClient(supabase.url, supabase.key);
-  }
+  constructor(public sessionService: SessionService) {}
 
   private async executeWithBusy<T>(
     callback: () => Promise<T>,

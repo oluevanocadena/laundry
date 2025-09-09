@@ -3,7 +3,7 @@ import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { OrderStatusEnum } from '@bussiness/orders/orders.enums';
+import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 
 @Component({
   selector: 'orders-customer',

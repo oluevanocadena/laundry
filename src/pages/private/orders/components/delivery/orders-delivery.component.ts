@@ -1,11 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
-import {
-  DeliveryTypesEnum,
-  OrderStatusEnum,
-} from '@bussiness/orders/orders.enums';
-
+import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 @Component({
   selector: 'orders-delivery',
   standalone: false,

@@ -1,15 +1,15 @@
 import { inject, Inject } from '@angular/core';
-import { supabase } from '@environments/environment';
+import { supabaseClient } from '@globals/singleton/supabase.client';
 import { BusyProp } from '@globals/types/busy.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { SupabaseResponse } from '@globals/types/types';
-import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 export class ApiBaseService implements FacadeApiBase {
   public busy = new BusyProp(false);
-  public client: SupabaseClient;
+  public client = supabaseClient;
 
   public session = new SubjectProp<Session | null>(null);
 
@@ -17,8 +17,6 @@ export class ApiBaseService implements FacadeApiBase {
   public nzMessageService: NzMessageService = inject(NzMessageService);
 
   constructor() {
-    this.client = createClient(supabase.url, supabase.key);
-
     // Mantener la sesión en memoria
     this.client.auth.getSession().then(({ data }) => {
       this.session.value = data.session;

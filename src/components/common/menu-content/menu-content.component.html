@@ -9,7 +9,8 @@
             <menu-item [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'" [label]="'Clientes'"
                 [urlBase]="routes.Customers" [link]="routes.Customers" [isGroup]="false" [level]="0" />
             <menu-item [collapsed]="collapsed" [icon]="'notifications'" [iconType]="'google'" [label]="'Notificaciones'"
-                [urlBase]="routes.Notifications" [link]="routes.Notifications" [isGroup]="false" [level]="0" />
+                [urlBase]="routes.Notifications" [link]="routes.Notifications" [isGroup]="false" [level]="0"
+                [badgeCount]="unReadNotifications" />
 
             <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
 

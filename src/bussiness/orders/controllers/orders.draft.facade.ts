@@ -14,36 +14,24 @@ import { FormProp } from '@globals/types/form.type';
 import { StorageProp } from '@globals/types/storage.type';
 import { SubjectProp } from '@globals/types/subject.type';
 
+import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
+import { DiscountTypesEnum } from '@bussiness/orders/enums/order.discount.enums';
+import { PaymentMethodsEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
+
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/customers.interfaces';
-import { OrdersApiService } from '@bussiness/orders/orders.api.service';
-
 import { OrdersCartDomain } from '@bussiness/orders/domains/orders.cart.domain';
+import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
+import { Delivery, Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
+import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
+import { DeliveryTypes, DiscountTypes, PaymentMethods } from '@bussiness/orders/types/orders.types';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { ProductsApiService } from '@bussiness/products/products.api.service';
 import { Product } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
-
-import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
-import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
-
-import {
-  Delivery,
-  Order,
-  OrderTotals,
-} from '@bussiness/orders/interfaces/orders.interfaces';
-import {
-  DeliveryTypesEnum,
-  DiscountTypesEnum,
-  OrderItemStatusEnum,
-  OrderStatusEnum,
-  PaymentMethodsEnum,
-} from '@bussiness/orders/orders.enums';
-import {
-  DeliveryTypes,
-  DiscountTypes,
-  PaymentMethods,
-} from '@bussiness/orders/types/orders.types';
+import { UtilsDomain } from '@globals/utils/utils.domain';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
@@ -65,7 +53,7 @@ export class OrdersDraftFacade extends FacadeBase {
   showRefundModal: boolean = false;
   showSearchProduct: boolean = false;
 
-  order = new SubjectProp<Order>(OrderEmpty);
+  order = new SubjectProp<Order>(UtilsDomain.clone(OrderEmpty));
 
   orderItemSelected = new SubjectProp<OrderItem>(null);
   orderItems = new SubjectProp<OrderItem[]>([]);
@@ -90,18 +78,10 @@ export class OrdersDraftFacade extends FacadeBase {
 
   discount = new FormProp<number>(this.formGroup, 'discount', 0);
   notes = new FormProp<string>(this.formGroup, 'notes', '');
-  discountType = new FormProp<DiscountTypes>(
-    this.formGroup,
-    'discountType',
-    'amount'
-  );
+  discountType = new FormProp<DiscountTypes>(this.formGroup, 'discountType', 'amount');
 
   deliveryCost = new FormProp<number>(this.formDelivery, 'deliveryCost', 0);
-  deliveryType = new FormProp<DeliveryTypes>(
-    this.formDelivery,
-    'deliveryType',
-    'showroom'
-  );
+  deliveryType = new FormProp<DeliveryTypes>(this.formDelivery, 'deliveryType', 'showroom');
 
   selectedOrder = new StorageProp<Order>(null, 'EDITION_SELECTED_ORDER');
 
@@ -112,7 +92,7 @@ export class OrdersDraftFacade extends FacadeBase {
     public facadeProducts: ProductsDraftFacade,
     public nzMessageService: NzMessageService,
     public router: Router,
-    public sessionService: SessionService
+    public sessionService: SessionService,
   ) {
     super(api);
   }
@@ -132,10 +112,13 @@ export class OrdersDraftFacade extends FacadeBase {
     this.orderItems.onChange((items) => {
       this.calcTotals();
     });
+    this.order.onChange((order) => {
+      console.trace('👉🏽 order', order);
+    });
   }
 
   clearState() {
-    this.order.value = OrderEmpty;
+    this.order.value = UtilsDomain.clone(OrderEmpty);
     this.orderCustomer.value = null;
     this.orderDelivery.value = null;
     this.orderItems.value = [];
@@ -166,12 +149,10 @@ export class OrdersDraftFacade extends FacadeBase {
       this.orderDelivery.value!,
       this.discountType.value!,
       this.notes.value!,
-      this.sessionService
+      this.sessionService,
     );
 
-    const orderItems: OrderItem[] = OrdersDomain.buildOrderItems(
-      this.orderItems.value ?? []
-    );
+    const orderItems: OrderItem[] = OrdersDomain.buildOrderItems(this.orderItems.value ?? []);
 
     this.api.updateOrder(order, orderItems).then((order) => {
       if (!order) return;
@@ -205,9 +186,7 @@ export class OrdersDraftFacade extends FacadeBase {
       this.api.updateOrderItemStatus(orderItem.id, status).then((orderItem) => {
         if (!orderItem) return;
         this.orderItems.value =
-          this.orderItems.value?.map((item) =>
-            item.id === orderItem.id ? orderItem : item
-          ) ?? [];
+          this.orderItems.value?.map((item) => (item.id === orderItem.id ? orderItem : item)) ?? [];
         this.api.getOrder(this.order.value?.id ?? '').then((order) => {
           if (!order) return;
           this.order.value = order;
@@ -217,16 +196,14 @@ export class OrdersDraftFacade extends FacadeBase {
     } else {
       //Update all items
       console.log(this.order.value?.id);
-      this.api
-        .updateOrderItemStatusAll(this.order.value?.id ?? '', status)
-        .then((orderItems) => {
-          this.orderItems.value = orderItems;
-          this.api.getOrder(this.order.value?.id ?? '').then((order) => {
-            if (!order) return;
-            this.order.value = order;
-            this.selectedOrder.value = order;
-          });
+      this.api.updateOrderItemStatusAll(this.order.value?.id ?? '', status).then((orderItems) => {
+        this.orderItems.value = orderItems;
+        this.api.getOrder(this.order.value?.id ?? '').then((order) => {
+          if (!order) return;
+          this.order.value = order;
+          this.selectedOrder.value = order;
         });
+      });
     }
   }
 
@@ -254,9 +231,7 @@ export class OrdersDraftFacade extends FacadeBase {
     this.orderDelivery.value = {
       DeliveryType: order?.DeliveryType ?? DeliveryTypesEnum.Showroom,
       Date: order?.DeliveryDate
-        ? (TuiDay.fromLocalNativeDate(
-            moment(order.DeliveryDate).toDate()
-          ) as unknown as Date)
+        ? (TuiDay.fromLocalNativeDate(moment(order.DeliveryDate).toDate()) as unknown as Date)
         : undefined,
       Time: order?.DeliveryTime ?? undefined,
       Cost: order?.DeliveryCost ?? 0,
@@ -269,7 +244,7 @@ export class OrdersDraftFacade extends FacadeBase {
     this.orderTotals.value = OrdersCartDomain.calculateTotals(
       this.orderItems.value ?? [],
       this.discount.value ?? 0,
-      this.deliveryCost.value ?? 0
+      this.deliveryCost.value ?? 0,
     );
     if (this.order.value) {
       this.order.value.Total = this.orderTotals.value?.Total ?? 0;
@@ -303,11 +278,7 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   onSelectProduct(product: Product, quantity: number) {
-    this.orderItems.value = OrdersCartDomain.addProductItem(
-      this.orderItems.value ?? [],
-      product,
-      quantity
-    );
+    this.orderItems.value = OrdersCartDomain.addProductItem(this.orderItems.value ?? [], product, quantity);
 
     this.order.value!.ItemCount = this.orderItems.value?.length ?? 0;
     this.showSearchProduct = false;
@@ -334,7 +305,7 @@ export class OrdersDraftFacade extends FacadeBase {
     this.orderItems.value = OrdersCartDomain.adjustProductItemQuantity(
       this.orderItems.value ?? [],
       this.orderItemSelected.value!,
-      quantity
+      quantity,
     );
     this.orderItemSelected.value = null;
     this.showAdjustQuantity = false;
@@ -344,20 +315,16 @@ export class OrdersDraftFacade extends FacadeBase {
     if (this.orderItemSelected.value) {
       this.orderItems.value = OrdersCartDomain.removeProductItem(
         this.orderItems.value ?? [],
-        this.orderItemSelected.value
+        this.orderItemSelected.value,
       );
       this.orderItemSelected.value = null;
       this.showAdjustQuantity = false;
     }
   }
 
-  onCollectPayment(
-    paymentMethod: PaymentMethodsEnum,
-    transactionNumber?: string
-  ) {
+  onCollectPayment(paymentMethod: PaymentMethodsEnum, transactionNumber?: string) {
     this.showCollectPaymentModal = false;
-    this.order.value!.Paid =
-      paymentMethod === PaymentMethodsEnum.None ? false : true;
+    this.order.value!.Paid = paymentMethod === PaymentMethodsEnum.None ? false : true;
     this.order.value!.PaymentMethod = paymentMethod as PaymentMethods;
     this.order.value!.PaymentCardTransactionNumber = transactionNumber;
     this.order.value!.PaymentDate = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -377,7 +344,7 @@ export class OrdersDraftFacade extends FacadeBase {
     this.order.value!.Discount = OrdersCartDomain.calculateDiscount(
       this.orderTotals.value,
       this.discount.value ?? 0,
-      this.discountType.value ?? DiscountTypesEnum.Amount
+      this.discountType.value ?? DiscountTypesEnum.Amount,
     );
     this.calcTotals();
     this.showAdjustDiscountModal = false;
@@ -393,14 +360,12 @@ export class OrdersDraftFacade extends FacadeBase {
   onCancelOrder() {
     if (this.order.value?.id) {
       try {
-        this.api
-          .updateOrderStatus(this.order.value?.id, OrderStatusEnum.Cancelled)
-          .then((orderSaved) => {
-            if (orderSaved) {
-              this.showCancelOrderModal = false;
-              this.router.navigate([routes.Orders]);
-            }
-          });
+        this.api.updateOrderStatus(this.order.value?.id, OrderStatusEnum.Cancelled).then((orderSaved) => {
+          if (orderSaved) {
+            this.showCancelOrderModal = false;
+            this.router.navigate([routes.Orders]);
+          }
+        });
       } catch (error) {
         this.nzMessageService.error(error as string);
       }
@@ -449,7 +414,6 @@ export class OrdersDraftFacade extends FacadeBase {
   openCancelOrderModal() {
     this.showCancelOrderModal = true;
   }
-  
 
   /**
    * Getters

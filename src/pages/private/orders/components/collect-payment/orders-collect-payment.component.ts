@@ -6,14 +6,9 @@ import { HelperPage } from '@components/common/helper.page';
 import { FormProp } from '@globals/types/form.type';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import {
-  DeliveryTypesEnum,
-  PaymentMethodsEnum,
-} from '@bussiness/orders/orders.enums';
-import {
-  DeliveryTypes,
-  PaymentMethods,
-} from '@bussiness/orders/types/orders.types';
+import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
+import { PaymentMethodsEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { DeliveryTypes, PaymentMethods } from '@bussiness/orders/types/orders.types';
 
 @Component({
   selector: 'orders-collect-payment',
@@ -34,22 +29,12 @@ export class OrdersCollectPaymentComponent extends HelperPage {
 
   // FormGroup
   formGroup = new FormGroup({
-    paymentMethod: new FormControl<PaymentMethods>('cash', [
-      Validators.required,
-    ]),
+    paymentMethod: new FormControl<PaymentMethods>('cash', [Validators.required]),
     transactionNumber: new FormControl(null, [Validators.required]),
   });
 
-  paymentMethod = new FormProp<PaymentMethods>(
-    this.formGroup,
-    'paymentMethod',
-    PaymentMethodsEnum.Cash
-  );
-  transactionNumber = new FormProp<string>(
-    this.formGroup,
-    'transactionNumber',
-    null
-  );
+  paymentMethod = new FormProp<PaymentMethods>(this.formGroup, 'paymentMethod', PaymentMethodsEnum.Cash);
+  transactionNumber = new FormProp<string>(this.formGroup, 'transactionNumber', null);
 
   constructor(public facade: OrdersDraftFacade) {
     super();
@@ -76,7 +61,7 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   collectPayment() {
     this.facade.onCollectPayment(
       this.paymentMethod.value as PaymentMethodsEnum,
-      this.transactionNumber.value ?? undefined
+      this.transactionNumber.value ?? undefined,
     );
     this.close();
   }
@@ -89,8 +74,7 @@ export class OrdersCollectPaymentComponent extends HelperPage {
     return (
       this.paymentMethod.value === PaymentMethodsEnum.Cash ||
       this.paymentMethod.value === PaymentMethodsEnum.None ||
-      (this.paymentMethod.value === PaymentMethodsEnum.Card &&
-        this.transactionNumber.value)
+      (this.paymentMethod.value === PaymentMethodsEnum.Card && this.transactionNumber.value)
     );
   }
 

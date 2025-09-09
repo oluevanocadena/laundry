@@ -30,9 +30,17 @@ export class TopBarButtonsComponent extends HelperPage {
   }
 
   /**
+   * Getters
+   */
+
+  get showDot() {
+    return (this.notifService.unReadNotifications.value ?? 0) > 0;
+  }
+
+  /**
    * Life cycle
    */
   ngAfterViewInit() {
-    this.notifService.getCountUnreadNotifications();
+    this.notifService.getNotifications();
   }
 }

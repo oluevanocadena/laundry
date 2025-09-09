@@ -4,15 +4,18 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
+import { supabase } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
-import { StorageProp } from '@globals/types/storage.type';
 import { validators } from '@globals/types/validators.type';
+import { createClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AccountsApiService } from '../services/accounts.api.service';
 import { SessionApiService } from '../services/session.api.service';
-import { SessionInfo } from '../session.interface';
 import { SessionService } from '../services/session.service';
+import { SessionInfo } from '../session.interface';
+import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
+import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +30,12 @@ export class SessionFacade extends FacadeBase {
   email = new FormProp<string>(this.formGroup, 'email', '');
   password = new FormProp<string>(this.formGroup, 'password', '');
 
+  client = createClient(supabase.url, supabase.key);
+
   constructor(
     public api: SessionApiService,
+    public apiNotifications: NotificationsApiService,
+    public apiOrders: OrdersApiService,
     public apiAccounts: AccountsApiService,
     public apiLocations: LocationsApiService,
     public nzMessageService: NzMessageService,
@@ -91,6 +98,7 @@ export class SessionFacade extends FacadeBase {
       };
       console.log('👉🏽 Logged In SessionInfo', sessionInfo);
       this.sessionService.sessionInfo.value = sessionInfo;
+      this.apiNotifications.initialize();
       this.router.navigate([routes.Home]);
     } catch (error: any) {
       console.error(error);
@@ -108,7 +116,8 @@ export class SessionFacade extends FacadeBase {
         this.router.navigate([routes.Login]);
       }
     });
-    this.sessionService.clearSession();
+    this.sessionService.clearSession();    
+    this.client.removeAllChannels();
   }
 
   /**

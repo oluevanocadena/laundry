@@ -1,7 +1,5 @@
-import {
-  DeliveryTypesEnum,
-  OrderStatusEnum,
-} from '@bussiness/orders/orders.enums';
+import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
+import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 
 export const OrderEmpty: Order = {

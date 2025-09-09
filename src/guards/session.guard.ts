@@ -9,8 +9,7 @@ import { SessionService } from '@bussiness/session/services/session.service';
 export class SessionGuard implements CanActivate {
   constructor(private sessionService: SessionService, private router: Router) {}
 
-  async canActivate(): Promise<boolean> {
-    console.log('loggedin', this.sessionService.isLoggedIn);
+  async canActivate(): Promise<boolean> { 
     if (this.sessionService.isLoggedIn) {
       console.log('🔒 Usuario autenticado');
       return true;

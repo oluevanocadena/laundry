@@ -1,6 +1,6 @@
 <grid [direction]="'row'" [gap]="[0,4]" [padding]="'0.125rem 0 0.5rem 0'">
     <grid [gap]="[4,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr' : 'max-content 1fr'">
-        <status-badge *ngIf="ordersDomain.canProcessOrder(order)" [label]="itemsDomain.statusName(item)"
+        <status-badge *ngIf="ordersDomain.canProcessOrder(order) && isInstanceofOrderItem(item)" [label]="itemsDomain.statusName(item)"
             [appearance]="itemsDomain.statusColor(item)" [size]="'m'" />
         <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'"
             [padding]="isMobileOrTablet ? '0' : '0.125rem 0 0'">

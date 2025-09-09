@@ -1,28 +1,26 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
-
-import { supabase } from '@environments/environment';
-import { BusyProp } from '../../globals/types/busy.type';
-import { FacadeApiBase } from '../../globals/types/facade.base';
-import { SubjectProp } from '../../globals/types/subject.type';
 
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
-import { SupabaseTables } from '../../globals/constants/supabase-tables.constants';
-import { OrderItemStatusEnum, OrderStatusEnum } from './orders.enums';
+import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
+
+import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { supabaseClient } from '@globals/singleton/supabase.client';
+import { BusyProp } from '@globals/types/busy.type';
+import { FacadeApiBase } from '@globals/types/facade.base';
+import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
-  public client: SupabaseClient;
+  public client = supabaseClient;
 
   orders = new SubjectProp<Order[]>([]);
 
-  constructor(public nzMessageService: NzMessageService) {
-    this.client = createClient(supabase.url, supabase.key);
+  constructor(public nzMessageService: NzMessageService) { 
   }
 
   private async executeWithBusy<T>(

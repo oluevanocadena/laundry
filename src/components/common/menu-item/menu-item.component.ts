@@ -17,6 +17,7 @@ export class MenuItemComponent extends HelperPage {
   @Input() bold: boolean = false;
   @Input() collapsed: boolean = false;
   @Input() iconType: 'tui' | 'google' = 'tui';
+  @Input() badgeCount: number = 0;
 
   private _level: number = 0;
   @Input() set level(value: number) {
@@ -60,6 +61,10 @@ export class MenuItemComponent extends HelperPage {
 
   get hasNgContent() {
     return this._hasContent || this.content.length > 0;
+  }
+
+  get badgeCountText() {
+    return this.badgeCount > 99 ? '+99' : this.badgeCount.toString();
   }
 
   /**

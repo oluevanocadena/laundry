@@ -12,7 +12,7 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 export class NotificationsMonitorFacade extends FacadeBase {
   segments: NzSegmentedOption[] = [
     { label: 'Todas', value: '0' },
-    { label: 'Activas', value: 'false' },
+    { label: 'No leídas', value: 'false' },
     { label: 'Leídas', value: 'true' },
   ];
 

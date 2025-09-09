@@ -4,7 +4,7 @@
         <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'1rem'">
             <span class="fw-500 f-01 f-20 f-lh-22" padding="0.25rem 0 0 0">
                 Notificaciones
-            </span> 
+            </span>
         </grid>
         <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
             class="wrap brdr-top bg-02" padding="0.5rem 1rem">
@@ -14,23 +14,21 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
                 <button primary small (click)="facade.onMarkAllAsReadClick()">
-                    Marcar como leídas
+                    Marcar todas como leídas
                 </button>
             </grid>
         </grid>
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
-            <table [width]="isMobileOrTablet ? '900px' : '100%'">
+            <table [width]="isMobileOrTablet ? '800px' : '100%'">
                 <thead>
                     <tr>
                         <th width="40px"> </th>
-                        <th width="80px">Estatus</th>
-                        <th minWidth="150px">Nombre</th>
-                        <th width="130px">Fecha de creación</th>
-                        <th width="130px">Teléfono</th>
-                        <th minWidth="200px">Dirección</th>
-                        <th>Predeterminada</th>
+                        <th width="130px">Fecha</th>
+                        <th>Titulo</th>
+                        <th minWidth="150px">Mensaje</th>
+                        <th width="130px">Estatus</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +47,7 @@
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
                                     <tui-icon icon="@tui.inbox" class="f-20 f-06" />
-                                    <span class="fw-400 f-06">No hay sucursales disponibles</span>
+                                    <span class="fw-400 f-06">No hay notificaciones disponibles</span>
                                 </grid>
                             </grid>
                         </td>
@@ -59,14 +57,14 @@
                             (click)="facade.onNotificationClick(item)">
                             <td>
                                 <label nz-checkbox></label>
-                            </td> 
+                            </td>
+                            <td>{{item.created_At || '' | dateFormat: 'DD MMM YYYY' | capitalization }}</td>
                             <td>{{item.Title}}</td>
-                            <td>{{item.created_At || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
-                            <td>{{item.Message}}</td> 
+                            <td>{{item.Message}}</td>
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Readed ? 'Leído' : 'No leído'"
-                                        [appearance]="item?.Readed ? 'success' : 'default'" [size]="'m'" />
+                                        [appearance]="item?.Readed ? 'default' : 'warning'" [size]="'m'" />
                                 </grid>
                             </td>
                         </tr>
@@ -96,4 +94,3 @@
 
 
 </layout>
- 

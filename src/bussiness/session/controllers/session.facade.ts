@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
+import { createClient } from '@supabase/supabase-js';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
+import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
+import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
+import { SessionApiService } from '@bussiness/session/services/session.api.service';
+import { SessionService } from '@bussiness/session/services/session.service';
+import { SessionInfo } from '@bussiness/session/session.interface';
 import { supabase } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { validators } from '@globals/types/validators.type';
-import { createClient } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { AccountsApiService } from '../services/accounts.api.service';
-import { SessionApiService } from '../services/session.api.service';
-import { SessionService } from '../services/session.service';
-import { SessionInfo } from '../session.interface';
-import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
-import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +40,7 @@ export class SessionFacade extends FacadeBase {
     public apiLocations: LocationsApiService,
     public nzMessageService: NzMessageService,
     public sessionService: SessionService,
-    public router: Router
+    public router: Router,
   ) {
     super(api);
   }
@@ -66,17 +66,12 @@ export class SessionFacade extends FacadeBase {
     }
 
     try {
-      const session = await this.api.signIn(
-        this.email.value!,
-        this.password.value!
-      );
+      const session = await this.api.signIn(this.email.value!, this.password.value!);
       if (!session) {
         throw new Error('Session not found');
       }
 
-      const account = await this.apiAccounts.getAccount(
-        session.data!.user?.email!
-      );
+      const account = await this.apiAccounts.getAccount(session.data!.user?.email!);
       if (!account) {
         throw new Error('Account not found');
       }
@@ -85,15 +80,11 @@ export class SessionFacade extends FacadeBase {
       if (!roles) {
         throw new Error('Roles not found');
       }
-
-      const location = await this.apiLocations.getDefaultLocation(
-        account.data!.OrganizationId
-      );
-
+      const responseLocation = await this.apiLocations.getDefaultLocation(account.data!.OrganizationId);
       const sessionInfo: SessionInfo = {
         Session: session.data!,
         Account: account.data!,
-        Location: location ?? null,
+        Location: responseLocation.data ?? null,
         Roles: roles.data ?? [],
       };
       console.log('👉🏽 Logged In SessionInfo', sessionInfo);
@@ -102,10 +93,7 @@ export class SessionFacade extends FacadeBase {
       this.router.navigate([routes.Home]);
     } catch (error: any) {
       console.error(error);
-      this.nzMessageService.error(
-        error?.message ||
-          'Ocurrió un error al iniciar sesión, intenta nuevamente.'
-      );
+      this.nzMessageService.error(error?.message || 'Ocurrió un error al iniciar sesión, intenta nuevamente.');
     }
   }
 
@@ -116,7 +104,7 @@ export class SessionFacade extends FacadeBase {
         this.router.navigate([routes.Login]);
       }
     });
-    this.sessionService.clearSession();    
+    this.sessionService.clearSession();
     this.client.removeAllChannels();
   }
 

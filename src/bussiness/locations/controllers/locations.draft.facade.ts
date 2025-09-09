@@ -39,7 +39,7 @@ export class LocationsDraftFacade extends FacadeBase {
   constructor(
     public api: LocationsApiService,
     public sessionService: SessionService,
-    public nzMessageService: NzMessageService
+    public nzMessageService: NzMessageService,
   ) {
     super(api);
   }
@@ -87,7 +87,6 @@ export class LocationsDraftFacade extends FacadeBase {
       Default: this.selectedLocation.value?.Default || value.default || false,
       OrganizationId: this.sessionService.organizationId,
     };
-    console.log('🤔 location', location);
     return this.api.saveLocation(location);
   }
 
@@ -95,8 +94,7 @@ export class LocationsDraftFacade extends FacadeBase {
     return this.api.disableLocation(id, disabled).then(() => {
       this.api.getLocations();
       if (this.selectedLocation.value) {
-        this.selectedLocation.value.Disabled =
-          !this.selectedLocation.value.Disabled;
+        this.selectedLocation.value.Disabled = !this.selectedLocation.value.Disabled;
       }
     });
   }
@@ -132,7 +130,6 @@ export class LocationsDraftFacade extends FacadeBase {
         zipCode: value.ZipCode,
       });
     } else {
-      console.log('🤔 clearState');
       this.clearState();
     }
   }

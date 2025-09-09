@@ -41,7 +41,7 @@ export class HomeFacade extends FacadeBase {
     public api: SessionApiService,
     public apiLocations: LocationsApiService,
     public ordersDraftFacade: OrdersDraftFacade,
-    public router: Router
+    public router: Router,
   ) {
     super(api);
   }
@@ -50,8 +50,8 @@ export class HomeFacade extends FacadeBase {
     super.initialize();
     this.validateRoute();
     if (this.locations.value?.length === 0) {
-      this.apiLocations.getLocations().then((locations) => {
-        this.locations.value = locations;
+      this.apiLocations.getLocations().then((response) => {
+        this.locations.value = response.data ?? [];
       });
     }
   }

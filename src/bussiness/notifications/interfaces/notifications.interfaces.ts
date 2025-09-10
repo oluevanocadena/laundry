@@ -1,6 +1,8 @@
-import { Organization } from '@bussiness/session/organizations.interface';
+import { NotificationsEntitiesEnum, NotificationsEventsEnum } from '@bussiness/notifications/enums/notifications.enums';
+import { Organization } from '@bussiness/session/interfaces/organizations.interface';
 import { Account } from '@bussiness/users/users.interfaces';
-import { PagedRequest } from '@globals/types/types';
+
+import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
 
 export interface Notification {
   id?: string;
@@ -10,8 +12,8 @@ export interface Notification {
   Title: string;
   Message: string;
 
-  Entity: Entities;
-  Event: Events;
+  Entity: NotificationsEntitiesEnum;
+  Event: NotificationsEventsEnum;
 
   Metadata: NotificationMetadata;
   Readed?: boolean;
@@ -32,20 +34,6 @@ export interface NotificationRequest extends PagedRequest {
   readed: boolean | null;
 }
 
-export enum Entities {
-  Order = 'order',
-  Customer = 'customer',
-  Product = 'product',
-  Invoice = 'invoice',
-  Payment = 'payment',
-  Delivery = 'delivery',
-}
-
-export enum Events {
-  Created = 'created',
-  Updated = 'updated',
-  Deleted = 'deleted',
-  Paid = 'paid',
-  Shipped = 'shipped',
-  Canceled = 'canceled',
+export interface NotificationPagedResults extends PagedResults<Notification> {
+  unReadCount: number;
 }

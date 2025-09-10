@@ -7,9 +7,8 @@ import moment from 'moment';
 import 'moment/locale/es';
 moment.locale('es');
 
-import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { SessionFacade } from '@bussiness/session/controllers/session.facade';
-import { SessionService } from '@bussiness/session/services/session.service';
 import { UICommonModule } from '@components/common/common.module';
 import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
@@ -31,8 +30,7 @@ export class AppComponent {
   constructor(
     private sessionFacade: SessionFacade,
     private router: Router,
-    private notifService: NotificationsApiService,
-    private sessionService: SessionService,
+    private notificationsRealtimeService: NotificationsRealtimeService, 
   ) {}
 
   /**
@@ -47,6 +45,6 @@ export class AppComponent {
   }
 
   ngOnDestroy() {
-    this.notifService.stopListening();
+    this.notificationsRealtimeService.stopListening();
   }
 }

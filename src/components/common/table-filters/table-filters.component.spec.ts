@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { TableSegmentsComponent } from "./table-segments.component";
+import { TableFiltersComponent } from "./table-filters.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-describe("TableSegmentsComponent", () => {
+describe("TableFiltersComponent", () => {
 
-  let fixture: ComponentFixture<TableSegmentsComponent>;
-  let component: TableSegmentsComponent;
+  let fixture: ComponentFixture<TableFiltersComponent>;
+  let component: TableFiltersComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [TableSegmentsComponent]
+      declarations: [TableFiltersComponent]
     });
 
-    fixture = TestBed.createComponent(TableSegmentsComponent);
+    fixture = TestBed.createComponent(TableFiltersComponent);
     component = fixture.componentInstance;
 
   });

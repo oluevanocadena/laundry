@@ -18,7 +18,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   //Domains
   ordersDomain = OrdersDomain;
 
-  dateCreated = '';
+  dateCreated = moment().locale('es').toDate().toString();
 
   constructor(public facade: OrdersDraftFacade, public router: Router) {
     super();
@@ -27,8 +27,9 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
 
   bindEvents() {
     this.facade.order.onChange((order) => {
-      this.dateCreated =
-        order?.createdAt || moment().locale('es').toDate().toString();
+      if (order?.createdAt) {
+        this.dateCreated = order?.createdAt || moment().locale('es').toDate().toString();
+      }
     });
   }
 
@@ -40,8 +41,8 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
    * Getters
    */
 
-  get busy(): boolean {
-    return this.facade.api.busy.value;
+  get busy() {
+    return this.facade.api.busy.change$;
   }
 
   get orderName() {
@@ -61,11 +62,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get canSave(): boolean {
-    return (
-      this.paid === false &&
-      this.itemsCount > 0 &&
-      !!this.facade.orderCustomer.value?.id
-    );
+    return this.paid === false && this.itemsCount > 0 && !!this.facade.orderCustomer.value?.id;
   }
 
   get orderTotals(): OrderTotals | null {
@@ -97,13 +94,10 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
       default:
         return 'Guardar cambios';
     }
-  } 
+  }
 
   get canShowMoreMenu(): boolean {
-    return (
-      this.facade.edition === true &&
-      this.order?.StatusId !== OrderStatusEnum.Cancelled
-    );
+    return this.facade.edition === true && this.order?.StatusId !== OrderStatusEnum.Cancelled;
   }
 
   /**

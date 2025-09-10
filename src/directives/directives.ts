@@ -74,7 +74,7 @@ export class StyleDirective implements OnChanges {
   selector: '[showLoader]',
 })
 export class ShowLoaderDirective implements OnChanges {
-  @Input('showLoader') isLoading = false;
+  @Input('showLoader') isLoading : boolean | null = false;
 
   private originalContent: string | null = null;
   private loaderEl: HTMLElement | null = null;
@@ -83,7 +83,7 @@ export class ShowLoaderDirective implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isLoading']) {
-      this.toggleLoader(this.isLoading);
+      this.toggleLoader(this.isLoading ?? false);
     }
   }
 

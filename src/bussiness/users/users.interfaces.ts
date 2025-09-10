@@ -1,4 +1,4 @@
-import { Organization } from '@bussiness/session/organizations.interface';
+import { Organization } from '@bussiness/session/interfaces/organizations.interface';
 
 export interface Account {
   id?: string;

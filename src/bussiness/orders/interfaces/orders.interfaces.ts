@@ -1,12 +1,14 @@
 // ::::::::::::::::::::::::::::::::::::::
 // Models
 // ::::::::::::::::::::::::::::::::::::::
- 
-import { Organization } from '@bussiness/session/organizations.interface';
-import { Customer } from '../../customers/customers.interfaces';
-import { DeliveryTypes, DiscountTypes, PaymentMethods } from '../types/orders.types';
-import { OrderItem } from './orders.items.interfaces';
+
+import { DeliveryTypes, DiscountTypes, PaymentMethods } from '@bussiness/orders/types/orders.types';
+import { Organization } from '@bussiness/session/interfaces/organizations.interface';
 import { Account } from '@bussiness/users/users.interfaces';
+import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
+import { Customer } from '../../customers/customers.interfaces';
+import { OrderItem } from './orders.items.interfaces';
+import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 
 export interface Delivery {
   DeliveryType: DeliveryTypes;
@@ -78,11 +80,25 @@ export interface OrderStatus {
 }
 
 export interface OrderTotals {
-  DiscountRate?: number; //Stores percentage (0-1) or fixed amount depending on discount type
-  Discount: number; //Result of the discount conversion
+  DiscountRate?: number;
+  Discount: number;
 
   Delivery: number;
   Taxes: number;
   Subtotal: number;
-  Total: number; //Total after discount and taxes
+  Total: number;
 }
+
+/**
+ * Requests
+ */
+export interface OrderRequest extends UITableFilter {
+  accountId: string;
+  locationId?: string | null;
+}
+
+/**
+ * Responses
+ */
+
+export interface OrderPagedResults extends PagedResults<Order> {}

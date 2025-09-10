@@ -4,10 +4,10 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { Notification } from '@bussiness/notifications/interfaces/notifications.interfaces';
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
+import { UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { TablePagination } from '@globals/types/types';
-import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
   ];
 
   selectedSegment = new SubjectProp<string>('0');
-  tabelFilter = new SubjectProp<TablePagination>(UIDefaultTablePagination);
+  tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
 
   constructor(public api: NotificationsApiService, public router: Router) {
     super(api);
@@ -32,7 +32,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.api.pageNotifications.onChange((notifications) => {
+    this.api.pagedNotifications.onChange((notifications) => {
       console.log('👉🏽 notifications', notifications);
     });
   }
@@ -46,9 +46,9 @@ export class NotificationsMonitorFacade extends FacadeBase {
    */
 
   fetchNotifications() {
-    this.api.getPageNotifications({
-      page: this.tabelFilter.value?.page ?? UITableConstants.DefaultPage,
-      pageSize: this.tabelFilter.value?.pageSize ?? UITableConstants.DefaultPageSize,
+    this.api.getPagedNotifications({
+      page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
+      pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
       readed: this.selectedSegment.value === 'true' ? true : this.selectedSegment.value === 'false' ? false : null,
     });
   }
@@ -57,9 +57,8 @@ export class NotificationsMonitorFacade extends FacadeBase {
    * UI Events
    */
 
-  onTablePaginationChange(filter: TablePagination) {
-    this.tabelFilter.value = filter;
-    console.log('👉🏽 onTablePaginationChange', filter);
+  onTablePaginationChange(filter: UITablePagination) {
+    this.tablePagination.value = filter;
     this.fetchNotifications();
   }
 

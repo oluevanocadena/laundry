@@ -70,8 +70,7 @@ button {
     }
 
     &[flex] {
-        display: flex;
-        justify-content: center;
+        display: flex; 
         align-items: stretch;
         gap: 0.5rem;
 

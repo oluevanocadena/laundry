@@ -112,9 +112,6 @@ export class OrdersDraftFacade extends FacadeBase {
     this.orderItems.onChange((items) => {
       this.calcTotals();
     });
-    this.order.onChange((order) => {
-      console.trace('👉🏽 order', order);
-    });
   }
 
   clearState() {
@@ -154,16 +151,19 @@ export class OrdersDraftFacade extends FacadeBase {
 
     const orderItems: OrderItem[] = OrdersDomain.buildOrderItems(this.orderItems.value ?? []);
 
-    this.api.updateOrder(order, orderItems).then((order) => {
-      if (!order) return;
-      if (this.order.value?.StatusId === OrderStatusEnum.Draft) {
-        this.router.navigate([routes.Orders]);
-        return;
+    this.api.updateOrder(order, orderItems).then((response) => {
+      if (response.success === false) {
+        this.nzMessageService.error('Ocurrió un error al guardar el pedido, intente nuevamente.');
+      } else {
+        if (this.order.value?.StatusId === OrderStatusEnum.Draft) {
+          this.router.navigate([routes.Orders]);
+          return;
+        } else {
+          this.selectedOrder.value = response.data as unknown as Order;
+          this.fillOrderItems();
+          this.nzMessageService.success('Pedido guardado correctamente');
+        }
       }
-
-      this.selectedOrder.value = order;
-      this.fillOrderItems();
-      this.nzMessageService.success('Pedido guardado correctamente');
     });
   }
 
@@ -180,29 +180,35 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   updateOrderItemStatus(status: OrderItemStatusEnum) {
-    const orderItem = this.orderItemSelected.value;
-    if (orderItem && orderItem.id) {
+    const errorMessage = 'Ocurrió un error al actualizar el estado del pedido, intente nuevamente.';
+    const orderItemToSave = this.orderItemSelected.value;
+    if (orderItemToSave && orderItemToSave.id) {
       //Update single item
-      this.api.updateOrderItemStatus(orderItem.id, status).then((orderItem) => {
-        if (!orderItem) return;
-        this.orderItems.value =
-          this.orderItems.value?.map((item) => (item.id === orderItem.id ? orderItem : item)) ?? [];
-        this.api.getOrder(this.order.value?.id ?? '').then((order) => {
-          if (!order) return;
-          this.order.value = order;
-          this.selectedOrder.value = order;
-        });
+      this.api.updateOrderItemStatus(orderItemToSave.id, status).then((response) => {
+        if (response.success) {
+          const orderItemUpdated = response.data as unknown as OrderItem;
+          this.orderItems.value =
+            this.orderItems.value?.map((item) => (item.id === orderItemUpdated.id ? orderItemUpdated : item)) ?? [];
+          this.api.getOrder(this.order.value?.id ?? '').then((rspOrder) => {
+            if (rspOrder.success) {
+              this.order.value = rspOrder.data as unknown as Order;
+              this.selectedOrder.value = rspOrder.data as unknown as Order;
+            } else {
+              this.nzMessageService.error(errorMessage);
+            }
+          });
+        } else {
+          this.nzMessageService.error(errorMessage);
+        }
       });
     } else {
       //Update all items
-      console.log(this.order.value?.id);
-      this.api.updateOrderItemStatusAll(this.order.value?.id ?? '', status).then((orderItems) => {
-        this.orderItems.value = orderItems;
-        this.api.getOrder(this.order.value?.id ?? '').then((order) => {
-          if (!order) return;
-          this.order.value = order;
-          this.selectedOrder.value = order;
-        });
+      this.api.updateAllOrderItemsStatus(this.order.value?.id ?? '', status).then((response) => {
+        if (response.success) {
+          this.order.value = response.data as unknown as Order;
+          this.orderItems.value = response.data?.OrderItems ?? [];
+          this.selectedOrder.value = response.data as unknown as Order;
+        }
       });
     }
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageProp } from '@globals/types/storage.type';
-import { SessionInfo } from '../session.interface';
+import { SessionInfo } from '../interfaces/session.interface';
 import { supabaseClient } from '@globals/singleton/supabase.client';
 
 @Injectable({
@@ -29,6 +29,14 @@ export class SessionService {
 
   get accountId() {
     return this.sessionInfo.value?.Account.id ?? '';
+  }
+
+  get locationId() {
+    return this.sessionInfo.value?.Location.id ?? '';
+  }
+
+  get locationName() {
+    return this.sessionInfo.value?.Location.Name ?? '';
   }
 
   async getToken() {

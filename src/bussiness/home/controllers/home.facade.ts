@@ -8,7 +8,7 @@ import { Location } from '@bussiness/locations/locations.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { SessionInfo } from '@bussiness/session/session.interface';
+import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { UISelectOption } from '@components/form-input/form-input.component';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';

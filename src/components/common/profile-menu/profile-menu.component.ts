@@ -17,13 +17,15 @@ export class ProfileMenuComponent extends HelperPage implements OnInit {
    * Getters
    */
   get userName() {
-    return (
-      this.facade.sessionService.sessionInfo.value?.Account?.FullName || '-'
-    );
+    return this.facade.sessionService.sessionInfo.value?.Account?.FullName || '-';
   }
 
   get email() {
     return this.facade.sessionService.sessionInfo.value?.Account?.Email;
+  }
+
+  get userLetter() {
+    return this.userName.substring(0, 2)?.toUpperCase() || 'U';
   }
 
   /**

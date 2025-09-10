@@ -20,7 +20,7 @@ export class MenuContentComponent extends HelperPage implements OnInit {
    */
 
   get unReadNotifications() {
-    return this.notifService.unReadNotifications.value ?? 0;
+    return this.notifService.pagedNotifications.value?.unReadCount ?? 0;
   }
 
   ngOnInit() {}

@@ -6,12 +6,12 @@ import { createClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { LocationsApiService } from '@bussiness/locations/locations.api.service';
-import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { SessionInfo } from '@bussiness/session/session.interface';
+import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { supabase } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
@@ -34,7 +34,7 @@ export class SessionFacade extends FacadeBase {
 
   constructor(
     public api: SessionApiService,
-    public apiNotifications: NotificationsApiService,
+    public realTimeNotifications: NotificationsRealtimeService,
     public apiOrders: OrdersApiService,
     public apiAccounts: AccountsApiService,
     public apiLocations: LocationsApiService,
@@ -87,9 +87,8 @@ export class SessionFacade extends FacadeBase {
         Location: responseLocation.data ?? null,
         Roles: roles.data ?? [],
       };
-      console.log('👉🏽 Logged In SessionInfo', sessionInfo);
       this.sessionService.sessionInfo.value = sessionInfo;
-      this.apiNotifications.initialize();
+      this.realTimeNotifications.initialize();
       this.router.navigate([routes.Home]);
     } catch (error: any) {
       console.error(error);

@@ -1,5 +1,6 @@
 import { UISelectOption } from '@components/form-input/form-input.component';
-import { TablePagination } from '@globals/types/types';
+import { UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 
 export const SupabaseTables = {
   Accounts: 'Accounts',
@@ -32,13 +33,22 @@ export const UITableConstants = {
   DefaultPageSize: 50,
 };
 
-export const UIDefaultTablePagination: TablePagination = {
+export const UIDefaultTablePagination: UITablePagination = {
   page: UITableConstants.DefaultPage,
   pageSize: UITableConstants.DefaultPageSize,
   rowCount: 0,
   totalPages: 0,
 };
 
+export const UIDefaultTableFilter: UITableFilter = {
+  page: UITableConstants.DefaultPage,
+  pageSize: UITableConstants.DefaultPageSize,
+  dateFrom: '',
+  dateTo: '',
+  statusId: 0,
+  sortBy: '',
+  sortOrder: 'asc',
+};
 
 export const UIPageSizesOptions: UISelectOption[] = [
   {

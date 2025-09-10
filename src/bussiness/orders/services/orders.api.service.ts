@@ -1,69 +1,41 @@
 import { Injectable } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
+import { Order, OrderPagedResults, OrderRequest } from '@bussiness/orders/interfaces/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { supabaseClient } from '@globals/singleton/supabase.client';
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
+import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
+import { OrdersQueryDomain } from '../domains/orders.query.domain';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrdersApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client = supabaseClient;
+export class OrdersApiService extends ApiBaseService {
+  //Results
+  pagedOrders = new SubjectProp<OrderPagedResults>(null);
 
-  orders = new SubjectProp<Order[]>([]);
-  pagedOrders = new SubjectProp<Order[]>([]);
-  
-  constructor(public nzMessageService: NzMessageService) { 
+  constructor(public sessionService: SessionService) {
+    super();
   }
 
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    console.log(`🚀 [Orders API] ${message || 'Executing operation'}`);
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error(
-        '¡Ocurrió un error al realizar la acción! ⛔'
-      );
-      console.error('⛔ Error:', error);
-      return null;
-    } finally {
-      this.busy.value = false;
-    }
-  }
+  getPagedOrders(request: OrderRequest) {
+    return this.executeWithBusy(async () => {
+      // Inicializar query base
+      const query = OrdersQueryDomain.buildQuery(request, this.client);
+      const countQuery = OrdersQueryDomain.buildTotalCountQuery(request, this.client);
 
-  getOrders() {
-    this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.Orders)
-        .select(
-          `*, 
-          OrderItems: ${SupabaseTables.OrderItems}(*, 
-            Product: ${SupabaseTables.Products}(*),  
-            ItemStatus: ${SupabaseTables.OrderItemStatuses}(*),
-            UnitMeasure: ${SupabaseTables.UnitMeasures}(*)
-          ),
-          Customer:${SupabaseTables.Customers}(*),
-          Location:${SupabaseTables.Locations}(*),
-          Organization:${SupabaseTables.Organizations}(*),
-          OrderStatus: ${SupabaseTables.OrderStatuses}(*)`
-        )
-        .order('OrderNumber', { ascending: false });
-      if (error) throw error;
-
-      this.orders.value = (data as unknown as Order[]) || [];
+      // Ejecutar consulta
+      const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
+      const { data, error } = queryResult;
+      const totalCount = totalCountResult.count ?? 0;
+      this.pagedOrders.value = {
+        data: (data as unknown as Order[]) ?? [],
+        count: totalCount,
+      };
+      return super.handleResponse(this.pagedOrders.value.data, error, undefined, totalCount);
     }, 'Fetching Orders');
   }
 
@@ -81,22 +53,17 @@ export class OrdersApiService implements FacadeApiBase {
           Customer:${SupabaseTables.Customers}(*),
           Location:${SupabaseTables.Locations}(*),
           Organization:${SupabaseTables.Organizations}(*),
-          OrderStatus: ${SupabaseTables.OrderStatuses}(*)`
+          OrderStatus: ${SupabaseTables.OrderStatuses}(*)`,
         )
         .eq('id', id)
         .single();
-      if (error) throw error;
-      return data as unknown as Order;
+      return super.handleResponse<Order>(data as unknown as Order, error);
     }, 'Fetching Order');
   }
 
   updateOrder(order: Order, orderItems: OrderItem[]) {
     return this.executeWithBusy(async () => {
-      const { data: orderSaved, error } = await this.client
-        .from(SupabaseTables.Orders)
-        .upsert(order)
-        .select()
-        .single();
+      const { data: orderSaved, error } = await this.client.from(SupabaseTables.Orders).upsert(order).select().single();
       if (error) throw error;
 
       if (orderSaved.id) {
@@ -111,11 +78,9 @@ export class OrdersApiService implements FacadeApiBase {
           return itemSaved;
         });
       } else {
-        throw new Error(
-          'Ocurrió un error al guardar el pedido, intente nuevamente.'
-        );
+        throw new Error('Ocurrió un error al guardar el pedido, intente nuevamente.');
       }
-      return this.getOrder(orderSaved.id);
+      return super.handleResponse<Order>(orderSaved, error);
     }, 'Updating Order');
   }
 
@@ -127,11 +92,8 @@ export class OrdersApiService implements FacadeApiBase {
         .eq('id', id)
         .select()
         .single();
-      if (error)
-        throw new Error(
-          'Ocurrió un error al actualizar el estado del pedido, intente nuevamente.'
-        );
-      return orderSaved;
+      if (error) throw new Error('Ocurrió un error al actualizar el estado del pedido, intente nuevamente.');
+      return super.handleResponse(orderSaved, error);
     }, 'Updating Order Status');
   }
 
@@ -142,8 +104,7 @@ export class OrdersApiService implements FacadeApiBase {
         .upsert(orderItem)
         .select()
         .single();
-      if (error) throw error;
-      return orderItemSaved;
+      return super.handleResponse(orderItemSaved, error);
     }, 'Updating Order Item');
   }
 
@@ -156,29 +117,36 @@ export class OrdersApiService implements FacadeApiBase {
         .select()
         .single();
       if (error) throw error;
-      return orderItemSaved;
+      return super.handleResponse<OrderItem>(orderItemSaved, error);
     }, 'Updating Order Item Status');
   }
 
-  updateOrderItemStatusAll(orderId: string, status: OrderItemStatusEnum) {
+  updateAllOrderItemsStatus(orderId: string, status: OrderItemStatusEnum) {
+    const errorMessage = 'Ocurrió un error al actualizar el estado del pedido, intente nuevamente.';
     return this.executeWithBusy(async () => {
-      const { data: orderItemsSaved, error } = await this.client
+      const { data: itemSaved, error } = await this.client
         .from(SupabaseTables.OrderItems)
         .update({ ItemStatusId: status })
         .eq('OrderId', orderId)
         .select();
-      if (error) throw error;
-      if (orderItemsSaved.length > 0) {
-        const isCompletedOrder = orderItemsSaved.every(
+      if (!error) {
+        //TODO: Change for a trigger in the database
+        const isCompletedOrder = itemSaved.every(
           (item) =>
-            item.ItemStatusId === OrderItemStatusEnum.Completed ||
-            item.ItemStatusId === OrderItemStatusEnum.Cancelled
+            item.ItemStatusId === OrderItemStatusEnum.Completed || item.ItemStatusId === OrderItemStatusEnum.Cancelled,
         );
         if (isCompletedOrder) {
           this.updateOrderStatus(orderId, OrderStatusEnum.Completed);
         }
+      } else {
+        throw new Error(errorMessage);
       }
-      return orderItemsSaved;
+      const rspOrder = await this.getOrder(orderId);
+      if (rspOrder.success) {
+        return super.handleResponse<Order>(rspOrder.data as unknown as Order, error);
+      } else {
+        throw new Error(errorMessage);
+      }
     }, 'Updating Order Item Status All');
   }
 }

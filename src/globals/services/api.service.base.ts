@@ -3,7 +3,7 @@ import { supabaseClient } from '@globals/singleton/supabase.client';
 import { BusyProp } from '@globals/types/busy.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { SupabaseResponse } from '@globals/types/types';
+import { SupabaseBaseResponse } from '@globals/interfaces/supabase.interface';
 import { Session } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -29,10 +29,9 @@ export class ApiBaseService implements FacadeApiBase {
   }
 
   protected async executeWithBusy<T>(
-    fn: () => Promise<SupabaseResponse<T>>,
+    fn: () => Promise<SupabaseBaseResponse<T>>,
     message?: string
-  ): Promise<SupabaseResponse<T>> {
-    console.log(`🚀 [API Base] ${message || 'Executing API operation'}`);
+  ): Promise<SupabaseBaseResponse<T>> {
     this.busy.value = true;
     try {
       return await fn();
@@ -55,11 +54,11 @@ export class ApiBaseService implements FacadeApiBase {
   }
 
   protected handleResponse<T>(
-    data: T,
+    data: T | null,
     error: any,
     message?: string,
     count?: number | null
-  ): SupabaseResponse<T> {
+  ): SupabaseBaseResponse<T> {
     if (error) {
       console.error('⛔ Error:', error);
     }

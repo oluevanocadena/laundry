@@ -1,34 +1,35 @@
-<grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
-    <grid [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
+<grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr max-content'"
+    padding="0.5rem 1rem" [width]="isMobileOrTablet ? '100vw' : '100%'" class="scroll-h">
+    <form [formGroup]="formGroup" [width]="'100%'">
+        <grid [gap]="isMobileOrTablet ? [8,8] : [8,16]" [direction]="'column'" [align]="'center-left'">
+            <span class="f-13 fw-500 f-06">Página</span>
 
-        <span class="f-13 fw-500 f-06">Página</span>
-
-        <form [formGroup]="formGroup" [width]="'140px'">
             <form-input [type]="'number'" [placeholder]="'Página'" formControlName="page" [min]="1"
-                [max]="totalPages.value ?? 1" [step]="1" [size]="'s'" [clearable]="false" />
-        </form>
+                [max]="totalPages.value ?? 1" [step]="1" [size]="'s'" [clearable]="false" [width]="'140px'" />
 
-        <span class="f-13 fw-500 f-06">
-            de {{ totalPages.value ?? 1 }}
-        </span>
+            <span class="f-13 fw-500 f-06 no-wrap">
+                de {{ totalPages.value || 1 }}
+            </span>
 
-        <form [formGroup]="formGroup" [width]="'70px'">
             <form-input [type]="'select'" formControlName="pageSize" [options]="pageSizesOptions"
-                [placeholder]="'Seleccione'" [size]="'s'" [clearable]="false" />
-        </form>
+                [placeholder]="'Seleccione'" [size]="'s'" [clearable]="false" [width]="'70px'" />
 
-        <span class="f-13 fw-500 f-06">
-            {{ rowCount || 0 }} registros
-        </span>
-    </grid>
+            <span class="f-13 fw-500 f-06 no-wrap">
+                {{ rowCount || 0 }} registros
+            </span>
+        </grid>
+    </form>
     <grid [direction]="'column'" [align]="'center-right'">
-        <button (click)="refresh()" outline small flex icon-google class="f-02">
+        <button *ngIf="!isMobileOrTablet" (click)="refresh()" outline small flex icon-google class="f-02">
             <span class="material-symbols-outlined f-20 f-lh-16 fw-200">
                 cached
             </span>
-            <ng-container *ngIf="!isMobileOrTablet">
-                Actualizar
-            </ng-container>
+            Actualizar
+        </button>
+        <button *ngIf="isMobileOrTablet" (click)="refresh()" outline small icon-google class="f-02">
+            <span class="material-symbols-outlined f-20 f-lh-16 fw-200">
+                cached
+            </span>
         </button>
     </grid>
 </grid>

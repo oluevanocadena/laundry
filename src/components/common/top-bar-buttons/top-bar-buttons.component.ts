@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
 import { HelperPage } from '../helper.page';
+import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 
 @Component({
   selector: 'top-bar-buttons',
@@ -34,13 +35,17 @@ export class TopBarButtonsComponent extends HelperPage {
    */
 
   get showDot() {
-    return (this.notifService.unReadNotifications.value ?? 0) > 0;
+    return (this.notifService.pagedNotifications.value?.unReadCount ?? 0) > 0;
   }
 
   /**
    * Life cycle
    */
   ngAfterViewInit() {
-    this.notifService.getNotifications();
+    this.notifService.getPagedNotifications({
+      page: UITableConstants.DefaultPage,
+      pageSize: UITableConstants.DefaultPageSize,
+      readed: null,
+    });
   }
 }

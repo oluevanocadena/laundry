@@ -1,14 +1,34 @@
 // Background Colors
 .bg-primary {
-    background-color: #f68000; // Primary background
+    background-color: var(--primary);
+}
+
+.bg-primary-hsl {
+    background-color: var(--primary-hsl);
+}
+
+.bg-primary-hsl-hover:hover {
+    background-color: var(--primary-hsl-hover);
 }
 
 .bg-secondary {
-    background-color: var(--secondary); // Secondary background
+    background-color: var(--secondary);
+}
+
+.bg-secondary-hsl {
+    background-color: var(--secondary-hsl);
+}
+
+.bg-secondary-hsl-hover:hover {
+    background-color: var(--secondary-hsl-hover);
+}
+
+.bg-secondary-hsl-pressed:hover {
+    background-color: var(--secondary-hsl-pressed);
 }
 
 .bg-secondary-hover:hover {
-    background-color: var(--secondary); // Secondary background
+    background-color: var(--secondary);
 }
 
 
@@ -40,4 +60,3 @@
 .bg-white {
     color: #000000; // Black text for light backgrounds
 }
-

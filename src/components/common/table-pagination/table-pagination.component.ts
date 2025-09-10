@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { HelperPage } from '@components/common/helper.page';
-import { UISelectOption } from '@components/form-input/form-input.component';
 import { UIPageSizesOptions, UITableConstants } from '@globals/constants/supabase-tables.constants';
 
 import { FormProp } from '@globals/types/form.type';
 import { SubjectProp } from '@globals/types/subject.type';
-import { TablePagination } from '@globals/types/types';
+import { UITablePagination } from '@globals/interfaces/ui.interfaces';
 
 @Component({
   selector: 'table-pagination',
@@ -28,21 +27,22 @@ export class TablePaginationComponent extends HelperPage implements OnInit {
 
   // FormGroup
   formGroup = new FormGroup({
-    page: new FormControl(UITableConstants.DefaultPage),
+    page: new FormControl(UITableConstants.DefaultPage, [Validators.min(1)]),
     pageSize: new FormControl(UITableConstants.DefaultPageSize),
   });
 
   page = new FormProp<number>(this.formGroup, 'page', UITableConstants.DefaultPage);
   pageSize = new FormProp<number>(this.formGroup, 'pageSize', UITableConstants.DefaultPageSize);
-  totalPages = new SubjectProp<number>(0);
+  totalPages = new SubjectProp<number>(1);
 
   //Options
   pageSizesOptions = UIPageSizesOptions;
 
-  @Output() onChange = new EventEmitter<TablePagination>();
+  @Output() onChange = new EventEmitter<UITablePagination>();
 
   constructor() {
     super();
+    this.bindEvents();
   }
 
   bindEvents() {
@@ -51,7 +51,6 @@ export class TablePaginationComponent extends HelperPage implements OnInit {
     });
 
     this.pageSize.onChange((value) => {
-      console.log('👉🏽 pageSize', value);
       this._calcTotalPages(this.rowCount);
       this.refresh();
     });
@@ -62,12 +61,11 @@ export class TablePaginationComponent extends HelperPage implements OnInit {
    */
 
   refresh() {
-    console.log('👉🏽 refresh', this.page.value, this.pageSize.value, this.rowCount, this.totalPages.value);
     this.onChange.emit({
       page: this.page.value ?? UITableConstants.DefaultPage,
       pageSize: this.pageSize.value ?? UITableConstants.DefaultPageSize,
       rowCount: this.rowCount,
-      totalPages: this.totalPages.value ?? 0,
+      totalPages: this.totalPages.value ?? 1,
     });
   }
 

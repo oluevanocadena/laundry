@@ -18,11 +18,11 @@ export class NotificationsPageComponent extends HelperPage implements AfterViewI
    */
 
   get data() {
-    return this.facade.api.pageNotifications.value;
+    return this.facade.api.pagedNotifications.value?.data ?? [];
   }
 
   get rowCount() {
-    return this.facade.api.pageNotifications.value?.length ?? 0;
+    return this.facade.api.pagedNotifications.value?.count ?? 0;
   }
 
   get busy() {

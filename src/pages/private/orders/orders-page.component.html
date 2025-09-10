@@ -1,55 +1,22 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'calc(100vh - 49px)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
-                Pedidos
-            </span>
-        </grid>
-
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <nz-select ngModel="all" [width]="'150px'">
-                    <nz-option nzValue="all" nzLabel="Todos los pedidos"></nz-option>
-                    <nz-option nzValue="active" nzLabel="Pedidos pendientes"></nz-option>
-                    <nz-option nzValue="disabled" nzLabel="Pedidos en proceso" nzDisabled></nz-option>
-                    <nz-option nzValue="disabled" nzLabel="Pedidos completados" nzDisabled></nz-option>
-                    <nz-option nzValue="disabled" nzLabel="Pedidos cancelados" nzDisabled></nz-option>
-                    <nz-option nzValue="disabled" nzLabel="Pedidos reembolsados" nzDisabled></nz-option>
-                </nz-select>
-                <button outline small flex>
-                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-                    Columnas
-                </button>
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por email
-                </button>
+        <grid [direction]="'column'" [template]="!isMobileOrTablet ? '1fr' : '1fr max-content'"
+            [padding]="isMobileOrTablet ? '0.5rem 1rem' : '1rem'">
+            <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+                    Pedidos
+                </span>
             </grid>
-            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        filter_list
-                    </span>
-                </button>
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        view_column
-                    </span>
-                </button>
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        flex_direction
-                    </span>
-                </button>
-            </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
                 <button primary small (click)="facade.onNewOrder()">
                     Crear pedido
                 </button>
             </grid>
         </grid>
+
+        <table-filters [ctaLabel]="'Crear pedido'" [columns]="facade.columns" [showSelect]="true" [showCalendar]="true"
+            [showColumns]="true" [showSort]="true" (onCTAClick)="facade.onNewOrder()" />
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
             class="scroll-h scroll-v bg-02 baseline">
@@ -68,17 +35,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="facade.api.busy.value">
-                        <td colspan="9">
-                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
-                                <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
-                                    <tui-loader [size]="'m'" />
-                                    Cargando...
+                    <ng-container *ngIf="busy">
+                        <tr>
+                            <td colspan="9">
+                                <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                        <tui-loader [size]="'m'" />
+                                        Cargando...
+                                    </grid>
                                 </grid>
-                            </grid>
-                        </td>
-                    </tr>
-                    <tr *ngIf="facade.api.busy.value === false && facade.api.orders.value?.length === 0">
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <tr *ngIf="busy === false && data?.length === 0">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
@@ -88,9 +57,8 @@
                             </grid>
                         </td>
                     </tr>
-                    <ng-container *ngIf="facade.api.busy.value === false">
-                        <tr hoverable *ngFor="let item of facade.api.orders.value; let i = index"
-                            (click)="facade.onOrderClick(item)">
+                    <ng-container *ngIf="busy">
+                        <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onOrderClick(item)">
                             <td>
                                 <label nz-checkbox></label>
                             </td>

@@ -1,14 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Injector,
-  Input,
-  Output,
-  forwardRef,
-  inject,
-} from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, forwardRef, inject } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { type MaskitoTimeMode } from '@maskito/kit';
 import { TUI_IS_IOS, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
@@ -18,7 +9,6 @@ import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
   standalone: false,
   templateUrl: './form-input.component.html',
   styleUrls: ['./form-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -86,8 +76,8 @@ export class FormInputComponent implements ControlValueAccessor {
     return result;
   };
 
-  private onChange = (value: string) => {};
-  private onTouched = () => {};
+  private onChange: (_: any) => void = () => {};
+  private onTouched: () => void = () => {};
 
   valueControl = new FormControl(null);
 
@@ -97,7 +87,7 @@ export class FormInputComponent implements ControlValueAccessor {
     return this.isIos ? '+[0-9-]{1,20}' : null;
   }
 
-  constructor(private injector: Injector) {}
+  constructor() {}
 
   setupSearchDebounce(): void {
     this.searchSubject
@@ -107,13 +97,15 @@ export class FormInputComponent implements ControlValueAccessor {
       });
   }
 
-  writeValue(value: any): void {}
+  writeValue(value: any): void {
+    this.valueControl.setValue(value, { emitEvent: false });
+  }
 
   registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
@@ -135,22 +127,16 @@ export class FormInputComponent implements ControlValueAccessor {
    */
 
   ngAfterContentInit() {
-    let ngControl = this.injector.get(NgControl, null);
-    if (ngControl) {
-      ngControl.valueAccessor = this;
-      this.valueControl = ngControl.control as FormControl;
-      this.valueControl.valueChanges?.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((value: any) => {
-        if (this.type === 'switch') {
-          this.onChange(value);
-        } else if (this.type === 'select') {
-          if (value && typeof value === 'object' && this.valueControl.value !== value.id) {
-            this.onChange(value.id);
-          }
-        } else {
-          this.onChange(value);
-        }
-      });
-    }
+    this.valueControl.valueChanges?.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((value: any) => {
+      if (this.type === 'switch') {
+        this.onChange(value);
+      } else if (this.type === 'select') {
+        this.onChange(value.id ?? value);
+      } else {
+        this.onChange(value);
+      }
+      this.onTouched();
+    });
 
     if (this.type === 'search') {
       this.setupSearchDebounce();

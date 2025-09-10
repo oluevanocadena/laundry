@@ -1,42 +1,39 @@
-import {
-  Entities,
-  Events,
-  Notification as INotification,
-} from '@bussiness/notifications/interfaces/notifications.interfaces';
+import { NotificationsEntitiesEnum, NotificationsEventsEnum } from '@bussiness/notifications/enums/notifications.enums';
+import { Notification as INotification } from '@bussiness/notifications/interfaces/notifications.interfaces';
 
 export class NotificationsDomain {
-  static notificationType(event: Events): string {
+  static notificationType(event: NotificationsEventsEnum): string {
     switch (event) {
-      case Events.Created:
+      case NotificationsEventsEnum.Created:
         return 'success';
-      case Events.Updated:
+      case NotificationsEventsEnum.Updated:
         return 'info';
-      case Events.Deleted:
+      case NotificationsEventsEnum.Deleted:
         return 'error';
-      case Events.Paid:
+      case NotificationsEventsEnum.Paid:
         return 'success';
-      case Events.Shipped:
+      case NotificationsEventsEnum.Shipped:
         return 'info';
-      case Events.Canceled:
+      case NotificationsEventsEnum.Canceled:
         return 'error';
       default:
         return 'info';
     }
   }
 
-  static getUrlMap(entity: Entities, id: string): string {
+  static getUrlMap(entity: NotificationsEntitiesEnum, id: string): string {
     switch (entity) {
-      case Entities.Order:
+      case NotificationsEntitiesEnum.Order:
         return `/orders/draft/?orderId=${id}`;
-      case Entities.Customer:
+      case NotificationsEntitiesEnum.Customer:
         return `/customers/draft/?customerId=${id}`;
-      case Entities.Product:
+      case NotificationsEntitiesEnum.Product:
         return `/products/draft/?productId=${id}`;
-      case Entities.Invoice:
+      case NotificationsEntitiesEnum.Invoice:
         return `/invoices/draft/?invoiceId=${id}`;
-      case Entities.Payment:
+      case NotificationsEntitiesEnum.Payment:
         return `/payments/draft/?paymentId=${id}`;
-      case Entities.Delivery:
+      case NotificationsEntitiesEnum.Delivery:
         return `/deliveries/draft/?deliveryId=${id}`;
       default:
         return '';

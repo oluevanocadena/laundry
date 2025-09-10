@@ -1,4 +1,5 @@
 import { UISelectOption } from '@components/form-input/form-input.component';
+import { TuiDay } from '@taiga-ui/cdk';
 import moment from 'moment';
 
 export class DateDomain {
@@ -16,11 +17,14 @@ export class DateDomain {
           const endOfWeek = today.clone().endOf('isoWeek'); // Domingo de la semana actual
           return [startOfWeek.toDate(), endOfWeek.toDate()];
         case '4': // Último mes
-          return [today.clone().subtract(1, 'months').toDate(), today.toDate()];
+          const startOfMonth = today.clone().startOf('month');
+          return [startOfMonth.toDate(), today.toDate()];
         case '5': // Últimos 3 meses
-          return [today.clone().subtract(3, 'months').toDate(), today.toDate()];
+          const startOf3Months = today.clone().subtract(2, 'months').startOf('month');
+          return [startOf3Months.toDate(), today.toDate()];
         case '6': // Último año
-          return [today.clone().subtract(1, 'years').toDate(), today.toDate()];
+          const startOfYear = today.clone().startOf('year');
+          return [startOfYear.toDate(), today.toDate()];
         case '7': // Personalizado
           return [null, null];
         default:
@@ -32,26 +36,39 @@ export class DateDomain {
   }
 
   static castRangeDateInOption(rangeDate?: Date[]): UISelectOption | null {
-    if (rangeDate && rangeDate.length > 0) {
-      const startDate = moment(rangeDate[0]);
-      const endDate = moment(rangeDate[1]);
-      const diffDays = endDate.diff(startDate, 'days');
-      console.log('diffDays', diffDays);
-      if (diffDays === 0) {
-        return { id: '1', Name: 'Hoy' };
-      } else if (diffDays === 1) {
-        return { id: '2', Name: 'Ayer' };
-      } else if (diffDays === 7) {
-        return { id: '3', Name: 'Última semana' };
-      } else if (diffDays === 30) {
-        return { id: '4', Name: 'Último mes' };
-      } else if (diffDays === 90) {
-        return { id: '5', Name: 'Último 3 meses' };
-      } else if (diffDays === 365) {
-        return { id: '6', Name: 'Último año' };
-      } else {
-        return { id: '7', Name: 'Personalizado' };
+    if (!rangeDate || rangeDate.length === 0) {
+      return null;
+    }
+    const [startDate, endDate] = [moment(rangeDate[0]), moment(rangeDate[1])];
+    const predefinedRanges: UISelectOption[] = [
+      { id: '1', Name: 'Hoy' },
+      { id: '2', Name: 'Ayer' },
+      { id: '3', Name: 'Última semana' },
+      { id: '4', Name: 'Último mes' },
+      { id: '5', Name: 'Últimos 3 meses' },
+      { id: '6', Name: 'Último año' },
+    ];
+
+    for (const option of predefinedRanges) {
+      const [rangeStart, rangeEnd] = this.castDateOption(option);
+      if (startDate.isSame(rangeStart, 'day') && endDate.isSame(rangeEnd, 'day')) {
+        return option;
       }
+    }
+    // Si no coincide con ningún rango predefinido, es personalizado
+    return { id: '7', Name: 'Personalizado' };
+  }
+
+  static tuiDayToDate(tuiDay?: TuiDay): Date | null {
+    if (tuiDay) {
+      return moment(tuiDay.toString('YMD'), 'YYYY-MM-DD').toDate();
+    }
+    return null;
+  }
+
+  static dateToTuiDay(date?: Date): TuiDay | null {
+    if (date) {
+      return new TuiDay(date.getFullYear(), date.getMonth(), date.getDate());
     }
     return null;
   }

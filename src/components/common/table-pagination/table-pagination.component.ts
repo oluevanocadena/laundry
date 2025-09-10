@@ -27,8 +27,8 @@ export class TablePaginationComponent extends HelperPage implements OnInit {
 
   // FormGroup
   formGroup = new FormGroup({
-    page: new FormControl(UITableConstants.DefaultPage, [Validators.min(1)]),
-    pageSize: new FormControl(UITableConstants.DefaultPageSize),
+    page: new FormControl(null, [Validators.min(1)]),
+    pageSize: new FormControl(),
   });
 
   page = new FormProp<number>(this.formGroup, 'page', UITableConstants.DefaultPage);

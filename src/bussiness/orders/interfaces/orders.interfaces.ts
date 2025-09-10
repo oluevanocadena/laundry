@@ -93,7 +93,7 @@ export interface OrderTotals {
  * Requests
  */
 export interface OrderRequest extends UITableFilter {
-  accountId: string;
+  accountId?: string | null;
   locationId?: string | null;
 }
 

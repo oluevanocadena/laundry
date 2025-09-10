@@ -5,7 +5,8 @@ import { UISelectOption } from '@components/form-input/form-input.component';
 import { ListDateOptions } from '@globals/constants/date.constants';
 import { DateDomain } from '@globals/domains/date.domain';
 import { FormProp } from '@globals/types/form.type';
-import { TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
+import { UtilsDomain } from '@globals/utils/utils.domain';
+import { TuiBooleanHandler, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
 import moment from 'moment';
 
 @Component({
@@ -25,8 +26,8 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
   visibleDropdown: boolean = false;
   disabled: boolean = false;
 
+  previusValue: (Date | null)[] = [];
   value: (Date | null)[] = [];
-  label: string = '';
   rangeDate: Date[] = [];
 
   options: UISelectOption[] = ListDateOptions;
@@ -65,6 +66,16 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
     return result;
   };
 
+  protected disabledItemHandler: TuiBooleanHandler<UISelectOption> = (item) => {
+    return item?.Disabled ?? false;
+  };
+
+  protected disabledItemHandlerDateEnd: TuiBooleanHandler<TuiDay> = (item) => {
+    const currrentDay = DateDomain.tuiDayToDate(item);
+    const startDate = DateDomain.tuiDayToDate(this.dateStart.value!);
+    return currrentDay && moment(currrentDay).isSameOrAfter(startDate) ? false : true;
+  };
+
   onChange = (_: any) => {};
   onTouched = () => {};
 
@@ -73,63 +84,10 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
     this.bindEvents();
   }
 
-  bindEvents() {
-    this.option.onChange((value) => {
-      this.label = value?.Name ?? '';
-      const dateOption = DateDomain.castDateOption(value);
-      const dtStart = dateOption[0];
-      const dtEnd = dateOption[1];
-
-      // Es el valor de taigaUI datepicker
-      this.dateStart.value = dtStart ? new TuiDay(dtStart.getFullYear(), dtStart.getMonth(), dtStart.getDate()) : null;
-      this.dateEnd.value = dtEnd ? new TuiDay(dtEnd.getFullYear(), dtEnd.getMonth(), dtEnd.getDate()) : null;
-
-      // Es el valor de ngZorro rangepicker
-      this.rangeDate = [dtStart ? moment(dtStart).toDate() : new Date(), dtEnd ? moment(dtEnd).toDate() : new Date()];
-
-      // Es el valor de model del formGroup externo
-      this.value = [dtStart ? moment(dtStart).toDate() : null, dtEnd ? moment(dtEnd).toDate() : null];
-    });
-
-    this.dateStart.onChange((value) => {
-      // TuiDay => Date
-      this.formGroup.controls['dateEnd'].setValue(new TuiDay(value?.year!, value?.month!, value?.day! + 1), {
-        emitEvent: false,
-      });
-
-      //Complete the array with the dateEnd (dateStart + 1 day)
-      const dateStart = value ? moment(value.toLocalNativeDate()).toDate() : null;
-      const dateEnd = moment(dateStart).add(1, 'day').toDate();
-      this.value = [dateStart, dateEnd];
-
-      // Es el valor de ngZorro rangepicker
-      this.rangeDate = [
-        dateStart ? moment(dateStart).toDate() : new Date(),
-        dateEnd ? moment(dateEnd).toDate() : new Date(),
-      ];
-
-      // castRangeDateInOption
-      this.option.value = DateDomain.castRangeDateInOption(this.rangeDate);
-    });
-
-    this.dateEnd.onChange((value) => {
-      const dateStart = moment(this.dateStart.value?.toLocalNativeDate()).toDate();
-      const dateEnd = value ? moment(value.toLocalNativeDate()).toDate() : null;
-      this.value = [dateStart, dateEnd]; //Complete the array with the dateStart previous value
-
-      // Es el valor de ngZorro rangepicker
-      this.rangeDate = [
-        dateStart ? moment(dateStart).toDate() : new Date(),
-        dateEnd ? moment(dateEnd).toDate() : new Date(),
-      ];
-
-      // castRangeDateInOption
-      this.option.value = DateDomain.castRangeDateInOption(this.rangeDate);
-    });
-  }
-
   writeValue(value: Date[]): void {
-    this.value = value;
+    const notNullValue = !value || value.length === 0 ? [new Date(), new Date()] : value;
+    this.value = notNullValue;
+    this.previusValue = notNullValue;
   }
 
   registerOnChange(fn: any): void {
@@ -145,39 +103,163 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
   }
 
   /**
+   * Binding Events
+   */
+
+  bindEvents() {
+    this.option.onChange((value) => {
+      if (value) {
+        const option = typeof value === 'string' ? this.options.find((option) => option.id === value) : value;
+        // 7 - personalizado, no se actualiza el valor de los datepickers
+        if (option.id !== '7') {
+          const dateOption = DateDomain.castDateOption(option);
+          const dtStart = dateOption[0];
+          const dtEnd = dateOption[1];
+          const emitOptions = {
+            emitEvent: false,
+          };
+
+          console.log('1️⃣ option', value, dateOption);
+
+          // Es el valor de taigaUI datepicker
+          this.formGroup.controls['dateStart'].patchValue(
+            dtStart ? DateDomain.dateToTuiDay(dtStart) : null,
+            emitOptions,
+          );
+          this.formGroup.controls['dateEnd'].patchValue(dtEnd ? DateDomain.dateToTuiDay(dtEnd) : null, emitOptions);
+
+          // Es el valor de ngZorro rangepicker
+          this.rangeDate = [dtStart ?? new Date(), dtEnd ?? new Date()];
+
+          // Es el valor de model del formGroup externo
+          this.value = [dtStart, dtEnd];
+          if (this.previusValue?.length === 0) {
+            const cloned = UtilsDomain.clone(this.value);
+            this.previusValue = [moment(cloned[0]).toDate(), moment(cloned[1]).toDate()];
+            console.log('💡 previusValue', this.previusValue);
+          }
+        }
+      }
+    });
+
+    this.dateStart.onChange((value) => {
+      if (value) {
+        console.log('2️⃣ dateStart', value as TuiDay);
+
+        // Es el valor de model del formGroup externo (dateStart + 1 day)
+        const dateStart = value ? DateDomain.tuiDayToDate(value) : null;
+        const currentDateEnd = this.dateEnd.value ? DateDomain.tuiDayToDate(this.dateEnd.value) : null;
+        const isBeforeDate = dateStart && currentDateEnd && moment(currentDateEnd).isBefore(dateStart);
+        const dateEnd = isBeforeDate
+          ? moment(dateStart).add(1, 'day').toDate()
+          : currentDateEnd
+          ? moment(currentDateEnd).toDate()
+          : null;
+        this.value = [dateStart, dateEnd];
+
+        // Es el valor de ngZorro rangepicker
+        this.rangeDate = [dateStart ? dateStart : new Date(), dateEnd ? dateEnd : new Date()];
+
+        // TuiDay => Date
+        if (isBeforeDate) {
+          console.log('5️⃣ isBeforeDate', dateEnd);
+          this.formGroup.controls['dateEnd'].patchValue(DateDomain.dateToTuiDay(dateEnd!), {
+            emitEvent: false,
+          });
+        }
+
+        // castRangeDateInOption
+        const option = DateDomain.castRangeDateInOption(this.rangeDate);
+        const currentOption =
+          typeof this.option.value === 'string'
+            ? this.options.find((option) => option.id === this.option.value)
+            : this.option.value;
+        if (option?.id.toString() !== currentOption?.id) {
+          console.log('4️⃣ Change option', option);
+          this.formGroup.controls['option'].setValue(option?.id.toString()!, {
+            emitModelToViewChange: true,
+          });
+        }
+      }
+    });
+
+    this.dateEnd.onChange((value) => {
+      if (value) {
+        const dateStart = moment(this.dateStart.value?.toLocalNativeDate()).toDate();
+        const dateEnd = value ? moment(value.toLocalNativeDate()).toDate() : null;
+        this.value = [dateStart, dateEnd]; //Complete the array with the dateStart previous value
+
+        // Es el valor de ngZorro rangepicker
+        this.rangeDate = [
+          dateStart ? moment(dateStart).toDate() : new Date(),
+          dateEnd ? moment(dateEnd).toDate() : new Date(),
+        ];
+
+        // castRangeDateInOption
+        const option = DateDomain.castRangeDateInOption(this.rangeDate);
+        this.formGroup.controls['option'].setValue(option?.id.toString()!, {
+          emitModelToViewChange: true,
+        });
+      }
+    });
+  }
+
+  /**
    * UI Events
    */
 
   onChangeInlineDatePicker(event: any) {
-    console.log(event);
     this.value = [event[0], event[1]];
+    const startDate = event[0];
+    const endDate = event[1];
+    this.formGroup.controls['dateStart'].patchValue(DateDomain.dateToTuiDay(startDate), {
+      emitEvent: false,
+    });
+    this.formGroup.controls['dateEnd'].patchValue(DateDomain.dateToTuiDay(endDate), {
+      emitEvent: false,
+    });
     this.option.value = DateDomain.castRangeDateInOption(event);
-    this.onChange(this.value);
-    this.onTouched();
   }
 
   onCancel(): void {
+    this.setDefaultValues();
     this.visibleDropdown = false; // cerrar solo desde aquí
   }
 
   onAccept(): void {
     this.visibleDropdown = false;
-
+    this.previusValue = UtilsDomain.clone(this.value);
     this.onChange(this.value);
     this.onTouched();
+  }
+
+  setDefaultValues(): void {
+    const clonedValue = UtilsDomain.clone(this.previusValue);
+    this.value = [moment(clonedValue[0]).toDate(), moment(clonedValue[1]).toDate()];
+    this.formGroup.controls['dateStart'].patchValue(DateDomain.dateToTuiDay(this.value[0]!), {
+      emitEvent: false,
+    });
+    this.formGroup.controls['dateEnd'].patchValue(DateDomain.dateToTuiDay(this.value[1]!), {
+      emitEvent: false,
+    });
+    this.rangeDate = this.value as Date[];
+    this.option.value = DateDomain.castRangeDateInOption(this.value as Date[]);
   }
 
   /**
    * Getters
    */
 
+  get label(): string {
+    return typeof this.option.value === 'string'
+      ? this.options.find((option) => option.id === this.option.value)?.Name ?? ''
+      : this.option.value?.Name ?? '';
+  }
+
   /***
    * Lifecycle
    */
-  ngOnInit() {
-    this.label = this.options[0].Name;
-    this.dateStart.value = new TuiDay(moment().year(), moment().month(), moment().date());
-    this.dateEnd.value = new TuiDay(moment().year(), moment().month(), moment().date());
-    this.rangeDate = [moment().toDate(), moment().toDate()];
+  ngAfterViewInit() {
+    this.option.value = this.options[0];
   }
 }

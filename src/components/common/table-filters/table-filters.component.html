@@ -7,12 +7,14 @@
         <form *ngIf="showSelect" [formGroup]="formGroup" [width]="'150px'">
             <form-input type="select" formControlName="select" [placeholder]="'Seleccione'" [options]="options" />
         </form>
-        <button outline small flex>
+        <button *ngIf="showColumns" outline small flex>
             <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
             Columnas
         </button>
-        <button outline small flex>
-            <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
+        <button *ngIf="showSort" outline small flex icon-google>
+            <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                arrow_upward
+            </span>
             Ordenado por email
         </button>
     </grid>
@@ -20,20 +22,21 @@
         <form [formGroup]="formGroup">
             <form-input type="date-range-dropdown" formControlName="date" [placeholder]="'Rango de fechas'" />
         </form>
-        <button outline small icon-google>
-            <span class="material-symbols-outlined f-20 f-02">
+        <button *ngIf="showSelect" outline small icon-google>
+            <span class="material-symbols-outlined f-20 f-06">
                 filter_list
             </span>
         </button>
-        <button outline small icon-google>
-            <span class="material-symbols-outlined f-20 f-02">
+        <button *ngIf="showColumns" outline small icon-google>
+            <span class="material-symbols-outlined f-20 f-06">
                 view_column
             </span>
         </button>
-        <button outline small icon-google>
-            <span class="material-symbols-outlined f-20 f-02">
-                flex_direction
+        <button *ngIf="showSort" outline small flex icon-google>
+            <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                arrow_upward
             </span>
+            Email
         </button>
     </grid>
     <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">

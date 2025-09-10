@@ -1,7 +1,7 @@
 import { UISelectOption } from '@components/form-input/form-input.component';
 import { UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
-
+import moment from 'moment';
 export const SupabaseTables = {
   Accounts: 'Accounts',
   Roles: 'Roles',
@@ -43,8 +43,8 @@ export const UIDefaultTablePagination: UITablePagination = {
 export const UIDefaultTableFilter: UITableFilter = {
   page: UITableConstants.DefaultPage,
   pageSize: UITableConstants.DefaultPageSize,
-  dateFrom: '',
-  dateTo: '',
+  dateFrom: moment().toDate(),
+  dateTo: moment().toDate(),
   statusId: 0,
   sortBy: '',
   sortOrder: 'asc',

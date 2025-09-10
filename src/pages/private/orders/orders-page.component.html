@@ -15,8 +15,8 @@
             </grid>
         </grid>
 
-        <table-filters [ctaLabel]="'Crear pedido'" [columns]="facade.columns" [showSelect]="true" [showCalendar]="true"
-            [showColumns]="true" [showSort]="true" (onCTAClick)="facade.onNewOrder()" />
+        <table-filters [ctaLabel]="'Crear pedido'" [columns]="facade.columns" [showCalendar]="true" [showSort]="true"
+            (onCTAClick)="facade.onNewOrder()" (onFiltersChange)="facade.onFiltersChange($event)" />
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
             class="scroll-h scroll-v bg-02 baseline">
@@ -57,7 +57,7 @@
                             </grid>
                         </td>
                     </tr>
-                    <ng-container *ngIf="busy">
+                    <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onOrderClick(item)">
                             <td>
                                 <label nz-checkbox></label>

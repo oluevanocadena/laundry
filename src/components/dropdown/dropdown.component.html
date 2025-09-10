@@ -9,14 +9,19 @@
         <ng-content select="[dropdown-content]"></ng-content>
 
         <!-- Footer con botones -->
-        <grid *ngIf="!closeOnBackdrop" [gap]="[8,16]" [direction]="'column'" [align]="'center-right'"
-            [padding]="!isMobile ? '0' : '0.5rem 0 0 0'">
-            <button (click)="onCancel()" secondary small>
-                Cancelar
-            </button>
-            <button (click)="onAccept()" primary small>
-                Aceptar
-            </button>
+        <grid [direction]="'column'" [template]="'max-content 1fr'">
+            <grid [direction]="'column'" [align]="'center-left'">
+                <ng-content select="[dropdown-left-footer]"></ng-content>        
+            </grid>
+            <grid *ngIf="!closeOnBackdrop" [gap]="[8,16]" [direction]="'column'" [align]="'center-right'"
+                [padding]="!isMobile ? '0' : '0.5rem 0 0 0'">
+                <button (click)="onCancel()" secondary small>
+                    Cancelar
+                </button>
+                <button (click)="onAccept()" primary small>
+                    Aceptar
+                </button>
+            </grid>
         </grid>
     </grid>
 </div>

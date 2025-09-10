@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { type MaskitoTimeMode } from '@maskito/kit';
-import { TUI_IS_IOS, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
+import { TUI_IS_IOS, TuiBooleanHandler, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 @Component({
@@ -53,8 +53,15 @@ export class FormInputComponent implements ControlValueAccessor {
   private destroy$ = new Subject<void>();
 
   protected stringifyContent: TuiStringHandler<any> = (x) => {
-    const id = x.$implicit;
-    return this.options?.find((option) => option.id === id)?.Name ?? '';
+    let id: string | number;
+    if (typeof x.$implicit === 'string' || typeof x.$implicit === 'number') {
+      id = x.$implicit;
+    } else if (typeof x.$implicit === 'object' && x.$implicit !== null) {
+      id = x.$implicit.id;
+    } else {
+      id = '';
+    } 
+    return this.options?.find((option) => option.id.toString() === id.toString())?.Name ?? '';
   };
   protected stringify: TuiStringHandler<UISelectOption> = (x) => {
     return x.Name;
@@ -74,6 +81,10 @@ export class FormInputComponent implements ControlValueAccessor {
       result = a.id === b.id;
     }
     return result;
+  };
+
+  protected disabledItemHandler: TuiBooleanHandler<UISelectOption> = (item) => {
+    return item?.Disabled ?? false;
   };
 
   private onChange: (_: any) => void = () => {};
@@ -131,7 +142,9 @@ export class FormInputComponent implements ControlValueAccessor {
       if (this.type === 'switch') {
         this.onChange(value);
       } else if (this.type === 'select') {
-        this.onChange(value.id ?? value);
+        const valueSelect = typeof value === 'string' ? value : value.id;
+        console.log('👉🏽 valueSelect', valueSelect);
+        this.onChange(valueSelect);
       } else {
         this.onChange(value);
       }
@@ -152,6 +165,7 @@ export class FormInputComponent implements ControlValueAccessor {
 export interface UISelectOption {
   id: string | number;
   Name: string;
+  Disabled?: boolean;
 }
 
 export type InputType =

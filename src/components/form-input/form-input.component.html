@@ -139,7 +139,7 @@
         </span>
         <tui-textfield tuiChevron [tuiTextfieldSize]="size" [tuiTextfieldCleaner]="clearable"
             [content]="stringifyContent" [stringify]="stringify" [identityMatcher]="identityMatcher"
-            class="{{hadError ? 't-input_error' : ''}}">
+            [disabledItemHandler]="disabledItemHandler" class="{{hadError ? 't-input_error' : ''}}">
             <input *ngIf="(options || []).length > 0" tuiSelect [placeholder]="placeholder"
                 [formControl]="valueControl" />
             <tui-data-list-wrapper *tuiTextfieldDropdown new [items]="options" />

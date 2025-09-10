@@ -24,8 +24,8 @@ export class OrdersApiService extends ApiBaseService {
   getPagedOrders(request: OrderRequest) {
     return this.executeWithBusy(async () => {
       // Inicializar query base
-      const query = OrdersQueryDomain.buildQuery(request, this.client);
-      const countQuery = OrdersQueryDomain.buildTotalCountQuery(request, this.client);
+      const query = OrdersQueryDomain.buildQuery(request, this.client, this.sessionService);
+      const countQuery = OrdersQueryDomain.buildTotalCountQuery(request, this.client, this.sessionService);
 
       // Ejecutar consulta
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);

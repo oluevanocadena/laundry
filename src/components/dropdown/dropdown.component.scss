@@ -1,3 +1,14 @@
+:host{
+    position: relative;
+    display: inline-block;
+    height: fit-content;
+    width: fit-content;
+    padding: 0;
+    margin: 0;
+    border: none;
+    top: 2px;
+}
+
 .dropdown-component {
     position: relative;
     display: inline-block;

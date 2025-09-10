@@ -1,5 +1,5 @@
-<grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr max-content'"
-    padding="0.5rem 1rem" [width]="isMobileOrTablet ? '100vw' : '100%'" class="scroll-h">
+<grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem"
+    [width]="isMobileOrTablet ? '100vw' : '100%'" class="scroll-h">
     <form [formGroup]="formGroup" [width]="'100%'">
         <grid [gap]="isMobileOrTablet ? [8,8] : [8,16]" [direction]="'column'" [align]="'center-left'">
             <span class="f-13 fw-500 f-06">Página</span>
@@ -14,12 +14,13 @@
             <form-input [type]="'select'" formControlName="pageSize" [options]="pageSizesOptions"
                 [placeholder]="'Seleccione'" [size]="'s'" [clearable]="false" [width]="'70px'" />
 
-            <span class="f-13 fw-500 f-06 no-wrap">
-                {{ rowCount || 0 }} registros
-            </span>
+
         </grid>
     </form>
-    <grid [direction]="'column'" [align]="'center-right'">
+    <grid [gap]="isMobileOrTablet ? [8,8] : [8,16]" [direction]="'column'" [align]="'center-right'">
+        <span class="f-13 fw-500 f-06 no-wrap">
+            {{ rowCount || 0 }} registros
+        </span>
         <button *ngIf="!isMobileOrTablet" (click)="refresh()" outline small flex icon-google class="f-02">
             <span class="material-symbols-outlined f-20 f-lh-16 fw-200">
                 cached

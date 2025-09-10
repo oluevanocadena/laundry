@@ -1,4 +1,4 @@
-import { PagedRequest } from "./supabase.interface";
+import { PagedRequest } from './supabase.interface';
 
 export interface UITableColumn {
   label: string;
@@ -12,10 +12,12 @@ export interface UITablePagination extends PagedRequest {
   totalPages: number;
 }
 
-export interface UITableFilter extends PagedRequest {
-  dateFrom: string | null;
-  dateTo: string | null;
+export interface UITableFilterBase {
+  dateFrom: string | Date | null;
+  dateTo: string | Date | null;
   statusId: number | null;
   sortBy: string | null;
   sortOrder: 'asc' | 'desc';
 }
+
+export interface UITableFilter extends UITableFilterBase, PagedRequest {}

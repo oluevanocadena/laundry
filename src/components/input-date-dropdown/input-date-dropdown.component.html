@@ -9,13 +9,14 @@
     <grid dropdown-content [gap]="[16,8]" [direction]="'row'" [width]="isMobile ? 'calc(100vw - 4rem)': '562px'"
         (mousedown)="$event.stopPropagation()">
         <grid [gap]="[6, 16]" [direction]="'row'">
-            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+            <span class="f-13 fw-500 f-01" class="w-content">
                 Rango de fechas
                 <span class="f-13 fw-500 f-error">*</span>
             </span>
             <form [formGroup]="formGroup">
                 <tui-textfield tuiChevron [tuiTextfieldSize]="'s'" [tuiTextfieldCleaner]="false"
-                    [content]="stringifyContent" [stringify]="stringify" [identityMatcher]="identityMatcher">
+                    [content]="stringifyContent" [stringify]="stringify" [identityMatcher]="identityMatcher"
+                    [disabledItemHandler]="disabledItemHandler">
                     <input *ngIf="(options || []).length > 0" tuiSelect [placeholder]="'Seleccione'"
                         formControlName="option" />
                     <tui-data-list-wrapper *tuiTextfieldDropdown new [items]="options" />
@@ -43,7 +44,7 @@
                 </span>
                 <form [formGroup]="formGroup">
                     <tui-textfield [tuiTextfieldSize]="'s'" [tuiTextfieldLabelOutside]="true"
-                        [tuiTextfieldCleaner]="false">
+                        [tuiTextfieldCleaner]="false" [disabledItemHandler]="disabledItemHandlerDateEnd">
                         <input tuiInputDate [placeholder]="'Seleccione'" formControlName="dateEnd" />
                         <tui-calendar *tuiTextfieldDropdown />
                     </tui-textfield>
@@ -59,5 +60,16 @@
         </grid>
 
 
+    </grid>
+
+    <grid dropdown-left-footer [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+        <grid [gap]="[4,4]" [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+            <span class="material-symbols-outlined f-14 f-lh-16 f-success fw-200 fill-icon">
+                circle
+            </span>
+            <span class="f-13 fw-500 f-01">
+                Hoy
+            </span>
+        </grid>
     </grid>
 </dropdown>

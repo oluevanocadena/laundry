@@ -13,16 +13,17 @@ import {
   UIDefaultTablePagination,
   UITableConstants,
 } from '@globals/constants/supabase-tables.constants';
-import { UITableFilter, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableFilter, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersMonitorFacade extends FacadeBase {
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
-  tableFilter = new SubjectProp<UITableFilter>(UIDefaultTableFilter);
+  tableFilter = new SubjectProp<UITableFilterBase>(UIDefaultTableFilter);
   columns = OrderPageTableColumns;
 
   constructor(
@@ -53,14 +54,18 @@ export class OrdersMonitorFacade extends FacadeBase {
 
   fetchOrders() {
     const pagination = this.tablePagination.value;
+    console.log('👉🏽 fetchOrders', this.tableFilter.value);
+    const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
+    const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
+
     this.api.getPagedOrders({
-      accountId: this.sessionService.accountId,
+      accountId: null,
       page: pagination?.page ?? UITableConstants.DefaultPage,
       pageSize: pagination?.pageSize ?? UITableConstants.DefaultPageSize,
       locationId: this.sessionService?.locationId ?? null,
-      dateFrom: this.tableFilter.value?.dateFrom ?? null,
-      dateTo: this.tableFilter.value?.dateTo ?? null,
-      statusId: this.tableFilter.value?.statusId ?? null,
+      dateFrom: starDate!,
+      dateTo: endDate!,
+      statusId: null,
       sortBy: this.tableFilter.value?.sortBy ?? null,
       sortOrder: this.tableFilter.value?.sortOrder ?? 'asc',
     });
@@ -69,6 +74,11 @@ export class OrdersMonitorFacade extends FacadeBase {
   /**
    * UI Events
    */
+
+  onFiltersChange(filter: UITableFilterBase) {
+    this.tableFilter.value = filter as UITableFilterBase;
+    this.fetchOrders();
+  }
 
   onTablePaginationChange(filter: UITablePagination) {
     this.tablePagination.value = filter;

@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+
+import { HelperPage } from '@components/common/helper.page';
+import { UISelectOption } from '@components/form-input/form-input.component';
 import { UITableColumn } from '@globals/interfaces/ui.interfaces';
 
 @Component({
@@ -11,6 +14,7 @@ import { UITableColumn } from '@globals/interfaces/ui.interfaces';
 export class TableFiltersComponent extends HelperPage {
   @Input() ctaLabel: string = '';
   @Input() columns: UITableColumn[] = [];
+  @Input() options: UISelectOption[] = [{ id: '0', Name: 'Seleccione' }]; 
 
   @Input() showSelect: boolean = false;
   @Input() showCalendar: boolean = false;
@@ -18,6 +22,12 @@ export class TableFiltersComponent extends HelperPage {
   @Input() showSort: boolean = false;
 
   @Output() onCTAClick: EventEmitter<void> = new EventEmitter<void>();
+
+  //FormGroup
+  formGroup = new FormGroup({
+    select: new FormControl(),
+    date: new FormControl(),
+  });
 
   constructor() {
     super();

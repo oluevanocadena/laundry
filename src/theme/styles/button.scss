@@ -18,9 +18,17 @@ button {
         transform: translateY(1px);
     }
 
+
+    &[xsmall] {
+        padding: 0.25rem 0.2rem 0.12rem !important;
+        font-size: 12px;
+        height: 24px;
+    }
+
     &[small] {
-        padding: 0.365rem 0.75rem 0.125rem !important;
+        padding: 0.45rem 0.75rem 0.125rem !important;
         font-size: 13px;
+        height: 32px;
     }
 
     &[medium] {
@@ -64,13 +72,9 @@ button {
         }
     }
 
-    &[xsmall] {
-        padding: 0.25rem 0.2rem 0.12rem !important;
-        font-size: 12px;
-    }
 
     &[flex] {
-        display: flex; 
+        display: flex;
         align-items: stretch;
         gap: 0.5rem;
 

@@ -1,0 +1,22 @@
+<div class="dropdown-component">
+    <!-- Trigger -->
+    <div (click)="toggle()" class="cursor-pointer">
+        <ng-content select="[dropdown-trigger]"></ng-content>
+    </div>
+
+    <!-- Content -->
+    <grid *ngIf="visible" [gap]="[16, 16]" class="dropdown-content scroll-v brdr" [padding]="'1rem 1rem 1rem 1rem'">
+        <ng-content select="[dropdown-content]"></ng-content>
+
+        <!-- Footer con botones -->
+        <grid *ngIf="!closeOnBackdrop" [gap]="[8,16]" [direction]="'column'" [align]="'center-right'"
+            [padding]="!isMobile ? '0' : '0.5rem 0 0 0'">
+            <button (click)="onCancel()" secondary small>
+                Cancelar
+            </button>
+            <button (click)="onAccept()" primary small>
+                Aceptar
+            </button>
+        </grid>
+    </grid>
+</div>

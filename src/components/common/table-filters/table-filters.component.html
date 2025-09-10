@@ -1,14 +1,12 @@
 <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%" class="wrap brdr-top bg-02"
     padding="0.5rem 1rem">
     <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-        <nz-select ngModel="all" [width]="'150px'">
-            <nz-option nzValue="all" nzLabel="Todos los pedidos"></nz-option>
-            <nz-option nzValue="active" nzLabel="Pedidos pendientes"></nz-option>
-            <nz-option nzValue="disabled" nzLabel="Pedidos en proceso" nzDisabled></nz-option>
-            <nz-option nzValue="disabled" nzLabel="Pedidos completados" nzDisabled></nz-option>
-            <nz-option nzValue="disabled" nzLabel="Pedidos cancelados" nzDisabled></nz-option>
-            <nz-option nzValue="disabled" nzLabel="Pedidos reembolsados" nzDisabled></nz-option>
-        </nz-select>
+        <form *ngIf="showCalendar" [formGroup]="formGroup">
+            <form-input type="date-range-dropdown" formControlName="date" />
+        </form>
+        <form *ngIf="showSelect" [formGroup]="formGroup" [width]="'150px'">
+            <form-input type="select" formControlName="select" [placeholder]="'Seleccione'" [options]="options" />
+        </form>
         <button outline small flex>
             <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
             Columnas
@@ -19,11 +17,9 @@
         </button>
     </grid>
     <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-        <button outline small icon-google>
-            <span class="material-symbols-outlined f-20 f-02">
-                calendar_month
-            </span>
-        </button>
+        <form [formGroup]="formGroup">
+            <form-input type="date-range-dropdown" formControlName="date" [placeholder]="'Rango de fechas'" />
+        </form>
         <button outline small icon-google>
             <span class="material-symbols-outlined f-20 f-02">
                 filter_list

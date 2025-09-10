@@ -4,6 +4,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -18,8 +19,10 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 let MODULES = [
   NzAlertModule,
   NzAvatarModule,
+  NzBadgeModule,
   NzButtonModule,
   NzCheckboxModule,
+  NzDatePickerModule,
   NzDrawerModule,
   NzDropDownModule,
   NzFormModule,
@@ -30,7 +33,6 @@ let MODULES = [
   NzSelectModule,
   NzSwitchModule,
   NzToolTipModule,
-  NzBadgeModule,
 ];
 
 @NgModule({

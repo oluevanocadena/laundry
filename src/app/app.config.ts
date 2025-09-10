@@ -21,6 +21,11 @@ import { NotificationsRealtimeService } from '@bussiness/notifications/services/
 import { of } from 'rxjs';
 import { routes } from './app.routes';
 
+import { registerLocaleData } from '@angular/common';
+import es from '@angular/common/locales/es';
+import { es_ES, NZ_I18N } from 'ng-zorro-antd/i18n';
+registerLocaleData(es);
+
 const ngZorroConfig: NzConfig = {
   modal: {
     nzDirection: 'ltr',
@@ -52,6 +57,7 @@ export const appConfig: ApplicationConfig = {
       useValue: of(TUI_SPANISH_LANGUAGE),
     },
     { provide: NzIsMenuInsideDropDownToken, useValue: false },
+    { provide: NZ_I18N, useValue: es_ES },
     MenuService,
     NzMenuModule,
     NzModalService,

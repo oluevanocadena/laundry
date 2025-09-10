@@ -163,6 +163,7 @@ export type InputType =
   | 'textarea'
   | 'date'
   | 'date-range'
+  | 'date-range-dropdown'
   | 'time'
   | 'search'
   | 'switch'

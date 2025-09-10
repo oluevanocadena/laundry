@@ -34,18 +34,18 @@ export class OrdersQueryDomain {
 
     // Aplicar filtros de fecha si están presentes
     if (request.dateFrom) {
-      query = query.gte('created_At', request.dateFrom); // o el campo de fecha que uses
+      query = query.gte('createdAt', request.dateFrom); // o el campo de fecha que uses
     }
 
     if (request.dateTo) {
-      query = query.lte('created_At', request.dateTo); // o el campo de fecha que uses
+      query = query.lte('createdAt', request.dateTo); // o el campo de fecha que uses
     }
 
     // Aplicar paginación
     query = query.range(from, to);
 
     // Aplicar ordenamiento (por defecto created_at descendente)
-    const sortBy = request.sortBy || 'created_At';
+    const sortBy = request.sortBy || 'createdAt';
     const sortOrder = request.sortOrder === 'asc';
     query = query.order(sortBy, { ascending: sortOrder });
 

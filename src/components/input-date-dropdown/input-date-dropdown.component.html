@@ -1,0 +1,63 @@
+<dropdown [closeOnBackdrop]="false" (accept)="onAccept()" (cancel)="onCancel()">
+    <button dropdown-trigger outline small flex icon-google [disabled]="disabled">
+        <span class="material-symbols-outlined f-22 f-lh-16 f-02 fw-200">
+            date_range
+        </span>
+        {{label}}
+    </button>
+
+    <grid dropdown-content [gap]="[16,8]" [direction]="'row'" [width]="isMobile ? 'calc(100vw - 4rem)': '562px'"
+        (mousedown)="$event.stopPropagation()">
+        <grid [gap]="[6, 16]" [direction]="'row'">
+            <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                Rango de fechas
+                <span class="f-13 fw-500 f-error">*</span>
+            </span>
+            <form [formGroup]="formGroup">
+                <tui-textfield tuiChevron [tuiTextfieldSize]="'s'" [tuiTextfieldCleaner]="false"
+                    [content]="stringifyContent" [stringify]="stringify" [identityMatcher]="identityMatcher">
+                    <input *ngIf="(options || []).length > 0" tuiSelect [placeholder]="'Seleccione'"
+                        formControlName="option" />
+                    <tui-data-list-wrapper *tuiTextfieldDropdown new [items]="options" />
+                </tui-textfield>
+            </form>
+        </grid>
+        <grid [gap]="[16, 16]" [direction]="'column'" [template]="isMobile ? '1fr' : '1fr 1fr'">
+            <grid [gap]="[6, 16]" [direction]="'row'">
+                <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                    Fecha de inicio
+                    <span class="f-13 fw-500 f-error">*</span>
+                </span>
+                <form [formGroup]="formGroup">
+                    <tui-textfield [tuiTextfieldSize]="'s'" [tuiTextfieldLabelOutside]="true"
+                        [tuiTextfieldCleaner]="false">
+                        <input tuiInputDate [placeholder]="'Seleccione'" formControlName="dateStart" />
+                        <tui-calendar *tuiTextfieldDropdown />
+                    </tui-textfield>
+                </form>
+            </grid>
+            <grid [gap]="[6, 16]" [direction]="'row'">
+                <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+                    Fecha de fin
+                    <span class="f-13 fw-500 f-error">*</span>
+                </span>
+                <form [formGroup]="formGroup">
+                    <tui-textfield [tuiTextfieldSize]="'s'" [tuiTextfieldLabelOutside]="true"
+                        [tuiTextfieldCleaner]="false">
+                        <input tuiInputDate [placeholder]="'Seleccione'" formControlName="dateEnd" />
+                        <tui-calendar *tuiTextfieldDropdown />
+                    </tui-textfield>
+                </form>
+            </grid>
+        </grid>
+
+        <grid *ngIf="!isMobile" [direction]="'row'" [gap]="[16,16]" [width]="isMobile ? 'calc(100vw - 2rem)' : '100%'"
+            class="scroll-h">
+            <nz-range-picker nzInline [nzShowWeekNumber]="true" [(ngModel)]="rangeDate"
+                (ngModelChange)="onChangeInlineDatePicker($event)"
+                [ngModelOptions]="{standalone: true}"></nz-range-picker>
+        </grid>
+
+
+    </grid>
+</dropdown>

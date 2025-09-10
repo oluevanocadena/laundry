@@ -205,7 +205,6 @@
     <!-- Checkbox -->
     <grid *ngSwitchCase="'checkbox'" [gap]="[6, 16]" [direction]="'column'"
         [template]="orientation === 'horizontal' ? 'max-content 1fr' : 'fr'">
-
         <label>
             <grid [gap]="[6, 8]" [direction]="'column'" [align]="'center-left'">
                 <input size="s" tuiCheckbox type="checkbox" [formControl]="valueControl" />
@@ -215,5 +214,15 @@
                 </span>
             </grid>
         </label>
+    </grid>
+
+    <!-- Date Range Dropdown -->
+    <grid *ngSwitchCase="'date-range-dropdown'" [gap]="[6, 16]" [direction]="'column'"
+        [template]="orientation === 'horizontal' ? 'max-content 1fr' : '1fr'">
+        <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
+            {{ label }}
+            <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
+        </span>
+        <input-date-dropdown [formControl]="valueControl" />
     </grid>
 </ng-container>

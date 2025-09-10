@@ -6,7 +6,7 @@ import { ShowLoaderDirective, StyleDirective } from './directives';
 const directives = [StyleDirective, ShowLoaderDirective];
 
 @NgModule({
-  imports: [CommonModule, UIModule],
+  imports: [CommonModule],
   declarations: directives,
   exports: directives,
 })

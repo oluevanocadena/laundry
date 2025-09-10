@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HelperPage } from '../helper.page';
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { MenuService } from '@globals/services/menu.service';
 
 @Component({
   selector: 'menu-content',
@@ -9,9 +10,7 @@ import { NotificationsApiService } from '@bussiness/notifications/services/notif
   styleUrls: ['./menu-content.component.scss'],
 })
 export class MenuContentComponent extends HelperPage implements OnInit {
-  @Input() collapsed: boolean = false;
-
-  constructor(public notifService: NotificationsApiService) {
+  constructor(public notifService: NotificationsApiService, public menuService: MenuService) {
     super();
   }
 
@@ -21,6 +20,10 @@ export class MenuContentComponent extends HelperPage implements OnInit {
 
   get unReadNotifications() {
     return this.notifService.pagedNotifications.value?.unReadCount ?? 0;
+  }
+
+  get collapsed() {
+    return this.menuService.collapsed.value;
   }
 
   ngOnInit() {}

@@ -31,6 +31,8 @@ export class OrdersApiService extends ApiBaseService {
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
+      console.log('👉🏽 data', data);
+      console.log('👉🏽 totalCount', totalCountResult);
       this.pagedOrders.value = {
         data: (data as unknown as Order[]) ?? [],
         count: totalCount,

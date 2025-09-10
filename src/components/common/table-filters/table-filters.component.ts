@@ -44,6 +44,7 @@ export class TableFiltersComponent extends HelperPage {
 
   //FormGroup
   formGroup = new FormGroup({
+    search: new FormControl(),
     select: new FormControl(),
     date: new FormControl<Date[]>([]),
   });

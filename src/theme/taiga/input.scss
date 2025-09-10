@@ -224,3 +224,12 @@ form[tuigroup][data-orientation=horizontal] {
         }
     }
 }
+
+
+[tuiAppearance][data-appearance=textfield][chrome-autofilled], [tuiAppearance][data-appearance=textfield]:-webkit-autofill {
+    -webkit-text-fill-color: var(--text-01) !important;
+    caret-color: var(--warning) !important;
+    box-shadow: 0 0 0 100rem var(--warning-hsl-pressed) inset !important;
+    transition: background-color 600000s 0s !important;
+    border: 2px solid var(--warning) !important;
+}

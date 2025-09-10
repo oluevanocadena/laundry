@@ -38,7 +38,7 @@ export class OrdersQueryDomain {
     if (request.locationId !== null && request.locationId !== undefined) {
       query = query.eq('LocationId', request.locationId);
     }
- 
+
     if (request.dateFrom) {
       query = query.gte('createdAt', moment(request.dateFrom).startOf('day').toISOString());
     }
@@ -61,12 +61,18 @@ export class OrdersQueryDomain {
 
   static buildTotalCountQuery(request: OrderRequest, client: SupabaseClient, sessionService: SessionService) {
     let query = client
-      .from(SupabaseTables.Notifications)
+      .from(SupabaseTables.Orders)
       .select('*', { count: 'exact', head: true })
       .eq('OrganizationId', sessionService.organizationId);
-
     if (request.locationId !== null && request.locationId !== undefined) {
       query = query.eq('LocationId', request.locationId);
+    }
+    if (request.dateFrom) {
+      query = query.gte('createdAt', moment(request.dateFrom).startOf('day').toISOString());
+    }
+
+    if (request.dateTo) {
+      query = query.lt('createdAt', moment(request.dateTo).add(1, 'day').startOf('day').toISOString());
     }
 
     return query;

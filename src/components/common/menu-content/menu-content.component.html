@@ -37,10 +37,11 @@
             <menu-item [collapsed]="collapsed" [icon]="'settings'" [iconType]="'google'" [label]="'Configuración'"
                 [urlBase]="routes.Settings" [link]="routes.Settings" [isGroup]="false" [level]="0" />
         </menu>
-        <menu>
+        <menu *ngIf="!isMobileOrTablet">
             <!-- Settings -->
-            <menu-item [collapsed]="collapsed" [icon]="'expand_all'" [iconType]="'google'" [label]="''"
-                [urlBase]="routes.None" [level]="0" />
+            <menu-item [collapsed]="collapsed" [icon]="collapsed ? 'left_panel_open' : 'chips'" [iconType]="'google'"
+                [label]="collapsed ? 'Expandir': 'Contraer'" [urlBase]="routes.None" [level]="0"
+                (click)="menuService.toggleMenu()" />
         </menu>
     </grid>
 </grid>

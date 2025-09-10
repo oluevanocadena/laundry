@@ -15,7 +15,7 @@ export class MenuItemComponent extends HelperPage {
   @Input() link?: string;
   @Input() isGroup: boolean = false;
   @Input() bold: boolean = false;
-  @Input() collapsed: boolean = false;
+  @Input() collapsed: boolean | null = null;
   @Input() iconType: 'tui' | 'google' = 'tui';
   @Input() badgeCount: number = 0;
 

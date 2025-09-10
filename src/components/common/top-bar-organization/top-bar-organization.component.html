@@ -35,7 +35,7 @@
                     SUCURSALES
                 </span>
                 <grid [direction]="'row'" [gap]="[1,1]">
-                    <button flat small flex *ngFor="let location of facade.apiLocations.locations.value"
+                    <button flat small flex *ngFor="let location of locations"
                         (click)="facade.onLocationClick(location)" [width]="'100%'"
                         [disabled]="location.id === facade.currentLocationId" class="f-13 f-02 fw-400 t-left">
                         {{ location.Name }}

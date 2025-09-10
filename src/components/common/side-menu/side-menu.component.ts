@@ -1,5 +1,7 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component, HostListener, OnInit } from '@angular/core';
+
+import { HelperPage } from '@components/common/helper.page';
+import { MenuService } from '@globals/services/menu.service';
 
 @Component({
   selector: 'side-menu',
@@ -8,25 +10,27 @@ import { HelperPage } from '../helper.page';
   styleUrls: ['./side-menu.component.scss'],
 })
 export class SideMenuComponent extends HelperPage implements OnInit {
-  //Flag Management
-  @Input() collapsed: boolean = false;
-
-  constructor() {
+  constructor(public menuService: MenuService) {
     super();
   }
 
   @HostListener('window:resize', ['$event'])
   override onResize(event: any) {
     super.onResize(event);
-    this.collapsed = this.isMobileOrTablet;
+    if (this.isMobileOrTablet) {
+      this.menuService.collapsed.value = false;
+    }
   }
 
   /**
    * UI Events
    */
 
-  toggleMenu() {
-    this.collapsed = !this.collapsed;
+  /**
+   * Getters
+   */
+  get collapsed() {
+    return this.menuService.collapsed.value;
   }
 
   ngOnInit() {}

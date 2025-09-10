@@ -39,8 +39,16 @@
             Email
         </button>
     </grid>
-    <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-        <button primary small (click)="onCTAClick.emit()">
+    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+        <form *ngIf="!isMobileOrTablet" [formGroup]="formGroup" [width]="'180px'">
+            <form-input type="search" formControlName="search" [placeholder]="'Buscar'" />
+        </form>
+        <button *ngIf="isMobileOrTablet" outline small icon-google>
+            <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                search
+            </span>
+        </button>
+        <button *ngIf="!isMobileOrTablet" primary small (click)="onCTAClick.emit()">
             {{ctaLabel}}
         </button>
     </grid>

@@ -38,9 +38,14 @@ export class OrdersMonitorFacade extends FacadeBase {
   override initialize() {
     super.initialize();
     this.fetchOrders();
+    this.bindEvents();
   }
 
-  bindEvents() {}
+  bindEvents() {
+    this.sessionService.sessionInfo.onChange((session) => {
+      this.fetchOrders();
+    });
+  }
 
   submitForm() {}
 

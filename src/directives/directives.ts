@@ -10,11 +10,11 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
+import { UITableColumn } from '@globals/interfaces/ui.interfaces';
 
 @Directive({
   standalone: false,
-  selector:
-    '[padding], [margin], [width], [minWidth], [height], [minHeight], [maxHeight], [maxWidth], [scroll]', // Selector para los atributos
+  selector: '[padding], [margin], [width], [minWidth], [height], [minHeight], [maxHeight], [maxWidth], [scroll]', // Selector para los atributos
 })
 export class StyleDirective implements OnChanges {
   @Input() padding?: string;
@@ -46,18 +46,10 @@ export class StyleDirective implements OnChanges {
       this.renderer.setStyle(this.el.nativeElement, 'maxWidth', this.maxWidth);
     }
     if (changes['minHeight']) {
-      this.renderer.setStyle(
-        this.el.nativeElement,
-        'minHeight',
-        this.minHeight
-      );
+      this.renderer.setStyle(this.el.nativeElement, 'minHeight', this.minHeight);
     }
     if (changes['maxHeight']) {
-      this.renderer.setStyle(
-        this.el.nativeElement,
-        'maxHeight',
-        this.maxHeight
-      );
+      this.renderer.setStyle(this.el.nativeElement, 'maxHeight', this.maxHeight);
     }
     if (changes['height']) {
       this.renderer.setStyle(this.el.nativeElement, 'height', this.height);
@@ -74,7 +66,7 @@ export class StyleDirective implements OnChanges {
   selector: '[showLoader]',
 })
 export class ShowLoaderDirective implements OnChanges {
-  @Input('showLoader') isLoading : boolean | null = false;
+  @Input('showLoader') isLoading: boolean | null = false;
 
   private originalContent: string | null = null;
   private loaderEl: HTMLElement | null = null;
@@ -109,4 +101,22 @@ export class ShowLoaderDirective implements OnChanges {
       }
     }
   }
+}
+
+@Directive({
+  selector: '[ifColumn]',
+  standalone: false,
+})
+export class IfColumnDirective {
+  @Input('ifColumn') set config(value: { columns: UITableColumn[]; key: string }) {
+    this.viewContainer.clear(); 
+    if (!value?.columns || !value?.key) return;
+
+    const col = value.columns.find((c) => c.key === value.key);
+    if (col?.selected) {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+    }
+  }
+
+  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef) {}
 }

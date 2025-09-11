@@ -31,8 +31,6 @@ export class OrdersApiService extends ApiBaseService {
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
-      console.log('👉🏽 data', data);
-      console.log('👉🏽 totalCount', totalCountResult);
       this.pagedOrders.value = {
         data: (data as unknown as Order[]) ?? [],
         count: totalCount,
@@ -71,11 +69,7 @@ export class OrdersApiService extends ApiBaseService {
       if (orderSaved.id) {
         orderItems.forEach(async (item) => {
           item.OrderId = orderSaved.id;
-          const { data: itemSaved, error } = await this.client
-            .from(SupabaseTables.OrderItems)
-            .upsert(item)
-            .select()
-            .single();
+          const { data: itemSaved, error } = await this.client.from(SupabaseTables.OrderItems).upsert(item).select().single();
           if (error) throw error;
           return itemSaved;
         });
@@ -134,8 +128,7 @@ export class OrdersApiService extends ApiBaseService {
       if (!error) {
         //TODO: Change for a trigger in the database
         const isCompletedOrder = itemSaved.every(
-          (item) =>
-            item.ItemStatusId === OrderItemStatusEnum.Completed || item.ItemStatusId === OrderItemStatusEnum.Cancelled,
+          (item) => item.ItemStatusId === OrderItemStatusEnum.Completed || item.ItemStatusId === OrderItemStatusEnum.Cancelled,
         );
         if (isCompletedOrder) {
           this.updateOrderStatus(orderId, OrderStatusEnum.Completed);

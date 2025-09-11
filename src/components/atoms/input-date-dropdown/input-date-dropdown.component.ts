@@ -49,10 +49,7 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
   protected stringify: TuiStringHandler<UISelectOption> = (x) => {
     return x.Name;
   };
-  protected identityMatcher: TuiIdentityMatcher<UISelectOption> = (
-    a: UISelectOption | string,
-    b: UISelectOption | string,
-  ) => {
+  protected identityMatcher: TuiIdentityMatcher<UISelectOption> = (a: UISelectOption | string, b: UISelectOption | string) => {
     let result = false;
     if (typeof a === 'string' && typeof b === 'object') {
       result = a === b.id;
@@ -65,11 +62,9 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
     }
     return result;
   };
-
   protected disabledItemHandler: TuiBooleanHandler<UISelectOption> = (item) => {
     return item?.Disabled ?? false;
   };
-
   protected disabledItemHandlerDateEnd: TuiBooleanHandler<TuiDay> = (item) => {
     const currrentDay = DateDomain.tuiDayToDate(item);
     const startDate = DateDomain.tuiDayToDate(this.dateStart.value!);
@@ -119,13 +114,8 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
             emitEvent: false,
           };
 
-          console.log('1️⃣ option', value, dateOption);
-
           // Es el valor de taigaUI datepicker
-          this.formGroup.controls['dateStart'].patchValue(
-            dtStart ? DateDomain.dateToTuiDay(dtStart) : null,
-            emitOptions,
-          );
+          this.formGroup.controls['dateStart'].patchValue(dtStart ? DateDomain.dateToTuiDay(dtStart) : null, emitOptions);
           this.formGroup.controls['dateEnd'].patchValue(dtEnd ? DateDomain.dateToTuiDay(dtEnd) : null, emitOptions);
 
           // Es el valor de ngZorro rangepicker
@@ -136,7 +126,6 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
           if (this.previusValue?.length === 0) {
             const cloned = UtilsDomain.clone(this.value);
             this.previusValue = [moment(cloned[0]).toDate(), moment(cloned[1]).toDate()];
-            console.log('💡 previusValue', this.previusValue);
           }
         }
       }
@@ -144,8 +133,6 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
 
     this.dateStart.onChange((value) => {
       if (value) {
-        console.log('2️⃣ dateStart', value as TuiDay);
-
         // Es el valor de model del formGroup externo (dateStart + 1 day)
         const dateStart = value ? DateDomain.tuiDayToDate(value) : null;
         const currentDateEnd = this.dateEnd.value ? DateDomain.tuiDayToDate(this.dateEnd.value) : null;
@@ -162,7 +149,6 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
 
         // TuiDay => Date
         if (isBeforeDate) {
-          console.log('5️⃣ isBeforeDate', dateEnd);
           this.formGroup.controls['dateEnd'].patchValue(DateDomain.dateToTuiDay(dateEnd!), {
             emitEvent: false,
           });
@@ -175,7 +161,6 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
             ? this.options.find((option) => option.id === this.option.value)
             : this.option.value;
         if (option?.id.toString() !== currentOption?.id) {
-          console.log('4️⃣ Change option', option);
           this.formGroup.controls['option'].setValue(option?.id.toString()!, {
             emitModelToViewChange: true,
           });
@@ -190,10 +175,7 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
         this.value = [dateStart, dateEnd]; //Complete the array with the dateStart previous value
 
         // Es el valor de ngZorro rangepicker
-        this.rangeDate = [
-          dateStart ? moment(dateStart).toDate() : new Date(),
-          dateEnd ? moment(dateEnd).toDate() : new Date(),
-        ];
+        this.rangeDate = [dateStart ? moment(dateStart).toDate() : new Date(), dateEnd ? moment(dateEnd).toDate() : new Date()];
 
         // castRangeDateInOption
         const option = DateDomain.castRangeDateInOption(this.rangeDate);

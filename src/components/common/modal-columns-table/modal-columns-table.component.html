@@ -1,0 +1,38 @@
+<button *ngIf="!isMobileOrTablet" outline small flex (click)="openModal()">
+    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
+    Columnas
+</button>
+
+<grid *ngIf="isMobileOrTablet" [direction]="'row'" [align]="'center-right'" [padding]="'1px 0 0 0'">
+    <button outline small icon-google (click)="openModal()">
+        <span class="material-symbols-outlined f-20 f-06">
+            view_column
+        </span>
+    </button>
+</grid>
+
+<modal [(show)]="showModal" [closeLabel]="'Cancelar'" [confirmLabel]="'Aceptar'" [confirmStyle]="'success'"
+    (onConfirm)="confirm()" (onClose)="close(true)" [width]="'350px'">
+    <span class="f-16 fw-600 f-01" title>
+        Columnas
+    </span>
+    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem'">
+        <grid [direction]="'column'" [align]="'center-left'" [padding]="'0 0 0.25rem'" class="brdr-bottom">
+            <label nz-checkbox [(ngModel)]="selectAll" [nzIndeterminate]="isIndeterminate"
+                (ngModelChange)="selectAllColumns()">
+                <label class="f-14 f-lh-16 fw-400 f-primary t-left pointer">
+                    {{ selectAll ? 'Desmarcar' : 'Marcar' }} todas
+                </label>
+            </label>
+        </grid>
+        <grid [direction]="'row'" [gap]="[8,8]">
+            <grid *ngFor="let column of columns" [direction]="'column'" [gap]="[8,8]" [align]="'center-left'">
+                <label nz-checkbox [(ngModel)]="column.selected" (ngModelChange)="onColumnChange(column)" [ngModelOptions]="{standalone: true}">
+                    {{column.label}}</label>
+            </grid>
+        </grid>
+        <span class="f-13 f-lh-16 fw-400 f-06 t-left">
+            Selecciona las columnas que deseas mostrar y/o ocultar en la tabla.
+        </span>
+    </grid>
+</modal>

@@ -1,12 +1,12 @@
 import { UITableColumn } from '@globals/interfaces/ui.interfaces';
 
 export const OrderPageTableColumns: UITableColumn[] = [
-  { label: 'Order #', key: 'Order #', width: '80px', sortable: true },
-  { label: 'Fecha', key: 'Fecha', width: '100px', sortable: true },
-  { label: 'Estatus', key: 'Estatus', width: '100px', sortable: true },
-  { label: 'Cliente', key: 'Cliente', width: 'auto', sortable: true },
-  { label: 'Tipo de entrega', key: 'Tipo de entrega', width: '170px', sortable: true },
-  { label: 'Pago', key: 'Pago', width: '80px', sortable: true },
-  { label: 'Partidas', key: 'Partidas', width: '90px', sortable: true },
-  { label: 'Total', key: 'Total', width: '85px', sortable: true },
+  { label: 'Order #', key: 'OrderNumber', width: '80px', sortable: true, selected: true },
+  { label: 'Fecha', key: 'createdAt', width: '100px', sortable: true, selected: true },
+  { label: 'Estatus', key: 'OrderStatus', width: '100px', sortable: true, selected: true },
+  { label: 'Cliente', key: 'Customer', width: 'auto', sortable: true, selected: true },
+  { label: 'Tipo de entrega', key: 'DeliveryType', width: '170px', sortable: true, selected: true },
+  { label: 'Pago', key: 'Paid', width: '80px', sortable: true, selected: true },
+  { label: 'Partidas', key: 'ItemCount', width: '90px', sortable: true, selected: true },
+  { label: 'Total', key: 'Total', width: '85px', sortable: true, selected: true },
 ];

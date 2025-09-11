@@ -1,6 +1,8 @@
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
+import { UITableFilter } from '@globals/interfaces/ui.interfaces';
+import { UIDefaultTableFilter } from './supabase-tables.constants';
 
 export const OrderEmpty: Order = {
   CustomerId: undefined,
@@ -23,4 +25,9 @@ export const OrderEmpty: Order = {
   Subtotal: 0,
   Taxes: 0,
   Total: 0,
+};
+
+export const OrderDefaultTableFilter: UITableFilter = {
+  ...UIDefaultTableFilter,
+  sortBy: 'createdAt',
 };

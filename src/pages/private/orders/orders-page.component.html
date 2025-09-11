@@ -14,24 +14,20 @@
                 </button>
             </grid>
         </grid>
-
-        <table-filters [ctaLabel]="'Crear pedido'" [columns]="facade.columns" [showCalendar]="true" [showSort]="true"
-            (onCTAClick)="facade.onNewOrder()" (onFiltersChange)="facade.onFiltersChange($event)" />
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Crear pedido'" [columns]="facade.columns"
+            [showType]="showType" [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewOrder()"
+            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="onColumnsChange($event)" />
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
             class="scroll-h scroll-v bg-02 baseline">
-            <table [width]="isMobileOrTablet ? '1100px' : '100%'">
+            <table [width]="isMobileOrTablet ? '900px' : '100%'">
                 <thead>
                     <tr>
                         <th width="40px"> </th>
-                        <th width="80px">Order #</th>
-                        <th width="100px">Fecha</th>
-                        <th width="100px">Estatus</th>
-                        <th>Cliente</th>
-                        <th width="170px">Tipo de entrega</th>
-                        <th width="80px">Pago</th>
-                        <th width="90px">Partidas</th>
-                        <th width="85px">Total</th>
+                        <ng-container *ngFor="let column of columns">
+                            <th [width]="column.width" *ifColumn="{columns: columns, key: column.key}">{{column.label}}
+                            </th>
+                        </ng-container>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,15 +58,19 @@
                             <td>
                                 <label nz-checkbox></label>
                             </td>
-                            <td>{{item.OrderNumber}}</td>
-                            <td>{{(item.createdAt || '') | dateFormat: 'DD MMM YYYY' | capitalization }}</td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'OrderNumber'}">
+                                {{item.OrderNumber}}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'createdAt'}">
+                                {{(item.createdAt || '') | dateFormat: 'DD MMM YYYY' | capitalization }}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'OrderStatus'}">
                                 <grid [direction]="'column'" [align]="'center-center'">
                                     <status-badge [label]="ordersDomain.statusName(item)" [size]="'m'"
                                         [appearance]="ordersDomain.statusColor(item)" />
                                 </grid>
                             </td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'Customer'}">
                                 <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
                                     class="f-13 fw-400 f-lh-14 t-left" />
                                 <ng-template #titleClamp>
@@ -79,26 +79,29 @@
                                     </span>
                                 </ng-template>
                             </td>
-                            <td>
-                                {{deliveryTypeName(item)}}
+                            <td *ifColumn="{columns: columns, key: 'DeliveryType'}">
+                                {{deliveryDomain.deliveryTypeName(item.DeliveryType)}}
                             </td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'Paid'}">
                                 <grid [direction]="'column'" [align]="'center-center'">
                                     <status-badge [label]="item?.Paid ? 'Pagado' : 'Sin pago'"
                                         [appearance]="item?.Paid ? 'success' : 'error'" [size]="'m'" />
                                 </grid>
                             </td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'ItemCount'}">
                                 {{item.ItemCount| numeralFormat: '0,0'}}
                                 {{item.ItemCount > 1 ? 'partidas' : 'partida'}}
                             </td>
-                            <td>{{item.Total | numeralFormat: '$0,0.00'}}</td>
+                            <td *ifColumn="{columns: columns, key: 'Total'}">
+                                {{item.Total | numeralFormat: '$0,0.00'}}
+                            </td>
                         </tr>
                     </ng-container>
                 </tbody>
             </table>
 
         </grid>
+
         <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 </layout>

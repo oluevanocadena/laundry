@@ -31,12 +31,31 @@ export class OrdersQueryDomain {
     }
 
     // Aplicar filtro de StatusId solo si no es nulo/undefined
-    if (request.statusId !== null && request.statusId !== undefined) {
-      query = query.eq('StatusId', request.statusId);
+    if (request.select !== null && request.select !== undefined) {
+      query = query.eq('StatusId', request.select);
     }
 
     if (request.locationId !== null && request.locationId !== undefined) {
       query = query.eq('LocationId', request.locationId);
+    }
+
+    if (request.search && request.search.trim() !== '') {
+      const searchTerm = request.search.trim();
+
+      // Busca en campos propios de Orders
+      query = query.or(
+        [
+          `OrderNumber.ilike.%${searchTerm}%`,
+          `Notes.ilike.%${searchTerm}%`,
+          `PaymentMethod.ilike.%${searchTerm}%`,
+          `PaymentCardTransactionNumber.ilike.%${searchTerm}%`,
+          `DeliveryType.ilike.%${searchTerm}%`,
+          `DeliveryIndications.ilike.%${searchTerm}%`,
+          `DeliveryAddress.ilike.%${searchTerm}%`,
+          `DeliveryTrackingNumber.ilike.%${searchTerm}%`,
+          `DeliveryTransportCompany.ilike.%${searchTerm}%`,
+        ].join(','),
+      ); 
     }
 
     if (request.dateFrom) {

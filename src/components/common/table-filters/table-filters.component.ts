@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { HelperPage } from '@components/common/helper.page';
@@ -7,40 +7,38 @@ import { UIDefaultTableFilter } from '@globals/constants/supabase-tables.constan
 import { UITableColumn, UITableFilterBase } from '@globals/interfaces/ui.interfaces';
 import { FormProp } from '@globals/types/form.type';
 import moment from 'moment';
+import { ModalColumnsSort } from '../modal-columns-sort/modal-columns-sort.component';
 
 @Component({
   selector: 'table-filters',
   standalone: false,
   templateUrl: './table-filters.component.html',
   styleUrls: ['./table-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableFiltersComponent extends HelperPage {
+  private _columns: UITableColumn[] = [];
+  @Input() set columns(value: UITableColumn[]) {
+    this._columns = value;
+  }
+  get columns() {
+    return this._columns;
+  }
+  @Output() columnsChange = new EventEmitter<UITableColumn[]>();
+
   @Input() ctaLabel: string = '';
-  @Input() columns: UITableColumn[] = [];
   @Input() options: UISelectOption[] = [];
 
-  @Input() showCalendar: boolean = false;
-  @Input() showSort: boolean = false;
+  @Input() showType: TypeFilterShow = {
+    calendar: false,
+    sort: false,
+  };
+  @Input() defaultSortBy: string | null = null;
 
-  @Output() onCTAClick: EventEmitter<void> = new EventEmitter<void>();
+  @Input() tableFilter: UITableFilterBase | null = UIDefaultTableFilter;
+
+  @Output() onCtaClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() onFiltersChange = new EventEmitter<UITableFilterBase>();
-
-  private _tableFilter: UITableFilterBase = UIDefaultTableFilter;
-  @Input() set tableFilter(value: UITableFilterBase) {
-    this._tableFilter = value;
-    if (value) {
-      const startDate = typeof value.dateFrom === 'string' ? moment(value.dateFrom).toDate() : value.dateFrom;
-      const endDate = typeof value.dateTo === 'string' ? moment(value.dateTo).toDate() : value.dateTo;
-      this.date.value = [startDate!, endDate!];
-    } else {
-      const today = new Date();
-      this.date.value = [today, today];
-    }
-  }
-  get tableFilter() {
-    return this._tableFilter;
-  }
-  @Output() tableFilterChange = new EventEmitter<UITableFilterBase>();
 
   //FormGroup
   formGroup = new FormGroup({
@@ -50,9 +48,13 @@ export class TableFiltersComponent extends HelperPage {
   });
 
   public date = new FormProp<Date[]>(this.formGroup, 'date');
+  public select = new FormProp<string>(this.formGroup, 'select');
+  public search = new FormProp<string>(this.formGroup, 'search');
 
   constructor() {
     super();
+    const today = new Date();
+    this.date.value = [today, today];
     this.bindEvents();
   }
 
@@ -60,13 +62,38 @@ export class TableFiltersComponent extends HelperPage {
     this.date.onChange((dateRange) => {
       if (dateRange) {
         this.onFiltersChange.emit({
+          ...(this.tableFilter as UITableFilterBase),
           dateFrom: dateRange[0],
           dateTo: dateRange[1],
-          statusId: null,
-          sortBy: null,
-          sortOrder: 'asc',
         });
       }
+    });
+    this.select.onChange((select) => {
+      if (select) {
+        this.onFiltersChange.emit({
+          ...(this.tableFilter as UITableFilterBase),
+          select: select,
+        });
+      }
+    });
+  }
+
+  /**
+   * UI Events
+   */
+
+  onSortChange(sort: ModalColumnsSort) {
+    this.onFiltersChange.emit({
+      ...(this.tableFilter as UITableFilterBase),
+      sortBy: sort.column,
+      sortOrder: sort.order,
+    });
+  }
+
+  onSearchChange(search: string) {
+    this.onFiltersChange.emit({
+      ...(this.tableFilter as UITableFilterBase),
+      search: search,
     });
   }
 
@@ -82,5 +109,18 @@ export class TableFiltersComponent extends HelperPage {
     return this.columns && this.columns.length > 0;
   }
 
+  get showSort() {
+    return this.showType.sort;
+  }
+
+  get showCalendar() {
+    return this.showType.calendar;
+  }
+
   ngOnInit() {}
+}
+
+export interface TypeFilterShow {
+  calendar: boolean;
+  sort: boolean;
 }

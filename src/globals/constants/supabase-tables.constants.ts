@@ -45,8 +45,9 @@ export const UIDefaultTableFilter: UITableFilter = {
   pageSize: UITableConstants.DefaultPageSize,
   dateFrom: moment().toDate(),
   dateTo: moment().toDate(),
-  statusId: 0,
-  sortBy: '',
+  select: null,
+  search: null,
+  sortBy: null,
   sortOrder: 'asc',
 };
 

@@ -1,5 +1,7 @@
 <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%" class="wrap brdr-top bg-02"
     padding="0.5rem 1rem">
+
+    <!-- Desktop -->
     <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
         <form *ngIf="showCalendar" [formGroup]="formGroup">
             <form-input type="date-range-dropdown" formControlName="date" />
@@ -7,17 +9,12 @@
         <form *ngIf="showSelect" [formGroup]="formGroup" [width]="'150px'">
             <form-input type="select" formControlName="select" [placeholder]="'Seleccione'" [options]="options" />
         </form>
-        <button *ngIf="showColumns" outline small flex>
-            <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-            Columnas
-        </button>
-        <button *ngIf="showSort" outline small flex icon-google>
-            <span class="material-symbols-outlined f-20 f-lh-16 f-06">
-                arrow_upward
-            </span>
-            Ordenado por email
-        </button>
+        <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
+        <modal-columns-sort *ngIf="showSort" [defaultSortBy]="defaultSortBy" [columns]="columns"
+            (onSortChange)="onSortChange($event)" />
     </grid>
+
+    <!-- Mobile -->
     <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
         <form [formGroup]="formGroup">
             <form-input type="date-range-dropdown" formControlName="date" [placeholder]="'Rango de fechas'" />
@@ -27,28 +24,23 @@
                 filter_list
             </span>
         </button>
-        <button *ngIf="showColumns" outline small icon-google>
-            <span class="material-symbols-outlined f-20 f-06">
-                view_column
-            </span>
-        </button>
-        <button *ngIf="showSort" outline small flex icon-google>
-            <span class="material-symbols-outlined f-20 f-lh-16 f-06">
-                arrow_upward
-            </span>
-            Email
-        </button>
+        <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
+        <modal-columns-sort *ngIf="showSort" [defaultSortBy]="defaultSortBy" [columns]="columns"
+            (onSortChange)="onSortChange($event)" />
     </grid>
+
+    <!-- CTA -->
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
         <form *ngIf="!isMobileOrTablet" [formGroup]="formGroup" [width]="'180px'">
-            <form-input type="search" formControlName="search" [placeholder]="'Buscar'" />
+            <form-input type="search" formControlName="search" [placeholder]="'Buscar'"
+                (onSearch)="onSearchChange($event)" />
         </form>
         <button *ngIf="isMobileOrTablet" outline small icon-google>
             <span class="material-symbols-outlined f-20 f-lh-16 f-06">
                 search
             </span>
         </button>
-        <button *ngIf="!isMobileOrTablet" primary small (click)="onCTAClick.emit()">
+        <button *ngIf="!isMobileOrTablet" primary small (click)="onCtaClick.emit()">
             {{ctaLabel}}
         </button>
     </grid>

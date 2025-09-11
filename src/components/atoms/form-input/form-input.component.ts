@@ -23,7 +23,7 @@ export class FormInputComponent implements ControlValueAccessor {
 
   @Input() clearable: boolean = true;
   @Input() countryCode: string = '+52';
-  @Input() debounce: number = 300;
+  @Input() debounce: number = 500;
   @Input() label: string | undefined = undefined;
   @Input() max: number = 100;
   @Input() min: number = 0;

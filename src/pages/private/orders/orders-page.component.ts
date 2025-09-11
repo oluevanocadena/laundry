@@ -1,12 +1,13 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { HelperPage } from '@components/common/helper.page';
 
-import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
-import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
-import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
-import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
+import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
+import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
+import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
+import { UITableColumn } from '@globals/interfaces/ui.interfaces';
+import { TypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 @Component({
   selector: 'app-orders-page',
@@ -18,6 +19,12 @@ import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 export class OrdersPageComponent extends HelperPage implements AfterViewInit {
   //Domains
   ordersDomain = OrdersDomain;
+  deliveryDomain = DeliveryDomain;
+
+  showType: TypeFilterShow = {
+    calendar: true,
+    sort: true,
+  };
 
   constructor(
     public facade: OrdersMonitorFacade,
@@ -27,21 +34,14 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
     super();
   }
 
+  onColumnsChange(columns: UITableColumn[]) {
+    this.facade.onColumnsChange(columns);
+    this.cdr.detectChanges();
+  }
+
   /**
    * Getters
    */
-
-  deliveryTypeName(item: Order): string {
-    switch (item?.DeliveryType) {
-      case DeliveryTypesEnum.Showroom:
-        return 'Venta de mostrador';
-      case DeliveryTypesEnum.Delivery:
-        return 'Entrega a domicilio';
-      case DeliveryTypesEnum.Pickup:
-        return 'Recolección en sucursal';
-    }
-    return '';
-  }
 
   get data() {
     return this.facade.api.pagedOrders.value?.data ?? [];
@@ -53,6 +53,10 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
 
   get busy() {
     return this.facade.api.busy.value;
+  }
+
+  get columns() {
+    return this.facade.columns;
   }
 
   /**

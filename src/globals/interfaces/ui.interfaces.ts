@@ -5,6 +5,7 @@ export interface UITableColumn {
   key: string;
   width: string;
   sortable: boolean;
+  selected?: boolean;
 }
 
 export interface UITablePagination extends PagedRequest {
@@ -14,10 +15,11 @@ export interface UITablePagination extends PagedRequest {
 
 export interface UITableFilterBase {
   dateFrom: string | Date | null;
-  dateTo: string | Date | null;
-  statusId: number | null;
+  dateTo: string | Date | null; 
   sortBy: string | null;
   sortOrder: 'asc' | 'desc';
+  select?: string | null;
+  search?: string | null;
 }
 
 export interface UITableFilter extends UITableFilterBase, PagedRequest {}

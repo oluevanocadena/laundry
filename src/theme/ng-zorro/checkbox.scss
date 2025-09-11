@@ -4,7 +4,7 @@
 }
 
 .ant-checkbox-checked::after {
-    top: 4px !important;
+    top: -1px !important;
     height: 18px !important;
     border-radius: 3px !important;
     border: none !important;
@@ -48,6 +48,10 @@ nz-switch {
 
 .ant-checkbox-wrapper+.ant-checkbox-wrapper {
     margin-left: 0 !important;
+}
+
+.ant-checkbox-indeterminate .ant-checkbox-inner::after{
+    background-color: var(--primary) !important;
 }
 
 @keyframes waveEffect {

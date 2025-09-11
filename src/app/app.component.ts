@@ -19,7 +19,17 @@ import { PagesModule } from '@pages/pages.module';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, UIModule, UIAtomsModule, UICommonModule,PagesModule, DirectivesModule, TUIModule, NgZorroModule, TuiRoot],
+  imports: [
+    RouterOutlet,
+    UIModule,
+    UIAtomsModule,
+    UICommonModule,
+    PagesModule,
+    DirectivesModule,
+    TUIModule,
+    NgZorroModule,
+    TuiRoot,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -28,11 +38,22 @@ export class AppComponent {
     $implicit: NzNotificationComponent;
   }>;
 
+  @HostListener('window:resize')
+  onResize() {
+    this.updateVh();
+  }
+
   constructor(
     private sessionFacade: SessionFacade,
     private router: Router,
     private notificationsRealtimeService: NotificationsRealtimeService,
   ) {}
+
+  private updateVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty('--full-vh', `${window.innerHeight - 49}px`);
+  }
 
   /**
    * Lifecycle
@@ -47,21 +68,9 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.updateVh();
-    console.log('👉 --vh:', getComputedStyle(document.documentElement).getPropertyValue('--vh'));
   }
 
   ngOnDestroy() {
     this.notificationsRealtimeService.stopListening();
-  }
-
-  @HostListener('window:resize')
-  onResize() {
-    this.updateVh();
-  }
-
-  private updateVh() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-    document.documentElement.style.setProperty('--full-vh', `${window.innerHeight - 49}px`);
   }
 }

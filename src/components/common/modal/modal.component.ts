@@ -60,7 +60,8 @@ export class ModalComponent extends HelperPage {
   }
 
   confirm() {
-    this.close();
+    this.show = false;
+    this.showChange.emit(this.show);
     this.onConfirm.emit();
   }
 

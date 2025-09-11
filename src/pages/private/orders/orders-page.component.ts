@@ -6,6 +6,7 @@ import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
+import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 
 @Component({
   selector: 'app-orders-page',
@@ -59,6 +60,9 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
    */
 
   ngAfterViewInit() {
+    if (this.facade.tablePagination.value) {
+      this.facade.tablePagination.value.pageSize = UITableConstants.DefaultPageSize;
+    }
     this.facade.initialize();
     this.facade.api.busy.onChange((value) => {
       this.cdr.detectChanges();

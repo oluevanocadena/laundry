@@ -1,4 +1,5 @@
 import { UISelectOption } from '@components/form-input/form-input.component';
+import { ListDateOptions } from '@globals/constants/date.constants';
 import { TuiDay } from '@taiga-ui/cdk';
 import moment from 'moment';
 
@@ -40,14 +41,7 @@ export class DateDomain {
       return null;
     }
     const [startDate, endDate] = [moment(rangeDate[0]), moment(rangeDate[1])];
-    const predefinedRanges: UISelectOption[] = [
-      { id: '1', Name: 'Hoy' },
-      { id: '2', Name: 'Ayer' },
-      { id: '3', Name: 'Última semana' },
-      { id: '4', Name: 'Último mes' },
-      { id: '5', Name: 'Últimos 3 meses' },
-      { id: '6', Name: 'Último año' },
-    ];
+    const predefinedRanges: UISelectOption[] = ListDateOptions;
 
     for (const option of predefinedRanges) {
       const [rangeStart, rangeEnd] = this.castDateOption(option);

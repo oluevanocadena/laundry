@@ -42,7 +42,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
    */
 
   get busy() {
-    return this.facade.api.busy.change$;
+    return this.facade.api.busy.value;
   }
 
   get orderName() {

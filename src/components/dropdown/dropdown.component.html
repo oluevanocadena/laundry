@@ -11,7 +11,7 @@
         <!-- Footer con botones -->
         <grid [direction]="'column'" [template]="'max-content 1fr'">
             <grid [direction]="'column'" [align]="'center-left'">
-                <ng-content select="[dropdown-left-footer]"></ng-content>        
+                <ng-content select="[dropdown-left-footer]"></ng-content>
             </grid>
             <grid *ngIf="!closeOnBackdrop" [gap]="[8,16]" [direction]="'column'" [align]="'center-right'"
                 [padding]="!isMobile ? '0' : '0.5rem 0 0 0'">

@@ -5,7 +5,7 @@ export const ListDateOptions: UISelectOption[] = [
   { id: '2', Name: 'Ayer' },
   { id: '3', Name: 'Última semana' },
   { id: '4', Name: 'Último mes' },
-  { id: '5', Name: 'Último 3 meses' },
+  { id: '5', Name: 'Últimos 3 meses' },
   { id: '6', Name: 'Último año' },
   { id: '7', Name: 'Personalizado', Disabled: true },
 ];

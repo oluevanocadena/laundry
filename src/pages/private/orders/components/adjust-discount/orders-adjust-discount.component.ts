@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
@@ -9,6 +9,7 @@ import { HelperPage } from '@components/common/helper.page';
   standalone: false,
   templateUrl: './orders-adjust-discount.component.html',
   styleUrls: ['./orders-adjust-discount.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersAdjustDiscountComponent extends HelperPage {
   //Show
@@ -21,10 +22,7 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(
-    public facade: OrdersDraftFacade,
-    public nzmessage: NzMessageService
-  ) {
+  constructor(public facade: OrdersDraftFacade, public nzmessage: NzMessageService, public cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -58,9 +56,7 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   }
 
   get maxNumber() {
-    return this.discountType === 'amount'
-      ? this.facade.orderTotals.value?.Total ?? 99999
-      : 100;
+    return this.discountType === 'amount' ? this.facade.orderTotals.value?.Total ?? 99999 : 100;
   }
 
   get stepIncrement() {
@@ -76,13 +72,15 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
   }
 
   get buttonLabel() {
-    return this.discountType === 'amount'
-      ? 'Aplicar monto'
-      : 'Aplicar porcentaje';
+    return this.discountType === 'amount' ? 'Aplicar monto' : 'Aplicar porcentaje';
   }
 
   /**
    * Life cycle method
    */
-  ngOnInit() {}
+  ngOnInit() {
+    this.facade.api.busy.onChange((value) => {
+      this.cdr.detectChanges();
+    }); 
+  }
 }

@@ -2,7 +2,7 @@
     <top-bar width="100%" />
     <grid [direction]="'column'" [template]="isMobileOrTablet ? '1fr' :'max-content 1fr'">
         <side-menu *ngIf="isMobileOrTablet === false" />
-        <grid [height]="'calc(100vh - 49px)'" width="100%" class="baseline scroll-v">
+        <grid [height]="'var(--full-vh)'" width="100%" class="baseline scroll-v">
             <ng-content></ng-content>
         </grid>
     </grid>

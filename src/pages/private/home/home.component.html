@@ -5,7 +5,7 @@
                 <span class="f-01 f-21 f-lh-14 fw-400">
                     {{facade.organizationName}}
                 </span>
-                <span class="f-12 fw-600 f-07">
+                <span class="fw-600 f-07 {{isMobileOrTablet ? 'f-14' : 'f-12'}}">
                     Organización | Unidad de negocio
                 </span>
             </grid>
@@ -13,19 +13,23 @@
                 <status-badge [appearance]="'success'" [label]="'Activo'"></status-badge>
             </grid>
         </grid>
-        <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 1.5rem'">
+        <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 1.5rem 3rem 1.5rem'" class="baseline">
             <grid [gap]="[8,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr' : 'max-content max-content'"
                 [width]="'100%'">
-                <form [formGroup]="facade.formGroup" [width]="'180px'">
-                    <form-input formControlName="period" [type]="'select'" [placeholder]="'Seleccione'"
-                        [options]="facade.periods" />
+                <form [formGroup]="facade.formGroup">
+                    <form-input #dateInput type="date-range-dropdown" formControlName="period" />
                 </form>
-                <span class="f-12 fw-600 f-lh-15 f-06">
-                    Estadísticas de los últimos 60 minutos.
-                </span>
+                <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                    <span class="fw-500 f-lh-15 f-06 {{isMobileOrTablet ? 'f-14' : 'f-12'}}">
+                        Estadísticas de rendimiento de
+                        <span *ngIf="dateInput.dateDropdown" class="f-02">
+                            {{dateInput.dateDropdown.inlineLabel | lowercase}}
+                        </span>
+                    </span>
+                </grid>
             </grid>
             <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr' : '1fr 1fr 1fr'"
-                [width]="'100%'" class="brdr-bottom baseline">
+                [width]="'100%'">
                 <grid [direction]="'row'" [minHeight]="'350px'" card default class="baseline">
                     <grid [direction]="'row'" [gap]="[16,0]">
                         <grid [direction]="'column'" [template]="'1fr max-content'">
@@ -93,6 +97,91 @@
                         </grid>
                     </grid>
                 </grid>
+
+            </grid>
+
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="f-02 f-18 f-lh-14 fw-600">
+                    Últimos pedidos
+                </span>
+                <span class="fw-500 f-lh-15 f-06 {{isMobileOrTablet ? 'f-14' : 'f-12'}}">
+                    Top 10 de pedidos de ventas.
+                </span>
+            </grid>
+
+            <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
+                class="scroll-h scroll-v bg-02 baseline brdr-radius-6 brdr">
+                <table [width]="isMobileOrTablet ? '1100px' : '100%'">
+                    <thead>
+                        <tr>
+                            <th width="80px">Order #</th>
+                            <th width="100px">Fecha</th>
+                            <th width="100px">Estatus</th>
+                            <th>Cliente</th>
+                            <th width="170px">Tipo de entrega</th>
+                            <th width="80px">Pago</th>
+                            <th width="85px">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="busy">
+                            <tr>
+                                <td colspan="9">
+                                    <grid [direction]="'column'" [align]="'center-center'" padding="3rem 0">
+                                        <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                            <tui-loader [size]="'m'" />
+                                            Cargando...
+                                        </grid>
+                                    </grid>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <tr *ngIf="busy === false && data?.length === 0">
+                            <td colspan="8">
+                                <grid [direction]="'column'" [align]="isMobileOrTablet ? 'center-left': 'center-center'"
+                                    padding="3rem 2rem">
+                                    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
+                                        <tui-icon icon="@tui.inbox" class="f-20 f-06" />
+                                        <span class="fw-400 f-06">No hay pedidos para mostrar</span>
+                                    </grid>
+                                </grid>
+                            </td>
+                        </tr>
+                        <ng-container *ngIf="busy === false">
+                            <tr hoverable *ngFor="let item of data; let i = index"
+                                (click)="ordersFacade.onOrderClick(item)" [class]="ordersDomain.statusColor(item)">
+
+                                <td>{{item.OrderNumber}}</td>
+                                <td>{{(item.createdAt || '') | dateFormat: 'DD MMM YYYY' | capitalization }}</td>
+                                <td>
+                                    <grid [direction]="'column'" [align]="'center-center'">
+                                        <status-badge [label]="ordersDomain.statusName(item)" [size]="'m'"
+                                            [appearance]="ordersDomain.statusColor(item)" />
+                                    </grid>
+                                </td>
+                                <td>
+                                    <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
+                                        class="f-13 fw-400 f-lh-14 t-left" />
+                                    <ng-template #titleClamp>
+                                        <span class="f-13 fw-400 f-01 f-lh-17 t-left">
+                                            {{item.Customer?.FullName}}
+                                        </span>
+                                    </ng-template>
+                                </td>
+                                <td>
+                                    {{deliveryDomain.deliveryTypeName(item.DeliveryType)}}
+                                </td>
+                                <td>
+                                    <grid [direction]="'column'" [align]="'center-center'">
+                                        <status-badge [label]="item?.Paid ? 'Pagado' : 'Sin pago'"
+                                            [appearance]="item?.Paid ? 'success' : 'error'" [size]="'m'" />
+                                    </grid>
+                                </td>
+                                <td>{{item.Total | numeralFormat: '$0,0.00'}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
 
             </grid>
         </grid>

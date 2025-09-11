@@ -19,8 +19,7 @@ export class SessionService {
    * Getters
    */
 
-  get isLoggedIn() {
-    console.log('🔥 isLoggedIn', this.sessionInfo.value?.Session);
+  get isLoggedIn() { 
     return this.sessionInfo.value?.Session;
   }
 

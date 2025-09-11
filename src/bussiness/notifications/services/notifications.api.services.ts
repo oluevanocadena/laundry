@@ -60,8 +60,7 @@ export class NotificationsApiService extends ApiBaseService {
 
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count;
-      const unReadCount = unReadCountResult.count;
-      console.log('👉🏽 totalCount', totalCount);
+      const unReadCount = unReadCountResult.count; 
 
       this.pagedNotifications.value = {
         data: data ?? [],

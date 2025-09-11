@@ -17,8 +17,8 @@
                         </span>
                         <grid [gap]="[8,8]" [direction]="'column'"
                             [align]="isMobileOrTablet ? 'bottom-left' :'center-center'" [height]="'100%'">
-                            <tui-loader *ngIf="busy" />
-                            <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'s'"
+                            <tui-loader *ngIf="busy" [size]="'s'" />
+                            <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'m'"
                                 [appearance]="'warning'" />
                             <ng-container *ngIf="!busy && facade.edition === true">
                                 <status-badge [label]="ordersDomain.statusName(order)" [size]="'m'"
@@ -41,7 +41,7 @@
         <button *ngIf="!paid" (click)="facade.openCollectPayment()" primary small [disabled]="canSave === false">
             {{saveLabelButton}}
         </button>
-        <button *ngIf="canShowMoreMenu" outline small icon flex [disabled]="busy" [showLoader]="busy | async" nz-dropdown
+        <button *ngIf="canShowMoreMenu" outline small icon flex [disabled]="busy" [showLoader]="busy" nz-dropdown
             nzTrigger="click" [nzDropdownMenu]="menu">
             <span class="material-symbols-outlined f-20 f-lh-22 f-01 fw-400">
                 more_vert

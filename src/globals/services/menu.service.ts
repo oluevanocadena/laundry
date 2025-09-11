@@ -7,12 +7,7 @@ import { StorageProp } from '@globals/types/storage.type';
 export class MenuService {
   collapsed = new StorageProp<boolean>(false, 'MENU_COLLAPSED');
 
-  constructor() {
-    console.log(' ⛔collapsed', this.collapsed.value);
-    this.collapsed.change$.subscribe((value) => {
-      console.log(' ⛔collapsed change', value);
-    });
-  }
+  constructor() {}
 
   toggleMenu() {
     console.log('toggleMenu', this.collapsed.value);

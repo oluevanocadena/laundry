@@ -256,6 +256,28 @@ export class InputDateDropdownComponent extends HelperPage implements ControlVal
       : this.option.value?.Name ?? '';
   }
 
+  get inlineLabel(): string {
+    const option =
+      typeof this.option.value === 'string'
+        ? this.options.find((option) => option.id === this.option.value)
+        : this.option.value;
+    switch (option.id) {
+      case '1':
+        return 'Hoy';
+      case '2':
+        return 'Ayer';
+      case '3':
+        return 'la última semana';
+      case '4':
+        return 'el último mes';
+      case '5':
+        return 'los últimos 3 meses';
+      case '6':
+        return 'el último año';
+    }
+    return '';
+  }
+
   /***
    * Lifecycle
    */

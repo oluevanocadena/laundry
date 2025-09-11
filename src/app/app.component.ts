@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, HostListener, TemplateRef, ViewChild } from '@angular/core';
 import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { TuiRoot } from '@taiga-ui/core';
 import { NzNotificationComponent } from 'ng-zorro-antd/notification';
@@ -30,7 +30,7 @@ export class AppComponent {
   constructor(
     private sessionFacade: SessionFacade,
     private router: Router,
-    private notificationsRealtimeService: NotificationsRealtimeService, 
+    private notificationsRealtimeService: NotificationsRealtimeService,
   ) {}
 
   /**
@@ -44,7 +44,23 @@ export class AppComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.updateVh();
+    console.log('👉 --vh:', getComputedStyle(document.documentElement).getPropertyValue('--vh'));
+  }
+
   ngOnDestroy() {
     this.notificationsRealtimeService.stopListening();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateVh();
+  }
+
+  private updateVh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty('--full-vh', `${window.innerHeight - 49}px`);
   }
 }

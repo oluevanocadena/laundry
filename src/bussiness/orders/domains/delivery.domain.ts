@@ -1,6 +1,7 @@
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Delivery, Order } from '@bussiness/orders/interfaces/orders.interfaces';
+import { DeliveryTypes } from '../types/orders.types';
 
 export class DeliveryDomain {
   static canAdjustDelivery(order: Order | null): boolean {
@@ -21,8 +22,9 @@ export class DeliveryDomain {
     return address ? `https://www.google.com/maps/search/${encodeURIComponent(address)}` : '';
   }
 
-  static deliveryTypeName(delivery: Delivery | null): string {
-    switch (delivery?.DeliveryType) {
+  static deliveryTypeName(delivery: Delivery | null | DeliveryTypes): string {
+    const deliveryType = typeof delivery === 'string' ? delivery : delivery?.DeliveryType;
+    switch (deliveryType) {
       case DeliveryTypesEnum.Pickup:
         return 'Recolección en sucursal';
       case DeliveryTypesEnum.Delivery:

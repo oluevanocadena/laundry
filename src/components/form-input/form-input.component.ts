@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output, forwardRef, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { InputDateDropdownComponent } from '@components/input-date-dropdown/input-date-dropdown.component';
 import { type MaskitoTimeMode } from '@maskito/kit';
 import { TUI_IS_IOS, TuiBooleanHandler, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
@@ -18,6 +19,8 @@ import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
   ],
 })
 export class FormInputComponent implements ControlValueAccessor {
+  @ViewChild(InputDateDropdownComponent, { static: false }) dateDropdown!: InputDateDropdownComponent;
+
   @Input() clearable: boolean = true;
   @Input() countryCode: string = '+52';
   @Input() debounce: number = 300;
@@ -60,7 +63,7 @@ export class FormInputComponent implements ControlValueAccessor {
       id = x.$implicit.id;
     } else {
       id = '';
-    } 
+    }
     return this.options?.find((option) => option.id.toString() === id.toString())?.Name ?? '';
   };
   protected stringify: TuiStringHandler<UISelectOption> = (x) => {

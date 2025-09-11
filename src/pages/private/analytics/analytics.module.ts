@@ -10,6 +10,7 @@ import { DirectivesModule } from '@directives/directives.module';
 
 import { AnalyticsPageComponent } from './analytics-page.component';
 import { PipesModule } from '@pipes/pipes.module';
+import { UIAtomsModule } from '@components/atoms/ui.atoms.module';
 
 const components = [AnalyticsPageComponent];
 
@@ -19,6 +20,7 @@ const components = [AnalyticsPageComponent];
     FormsModule,
     ReactiveFormsModule,
     UIModule,
+    UIAtomsModule,
     UICommonModule,
     DirectivesModule,
     PipesModule,

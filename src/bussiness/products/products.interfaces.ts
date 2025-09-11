@@ -3,7 +3,7 @@
 // ::::::::::::::::::::::::::::::::::::::
 
 import { Location } from '@bussiness/locations/locations.interfaces';
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 
 export interface Product {
   id?: string;

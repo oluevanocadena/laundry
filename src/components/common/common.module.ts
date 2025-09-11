@@ -35,6 +35,7 @@ import { TablePaginationComponent } from '@components/common/table-pagination/ta
 import { TopBarButtonsComponent } from '@components/common/top-bar-buttons/top-bar-buttons.component';
 import { TopBarOrganizationComponent } from '@components/common/top-bar-organization/top-bar-organization.component';
 import { TopBarComponent } from '@components/common/top-bar/top-bar.component';
+import { UIAtomsModule } from '@components/atoms/ui.atoms.module';
 
 const components = [
   ButtonResponsiveComponent,
@@ -70,7 +71,7 @@ const components = [
     RouterModule,
     ReactiveFormsModule,
     FormsModule,
-    UIModule,
+    UIAtomsModule,
     TUIModule,
     NgZorroModule,
     DirectivesModule,

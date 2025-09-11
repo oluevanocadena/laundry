@@ -1,4 +1,4 @@
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 import moment from 'moment';

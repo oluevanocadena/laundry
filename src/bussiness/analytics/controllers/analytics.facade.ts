@@ -5,7 +5,7 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import { SubjectProp } from '@globals/types/subject.type';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormProp } from '@globals/types/form.type';
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 
 @Injectable({
   providedIn: 'root',

@@ -1,5 +1,5 @@
 <grid [direction]="'column'" [align]="'top-left'"
-    [height]="isMobileOrTablet ? 'calc(-129px + 100vh)' : 'calc(100vh - 59px)'">
+    [height]="isMobileOrTablet ? 'calc(-129px + 100vh)' : 'calc(var(--full-vh) - 1rem)'">
     <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%" width="100%">
         <menu width="100%">
             <menu-item [collapsed]="collapsed" [icon]="'location_away'" [iconType]="'google'" [label]="'Inicio'"

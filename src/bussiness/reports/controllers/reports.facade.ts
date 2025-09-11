@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ReportsApiService } from '@bussiness/reports/services/reports.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { SubjectProp } from '@globals/types/subject.type';

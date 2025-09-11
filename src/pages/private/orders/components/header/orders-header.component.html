@@ -2,10 +2,12 @@
     <grid [gap]="[16,16]" [direction]="'row'">
         <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'" height="fit-content">
             <grid [direction]="'row'" [gap]="[8,8]">
-                <grid [direction]="'column'" [align]="'top-left'" [gap]="[8,16]">
+                <grid [direction]="'column'" [align]="'top-left'" [gap]="isMobileOrTablet ? [8,8] : [8,16]">
                     <grid [direction]="'column'" [align]="'top-left'" [height]="'100%'">
-                        <button (click)="onBack()" outline xsmall>
-                            <tui-icon icon="@tui.chevron-left" class="f-14 f-04" />
+                        <button (click)="onBack()" outline small icon-google>
+                            <span class="material-symbols-outlined f-16 f-04 f-lh-18">
+                                chevron_backward
+                            </span>
                         </button>
                     </grid>
                     <grid [gap]="[4,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr max-content'">
@@ -16,7 +18,7 @@
                             </label>
                         </span>
                         <grid [gap]="[8,8]" [direction]="'column'"
-                            [align]="isMobileOrTablet ? 'bottom-left' :'center-center'" [height]="'100%'">
+                            [align]="isMobileOrTablet ? 'bottom-left' :'center-center'" [height]="'100%'" class="wrap">
                             <tui-loader *ngIf="busy" [size]="'s'" />
                             <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'m'"
                                 [appearance]="'warning'" />
@@ -41,9 +43,9 @@
         <button *ngIf="!paid" (click)="facade.openCollectPayment()" primary small [disabled]="canSave === false">
             {{saveLabelButton}}
         </button>
-        <button *ngIf="canShowMoreMenu" outline small icon flex [disabled]="busy" [showLoader]="busy" nz-dropdown
+        <button *ngIf="canShowMoreMenu" outline small icon-google [disabled]="busy" [showLoader]="busy" nz-dropdown
             nzTrigger="click" [nzDropdownMenu]="menu">
-            <span class="material-symbols-outlined f-20 f-lh-22 f-01 fw-400">
+            <span class="material-symbols-outlined f-20 f-lh-16 f-01 fw-400">
                 more_vert
             </span>
         </button>

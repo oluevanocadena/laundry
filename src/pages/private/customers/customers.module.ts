@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { UIAtomsModule } from '@components/atoms/ui.atoms.module';
 
 import { UICommonModule } from '@components/common/common.module';
 import { NgZorroModule } from '@components/ng-zorro.module';
@@ -41,6 +42,7 @@ const components: any[] = [
     ReactiveFormsModule,
     RouterModule,
     UIModule,
+    UIAtomsModule,
     UICommonModule,
     PipesModule,
     DirectivesModule,

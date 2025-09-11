@@ -10,6 +10,7 @@ import { DirectivesModule } from '@directives/directives.module';
 
 import { HomeComponent } from './home.component';
 import { PipesModule } from '@pipes/pipes.module';
+import { UIAtomsModule } from '@components/atoms/ui.atoms.module';
 
 const components = [HomeComponent];
 
@@ -20,6 +21,7 @@ const components = [HomeComponent];
     ReactiveFormsModule,
     UIModule,
     PipesModule,
+    UIAtomsModule,
     UICommonModule,
     DirectivesModule,
     TUIModule,

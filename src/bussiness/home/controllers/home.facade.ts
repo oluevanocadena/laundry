@@ -9,7 +9,7 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { SubjectProp } from '@globals/types/subject.type';

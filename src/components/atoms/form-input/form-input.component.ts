@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { InputDateDropdownComponent } from '@components/input-date-dropdown/input-date-dropdown.component';
+import { InputDateDropdownComponent } from '@components/atoms/input-date-dropdown/input-date-dropdown.component';
 import { type MaskitoTimeMode } from '@maskito/kit';
 import { TUI_IS_IOS, TuiBooleanHandler, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';

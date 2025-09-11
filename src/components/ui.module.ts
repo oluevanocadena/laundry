@@ -2,19 +2,16 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { DropdownComponent } from "@components/dropdown/dropdown.component";
-import { FormInputComponent } from '@components/form-input/form-input.component';
-import { GridComponent } from '@components/grid/grid.component';
-import { InputDateDropdownComponent } from '@components/input-date-dropdown/input-date-dropdown.component';
 import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { StyleDirective } from '@directives/directives';
-import { DirectivesModule } from "@directives/directives.module";
+import { DirectivesModule } from '@directives/directives.module';
+import { UIAtomsModule } from './atoms/ui.atoms.module';
 
-const components = [GridComponent, FormInputComponent, InputDateDropdownComponent, DropdownComponent];
+const components: any[] = [];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TUIModule, NgZorroModule, DirectivesModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, TUIModule, NgZorroModule, DirectivesModule, UIAtomsModule],
   declarations: components,
   exports: components,
   providers: [StyleDirective],

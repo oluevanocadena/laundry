@@ -1,4 +1,4 @@
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 
 export const ListDateOptions: UISelectOption[] = [
   { id: '1', Name: 'Hoy' },

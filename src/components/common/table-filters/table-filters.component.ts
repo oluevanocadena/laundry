@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { HelperPage } from '@components/common/helper.page';
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { UIDefaultTableFilter } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase } from '@globals/interfaces/ui.interfaces';
 import { FormProp } from '@globals/types/form.type';

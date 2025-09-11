@@ -1,4 +1,4 @@
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { ListDateOptions } from '@globals/constants/date.constants';
 import { TuiDay } from '@taiga-ui/cdk';
 import moment from 'moment';

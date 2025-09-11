@@ -2,13 +2,17 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import { UIAtomsModule } from '@components/atoms/ui.atoms.module';
 import { UICommonModule } from '@components/common/common.module';
 import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
+import { CustomersModule } from '@pages/private/customers/customers.module';
 import { PipesModule } from '@pipes/pipes.module';
 
+import { OrdersAdjustDeliveryTrackingComponent } from '@pages/private/orders/components/adjust-delivery-tracking/orders-adjust-delivery-tracking.component';
 import { OrdersAdjustDeliveryComponent } from '@pages/private/orders/components/adjust-delivery/orders-adjust-delivery.component';
 import { OrdersAdjustDiscountComponent } from '@pages/private/orders/components/adjust-discount/orders-adjust-discount.component';
 import { OrdersAdjustQuantityComponent } from '@pages/private/orders/components/adjust-quantity/orders-adjust-quantity.component';
@@ -16,6 +20,8 @@ import { OrdersCollectPaymentComponent } from '@pages/private/orders/components/
 import { OrdersCustomerComponent } from '@pages/private/orders/components/customer/orders-customer.component';
 import { OrdersDeliveryComponent } from '@pages/private/orders/components/delivery/orders-delivery.component';
 import { OrdersHeaderComponent } from '@pages/private/orders/components/header/orders-header.component';
+import { OrdersItemDescriptionComponent } from '@pages/private/orders/components/item-description/orders-item-description.component';
+import { OrdersItemPricingComponent } from '@pages/private/orders/components/item-pricing/orders-item-pricing.component';
 import { OrdersItemsProcessingStatusComponent } from '@pages/private/orders/components/items-processing-status/orders-items-processing-status.component';
 import { OrdersItemsProcessingComponent } from '@pages/private/orders/components/items-processing/orders-items-processing.component';
 import { OrdersItemsComponent } from '@pages/private/orders/components/items/orders-items.component';
@@ -28,10 +34,6 @@ import { OrdersTopBarComponent } from '@pages/private/orders/components/top-bar/
 import { OrdersDetailPageComponent } from '@pages/private/orders/detail/order-detail-page.component';
 import { OrdersDraftPageComponent } from '@pages/private/orders/draft/orders-draft-page.component';
 import { OrdersPageComponent } from '@pages/private/orders/orders-page.component';
-import { CustomersModule } from '../customers/customers.module';
-import { OrdersAdjustDeliveryTrackingComponent } from './components/adjust-delivery-tracking/orders-adjust-delivery-tracking.component';
-import { OrdersItemDescriptionComponent } from './components/item-description/orders-item-description.component';
-import { OrdersItemPricingComponent } from './components/item-pricing/orders-item-pricing.component';
 
 const components: any[] = [
   OrdersAdjustDeliveryComponent,
@@ -65,6 +67,7 @@ const components: any[] = [
     ReactiveFormsModule,
     RouterModule,
     UIModule,
+    UIAtomsModule,
     UICommonModule,
     PipesModule,
     DirectivesModule,

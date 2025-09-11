@@ -9,6 +9,7 @@ moment.locale('es');
 
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { SessionFacade } from '@bussiness/session/controllers/session.facade';
+import { UIAtomsModule } from '@components/atoms/ui.atoms.module';
 import { UICommonModule } from '@components/common/common.module';
 import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
@@ -18,7 +19,7 @@ import { PagesModule } from '@pages/pages.module';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, UIModule, PagesModule, UICommonModule, DirectivesModule, TUIModule, NgZorroModule, TuiRoot],
+  imports: [RouterOutlet, UIModule, UIAtomsModule, UICommonModule,PagesModule, DirectivesModule, TUIModule, NgZorroModule, TuiRoot],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

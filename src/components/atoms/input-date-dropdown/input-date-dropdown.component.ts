@@ -1,7 +1,7 @@
 import { Component, forwardRef, HostListener } from '@angular/core';
 import { ControlValueAccessor, FormGroup, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { HelperPage } from '@components/common/helper.page';
-import { UISelectOption } from '@components/form-input/form-input.component';
+import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { ListDateOptions } from '@globals/constants/date.constants';
 import { DateDomain } from '@globals/domains/date.domain';
 import { FormProp } from '@globals/types/form.type';

@@ -32,6 +32,7 @@ export class OrdersDomain {
       id: order.id ?? undefined,
       createdAt: order.createdAt ?? now,
       updatedAt: now,
+      CustomerName: orderCustomer.FullName ?? '',
       CustomerId: orderCustomer.id ?? '',
 
       DiscountType: discountType ?? DiscountTypesEnum.Amount,
@@ -84,8 +85,7 @@ export class OrdersDomain {
     if (!order) return false;
     const itemsCount = order.OrderItems?.length ?? 0;
     const edition = !!order.id;
-    const noIsDraftOrCancelled =
-      order.StatusId !== OrderStatusEnum.Draft && order.StatusId !== OrderStatusEnum.Cancelled;
+    const noIsDraftOrCancelled = order.StatusId !== OrderStatusEnum.Draft && order.StatusId !== OrderStatusEnum.Cancelled;
     return itemsCount > 0 && edition && noIsDraftOrCancelled;
   }
 
@@ -155,5 +155,21 @@ export class OrdersDomain {
       default:
         return 'Sin procesar';
     }
+  }
+
+  static canSaveOrder(order: Order | null): boolean {
+    if (!order) return false;
+    const itemCount = order.ItemCount;
+    const customerId = order.CustomerId;
+    const isCancelled = order.StatusId === OrderStatusEnum.Cancelled;
+    const isPaid = order.Paid;
+    return isCancelled === false && isPaid === false && itemCount > 0 && customerId !== undefined;
+  }
+
+  static canShowSaveButton(order: Order | null): boolean {
+    if (!order) return false;
+    const isCompleted = order.StatusId === OrderStatusEnum.Completed;
+    const isCancelled = order.StatusId === OrderStatusEnum.Cancelled;
+    return isCancelled === false && isCompleted === false;
   }
 }

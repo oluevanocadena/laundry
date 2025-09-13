@@ -43,17 +43,15 @@ export class StorageProp<T> {
   }
 
   set value(newValue: T | null) {
-    if (newValue !== null && this._beforeSet) {
-      this._value = this._beforeSet(newValue);
-    } else {
-      this._value = newValue;
-    }
-    if (this._drop === false) {
-      localStorage.setItem(this.storageKey, JSON.stringify(newValue));
-    } else {
+    const finalValue = newValue !== null && this._beforeSet ? this._beforeSet(newValue) : newValue;
+
+    this._value = finalValue;
+    if (this._drop === true && (finalValue === null || finalValue === undefined)) {
       localStorage.removeItem(this.storageKey);
+    } else {
+      localStorage.setItem(this.storageKey, JSON.stringify(finalValue));
     }
-    this._subject.next(newValue);
+    this._subject.next(finalValue);
   }
 
   get change$(): Observable<T | null> {

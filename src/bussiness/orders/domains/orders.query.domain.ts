@@ -46,6 +46,7 @@ export class OrdersQueryDomain {
       query = query.or(
         [
           `OrderNumber.ilike.%${searchTerm}%`,
+          `CustomerName.ilike.%${searchTerm}%`,
           `Notes.ilike.%${searchTerm}%`,
           `PaymentMethod.ilike.%${searchTerm}%`,
           `PaymentCardTransactionNumber.ilike.%${searchTerm}%`,

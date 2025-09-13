@@ -46,6 +46,7 @@ export interface Order {
   PaymentCardTransactionNumber: string | undefined;
 
   CustomerId: string | undefined;
+  CustomerName?: string;
   Customer?: Customer; // For UI only
 
   OrderItems?: OrderItem[]; // For UI only

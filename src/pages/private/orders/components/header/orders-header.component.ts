@@ -59,11 +59,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
 
   get orderStatus(): string {
     return OrderStatusEnum[this.facade.order.value?.StatusId ?? 0] || 'Pending';
-  }
-
-  get canSave(): boolean {
-    return this.paid === false && this.itemsCount > 0 && !!this.facade.orderCustomer.value?.id;
-  }
+  } 
 
   get orderTotals(): OrderTotals | null {
     return this.facade.orderTotals.value;

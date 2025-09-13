@@ -1,3 +1,6 @@
+import { PagedResults } from "@globals/interfaces/supabase.interface";
+import { UITableFilter } from "@globals/interfaces/ui.interfaces";
+
 export interface Customer {
   id?: string;
   created_at?: string;
@@ -25,3 +28,10 @@ export interface Customer {
   Deleted?: boolean;
   Disabled?: boolean;
 }
+
+export interface CustomerRequest extends UITableFilter {
+  locationId?: string | null;
+}
+
+
+export interface CustomerPagedResults extends PagedResults<Customer> {}

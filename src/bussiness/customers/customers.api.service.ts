@@ -1,46 +1,27 @@
 import { Injectable } from '@angular/core';
 
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
-import { SubjectProp } from '@globals/types/subject.type';
-
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer, CustomerPagedResults, CustomerRequest } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { supabaseClient } from '@globals/singleton/supabase.client';
+import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { ApiBaseService } from '@globals/services/api.service.base';
+import { SubjectProp } from '@globals/types/subject.type';
+import { CustomersQueryDomain } from './domains/customer.query.domain';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomersApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client = supabaseClient;
-  private table = 'Customers';
-
+export class CustomersApiService extends ApiBaseService {
   customers = new SubjectProp<Customer[]>([]);
+  pagedCustomers = new SubjectProp<CustomerPagedResults>(null);
 
-  constructor(public sessionService: SessionService) {}
-
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    console.log(`🚩 ${message || 'Executing operation'}`);
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      console.error('⛔ Error:', error);
-      return null;
-    } finally {
-      this.busy.value = false;
-    }
+  constructor(public sessionService: SessionService) {
+    super();
   }
 
   async getCustomers(search?: string, page: number = 1, pageSize: number = 50) {
     await this.executeWithBusy(async () => {
       let query = this.client
-        .from(this.table)
+        .from(SupabaseTables.Customers)
         .select('*')
         .eq('OrganizationId', this.sessionService.organizationId)
         .eq('Deleted', false)
@@ -51,48 +32,54 @@ export class CustomersApiService implements FacadeApiBase {
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
       const { data, error } = await query;
-      if (error) throw error;
       this.customers.value = data;
+      return super.handleResponse(this.customers.value, error, undefined, data?.length ?? 0);
     }, 'fetching customers');
+  }
+
+  async getPagedCustomers(request: CustomerRequest) {
+    return this.executeWithBusy(async () => {
+      // Inicializar query base
+      const query = CustomersQueryDomain.buildQuery(request, this.client, this.sessionService);
+      const countQuery = CustomersQueryDomain.buildTotalCountQuery(request, this.client, this.sessionService);
+
+      // Ejecutar consulta
+      const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
+      const { data, error } = queryResult;
+      const totalCount = totalCountResult.count ?? 0;
+      this.pagedCustomers.value = {
+        data: (data as unknown as Customer[]) ?? [],
+        count: totalCount,
+      };
+      return super.handleResponse(this.pagedCustomers.value.data, error, undefined, totalCount);
+    }, 'Fetching Customers');
   }
 
   async saveCustomer(customer: Customer) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(this.table)
-        .upsert(customer);
-      if (error) throw error;
-      return data;
+      const { data, error } = await this.client.from(SupabaseTables.Customers).upsert(customer);
+      return super.handleResponse(data, error, undefined, 1);
     }, 'saving customer');
   }
 
   async deleteCustomer(id: string) {
     this.executeWithBusy(async () => {
-      const { error } = await this.client
-        .from(this.table)
-        .update({ Deleted: true })
-        .eq('id', id);
-      if (error) throw error;
+      const { error } = await this.client.from(SupabaseTables.Customers).update({ Deleted: true }).eq('id', id);
+      return super.handleResponse(null, error, undefined, 1);
     }, 'deleting customer');
   }
 
   async disableCustomer(id: string) {
     this.executeWithBusy(async () => {
-      const { error } = await this.client
-        .from(this.table)
-        .update({ Disabled: true })
-        .eq('id', id);
-      if (error) throw error;
+      const { error } = await this.client.from(SupabaseTables.Customers).update({ Disabled: true }).eq('id', id);
+      return super.handleResponse(null, error, undefined, 1);
     }, 'disabling customer');
   }
 
   async enableCustomer(id: string) {
     this.executeWithBusy(async () => {
-      const { error } = await this.client
-        .from(this.table)
-        .update({ Disabled: false })
-        .eq('id', id);
-      if (error) throw error;
+      const { error } = await this.client.from(SupabaseTables.Customers).update({ Disabled: false }).eq('id', id);
+      return super.handleResponse(null, error, undefined, 1);
     }, 'enabling customer');
   }
 }

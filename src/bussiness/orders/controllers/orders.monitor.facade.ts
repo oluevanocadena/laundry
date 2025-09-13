@@ -60,8 +60,7 @@ export class OrdersMonitorFacade extends FacadeBase {
    */
 
   fetchOrders() {
-    const pagination = this.tablePagination.value;
-    console.log('👉🏽 fetchOrders', this.tableFilter.value);
+    const pagination = this.tablePagination.value; 
     const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
     const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
 

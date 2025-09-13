@@ -7,58 +7,20 @@
             </span>
         </grid>
 
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <nz-select ngModel="all" [width]="'150px'">
-                    <nz-option nzValue="all" nzLabel="Todos los clientes"></nz-option>
-                    <nz-option nzValue="active" nzLabel="Clientes activos"></nz-option>
-                    <nz-option nzValue="disabled" nzLabel="Clientes inactivos" nzDisabled></nz-option>
-                </nz-select>
-                <button outline small flex>
-                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-                    Columnas
-                </button>
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por email
-                </button>
-            </grid>
-            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        filter_list
-                    </span>
-                </button>
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        view_column
-                    </span>
-                </button>
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        flex_direction
-                    </span>
-                </button>
-            </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button primary small (click)="facade.onNewCustomer()">
-                    Crear cliente
-                </button>
-            </grid>
-        </grid>
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Crear pedido'" [columns]="facade.columns"
+            [showType]="showType" [defaultSortBy]="facade.tableFilter.value?.sortBy!"
+            (onCtaClick)="facade.onNewCustomer()" (onFiltersChange)="facade.onFiltersChange($event)"
+            (columnsChange)="facade.onColumnsChange($event)" />
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
             <table [width]="isMobileOrTablet ? '1300px' : '100%'">
                 <thead>
                     <tr>
                         <th width="40px"> </th>
-                        <th width="150px">Fecha de creación</th>
-                        <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th width="200px">Dirección</th>
-                        <th>Pedidos</th>
-                        <th width="80px">Estatus</th>
+                        <ng-container *ngFor="let column of columns">
+                            <th [width]="column.width" *ifColumn="{columns: columns, key: column.key}">{{column.label}}
+                            </th>
+                        </ng-container>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,7 +34,7 @@
                             </grid>
                         </td>
                     </tr>
-                    <tr *ngIf="facade.api.busy.value === false && facade.api.customers.value?.length === 0">
+                    <tr *ngIf="busy === false && data?.length === 0">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
@@ -83,24 +45,25 @@
                         </td>
                     </tr>
                     <ng-container *ngIf="facade.api.busy.value === false">
-                        <tr hoverable *ngFor="let item of facade.api.customers.value; let i = index"
+                        <tr hoverable *ngFor="let item of data; let i = index"
                             (click)="facade.onCustomerClick(item)">
                             <td>
                                 <label nz-checkbox></label>
                             </td>
-                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
-                            <td>{{item.FullName}}</td>
-                            <td>{{item.Phone}}</td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'created_at'}">{{item.created_at || '' | dateFormat:
+                                'DD MMMM[,] YYYY' | capitalization }}</td>
+                            <td *ifColumn="{columns: columns, key: 'FullName'}">{{item.FullName}}</td>
+                            <td *ifColumn="{columns: columns, key: 'Phone'}">{{item.Phone}}</td>
+                            <td *ifColumn="{columns: columns, key: 'Address'}">
                                 <tui-line-clamp [content]="item.Address || '-' | capitalization" [lineHeight]="20"
                                     [linesLimit]="1" />
                             </td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'TotalOrders'}">
                                 {{item.TotalOrders || 0}}
                                 {{item.TotalOrders && item.TotalOrders > 1 || item.TotalOrders === 0 ? 'pedidos' :
                                 'pedido'}}
                             </td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'Disabled'}">
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Disabled ? 'Inactivo' : 'Activo'"
                                         [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
@@ -112,21 +75,6 @@
             </table>
         </grid>
 
-        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
-            <grid [direction]="'column'" [align]="'center-left'">
-                <button outline small flex prefix>
-                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
-                </button>
-                <button outline small flex suffix>
-                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
-                </button>
-            </grid>
-            <grid [direction]="'column'" [align]="'center-right'">
-                <button (click)="facade.fetchCustomers()" flat small flex>
-                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
-                    Actualizar
-                </button>
-            </grid>
-        </grid>
+        <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 </layout>

@@ -53,8 +53,7 @@ export class CustomersMonitorFacade extends FacadeBase {
    * API Calls
    */
   fetchCustomers() {
-    const pagination = this.tablePagination.value;
-    console.log('👉🏽 fetchCustomers', this.tableFilter.value);
+    const pagination = this.tablePagination.value; 
     const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
     const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
 

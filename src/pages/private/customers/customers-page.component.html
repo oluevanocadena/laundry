@@ -1,10 +1,18 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'var(--full-vh)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
-                Clientes
-            </span>
+        <grid [direction]="'column'" [template]="!isMobileOrTablet ? '1fr' : '1fr max-content'"
+            [padding]="isMobileOrTablet ? '0.5rem 1rem' : '1rem'">
+            <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+                    Clientes
+                </span>
+            </grid>
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                <button primary small (click)="facade.onNewCustomer()">
+                    Crear cliente
+                </button>
+            </grid>
         </grid>
 
         <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Crear pedido'" [columns]="facade.columns"
@@ -45,8 +53,7 @@
                         </td>
                     </tr>
                     <ng-container *ngIf="facade.api.busy.value === false">
-                        <tr hoverable *ngFor="let item of data; let i = index"
-                            (click)="facade.onCustomerClick(item)">
+                        <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onCustomerClick(item)">
                             <td>
                                 <label nz-checkbox></label>
                             </td>

@@ -18,12 +18,7 @@ export class CustomersQueryDomain {
     if (request.search && request.search.trim() !== '') {
       const searchTerm = request.search.trim();
       query = query.or(
-        [
-          `FullName.ilike.%${searchTerm}%`,
-          `Phone.ilike.%${searchTerm}%`,
-          `Address.ilike.%${searchTerm}%`,
-          `TotalOrders.ilike.%${searchTerm}%`,
-        ].join(','),
+        [`FullName.ilike.%${searchTerm}%`, `Phone.ilike.%${searchTerm}%`, `Address.ilike.%${searchTerm}%`].join(','),
       );
     }
 

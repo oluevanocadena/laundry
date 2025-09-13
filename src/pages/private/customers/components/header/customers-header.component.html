@@ -17,7 +17,7 @@
                             <tui-loader *ngIf="busy" />
                             <status-badge *ngIf="facade.edition === false" [label]="'Borrador'" [size]="'m'"
                                 [appearance]="'warning'" />
-                            <status-badge *ngIf="!busy" [label]="customerStatus" [size]="'m'"
+                            <status-badge *ngIf="!busy && facade.edition === true" [label]="customerStatus" [size]="'m'"
                                 [appearance]="customerStatusAppearance" />
                         </grid>
                     </grid>

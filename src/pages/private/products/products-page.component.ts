@@ -31,6 +31,18 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
     return this.homeFacade.locations.value?.length ?? 0;
   }
 
+  get data() {
+    return this.facade.api.pagedProducts.value?.data ?? [];
+  }
+
+  get rowCount() {
+    return this.facade.api.pagedProducts.value?.count ?? 0;
+  }
+
+  get busy() {
+    return this.facade.api.busy.value;
+  }
+
   /**
    * Lifecycle
    */

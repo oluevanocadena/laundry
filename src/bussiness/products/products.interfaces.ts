@@ -4,6 +4,7 @@
 
 import { Location } from '@bussiness/locations/locations.interfaces';
 import { UISelectOption } from '@components/atoms/form-input/form-input.component';
+import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
 
 export interface Product {
   id?: string;
@@ -77,6 +78,13 @@ export interface UnitMeasure extends UISelectOption {
   Abbreviation: string;
   Deleted?: boolean;
 }
- 
+
+export interface ProductRequest extends PagedRequest {
+  readed: boolean | null;
+}
+
+export interface ProductPagedResults extends PagedResults<Product> {
+  unReadCount: number;
+}
 
 export type UnitMeasureType = 'decimal' | 'integer';

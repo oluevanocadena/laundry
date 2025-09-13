@@ -109,22 +109,7 @@
             </table>
         </grid>
 
-        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
-            <grid [direction]="'column'" [align]="'center-left'">
-                <button outline small flex prefix>
-                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
-                </button>
-                <button outline small flex suffix>
-                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
-                </button>
-            </grid>
-            <grid [direction]="'column'" [align]="'center-right'">
-                <button (click)="facade.fetchProducts()" flat small flex>
-                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
-                    Actualizar
-                </button>
-            </grid>
-        </grid>
+        <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 
 

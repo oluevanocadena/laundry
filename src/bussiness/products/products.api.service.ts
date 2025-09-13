@@ -13,6 +13,7 @@ import {
   ProductCategory,
   ProductLocation,
   ProductLocationPrice,
+  ProductPagedResults,
   UnitMeasure,
 } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
@@ -29,6 +30,7 @@ export class ProductsApiService implements FacadeApiBase {
   public client: SupabaseClient;
 
   products = new SubjectProp<Product[]>([]);
+  pagedProducts = new SubjectProp<ProductPagedResults>(null);
   productCategories = new SubjectProp<ProductCategory[]>([]);
   unitMeasures = new SubjectProp<UnitMeasure[]>([]);
 

@@ -7,19 +7,25 @@ import { routes } from '@app/routes';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { ProductsApiService } from '@bussiness/products/products.api.service';
 import { Product } from '@bussiness/products/products.interfaces';
+import { UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
+import { UIDefaultTablePagination } from '@globals/constants/supabase-tables.constants';
+import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsMonitorFacade extends FacadeBase {
   //Arrays
-  segments = ['Todos', 'Activos', 'Inactivos'];
+  segments: NzSegmentedOption[] = [
+    { label: 'Todas', value: '0' },
+    { label: 'Activos', value: 'true' },
+    { label: 'Inactivos', value: 'false' },
+  ];
 
-  constructor(
-    public router: Router,
-    public api: ProductsApiService,
-    public draftFacade: ProductsDraftFacade
-  ) {
+  tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
+
+  constructor(public router: Router, public api: ProductsApiService, public draftFacade: ProductsDraftFacade) {
     super(api);
   }
 
@@ -56,5 +62,10 @@ export class ProductsMonitorFacade extends FacadeBase {
   onProductClick(product: Product) {
     this.draftFacade.product.value = product;
     this.router.navigate([routes.ProductDraft]);
+  }
+
+  onTablePaginationChange(filter: UITablePagination) {
+    this.tablePagination.value = filter;
+    this.fetchProducts();
   }
 }

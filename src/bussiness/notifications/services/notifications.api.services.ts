@@ -52,15 +52,11 @@ export class NotificationsApiService extends ApiBaseService {
         .eq('AccountId', this.accountId)
         .eq('Readed', false);
 
-      const [queryResult, totalCountResult, unReadCountResult] = await Promise.all([
-        query,
-        totalCountQuery,
-        unReadCountQuery,
-      ]);
+      const [queryResult, totalCountResult, unReadCountResult] = await Promise.all([query, totalCountQuery, unReadCountQuery]);
 
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count;
-      const unReadCount = unReadCountResult.count; 
+      const unReadCount = unReadCountResult.count;
 
       this.pagedNotifications.value = {
         data: data ?? [],
@@ -78,6 +74,13 @@ export class NotificationsApiService extends ApiBaseService {
         .update({ Readed: true })
         .eq('AccountId', this.accountId)
         .eq('Readed', false);
+      return super.handleResponse(data as unknown as INotification[], error);
+    });
+  }
+
+  markAsRead(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('id', id);
       return super.handleResponse(data as unknown as INotification[], error);
     });
   }

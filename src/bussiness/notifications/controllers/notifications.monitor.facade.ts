@@ -8,6 +8,7 @@ import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/s
 import { UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
   selectedSegment = new SubjectProp<string>('0');
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
 
-  constructor(public api: NotificationsApiService, public router: Router) {
+  constructor(public api: NotificationsApiService, public router: Router, public nzMessageService: NzMessageService) {
     super(api);
   }
 
@@ -63,8 +64,13 @@ export class NotificationsMonitorFacade extends FacadeBase {
   }
 
   onMarkAllAsReadClick() {
-    this.api.markAllAsRead().then(() => {
-      this.fetchNotifications();
+    this.api.markAllAsRead().then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Notificaciones actualizadas');
+        this.fetchNotifications();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al actualizar las notificaciones');
+      }
     });
   }
 
@@ -74,7 +80,15 @@ export class NotificationsMonitorFacade extends FacadeBase {
   }
 
   onNotificationClick(notification: Notification) {
-    console.log('👉🏽 onNotificationClick', notification);
+    this.api.markAsRead(notification?.id!).then((response) => {
+      console.log('👉🏽 response', response);
+      if (response.success) {
+        this.nzMessageService.success('Notificación marcada como leída');
+        this.fetchNotifications();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al marcar la notificación como leída');
+      }
+    });
   }
 
   onNewNotification() {

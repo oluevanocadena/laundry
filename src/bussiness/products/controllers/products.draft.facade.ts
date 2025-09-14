@@ -8,8 +8,8 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { StorageProp } from '@globals/types/storage.type';
 
-import { LocationsApiService } from '@bussiness/locations/locations.api.service';
-import { Location } from '@bussiness/locations/locations.interfaces';
+import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
+import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { ProductsApiService } from '@bussiness/products/products.api.service';
 import {
   Product,

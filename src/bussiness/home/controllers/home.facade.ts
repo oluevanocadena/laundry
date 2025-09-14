@@ -3,8 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { routes } from '@app/routes';
 
-import { LocationsApiService } from '@bussiness/locations/locations.api.service';
-import { Location } from '@bussiness/locations/locations.interfaces';
+import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
+import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';

@@ -5,7 +5,7 @@ import { routes } from '@app/routes';
 import { createClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { LocationsApiService } from '@bussiness/locations/locations.api.service';
+import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';

@@ -1,3 +1,5 @@
+import { UITableFilter } from "@globals/interfaces/ui.interfaces";
+
 export interface Location {
   id?: string;
   created_at?: string;
@@ -21,4 +23,9 @@ export interface Location {
   Disabled?: boolean;
 
   Checked?: boolean; //Only for UI
+}
+
+
+export interface LocationRequest extends UITableFilter {
+  disabled?: boolean | null;
 }

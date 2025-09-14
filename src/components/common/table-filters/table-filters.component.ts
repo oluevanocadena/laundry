@@ -31,7 +31,7 @@ export class TableFiltersComponent extends HelperPage {
   @Input() options: UISelectOption[] = [];
   @Input() segments: NzSegmentedOption[] = [];
 
-  @Input() showType: TypeFilterShow = {
+  @Input() showType: UITypeFilterShow = {
     calendar: false,
     search: false,
     sort: false,
@@ -138,7 +138,7 @@ export class TableFiltersComponent extends HelperPage {
   ngOnInit() {}
 }
 
-export interface TypeFilterShow {
+export interface UITypeFilterShow {
   calendar: boolean;
   search: boolean;
   sort: boolean;

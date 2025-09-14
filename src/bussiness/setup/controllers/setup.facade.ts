@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
-import { LocationsApiService } from '@bussiness/locations/locations.api.service';
+import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
 import { OrganizationsApiService } from '@bussiness/session/services/organizations.api.service';
 import { Organization } from '@bussiness/session/interfaces/organizations.interface';

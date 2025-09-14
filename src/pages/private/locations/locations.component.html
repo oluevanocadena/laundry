@@ -10,18 +10,11 @@
                 info
             </span>
         </grid>
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <nz-segmented [nzOptions]="facade.segments" [nzSize]="'small'"
-                    (nzValueChange)="facade.onSegmentChange($event)"></nz-segmented>
-            </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button primary small (click)="facade.onNewLocationClick()">
-                    Nueva sucursal
-                </button>
-            </grid>
-        </grid>
+
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nueva sucursal'" [columns]="facade.columns"
+            [segments]="facade.segments" [showType]="facade.showType"
+            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewLocationClick()"
+            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
@@ -29,12 +22,10 @@
                 <thead>
                     <tr>
                         <th width="40px"> </th>
-                        <th width="80px">Estatus</th>
-                        <th minWidth="150px">Nombre</th>
-                        <th width="130px">Fecha de creación</th>
-                        <th width="130px">Teléfono</th>
-                        <th minWidth="200px">Dirección</th>
-                        <th>Predeterminada</th>
+                        <ng-container *ngFor="let column of columns">
+                            <th [width]="column.width" *ifColumn="{columns: columns, key: column.key}">{{column.label}}
+                            </th>
+                        </ng-container>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,7 +39,7 @@
                             </grid>
                         </td>
                     </tr>
-                    <tr *ngIf="facade.api.busy.value === false && facade.api.locations.value?.length === 0">
+                    <tr *ngIf="busy === false && data?.length === 0">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
@@ -58,26 +49,31 @@
                             </grid>
                         </td>
                     </tr>
-                    <ng-container *ngIf="facade.api.busy.value === false">
-                        <tr hoverable *ngFor="let item of facade.api.locations.value; let i = index"
-                            (click)="facade.onLocationClick(item)">
+                    <ng-container *ngIf="busy === false">
+                        <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onLocationClick(item)">
                             <td>
                                 <label nz-checkbox></label>
                             </td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'Disabled'}">
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"
                                         [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
                                 </grid>
                             </td>
-                            <td>{{item.Name}}</td>
-                            <td>{{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}</td>
-                            <td>{{item.Phone}}</td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'Name'}">
+                                {{item.Name}}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'created_at'}">
+                                {{item.created_at || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'Phone'}">
+                                {{item.Phone}}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'Address'}">
                                 <tui-line-clamp [content]="item.Address || '-' | capitalization" [lineHeight]="20"
                                     [linesLimit]="1" />
                             </td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'Default'}">
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Default ? 'Predeterminado' : 'No predeterminado'"
                                         [appearance]="item?.Default ? 'success' : 'default'" [size]="'m'" />
@@ -89,22 +85,7 @@
             </table>
         </grid>
 
-        <grid [direction]="'column'" [template]="'1fr max-content'" padding="0.5rem 1rem">
-            <grid [direction]="'column'" [align]="'center-left'">
-                <button outline small flex prefix>
-                    <tui-icon icon="@tui.arrow-left" class="f-16 f-06" />
-                </button>
-                <button outline small flex suffix>
-                    <tui-icon icon="@tui.arrow-right" class="f-16 f-06" />
-                </button>
-            </grid>
-            <grid [direction]="'column'" [align]="'center-right'">
-                <button (click)="facade.fetchLocations()" flat small flex>
-                    <tui-icon icon="@tui.refresh-ccw" class="f-16 f-06" />
-                    Actualizar
-                </button>
-            </grid>
-        </grid>
+        <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 
 

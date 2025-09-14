@@ -43,6 +43,8 @@ export class NotificationsMonitorFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
+    this.columns = this.storageService.get('NOTIFICATIONS_COLUMNS') || UtilsDomain.clone(NotificationsPageTableColumns);
+    this.fetchNotifications();
     this.bindEvents();
   }
 

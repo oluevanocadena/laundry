@@ -21,6 +21,22 @@ export class LocationsPageComponent extends HelperPage implements OnInit {
     return 1;
   }
 
+  get busy() {
+    return this.facade.api.busy.value;
+  }
+
+  get columns() {
+    return this.facade.columns;
+  }
+
+  get rowCount() {
+    return this.facade.api.pagedLocations.value?.count ?? 0;
+  }
+
+  get data() {
+    return this.facade.api.pagedLocations.value?.data ?? [];
+  }
+
   /**
    * Lifecycle
    */

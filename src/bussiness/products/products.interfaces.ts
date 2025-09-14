@@ -2,7 +2,7 @@
 // Models
 // ::::::::::::::::::::::::::::::::::::::
 
-import { Location } from '@bussiness/locations/locations.interfaces';
+import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
 

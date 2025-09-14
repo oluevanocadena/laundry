@@ -13,6 +13,7 @@
                 </button>
             </grid>
         </grid>
+        
         <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Marcar todas como leídas'"
             [columns]="facade.columns" [segments]="facade.segments" [showType]="showType"
             [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onMarkAllAsReadClick()"
@@ -24,9 +25,10 @@
                 <thead>
                     <tr>
                         <th width="40px"> </th>
-                        <th *ngFor="let column of columns" [width]="column.width">
-                            {{column.label}}
-                        </th>
+                        <ng-container *ngFor="let column of columns">
+                            <th [width]="column.width" *ifColumn="{columns: columns, key: column.key}">{{column.label}}
+                            </th>
+                        </ng-container>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,10 +58,16 @@
                             <td>
                                 <label nz-checkbox></label>
                             </td>
-                            <td>{{item.created_At || '' | dateFormat: 'DD MMM YYYY' | capitalization }}</td>
-                            <td>{{item.Title}}</td>
-                            <td>{{item.Message}}</td>
-                            <td>
+                            <td *ifColumn="{columns: columns, key: 'created_At'}">
+                                {{item.created_At || '' | dateFormat: 'DD MMM YYYY' | capitalization }}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'Title'}">
+                                {{item.Title}}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'Message'}">
+                                {{item.Message}}
+                            </td>
+                            <td *ifColumn="{columns: columns, key: 'Readed'}">
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.Readed ? 'Leído' : 'No leído'"
                                         [appearance]="item?.Readed ? 'default' : 'warning'" [size]="'m'" />

@@ -1,4 +1,4 @@
-import { Location } from "@bussiness/locations/locations.interfaces";
+import { Location } from "@bussiness/locations/interfaces/locations.interfaces";
 import { Account, AccountRole } from "@bussiness/users/users.interfaces";
 import { Session } from "@supabase/supabase-js";
 

@@ -1,9 +1,9 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'var(--full-vh)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [template]="'1fr max-content'">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'1rem'">
-                <span class="fw-500 f-01 f-20 f-lh-22" padding="0.25rem 0 0 0">
+        <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'1rem'">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                <span class="fw-500 f-01 f-20 f-lh-22">
                     Notificaciones
                 </span>
             </grid>
@@ -13,19 +13,11 @@
                 </button>
             </grid>
         </grid>
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <nz-segmented [nzOptions]="facade.segments" [nzSize]="'small'"
-                    (nzValueChange)="facade.onSegmentChange($event)"></nz-segmented>
-            </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button *ngIf="!isMobileOrTablet" primary small (click)="facade.onMarkAllAsReadClick()">
-                    Marcar todas como leídas
-                </button>
-            </grid>
-        </grid>
-
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Marcar todas como leídas'"
+            [columns]="facade.columns" [segments]="facade.segments" [showType]="showType"
+            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onMarkAllAsReadClick()"
+            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+        
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
             <table [width]="isMobileOrTablet ? '800px' : '100%'">
@@ -79,7 +71,7 @@
                 </tbody>
             </table>
         </grid>
-       
+
         <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 

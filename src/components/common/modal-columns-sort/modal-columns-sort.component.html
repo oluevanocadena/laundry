@@ -1,6 +1,6 @@
 <button *ngIf="!isMobileOrTablet" outline small flex icon-google (click)="openModal()">
     <span class="material-symbols-outlined f-20 f-lh-16 f-06">
-        arrow_upward
+        {{isAsc ? 'arrow_upward' : 'arrow_downward'}}
     </span>
     Ordenar por {{selectedColumnName}}
 </button>

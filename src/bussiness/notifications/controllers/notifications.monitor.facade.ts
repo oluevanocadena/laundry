@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import moment from 'moment';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
+import { NotificationsPageTableColumns } from '@bussiness/notifications/constants/notifications.columns.constant';
+import { NotificationsDefaultTableFilter } from '@bussiness/notifications/constants/notifications.constants';
 import { Notification } from '@bussiness/notifications/interfaces/notifications.interfaces';
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { SessionService } from '@bussiness/session/services/session.service';
+
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { UtilsDomain } from '@globals/utils/utils.domain';
+import { StorageService } from '@services/common/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,10 +27,17 @@ export class NotificationsMonitorFacade extends FacadeBase {
     { label: 'Leídas', value: 'true' },
   ];
 
-  selectedSegment = new SubjectProp<string>('0');
+  tableFilter = new SubjectProp<UITableFilterBase>(NotificationsDefaultTableFilter);
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
+  columns = NotificationsPageTableColumns;
 
-  constructor(public api: NotificationsApiService, public router: Router, public nzMessageService: NzMessageService) {
+  constructor(
+    public api: NotificationsApiService,
+    public router: Router,
+    public nzMessageService: NzMessageService,
+    public sessionService: SessionService,
+    public storageService: StorageService,
+  ) {
     super(api);
   }
 
@@ -47,10 +61,20 @@ export class NotificationsMonitorFacade extends FacadeBase {
    */
 
   fetchNotifications() {
+    const pagination = this.tablePagination.value;
+    const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
+    const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
+
     this.api.getPagedNotifications({
-      page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
-      pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
-      readed: this.selectedSegment.value === 'true' ? true : this.selectedSegment.value === 'false' ? false : null,
+      page: pagination?.page ?? UITableConstants.DefaultPage,
+      pageSize: pagination?.pageSize ?? UITableConstants.DefaultPageSize,
+      dateFrom: starDate!,
+      dateTo: endDate!,
+      readed: this.tableFilter.value?.segment === 'false' ? false : this.tableFilter.value?.segment === 'true' ? true : null,
+      select: this.tableFilter.value?.select ?? null,
+      search: this.tableFilter.value?.search ?? null,
+      sortBy: this.tableFilter.value?.sortBy ?? null,
+      sortOrder: this.tableFilter.value?.sortOrder ?? 'asc',
     });
   }
 
@@ -63,6 +87,18 @@ export class NotificationsMonitorFacade extends FacadeBase {
     this.fetchNotifications();
   }
 
+  onColumnsChange(columns: UITableColumn[]) {
+    console.log('👉🏽 save columns', columns);
+    this.storageService.set('NOTIFICATIONS_COLUMNS', columns);
+    this.columns = UtilsDomain.clone(columns);
+  }
+
+  onFiltersChange(filter: UITableFilterBase) {
+    console.log('👉🏽 filter', filter);
+    this.tableFilter.value = filter as UITableFilterBase;
+    this.fetchNotifications();
+  }
+
   onMarkAllAsReadClick() {
     this.api.markAllAsRead().then((response) => {
       if (response.success) {
@@ -72,11 +108,6 @@ export class NotificationsMonitorFacade extends FacadeBase {
         this.nzMessageService.error('Ocurrió un error al actualizar las notificaciones');
       }
     });
-  }
-
-  onSegmentChange(value: string | number) {
-    this.selectedSegment.value = value.toString();
-    this.fetchNotifications();
   }
 
   onNotificationClick(notification: Notification) {

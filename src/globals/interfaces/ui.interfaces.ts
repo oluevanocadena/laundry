@@ -20,6 +20,7 @@ export interface UITableFilterBase {
   sortOrder: 'asc' | 'desc';
   select?: string | null;
   search?: string | null;
+  segment?: string | null;
 }
 
 export interface UITableFilter extends UITableFilterBase, PagedRequest {}

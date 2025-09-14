@@ -1,6 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { NotificationsMonitorFacade } from '@bussiness/notifications/controllers/notifications.monitor.facade';
 import { HelperPage } from '@components/common/helper.page';
+import { TypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 @Component({
   selector: 'page-notifications',
@@ -9,6 +10,12 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsPageComponent extends HelperPage implements AfterViewInit {
+
+  showType: TypeFilterShow = {
+    calendar: true,
+    sort: true,
+  };
+
   constructor(public facade: NotificationsMonitorFacade) {
     super();
   }

@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
-import { HelperPage } from '../helper.page';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
+import { HelperPage } from '../helper.page';
+import moment from 'moment';
 
 @Component({
   selector: 'top-bar-buttons',
@@ -10,9 +11,14 @@ import { UITableConstants } from '@globals/constants/supabase-tables.constants';
   styleUrls: ['./top-bar-buttons.component.scss'],
 })
 export class TopBarButtonsComponent extends HelperPage {
+  // Flag Management
   showNotifications: boolean = false;
 
+  // Inputs
   @Input() loading: boolean = false;
+
+  // Properties
+  unReadCount: number = 0;
 
   constructor(public notifService: NotificationsApiService) {
     super();
@@ -42,10 +48,8 @@ export class TopBarButtonsComponent extends HelperPage {
    * Life cycle
    */
   ngAfterViewInit() {
-    this.notifService.getPagedNotifications({
-      page: UITableConstants.DefaultPage,
-      pageSize: UITableConstants.DefaultPageSize,
-      readed: null,
+    this.notifService.getUnReadCount().then((res) => {
+      this.unReadCount = res.count ?? 0;
     });
   }
 }

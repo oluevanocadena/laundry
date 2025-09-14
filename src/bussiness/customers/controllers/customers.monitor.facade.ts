@@ -3,18 +3,19 @@ import { Router } from '@angular/router';
 import { routes } from '@app/routes';
 import moment from 'moment';
 
+import { CustomerPageTableColumns } from '@bussiness/customers/constants/customer.columns.constant';
+import { CustomerDefaultTableFilter } from '@bussiness/customers/constants/customers.constants';
 import { CustomersDraftFacade } from '@bussiness/customers/controllers/customers.draft.facade';
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { CustomerDefaultTableFilter } from '@globals/constants/customers.constants';
+
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { StorageService } from '@services/common/storage.service';
 import { UtilsDomain } from '@globals/utils/utils.domain';
-import { CustomerPageTableColumns } from '../constants/customer.columns.constant';
+import { StorageService } from '@services/common/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +54,7 @@ export class CustomersMonitorFacade extends FacadeBase {
    * API Calls
    */
   fetchCustomers() {
-    const pagination = this.tablePagination.value; 
+    const pagination = this.tablePagination.value;
     const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
     const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
 

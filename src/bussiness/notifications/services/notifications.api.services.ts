@@ -10,6 +10,8 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
+import moment from 'moment';
+import { NotificationsQueryDomain } from '../domains/notifications.query.domain';
 
 @Injectable({
   providedIn: 'root',
@@ -24,40 +26,31 @@ export class NotificationsApiService extends ApiBaseService {
     this.accountId = this.sessionService.accountId;
   }
 
-  getPagedNotifications(request: NotificationRequest) {
-    const from = (request.page - 1) * request.pageSize;
-    const to = from + request.pageSize - 1;
-
+  getUnReadCount() {
     return this.executeWithBusy(async () => {
-      let query = this.client
-        .from(SupabaseTables.Notifications)
-        .select('*')
-        .eq('AccountId', this.accountId)
-        .range(from, to)
-        .order('created_At', { ascending: false });
+      const { data, error } = await NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
+      return super.handleResponse(data, error);
+    }, 'Fetching Unread Count');
+  }
 
-      if (request.readed !== null) {
-        query = query.eq('Readed', request.readed);
-      }
-
+  getPagedNotifications(request: NotificationRequest) {
+    return this.executeWithBusy(async () => {
+      // Inicializar query base
+      let query = NotificationsQueryDomain.buildQuery(request, this.client, this.accountId);
       // Consulta separada para obtener el conteo total sin filtros
-      const totalCountQuery = this.client
-        .from(SupabaseTables.Notifications)
-        .select('*', { count: 'exact', head: true })
-        .eq('AccountId', this.accountId);
+      let totalCountQuery = NotificationsQueryDomain.buildTotalCountQuery(request, this.client, this.accountId);
+      // Consulta separada para obtener el conteo de notificaciones no leídas
+      const unReadCountQuery = NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
 
-      const unReadCountQuery = this.client
-        .from(SupabaseTables.Notifications)
-        .select('*', { count: 'exact', head: true })
-        .eq('AccountId', this.accountId)
-        .eq('Readed', false);
-
+      // Ejecutar consultas
       const [queryResult, totalCountResult, unReadCountResult] = await Promise.all([query, totalCountQuery, unReadCountQuery]);
 
+      // Obtener resultados
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count;
       const unReadCount = unReadCountResult.count;
 
+      // Actualizar valor del observable
       this.pagedNotifications.value = {
         data: data ?? [],
         count: totalCount ?? 0,

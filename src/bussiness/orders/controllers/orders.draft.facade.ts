@@ -7,7 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import moment from 'moment';
 
 import { routes } from '@app/routes';
-import { OrderEmpty } from '@globals/constants/orders.constants';
+import { OrderEmpty } from '@bussiness/orders/constants/orders.constants';
 import { TuiTimeDomain } from '@globals/domains/tui-time.domain';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';

@@ -8,6 +8,7 @@ import { UITableColumn, UITableFilterBase } from '@globals/interfaces/ui.interfa
 import { FormProp } from '@globals/types/form.type';
 import moment from 'moment';
 import { ModalColumnsSort } from '../modal-columns-sort/modal-columns-sort.component';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'table-filters',
@@ -28,6 +29,7 @@ export class TableFiltersComponent extends HelperPage {
 
   @Input() ctaLabel: string = '';
   @Input() options: UISelectOption[] = [];
+  @Input() segments: NzSegmentedOption[] = [];
 
   @Input() showType: TypeFilterShow = {
     calendar: false,
@@ -35,7 +37,13 @@ export class TableFiltersComponent extends HelperPage {
   };
   @Input() defaultSortBy: string | null = null;
 
-  @Input() tableFilter: UITableFilterBase | null = UIDefaultTableFilter;
+  private _tableFilter: UITableFilterBase | null = UIDefaultTableFilter;
+  @Input() set tableFilter(value: UITableFilterBase | null) {
+    this._tableFilter = value; 
+  }
+  get tableFilter() {
+    return this._tableFilter;
+  }
 
   @Output() onCtaClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() onFiltersChange = new EventEmitter<UITableFilterBase>();
@@ -97,6 +105,13 @@ export class TableFiltersComponent extends HelperPage {
     });
   }
 
+  onSegmentChange(value: string | number) {
+    this.onFiltersChange.emit({
+      ...(this.tableFilter as UITableFilterBase),
+      segment: value.toString(),
+    });
+  }
+
   /**
    * Getters
    */
@@ -107,6 +122,10 @@ export class TableFiltersComponent extends HelperPage {
 
   get showColumns() {
     return this.columns && this.columns.length > 0;
+  }
+
+  get showSegments() {
+    return this.segments && this.segments.length > 0;
   }
 
   get showSort() {

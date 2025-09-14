@@ -9,6 +9,10 @@
         <form *ngIf="showSelect" [formGroup]="formGroup" [width]="'150px'">
             <form-input type="select" formControlName="select" [placeholder]="'Seleccione'" [options]="options" />
         </form>
+        <grid *ngIf="showSegments" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+            <nz-segmented [nzOptions]="segments" [nzSize]="'small'"
+                (nzValueChange)="onSegmentChange($event)"></nz-segmented>
+        </grid>
         <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
         <modal-columns-sort *ngIf="showSort" [defaultSortBy]="defaultSortBy" [columns]="columns"
             (onSortChange)="onSortChange($event)" />
@@ -24,6 +28,20 @@
                 filter_list
             </span>
         </button>
+        <grid *ngIf="showSegments" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+            <button outline small icon-google nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+                <span class="material-symbols-outlined f-20 f-06">
+                    table_rows
+                </span>
+            </button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+                <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0.5rem'" [width]="'230px'" [maxHeight]="'300px'"
+                    class="bg-02 brdr-radius-6 shadow-01 scroll-v brdr">
+                    <nz-segmented [nzOptions]="segments" [nzSize]="'small'" nzVertical
+                        (nzValueChange)="onSegmentChange($event)"></nz-segmented>
+                </grid>
+            </nz-dropdown-menu>
+        </grid>
         <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
         <modal-columns-sort *ngIf="showSort" [defaultSortBy]="defaultSortBy" [columns]="columns"
             (onSortChange)="onSortChange($event)" />

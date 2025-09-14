@@ -9,14 +9,13 @@ import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 
-import { OrderDefaultTableFilter } from '@globals/constants/orders.constants';
+import { OrderDefaultTableFilter } from '@bussiness/orders/constants/orders.constants';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 import { StorageService } from '@services/common/storage.service';
-import { ModalColumnsSort } from '@components/common/modal-columns-sort/modal-columns-sort.component';
 
 @Injectable({
   providedIn: 'root',

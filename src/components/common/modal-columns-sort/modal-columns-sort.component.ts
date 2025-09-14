@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HelperPage } from '@components/common/helper.page';
 import { UITableColumn } from '@globals/interfaces/ui.interfaces';
 import { UtilsDomain } from '@globals/utils/utils.domain';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'modal-columns-sort',

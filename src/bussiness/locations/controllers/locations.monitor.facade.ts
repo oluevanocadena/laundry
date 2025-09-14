@@ -51,6 +51,7 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
+    console.log('👉🏽 initialize', this.storageService.get('LOCATIONS_COLUMNS'));
     this.columns = this.storageService.get('LOCATIONS_COLUMNS') || UtilsDomain.clone(LocationsPageTableColumns);
     this.fetchLocations();
     this.bindEvents();

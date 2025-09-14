@@ -42,6 +42,6 @@ export class LocationsPageComponent extends HelperPage implements OnInit {
    */
 
   ngOnInit() {
-    this.facade.fetchLocations();
+    this.facade.initialize();
   }
 }

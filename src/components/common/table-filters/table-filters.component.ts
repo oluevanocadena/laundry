@@ -33,13 +33,14 @@ export class TableFiltersComponent extends HelperPage {
 
   @Input() showType: TypeFilterShow = {
     calendar: false,
+    search: false,
     sort: false,
   };
   @Input() defaultSortBy: string | null = null;
 
   private _tableFilter: UITableFilterBase | null = UIDefaultTableFilter;
   @Input() set tableFilter(value: UITableFilterBase | null) {
-    this._tableFilter = value; 
+    this._tableFilter = value;
   }
   get tableFilter() {
     return this._tableFilter;
@@ -50,14 +51,12 @@ export class TableFiltersComponent extends HelperPage {
 
   //FormGroup
   formGroup = new FormGroup({
-    search: new FormControl(),
     select: new FormControl(),
     date: new FormControl<Date[]>([]),
   });
 
   public date = new FormProp<Date[]>(this.formGroup, 'date');
   public select = new FormProp<string>(this.formGroup, 'select');
-  public search = new FormProp<string>(this.formGroup, 'search');
 
   constructor() {
     super();
@@ -141,5 +140,6 @@ export class TableFiltersComponent extends HelperPage {
 
 export interface TypeFilterShow {
   calendar: boolean;
+  search: boolean;
   sort: boolean;
 }

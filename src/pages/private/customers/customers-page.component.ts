@@ -14,6 +14,7 @@ import { TypeFilterShow } from '@components/common/table-filters/table-filters.c
 export class CustomersPageComponent extends HelperPage implements OnInit {
   showType: TypeFilterShow = {
     calendar: false,
+    search: true,
     sort: true,
   };
 

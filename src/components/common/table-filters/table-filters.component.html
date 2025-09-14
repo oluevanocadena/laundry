@@ -49,15 +49,7 @@
 
     <!-- CTA -->
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-        <form *ngIf="!isMobileOrTablet" [formGroup]="formGroup" [width]="'180px'">
-            <form-input type="search" formControlName="search" [placeholder]="'Buscar'"
-                (onSearch)="onSearchChange($event)" />
-        </form>
-        <button *ngIf="isMobileOrTablet" outline small icon-google>
-            <span class="material-symbols-outlined f-20 f-lh-16 f-06">
-                search
-            </span>
-        </button>
+        <modal-search *ngIf="showType.search" (onSearch)="onSearchChange($event)" /> 
         <button *ngIf="!isMobileOrTablet" primary small (click)="onCtaClick.emit()">
             {{ctaLabel}}
         </button>

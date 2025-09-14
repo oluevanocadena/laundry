@@ -13,6 +13,7 @@ export class NotificationsPageComponent extends HelperPage implements AfterViewI
 
   showType: TypeFilterShow = {
     calendar: true,
+    search: true,
     sort: true,
   };
 
@@ -26,6 +27,10 @@ export class NotificationsPageComponent extends HelperPage implements AfterViewI
 
   get data() {
     return this.facade.api.pagedNotifications.value?.data ?? [];
+  }
+
+  get columns() {
+    return this.facade.columns;
   }
 
   get rowCount() {

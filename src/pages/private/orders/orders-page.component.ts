@@ -23,6 +23,7 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
 
   showType: TypeFilterShow = {
     calendar: true,
+    search: true,
     sort: true,
   };
 

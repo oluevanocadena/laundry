@@ -17,17 +17,16 @@
             [columns]="facade.columns" [segments]="facade.segments" [showType]="showType"
             [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onMarkAllAsReadClick()"
             (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
-        
+
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
             <table [width]="isMobileOrTablet ? '800px' : '100%'">
                 <thead>
                     <tr>
                         <th width="40px"> </th>
-                        <th width="130px">Fecha</th>
-                        <th>Titulo</th>
-                        <th minWidth="150px">Mensaje</th>
-                        <th width="130px">Estatus</th>
+                        <th *ngFor="let column of columns" [width]="column.width">
+                            {{column.label}}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

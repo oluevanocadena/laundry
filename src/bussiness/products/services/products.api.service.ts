@@ -1,64 +1,59 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { v4 as uuidv4 } from 'uuid';
 
-import { supabase } from '@environments/environment';
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
-import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
+import { ProductsQueryDomain } from '@bussiness/products/domains/product.query.domain';
+import { UnitMeasure } from '@bussiness/products/interfaces/product.unitmeasure.interfaces';
 import {
   Product,
   ProductLocation,
   ProductLocationPrice,
-  ProductPagedResults,
-  UnitMeasure,
-} from '@bussiness/products/products.interfaces';
+  ProductRequest,
+} from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
+
 import { SupabaseBuckets, SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { PagedResults } from '@globals/interfaces/supabase.interface';
+import { ApiBaseService } from '@globals/services/api.service.base';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client: SupabaseClient;
-
+export class ProductsApiService extends ApiBaseService {
   products = new SubjectProp<Product[]>([]);
-  pagedProducts = new SubjectProp<ProductPagedResults>(null);
+  pagedProducts = new SubjectProp<PagedResults<Product>>(null);
   unitMeasures = new SubjectProp<UnitMeasure[]>([]);
 
-  constructor(public nzMessageService: NzMessageService, public sessionService: SessionService) {
-    this.client = createClient(supabase.url, supabase.key);
+  constructor(public sessionService: SessionService) {
+    super();
   }
 
-  private async executeWithBusy<T>(callback: () => Promise<T>, message?: string): Promise<T | null> {
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error('¡Ocurrió un error al intentar realizar la acción!');
-      console.error('⛔ Error:', error);
-      return null;
-    } finally {
-      this.busy.value = false;
-    }
+  getPagedProduct(request: ProductRequest) {
+    return this.executeWithBusy(async () => {
+      const query = ProductsQueryDomain.buildQuery(request, this.client, this.sessionService);
+      const countQuery = ProductsQueryDomain.buildTotalCountQuery(request, this.client, this.sessionService);
+
+      const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
+      const { data, error } = queryResult;
+      const totalCount = totalCountResult.count ?? 0;
+      this.pagedProducts.value = {
+        data: (data as unknown as Product[]) ?? [],
+        count: totalCount,
+      };
+      return super.handleResponse(data, error);
+    }, 'Fetching Product Categories');
   }
 
   getUnitMeasures() {
-    this.executeWithBusy(async () => {
+    return this.executeWithBusy(async () => {
       const { data, error } = await this.client.from(SupabaseTables.UnitMeasures).select('*').eq('Deleted', false);
-      if (error) throw error;
-      this.unitMeasures.value = data || [];
+      return super.handleResponse(data, error);
     }, 'Fetching Unit Measures');
   }
 
-
   getProducts(search: string, page: number = 1, pageSize: number = 50) {
-    this.executeWithBusy(async () => {
+    return this.executeWithBusy(async () => {
       let query = this.client
         .from(SupabaseTables.Products)
         .select(
@@ -78,8 +73,7 @@ export class ProductsApiService implements FacadeApiBase {
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
       const { data, error } = await query.overrideTypes<Product[], { merge: false }>();
-      if (error) throw error;
-      this.products.value = data || [];
+      return super.handleResponse(data, error);
     }, 'Fetching Products');
   }
 
@@ -99,8 +93,7 @@ export class ProductsApiService implements FacadeApiBase {
         .eq('OrganizationId', this.sessionService.organizationId)
         .eq('Id', productId)
         .single();
-      if (error) throw error;
-      return data || [];
+      return super.handleResponse(data, error);
     }, 'Fetching Product Images');
   }
 
@@ -113,12 +106,10 @@ export class ProductsApiService implements FacadeApiBase {
       // Subir con ruta en carpeta "public" (por RLS)
       const { data, error } = await this.client.storage.from(SupabaseBuckets.Products).upload(`public/${uniqueName}`, file);
 
-      if (error) throw error;
-
       // Obtener la URL pública
       const { data: publicUrl } = this.client.storage.from(SupabaseBuckets.Products).getPublicUrl(`public/${uniqueName}`);
 
-      return publicUrl.publicUrl;
+      return super.handleResponse(publicUrl.publicUrl, error);
     }, 'Uploading Product Image');
   }
 
@@ -212,7 +203,7 @@ export class ProductsApiService implements FacadeApiBase {
       }
 
       // 9️⃣ Retornar el producto ya guardado con relaciones
-      return { ...productSaved };
+      return super.handleResponse({ ...productSaved }, null);
     }, 'Saving Product');
   }
 
@@ -222,8 +213,7 @@ export class ProductsApiService implements FacadeApiBase {
         .from(SupabaseTables.Products)
         .update({ Disabled: true, Deleted: true })
         .eq('id', productId);
-      if (error) throw error;
-      return true;
+      return super.handleResponse(null, error);
     }, 'Deleting Product');
   }
 }

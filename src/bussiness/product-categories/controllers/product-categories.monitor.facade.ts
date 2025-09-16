@@ -68,9 +68,7 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
   fetchProductCategories() {
     this.api.getPagedProductCategories({
       page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
-      pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
-      dateFrom: this.tableFilter.value?.dateFrom ?? null,
-      dateTo: this.tableFilter.value?.dateTo ?? null,
+      pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,     
       sortBy: this.tableFilter.value?.sortBy ?? null,
       sortOrder: this.tableFilter.value?.sortOrder ?? 'asc',
       search: this.tableFilter.value?.search ?? null,

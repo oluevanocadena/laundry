@@ -5,7 +5,7 @@ import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
-import { Product } from '@bussiness/products/products.interfaces';
+import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({

@@ -3,7 +3,7 @@ import { OrderItemStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { DiscountTypes } from '@bussiness/orders/types/orders.types';
-import { Product } from '@bussiness/products/products.interfaces';
+import { Product } from '@bussiness/products/interfaces/products.interfaces';
 
 const TAX_RATE_IVA = 0.16;
 

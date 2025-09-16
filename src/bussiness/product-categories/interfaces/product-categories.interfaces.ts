@@ -10,6 +10,6 @@ export interface ProductCategory extends Omit<UISelectOption, 'id'> {
   Disabled?: boolean;
 }
 
-export interface ProductCategoryRequest extends UITableFilter {
+export interface ProductCategoryRequest extends Omit<UITableFilter, 'dateFrom' | 'dateTo'> {
   disabled?: boolean | null;
 }

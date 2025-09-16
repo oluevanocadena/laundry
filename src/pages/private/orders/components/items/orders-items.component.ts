@@ -4,7 +4,7 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { Product } from '@bussiness/products/products.interfaces';
+import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 import { HelperPage } from '@components/common/helper.page';

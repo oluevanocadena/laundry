@@ -19,13 +19,15 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
 
   /**
    * UI Events
-   */ 
-
- 
+   */
 
   /**
    * Getters
-   */ 
+   */
+
+  get columns() {
+    return this.facade.columns;
+  }
 
   get totalStores() {
     return this.homeFacade.locations.value?.length ?? 0;

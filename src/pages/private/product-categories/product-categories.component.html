@@ -1,14 +1,18 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'var(--full-vh)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-18 f-lh-22" padding="0.25rem 0 0 0">
-                Categorías de Producto
-            </span>
-            <span class="material-symbols-outlined f-info f-16 pointer" nz-tooltip
-                nzTooltipTitle="Organiza tus productos en categorías para una mejores estadísticas.">
-                info
-            </span>
+        <grid [direction]="'column'" [template]="!isMobileOrTablet ? '1fr' : '1fr max-content'"
+            [padding]="isMobileOrTablet ? '0.5rem 1rem' : '1rem'">
+            <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+                    Categorías de Producto
+                </span>
+            </grid>
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                <button primary small (click)="facade.onNewProductCategoryClick()">
+                    Crear categoría
+                </button>
+            </grid>
         </grid>
 
         <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nueva categoría'"

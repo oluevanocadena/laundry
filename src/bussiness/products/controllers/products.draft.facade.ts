@@ -11,8 +11,8 @@ import { StorageProp } from '@globals/types/storage.type';
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
-import { ProductsApiService } from '@bussiness/products/products.api.service';
-import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/products.interfaces';
+import { ProductsApiService } from '@bussiness/products/services/products.api.service';
+import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
@@ -166,9 +166,9 @@ export class ProductsDraftFacade extends FacadeBase {
    */
 
   onSelectedImage(file: File) {
-    this.api.uploadProductImage(file).then((url) => {
-      if (url) {
-        this.urlImages.push(url);
+    this.api.uploadProductImage(file).then((response) => {
+      if (response.success) {
+        this.urlImages.push(response.data ?? '');
       }
     });
   }

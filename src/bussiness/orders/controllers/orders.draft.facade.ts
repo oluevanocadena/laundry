@@ -28,8 +28,8 @@ import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces'
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { DeliveryTypes, DiscountTypes, PaymentMethods } from '@bussiness/orders/types/orders.types';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
-import { ProductsApiService } from '@bussiness/products/products.api.service';
-import { Product } from '@bussiness/products/products.interfaces';
+import { ProductsApiService } from '@bussiness/products/services/products.api.service';
+import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 

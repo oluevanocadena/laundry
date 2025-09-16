@@ -4,8 +4,8 @@
 
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
-import { UISelectOption } from '@components/atoms/form-input/form-input.component';
-import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
+import { UnitMeasure } from '@bussiness/products/interfaces/product.unitmeasure.interfaces';
+import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 
 export interface Product {
   id?: string;
@@ -66,20 +66,6 @@ export interface ProductLocationPrice {
   Location?: Location; // Only for UI
 }
 
-export interface UnitMeasure extends UISelectOption {
-  id: string;
-  Name: string;
-  UnitType: UnitMeasureType;
-  Abbreviation: string;
-  Deleted?: boolean;
+export interface ProductRequest extends Omit<UITableFilter, 'dateFrom' | 'dateTo'> {
+  disabled?: boolean | null;
 }
-
-export interface ProductRequest extends PagedRequest {
-  readed: boolean | null;
-}
-
-export interface ProductPagedResults extends PagedResults<Product> {
-  unReadCount: number;
-}
-
-export type UnitMeasureType = 'decimal' | 'integer';

@@ -1,62 +1,39 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'var(--full-vh)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
-                Productos
-            </span>
-        </grid>
-        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid *ngIf="!isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <nz-select ngModel="all" [width]="'150px'">
-                    <nz-option nzValue="all" nzLabel="Todos los productos"></nz-option>
-                    <nz-option nzValue="active" nzLabel="Productos con mayores ventas"></nz-option>
-                    <nz-option nzValue="disabled" nzLabel="Productos con menos ventas"></nz-option>
-                </nz-select>
-                <nz-segmented [nzOptions]="facade.segments" [nzSize]="'small'"
-                    (nzValueChange)="facade.onSegmentChange($event)"></nz-segmented>
+        <grid [direction]="'column'" [template]="!isMobileOrTablet ? '1fr' : '1fr max-content'"
+            [padding]="isMobileOrTablet ? '0.5rem 1rem' : '1rem'">
+            <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+                    Productos
+                </span>
             </grid>
-            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        filter_list
-                    </span>
-                </button>
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        view_column
-                    </span>
-                </button>
-                <button outline small icon-google>
-                    <span class="material-symbols-outlined f-20 f-02">
-                        flex_direction
-                    </span>
-                </button>
-            </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
                 <button primary small (click)="facade.onNewProductClick()">
-                    Nuevo producto
+                    Crear producto
                 </button>
             </grid>
         </grid>
+
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo producto'"
+            [segments]="facade.segments" [showType]="facade.showType" [columns]="facade.columns"
+            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewProductClick()"
+            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
             <table [width]="isMobileOrTablet ? '1100px' : '100%'">
                 <thead>
                     <tr>
                         <th [width]="'40px'"> </th>
-                        <th [width]="'80px'">Imagen</th>
-                        <th width="150px">Fecha de creación</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Disponibilidad</th>
-                        <th>Categoría</th>
-                        <th width="80px">Estatus</th>
+                        <ng-container *ngFor="let column of columns">
+                            <th [width]="column.width" *ifColumn="{columns: columns, key: column.key}">{{column.label}}
+                            </th>
+                        </ng-container>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="facade.api.busy.value">
+                    <tr *ngIf="busy">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
@@ -66,7 +43,7 @@
                             </grid>
                         </td>
                     </tr>
-                    <tr *ngIf="facade.api.busy.value === false && facade.api.products.value?.length === 0">
+                    <tr *ngIf="busy === false && data?.length === 0">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
@@ -76,9 +53,8 @@
                             </grid>
                         </td>
                     </tr>
-                    <ng-container *ngIf="facade.api.busy.value === false">
-                        <tr hoverable *ngFor="let item of facade.api.products.value; let i = index"
-                            (click)="facade.onProductClick(item)">
+                    <ng-container *ngIf="busy === false">
+                        <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onProductClick(item)">
                             <td>
                                 <label nz-checkbox></label>
                             </td>

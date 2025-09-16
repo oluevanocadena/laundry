@@ -10,7 +10,7 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
-import { Product } from '@bussiness/products/products.interfaces';
+import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperTablePage } from '@components/common/helper.table.page';
 import { FormProp } from '@globals/types/form.type';

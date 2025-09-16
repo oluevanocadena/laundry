@@ -4,12 +4,14 @@ import { routes } from '@app/routes';
 import moment from 'moment';
 
 import { OrderPageTableColumns } from '@bussiness/orders/constants/orders.columns.constant';
+import { OrderDefaultTableFilter } from '@bussiness/orders/constants/orders.constants';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 
-import { OrderDefaultTableFilter } from '@bussiness/orders/constants/orders.constants';
+import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
+
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
@@ -21,6 +23,13 @@ import { StorageService } from '@services/common/storage.service';
   providedIn: 'root',
 })
 export class OrdersMonitorFacade extends FacadeBase {
+  showType: UITypeFilterShow = {
+    calendar: true,
+    columns: false,
+    search: true,
+    sort: true,
+  };
+
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
   tableFilter = new SubjectProp<UITableFilterBase>(OrderDefaultTableFilter);
   columns: UITableColumn[] = [];
@@ -59,7 +68,7 @@ export class OrdersMonitorFacade extends FacadeBase {
    */
 
   fetchOrders() {
-    const pagination = this.tablePagination.value; 
+    const pagination = this.tablePagination.value;
     const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
     const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
 
@@ -93,7 +102,7 @@ export class OrdersMonitorFacade extends FacadeBase {
   }
 
   onTablePaginationChange(filter: UITablePagination) {
-    this.tablePagination.value = filter; 
+    this.tablePagination.value = filter;
     this.fetchOrders();
   }
 

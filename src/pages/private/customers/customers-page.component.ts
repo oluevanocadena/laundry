@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { CustomersMonitorFacade } from '@bussiness/customers/controllers/customers.monitor.facade';
 import { HelperPage } from '@components/common/helper.page';
-import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 @Component({
   selector: 'app-customers-page',
@@ -12,11 +11,7 @@ import { UITypeFilterShow } from '@components/common/table-filters/table-filters
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CustomersPageComponent extends HelperPage implements OnInit {
-  showType: UITypeFilterShow = {
-    calendar: false,
-    search: true,
-    sort: true,
-  };
+ 
 
   constructor(public facade: CustomersMonitorFacade) {
     super();

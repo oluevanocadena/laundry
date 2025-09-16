@@ -1,27 +1,24 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'var(--full-vh)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'1rem'">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [height]="'100%'">
-                <span class="fw-500 f-01 f-20 f-lh-22">
-                    Notificaciones
-                </span>
-            </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-                <button *ngIf="isMobileOrTablet" primary small (click)="facade.onMarkAllAsReadClick()">
-                    Marcar todas como leídas
-                </button>
-            </grid>
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'1rem'">
+            <span class="fw-500 f-01 f-18 f-lh-22" padding="0.25rem 0 0 0">
+                Categorías de Producto
+            </span>
+            <span class="material-symbols-outlined f-info f-16 pointer" nz-tooltip
+                nzTooltipTitle="Organiza tus productos en categorías para una mejores estadísticas.">
+                info
+            </span>
         </grid>
-        
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Marcar todas como leídas'"
-            [columns]="facade.columns" [segments]="facade.segments" [showType]="facade.showType"
-            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onMarkAllAsReadClick()"
+
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nueva categoría'"
+            [segments]="facade.segments" [showType]="facade.showType" [columns]="facade.columns"
+            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewProductCategoryClick()"
             (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
-            <table [width]="isMobileOrTablet ? '800px' : '100%'">
+            <table [width]="isMobileOrTablet ? '500px' : '100%'">
                 <thead>
                     <tr>
                         <th width="40px"> </th>
@@ -32,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="busy">
+                    <tr *ngIf="facade.api.busy.value">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
@@ -47,30 +44,27 @@
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
                                     <tui-icon icon="@tui.inbox" class="f-20 f-06" />
-                                    <span class="fw-400 f-06">No hay notificaciones disponibles</span>
+                                    <span class="fw-400 f-06">No hay categorías de productos disponibles</span>
                                 </grid>
                             </grid>
                         </td>
                     </tr>
                     <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index"
-                            (click)="facade.onNotificationClick(item)">
+                            (click)="facade.onProductCategoryClick(item)">
                             <td>
                                 <label nz-checkbox></label>
                             </td>
                             <td *ifColumn="{columns: columns, key: 'created_At'}">
-                                {{item.created_At || '' | dateFormat: 'DD MMM YYYY' | capitalization }}
+                                {{item.created_At || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}
                             </td>
-                            <td *ifColumn="{columns: columns, key: 'Title'}">
-                                {{item.Title}}
+                            <td *ifColumn="{columns: columns, key: 'Name'}">
+                                {{item.Name}}
                             </td>
-                            <td *ifColumn="{columns: columns, key: 'Message'}">
-                                {{item.Message}}
-                            </td>
-                            <td *ifColumn="{columns: columns, key: 'Readed'}">
+                            <td *ifColumn="{columns: columns, key: 'Disabled'}">
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
-                                    <status-badge [label]="item?.Readed ? 'Leído' : 'No leído'"
-                                        [appearance]="item?.Readed ? 'default' : 'warning'" [size]="'m'" />
+                                    <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"
+                                        [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
                                 </grid>
                             </td>
                         </tr>
@@ -85,3 +79,6 @@
 
 
 </layout>
+
+<product-categories-drawer-draft [(show)]="facade.showProductCategoryDrawer"
+    (showChange)="facade.fetchProductCategories()" />

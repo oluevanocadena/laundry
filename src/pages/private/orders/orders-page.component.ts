@@ -7,7 +7,6 @@ import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn } from '@globals/interfaces/ui.interfaces';
-import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 @Component({
   selector: 'app-orders-page',
@@ -20,12 +19,6 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
   //Domains
   ordersDomain = OrdersDomain;
   deliveryDomain = DeliveryDomain;
-
-  showType: UITypeFilterShow = {
-    calendar: true,
-    search: true,
-    sort: true,
-  };
 
   constructor(
     public facade: OrdersMonitorFacade,

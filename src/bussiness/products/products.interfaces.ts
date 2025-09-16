@@ -3,6 +3,7 @@
 // ::::::::::::::::::::::::::::::::::::::
 
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
+import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
 import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
 
@@ -63,12 +64,6 @@ export interface ProductLocationPrice {
   Price: number;
 
   Location?: Location; // Only for UI
-}
-
-export interface ProductCategory extends UISelectOption {
-  id: string;
-  Name: string;
-  Deleted?: boolean;
 }
 
 export interface UnitMeasure extends UISelectOption {

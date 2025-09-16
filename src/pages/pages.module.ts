@@ -17,6 +17,8 @@ import { HomeModule } from '@pages/private/home/home.module';
 import { LocationsModule } from '@pages/private/locations/locations.module';
 import { NotificationsModule } from '@pages/private/notifications/notifications.module';
 import { OrdersModule } from '@pages/private/orders/orders.module';
+import { PluginsModule } from '@pages/private/plugins/plugins.module';
+import { ProductCategoriesModule } from '@pages/private/product-categories/product-categories.module';
 import { ProductsModule } from '@pages/private/products/products.module';
 import { ReportsModule } from '@pages/private/reports/reports.module';
 import { LoginModule } from '@pages/private/session/login.module';
@@ -27,7 +29,6 @@ import { UsersModule } from '@pages/private/users/users.module';
 
 import { LandingModule } from '@pages/public/landing/landing.module';
 import { PricingModule } from '@pages/public/pricing/pricing.module';
-import { PluginsModule } from './private/plugins/plugins.module';
 
 const components: any[] = [];
 
@@ -55,6 +56,7 @@ const components: any[] = [];
     OrdersModule,
     PricingModule,
     ProductsModule,
+    ProductCategoriesModule,
     ReportsModule,
     SettingsModule,
     SetupModule,

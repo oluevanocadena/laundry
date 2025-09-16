@@ -10,6 +10,8 @@ import { Notification } from '@bussiness/notifications/interfaces/notifications.
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
 import { SessionService } from '@bussiness/session/services/session.service';
 
+import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
+
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
@@ -21,6 +23,13 @@ import { StorageService } from '@services/common/storage.service';
   providedIn: 'root',
 })
 export class NotificationsMonitorFacade extends FacadeBase {
+  showType: UITypeFilterShow = {
+    calendar: false,
+    columns: false,
+    search: true,
+    sort: true,
+  };
+
   segments: NzSegmentedOption[] = [
     { label: 'Todas', value: '0' },
     { label: 'No leídas', value: 'false' },

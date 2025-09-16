@@ -33,6 +33,7 @@ export class TableFiltersComponent extends HelperPage {
 
   @Input() showType: UITypeFilterShow = {
     calendar: false,
+    columns: false,
     search: false,
     sort: false,
   };
@@ -118,10 +119,7 @@ export class TableFiltersComponent extends HelperPage {
   get showSelect() {
     return this.options && this.options.length > 0;
   }
-
-  get showColumns() {
-    return this.columns && this.columns.length > 0;
-  }
+ 
 
   get showSegments() {
     return this.segments && this.segments.length > 0;
@@ -135,11 +133,16 @@ export class TableFiltersComponent extends HelperPage {
     return this.showType.calendar;
   }
 
+  get showColumns() {
+    return this.showType.columns && this.columns && this.columns.length > 0;
+  }
+
   ngOnInit() {}
 }
 
 export interface UITypeFilterShow {
   calendar: boolean;
+  columns: boolean;
   search: boolean;
   sort: boolean;
 }

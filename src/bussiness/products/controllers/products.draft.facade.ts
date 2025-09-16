@@ -8,14 +8,11 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { StorageProp } from '@globals/types/storage.type';
 
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
+import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
+import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
 import { ProductsApiService } from '@bussiness/products/products.api.service';
-import {
-  Product,
-  ProductLocation,
-  ProductLocationPrice,
-} from '@bussiness/products/products.interfaces';
+import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
@@ -49,10 +46,11 @@ export class ProductsDraftFacade extends FacadeBase {
 
   constructor(
     public api: ProductsApiService,
+    public pcategoriesApi: ProductCategoriesApiService,
     public locationApi: LocationsApiService,
     public nzMessageService: NzMessageService,
     public router: Router,
-    public sessionService: SessionService
+    public sessionService: SessionService,
   ) {
     super(api);
   }
@@ -60,7 +58,7 @@ export class ProductsDraftFacade extends FacadeBase {
   override initialize() {
     super.initialize();
     this.api.getUnitMeasures();
-    this.api.getProductCategories();
+    this.pcategoriesApi.getProductCategories();
     this.locationApi.getLocations();
     this.fillForm();
   }
@@ -71,10 +69,7 @@ export class ProductsDraftFacade extends FacadeBase {
       const availability = this.product.value?.ProductLocations || [];
       this.locationPrices =
         locations.map((location: Location) => {
-          const price = prices.find(
-            (productLocationPrice) =>
-              productLocationPrice.LocationId === location.id
-          );
+          const price = prices.find((productLocationPrice) => productLocationPrice.LocationId === location.id);
           return {
             LocationId: location.id || '',
             ProductId: this.product.value?.id || '',
@@ -84,9 +79,7 @@ export class ProductsDraftFacade extends FacadeBase {
         }) || [];
       this.locationAvailability =
         locations?.map((loc) => {
-          const avaiLoc = availability.find(
-            (avaiLoc) => avaiLoc.LocationId === loc.id
-          );
+          const avaiLoc = availability.find((avaiLoc) => avaiLoc.LocationId === loc.id);
           return {
             IsEnabled: avaiLoc?.IsEnabled ?? true,
             LocationId: loc.id || '',
@@ -98,12 +91,10 @@ export class ProductsDraftFacade extends FacadeBase {
 
     this.price.onChange((value) => {
       if (this.samePrice.value === true) {
-        this.locationPrices = Array.from(this.locationPrices).map(
-          (location) => {
-            location.Price = this.price.value ?? 0;
-            return location;
-          }
-        );
+        this.locationPrices = Array.from(this.locationPrices).map((location) => {
+          location.Price = this.price.value ?? 0;
+          return location;
+        });
       }
     });
   }
@@ -128,11 +119,8 @@ export class ProductsDraftFacade extends FacadeBase {
         categoryId: product.ProductCategoryId,
         unitMeasureId: product.UnitMeasureId,
         samePrice:
-          product?.ProductLocationPrice?.length &&
-          product?.ProductLocationPrice?.length > 0
-            ? product?.ProductLocationPrice?.every(
-                (location) => location.Price === product.Price
-              )
+          product?.ProductLocationPrice?.length && product?.ProductLocationPrice?.length > 0
+            ? product?.ProductLocationPrice?.every((location) => location.Price === product.Price)
             : true,
       });
       this.urlImages = product?.ProductImages?.map((image) => image.Url) || [];
@@ -151,24 +139,20 @@ export class ProductsDraftFacade extends FacadeBase {
         ProductCategoryId: this.categoryId.value || '',
         UnitMeasureId: this.unitMeasureId.value || '',
         OrganizationId: this.sessionService.organizationId,
-        QtyStoresAvailable: this.locationAvailability.filter(
-          (location) => location.IsEnabled === true
-        ).length,
+        QtyStoresAvailable: this.locationAvailability.filter((location) => location.IsEnabled === true).length,
       };
       if (this.samePrice.value === true) {
-        this.locationPrices = Array.from(this.locationPrices).map(
-          (location) => {
-            location.Price = this.price.value ?? 0;
-            return location;
-          }
-        );
+        this.locationPrices = Array.from(this.locationPrices).map((location) => {
+          location.Price = this.price.value ?? 0;
+          return location;
+        });
       }
       this.api
         .saveProduct(
           product,
           JSON.parse(JSON.stringify(this.locationAvailability)),
           JSON.parse(JSON.stringify(this.locationPrices)),
-          JSON.parse(JSON.stringify(this.urlImages))
+          JSON.parse(JSON.stringify(this.urlImages)),
         )
         .then((product) => {
           this.nzMessageService.success('Producto guardado correctamente');

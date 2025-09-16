@@ -9,18 +9,18 @@
         <form *ngIf="showSelect" [formGroup]="formGroup" [width]="'150px'">
             <form-input type="select" formControlName="select" [placeholder]="'Seleccione'" [options]="options" />
         </form>
-        <grid *ngIf="showSegments" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-            <nz-segmented [nzOptions]="segments" [nzSize]="'small'"
-                (nzValueChange)="onSegmentChange($event)"></nz-segmented>
-        </grid>
-        <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
         <modal-columns-sort *ngIf="showSort" [defaultSortBy]="defaultSortBy" [columns]="columns"
             (onSortChange)="onSortChange($event)" />
+        <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
+        <grid *ngIf="showSegments" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+            <nz-segmented [nzOptions]="segments" [nzSize]="'default'"
+                (nzValueChange)="onSegmentChange($event)"></nz-segmented>
+        </grid>
     </grid>
 
     <!-- Mobile -->
     <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-        <form [formGroup]="formGroup">
+        <form *ngIf="showCalendar" [formGroup]="formGroup">
             <form-input type="date-range-dropdown" formControlName="date" [placeholder]="'Rango de fechas'" />
         </form>
         <button *ngIf="showSelect" outline small icon-google>
@@ -28,6 +28,11 @@
                 filter_list
             </span>
         </button>
+        <modal-columns-sort *ngIf="showSort" [defaultSortBy]="defaultSortBy" [columns]="columns"
+            (onSortChange)="onSortChange($event)" />
+        <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
+
+
         <grid *ngIf="showSegments" [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
             <button outline small icon-google nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
                 <span class="material-symbols-outlined f-20 f-06">
@@ -37,19 +42,16 @@
             <nz-dropdown-menu #menu="nzDropdownMenu">
                 <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0.5rem'" [width]="'230px'" [maxHeight]="'300px'"
                     class="bg-02 brdr-radius-6 shadow-01 scroll-v brdr">
-                    <nz-segmented [nzOptions]="segments" [nzSize]="'small'" nzVertical
+                    <nz-segmented [nzOptions]="segments" [nzSize]="'default'" nzVertical
                         (nzValueChange)="onSegmentChange($event)"></nz-segmented>
                 </grid>
             </nz-dropdown-menu>
         </grid>
-        <modal-columns-table *ngIf="showColumns" [columns]="columns" (columnsChange)="columnsChange.emit($event)" />
-        <modal-columns-sort *ngIf="showSort" [defaultSortBy]="defaultSortBy" [columns]="columns"
-            (onSortChange)="onSortChange($event)" />
     </grid>
 
     <!-- CTA -->
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
-        <modal-search *ngIf="showType.search" (onSearch)="onSearchChange($event)" /> 
+        <modal-search *ngIf="showType.search" (onSearch)="onSearchChange($event)" />
         <button *ngIf="!isMobileOrTablet" primary small (click)="onCtaClick.emit()">
             {{ctaLabel}}
         </button>

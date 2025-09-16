@@ -11,8 +11,8 @@
             </span>
         </grid>
 
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nueva sucursal'" [columns]="facade.columns"
-            [segments]="facade.segments" [showType]="facade.showType"
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nueva sucursal'"
+            [segments]="facade.segments" [showType]="facade.showType" [columns]="facade.columns"
             [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewLocationClick()"
             (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
 

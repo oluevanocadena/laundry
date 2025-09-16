@@ -10,6 +10,8 @@ import { CustomersApiService } from '@bussiness/customers/customers.api.service'
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
+import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
+
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
@@ -21,6 +23,13 @@ import { StorageService } from '@services/common/storage.service';
   providedIn: 'root',
 })
 export class CustomersMonitorFacade extends FacadeBase {
+  showType: UITypeFilterShow = {
+    calendar: false,
+    columns: false,
+    search: true,
+    sort: true,
+  };
+
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
   tableFilter = new SubjectProp<UITableFilterBase>(CustomerDefaultTableFilter);
   columns: UITableColumn[] = [];

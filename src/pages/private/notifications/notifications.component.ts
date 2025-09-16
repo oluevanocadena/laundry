@@ -11,11 +11,6 @@ import { UITypeFilterShow } from '@components/common/table-filters/table-filters
 })
 export class NotificationsPageComponent extends HelperPage implements AfterViewInit {
 
-  showType: UITypeFilterShow = {
-    calendar: true,
-    search: true,
-    sort: true,
-  };
 
   constructor(public facade: NotificationsMonitorFacade) {
     super();

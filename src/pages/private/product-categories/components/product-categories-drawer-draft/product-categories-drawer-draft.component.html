@@ -1,0 +1,72 @@
+<drawer [(show)]="show" (onClose)="close()" (onConfirm)="confirm()" [large]="isMobileOrTablet ? '100%' : '500px'"
+    [confirmStyle]="'success'" [closable]="false" [busy]="busy">
+    <grid title [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
+        <span class="f-16 f-03 fw-600 t-left">
+            {{facade.edition ? 'Editar categoría' : 'Nueva categoría'}}
+        </span>
+        <status-badge [label]="labelStatus" [appearance]="facade.edition ? 'success' : 'warning'" [size]="'m'" />
+    </grid>
+    <grid body [height]="'100%'">
+        <form [formGroup]="facade.formGroup" [height]="'100%'">
+            <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" class="baseline">
+                <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1.5rem 1.5rem'">
+                    <grid>
+                        <span class="f-13 f-06 f-lh-15">
+                            Cambia o agrega una categoría de producto.
+                        </span>
+                    </grid>
+                    <form-input [label]="'Nombre'" [type]="'text'" [placeholder]="'Nombre de la categoría'"
+                        formControlName="Name" [required]="true" />
+
+                    <grid>
+                        <span class="f-13 f-07 f-lh-15">
+                            Estos datos se usarán para generar estadísticas en la sección de analítica.
+                        </span>
+                    </grid>
+ 
+
+                </grid>
+                <grid *ngIf="facade.edition" [gap]="[16,16]" [direction]="'column'" [template]="'max-content 1fr'"
+                    [padding]="'1rem 1.5rem'" class="brdr-top bg-02">
+                    <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]" [padding]="'0.25rem 0 0 0'">
+                        <tui-icon [icon]="disabled ? '@tui.check' : '@tui.info'"
+                            [class]="disabled ? 'f-18 f-01 f-success' : 'f-18 f-01 f-warning'" />
+                    </grid>
+                    <grid [gap]="[0,8]" [direction]="'row'">
+                        <span class="f-15 f-lh-16 f-01 fw-600 t-left">
+                            {{ disabled ?
+                            'Habilitar categoría' :
+                            'Deshabilitar y/o eliminar' }}
+                        </span>
+                        <span class="f-14 f-lh-16 f-05 fw-400 t-left">
+                            {{ disabled ?
+                            'Habilitar una categoría permitirá crear nuevos productos en esta categoría.' :
+                            'Deshabilitar una categoría impedirá crear nuevos productos en esta categoría al confirmar esta
+                            acción.' }}
+                        </span>
+                        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr 1fr'" [padding]="'0.5rem 0 0 0'">
+                            <button *ngIf="facade.selectedProductCategory.value?.Disabled === false"
+                                (click)="onDisableOrEnableClick()" warning small
+                                [disabled]="canDisableOrDelete === false || busy" [showLoader]="busy">
+                                Deshabilitar
+                            </button>
+                            <button *ngIf="facade.selectedProductCategory.value?.Disabled === true"
+                                (click)="onDisableOrEnableClick()" success small
+                                [disabled]="canDisableOrDelete === false || busy" [showLoader]="busy">
+                                Habilitar
+                            </button>
+                            <button (click)="onDeleteClick()" danger small
+                                [disabled]="canDisableOrDelete === false || busy" [showLoader]="busy">
+                                Eliminar
+                            </button>
+                        </grid>
+                    </grid>
+                </grid>
+            </grid>
+        </form>
+    </grid>
+</drawer>
+
+<product-categories-confirm-delete-modal [(show)]="facade.showDeleteModal" (onConfirm)="onDelete()" />
+<product-categories-confirm-disable-modal [(show)]="facade.showDisableModal" (onConfirm)="onDisable()"
+    [disabled]="disabled" />

@@ -3,25 +3,24 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { StorageService } from '@services/common/storage.service';
 
-import { LocationsPageTableColumns } from '@bussiness/locations/constants/locations.columns.constants';
-import { LocationsDefaultTableFilter } from '@bussiness/locations/constants/locations.constants';
-import { LocationsDraftFacade } from '@bussiness/locations/controllers/locations.draft.facade';
-import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
-
+import { ProductCategoriesPageTableColumns } from '@bussiness/product-categories/constants/product-categories.columns.constants';
+import { ProductCategoriesDefaultTableFilter } from '@bussiness/product-categories/constants/product-categories.constants';
+import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
+import { ProductCategory } from '../interfaces/product-categories.interfaces';
+import { ProductCategoriesDraftFacade } from './product-categories.draft.facade';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LocationsMonitorFacade extends FacadeBase {
+export class ProductCategoriesMonitorFacade extends FacadeBase {
   //Flag Management
-  showLocationDrawer = false;
+  showProductCategoryDrawer = false;
 
   //showType
   showType: UITypeFilterShow = {
@@ -37,13 +36,13 @@ export class LocationsMonitorFacade extends FacadeBase {
     { label: 'Inactivas', value: 'true' },
   ];
 
-  tableFilter = new SubjectProp<UITableFilterBase>(LocationsDefaultTableFilter);
+  tableFilter = new SubjectProp<UITableFilterBase>(ProductCategoriesDefaultTableFilter);
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
-  columns = LocationsPageTableColumns;
+  columns = ProductCategoriesPageTableColumns;
 
   constructor(
-    public api: LocationsApiService,
-    public draftFacade: LocationsDraftFacade,
+    public api: ProductCategoriesApiService,
+    public draftFacade: ProductCategoriesDraftFacade,
     public storageService: StorageService,
   ) {
     super(api);
@@ -51,9 +50,8 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
-    console.log('👉🏽 initialize', this.storageService.get('LOCATIONS_COLUMNS'));
-    this.columns = this.storageService.get('LOCATIONS_COLUMNS') || UtilsDomain.clone(LocationsPageTableColumns);
-    this.fetchLocations();
+    this.columns = this.storageService.get('PRODUCT_CATEGORIES_COLUMNS') || UtilsDomain.clone(ProductCategoriesPageTableColumns);
+    this.fetchProductCategories();
     this.bindEvents();
   }
 
@@ -67,8 +65,8 @@ export class LocationsMonitorFacade extends FacadeBase {
    * Api
    */
 
-  fetchLocations() {
-    this.api.getPagedLocations({
+  fetchProductCategories() {
+    this.api.getPagedProductCategories({
       page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
       pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
       dateFrom: this.tableFilter.value?.dateFrom ?? null,
@@ -86,29 +84,29 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   onTablePaginationChange(filter: UITablePagination) {
     this.tablePagination.value = filter;
-    this.fetchLocations();
+    this.fetchProductCategories();
   }
 
   onColumnsChange(columns: UITableColumn[]) {
     console.log('👉🏽 save columns', columns);
-    this.storageService.set('LOCATIONS_COLUMNS', columns);
+    this.storageService.set('PRODUCT_CATEGORIES_COLUMNS', columns);
     this.columns = UtilsDomain.clone(columns);
   }
 
   onFiltersChange(filter: UITableFilterBase) {
     console.log('👉🏽 filter', filter);
     this.tableFilter.value = filter as UITableFilterBase;
-    this.fetchLocations();
+    this.fetchProductCategories();
   }
 
-  onNewLocationClick() {
-    this.draftFacade.selectedLocation.value = null;
-    this.showLocationDrawer = true;
+  onNewProductCategoryClick() {
+    this.draftFacade.selectedProductCategory.value = null;
+    this.showProductCategoryDrawer = true;
   }
 
-  onLocationClick(location: Location) {
-    this.draftFacade.selectedLocation.value = location;
-    this.showLocationDrawer = true;
+  onProductCategoryClick(productCategory: ProductCategory) {
+    this.draftFacade.selectedProductCategory.value = productCategory;
+    this.showProductCategoryDrawer = true;
   }
 
   /**

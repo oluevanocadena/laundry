@@ -41,8 +41,8 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() timeMask: MaskitoTimeMode = 'HH:MM';
 
   //Options
-  private _options: UISelectOption[] | null = [];
-  @Input() set options(options: UISelectOption[] | null) {
+  private _options: (UISelectOption | any)[] | null = [];
+  @Input() set options(options: (UISelectOption | any)[] | null) {
     this._options = options;
   }
   get options() {

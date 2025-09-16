@@ -8,19 +8,16 @@ import { BusyProp } from '@globals/types/busy.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
+import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
 import {
   Product,
-  ProductCategory,
   ProductLocation,
   ProductLocationPrice,
   ProductPagedResults,
   UnitMeasure,
 } from '@bussiness/products/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
-import {
-  SupabaseBuckets,
-  SupabaseTables,
-} from '@globals/constants/supabase-tables.constants';
+import { SupabaseBuckets, SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -31,28 +28,19 @@ export class ProductsApiService implements FacadeApiBase {
 
   products = new SubjectProp<Product[]>([]);
   pagedProducts = new SubjectProp<ProductPagedResults>(null);
-  productCategories = new SubjectProp<ProductCategory[]>([]);
   unitMeasures = new SubjectProp<UnitMeasure[]>([]);
 
-  constructor(
-    public nzMessageService: NzMessageService,
-    public sessionService: SessionService
-  ) {
+  constructor(public nzMessageService: NzMessageService, public sessionService: SessionService) {
     this.client = createClient(supabase.url, supabase.key);
   }
 
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
+  private async executeWithBusy<T>(callback: () => Promise<T>, message?: string): Promise<T | null> {
     this.busy.value = true;
     try {
       const result = await callback();
       return result;
     } catch (error) {
-      this.nzMessageService.error(
-        '¡Ocurrió un error al intentar realizar la acción!'
-      );
+      this.nzMessageService.error('¡Ocurrió un error al intentar realizar la acción!');
       console.error('⛔ Error:', error);
       return null;
     } finally {
@@ -62,25 +50,12 @@ export class ProductsApiService implements FacadeApiBase {
 
   getUnitMeasures() {
     this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.UnitMeasures)
-        .select('*')
-        .eq('Deleted', false);
+      const { data, error } = await this.client.from(SupabaseTables.UnitMeasures).select('*').eq('Deleted', false);
       if (error) throw error;
       this.unitMeasures.value = data || [];
     }, 'Fetching Unit Measures');
   }
 
-  getProductCategories() {
-    this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.ProductCategories)
-        .select('*')
-        .eq('Deleted', false);
-      if (error) throw error;
-      this.productCategories.value = data || [];
-    }, 'Fetching Product Categories');
-  }
 
   getProducts(search: string, page: number = 1, pageSize: number = 50) {
     this.executeWithBusy(async () => {
@@ -91,21 +66,18 @@ export class ProductsApiService implements FacadeApiBase {
               ProductCategory: ${SupabaseTables.ProductCategories}(Name),
               ProductImages: ${SupabaseTables.ProductImages}(*),
               ProductLocationPrice: ${SupabaseTables.ProductLocationPrices}(*, Location: ${SupabaseTables.Locations}(*)),
-              UnitMeasure: ${SupabaseTables.UnitMeasures}(*) `
+              UnitMeasure: ${SupabaseTables.UnitMeasures}(*) `,
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
         .eq('OrganizationId', this.sessionService.organizationId);
       if (search) {
         query = query.or(
-          `Name.ilike.%${search}%,Description.ilike.%${search}%,Barcode.ilike.%${search}%,SKU.ilike.%${search}%`
+          `Name.ilike.%${search}%,Description.ilike.%${search}%,Barcode.ilike.%${search}%,SKU.ilike.%${search}%`,
         );
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
-      const { data, error } = await query.overrideTypes<
-        Product[],
-        { merge: false }
-      >();
+      const { data, error } = await query.overrideTypes<Product[], { merge: false }>();
       if (error) throw error;
       this.products.value = data || [];
     }, 'Fetching Products');
@@ -120,7 +92,7 @@ export class ProductsApiService implements FacadeApiBase {
               ProductCategory: ${SupabaseTables.ProductCategories}(Name), 
               ProductImages: ${SupabaseTables.ProductImages}(*),
               ProductLocationPrice: ${SupabaseTables.ProductLocationPrices}(*, Location: ${SupabaseTables.Locations}(*)),
-              UnitMeasure: ${SupabaseTables.UnitMeasures}(Name, UnitType) `
+              UnitMeasure: ${SupabaseTables.UnitMeasures}(Name, UnitType) `,
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
@@ -139,27 +111,18 @@ export class ProductsApiService implements FacadeApiBase {
       const uniqueName = `${uuidv4()}.${extension}`;
 
       // Subir con ruta en carpeta "public" (por RLS)
-      const { data, error } = await this.client.storage
-        .from(SupabaseBuckets.Products)
-        .upload(`public/${uniqueName}`, file);
+      const { data, error } = await this.client.storage.from(SupabaseBuckets.Products).upload(`public/${uniqueName}`, file);
 
       if (error) throw error;
 
       // Obtener la URL pública
-      const { data: publicUrl } = this.client.storage
-        .from(SupabaseBuckets.Products)
-        .getPublicUrl(`public/${uniqueName}`);
+      const { data: publicUrl } = this.client.storage.from(SupabaseBuckets.Products).getPublicUrl(`public/${uniqueName}`);
 
       return publicUrl.publicUrl;
     }, 'Uploading Product Image');
   }
 
-  async saveProduct(
-    product: Product,
-    locations: ProductLocation[],
-    locationPrices: ProductLocationPrice[],
-    images: string[]
-  ) {
+  async saveProduct(product: Product, locations: ProductLocation[], locationPrices: ProductLocationPrice[], images: string[]) {
     return this.executeWithBusy(async () => {
       // 1️⃣ Guardar o actualizar producto
       const { data: productSaved, error: productError } = await this.client
@@ -220,9 +183,7 @@ export class ProductsApiService implements FacadeApiBase {
           Deleted: false,
         }));
 
-        const { error: imageError } = await this.client
-          .from(SupabaseTables.ProductImages)
-          .upsert(productImages);
+        const { error: imageError } = await this.client.from(SupabaseTables.ProductImages).upsert(productImages);
 
         if (imageError) throw imageError;
         console.log('🤔 Images inserted');
@@ -239,15 +200,13 @@ export class ProductsApiService implements FacadeApiBase {
         console.log('🤔 Location prices deleted');
 
         // 8️⃣ Insertar nuevos precios
-        const { error: locationPriceError } = await this.client
-          .from(SupabaseTables.ProductLocationPrices)
-          .upsert(
-            locationPrices.map((loc) => ({
-              ProductId: productId,
-              LocationId: loc.LocationId,
-              Price: loc.Price,
-            }))
-          );
+        const { error: locationPriceError } = await this.client.from(SupabaseTables.ProductLocationPrices).upsert(
+          locationPrices.map((loc) => ({
+            ProductId: productId,
+            LocationId: loc.LocationId,
+            Price: loc.Price,
+          })),
+        );
         if (locationPriceError) throw locationPriceError;
         console.log('🤔 Location prices inserted');
       }
@@ -256,7 +215,6 @@ export class ProductsApiService implements FacadeApiBase {
       return { ...productSaved };
     }, 'Saving Product');
   }
- 
 
   deleteProduct(productId: string) {
     return this.executeWithBusy(async () => {

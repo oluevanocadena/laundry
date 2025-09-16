@@ -15,8 +15,8 @@
             </grid>
         </grid>
 
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Crear pedido'" [columns]="facade.columns"
-            [showType]="showType" [defaultSortBy]="facade.tableFilter.value?.sortBy!"
+        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo cliente'" [columns]="facade.columns"
+            [showType]="facade.showType" [defaultSortBy]="facade.tableFilter.value?.sortBy!"
             (onCtaClick)="facade.onNewCustomer()" (onFiltersChange)="facade.onFiltersChange($event)"
             (columnsChange)="facade.onColumnsChange($event)" />
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"

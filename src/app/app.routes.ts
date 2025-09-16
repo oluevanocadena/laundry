@@ -12,6 +12,7 @@ import { NotificationsPageComponent } from '@pages/private/notifications/notific
 import { OrdersDraftPageComponent } from '@pages/private/orders/draft/orders-draft-page.component';
 import { OrdersPageComponent } from '@pages/private/orders/orders-page.component';
 import { PluginsPageComponent } from '@pages/private/plugins/plugins-page.component';
+import { ProductCategoriesPageComponent } from '@pages/private/product-categories/product-categories.component';
 import { ProductsDraftComponent } from '@pages/private/products/draft/products-draft.component';
 import { ProductsPageComponent } from '@pages/private/products/products-page.component';
 import { ReportsPageComponent } from '@pages/private/reports/reports.component';
@@ -81,6 +82,11 @@ export const routes: Routes = [
     path: 'orders/edit/:id',
     canActivate: [SessionGuard],
     component: OrdersDraftPageComponent,
+  },
+  {
+    path: 'product-categories',
+    canActivate: [SessionGuard],
+    component: ProductCategoriesPageComponent,
   },
   {
     path: 'products',

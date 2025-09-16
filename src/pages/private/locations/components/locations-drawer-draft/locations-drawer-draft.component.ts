@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LocationsDraftFacade } from '@bussiness/locations/controllers/locations.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
+import { TuiAppearanceOptions } from '@taiga-ui/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -28,10 +29,7 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
   @Input() confirmLabel = 'Confirmar';
   @Input() confirmStyle: DrawerConfirmStyleButton = 'success';
 
-  constructor(
-    public facade: LocationsDraftFacade,
-    public nzMessageService: NzMessageService
-  ) {
+  constructor(public facade: LocationsDraftFacade, public nzMessageService: NzMessageService) {
     super();
   }
 
@@ -49,9 +47,7 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
 
   confirm() {
     if (!this.facade.formGroup.valid) {
-      this.nzMessageService.error(
-        'Por favor, completa todos los campos requeridos.😉'
-      );
+      this.nzMessageService.error('Por favor, completa todos los campos requeridos.😉');
       return;
     }
 
@@ -60,18 +56,14 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
         this.facade.api.getLocations();
         this.close(true);
       } else {
-        this.nzMessageService.error(
-          '¡Ocurrió un error al guardar los cambios!'
-        );
+        this.nzMessageService.error('¡Ocurrió un error al guardar los cambios!');
       }
     });
   }
 
   onDisableOrEnableClick() {
     if (this.facade.api.locations.value?.length === 1) {
-      this.nzMessageService.error(
-        '¡No se puede deshabilitar la única sucursal!'
-      );
+      this.nzMessageService.error('¡No se puede deshabilitar la única sucursal!');
       return;
     }
     this.facade.showDisableModal = true;
@@ -79,9 +71,7 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
 
   onDeleteClick() {
     if (this.facade.api.locations.value?.length === 1) {
-      this.nzMessageService.error(
-        '¡No se puede eliminar la única sucursal!'
-      );
+      this.nzMessageService.error('¡No se puede eliminar la única sucursal!');
       return;
     }
     this.facade.showDeleteModal = true;
@@ -90,20 +80,13 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
   onDisable() {
     const location = this.facade.selectedLocation.value;
     if (location?.id) {
-      this.facade
-        .disableLocation(location.id, location.Disabled || false)
-        .then(() => {
-          this.facade.selectedLocation.value!.Disabled =
-            !this.facade.selectedLocation.value!.Disabled;
-          this.nzMessageService.success(
-            '¡Sucursal ' +
-              (this.facade.selectedLocation.value!.Disabled
-                ? 'habilitada'
-                : 'deshabilitada') +
-              ' correctamente!'
-          );
-          this.close(true);
-        });
+      this.facade.disableLocation(location.id, location.Disabled || false).then(() => {
+        this.facade.selectedLocation.value!.Disabled = !this.facade.selectedLocation.value!.Disabled;
+        this.nzMessageService.success(
+          '¡Sucursal ' + (this.facade.selectedLocation.value!.Disabled ? 'habilitada' : 'deshabilitada') + ' correctamente!',
+        );
+        this.close(true);
+      });
     }
   }
 
@@ -119,10 +102,12 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
    */
 
   get labelStatus(): string {
-    return this.facade.edition &&
-      this.facade.selectedLocation.value?.Disabled === false
-      ? 'Activa'
-      : 'Borrador';
+    if (!this.facade.edition) return 'Borrador';
+    return this.facade.selectedLocation.value?.Disabled ? 'Inactiva' : 'Activa';
+  }
+
+  get appearance(): TuiAppearanceOptions['appearance'] {
+    return this.facade.selectedLocation.value?.Disabled ? 'error' : this.facade.edition ? 'success' : 'warning';
   }
 
   get disabled(): boolean {
@@ -144,17 +129,6 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
   ngOnInit() {}
 }
 
-export type DrawerConfirmStyleButton =
-  | 'danger'
-  | 'primary'
-  | 'warning'
-  | 'success'
-  | 'info';
+export type DrawerConfirmStyleButton = 'danger' | 'primary' | 'warning' | 'success' | 'info';
 
-export const BUTTON_STYLES = [
-  'danger',
-  'primary',
-  'warning',
-  'success',
-  'info',
-] as const;
+export const BUTTON_STYLES = ['danger', 'primary', 'warning', 'success', 'info'] as const;

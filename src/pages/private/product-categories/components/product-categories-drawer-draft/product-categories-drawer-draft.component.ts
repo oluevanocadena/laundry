@@ -83,6 +83,7 @@ export class ProductCategoriesDrawerDraftComponent extends HelperPage implements
             (this.facade.selectedProductCategory.value!.Disabled ? 'habilitada' : 'deshabilitada') +
             ' correctamente!',
         );
+        this.facade.showDisableModal = false;
         this.close(true);
       });
     }
@@ -92,6 +93,7 @@ export class ProductCategoriesDrawerDraftComponent extends HelperPage implements
     const productCategory = this.facade.selectedProductCategory.value;
     if (productCategory && productCategory.id) {
       this.facade.deleteProductCategory(productCategory.id.toString());
+      this.facade.showDeleteModal = false;
     }
   }
 

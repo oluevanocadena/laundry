@@ -1,10 +1,10 @@
 <drawer [(show)]="show" (onClose)="close()" (onConfirm)="confirm()" [large]="isMobileOrTablet ? '100%' : '500px'" [confirmStyle]="'success'"
-    [closable]="false" [busy]="busy">
+    [closable]="true" [busy]="busy">
     <grid title [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
         <span class="f-16 f-03 fw-600 t-left">
             {{facade.edition ? 'Editar sucursal' : 'Nueva sucursal'}}
         </span>
-        <status-badge [label]="labelStatus" [appearance]="facade.edition ? 'success' : 'warning'" [size]="'m'" />
+        <status-badge [label]="labelStatus" [appearance]="appearance" [size]="'m'" />
     </grid>
     <grid body [height]="'100%'">
         <form [formGroup]="facade.formGroup" [height]="'100%'">
@@ -67,13 +67,13 @@
                             'Habilitar' :
                             'Deshabilitar y/o eliminar' }}
                         </span>
-                        <span class="f-14 f-lh-16 f-05 fw-400 t-left">
+                        <span class="f-13 f-lh-16 f-06 fw-400 t-left">
                             {{ disabled ?
                             'Habilitar una sucursal permitirá crear nuevos pedidos al instante.' :
                             'Deshabilitar una sucursal impedirá crear nuevos pedidos en esta sucursal al confirmar esta
                             acción.' }}
                         </span>
-                        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr 1fr'" [padding]="'0.5rem 0 0 0'">
+                        <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr 1fr'" [padding]="'1rem 0 0 0'">
                             <button *ngIf="facade.selectedLocation.value?.Disabled === false"
                                 (click)="onDisableOrEnableClick()" warning small
                                 [disabled]="canDisableOrDelete === false || busy" [showLoader]="busy">

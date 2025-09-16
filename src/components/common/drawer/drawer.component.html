@@ -1,8 +1,8 @@
-<nz-drawer [nzClosable]="closable" [nzMaskClosable]="closable" [(nzVisible)]="show" [nzPlacement]="'right'"
+<nz-drawer [nzClosable]="false" [nzMaskClosable]="closable" [(nzVisible)]="show" [nzPlacement]="'right'"
     [nzTitle]="undefined" (nzOnClose)="close()" [nzWidth]="large">
     <ng-container *nzDrawerContent>
-        <grid [direction]="'row'" [gap]="[0,0]" [height]="isMobileOrTablet ? 'calc(100vh - 24px)' : '100vh'" [padding]="'0rem'"
-            [template]="'max-content 1fr max-content'">
+        <grid [direction]="'row'" [gap]="[0,0]" [height]="isMobileOrTablet ? 'calc(100vh - 24px)' : '100vh'"
+            [padding]="'0rem'" [template]="'max-content 1fr max-content'">
             <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'0.75rem 1.5rem'"
                 class="brdr-bottom">
                 <span class="f-16 f-03 fw-600 t-left">

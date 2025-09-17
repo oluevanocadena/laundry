@@ -1,16 +1,47 @@
 import { Injectable } from '@angular/core';
-import { FacadeBase } from '@globals/types/facade.base';
-import { UsersApiService } from '../services/users.api.service';
+import { Router } from '@angular/router';
 import { routes } from '@app/routes';
-import { Router } from '@angular/router'; 
-import { Account } from '../users.interfaces';
+
+import { UsersPageTableColumns } from '@bussiness/users/constants/users.columns.constant';
+import { UsersDefaultTableFilter } from '@bussiness/users/constants/users.constants';
+import { Account } from '@bussiness/users/interfaces/users.interfaces';
+import { UsersApiService } from '@bussiness/users/services/users.api.service';
+import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
+
+import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
+import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { FacadeBase } from '@globals/types/facade.base';
+import { SubjectProp } from '@globals/types/subject.type';
+import { UtilsDomain } from '@globals/utils/utils.domain';
+import { StorageService } from '@services/common/storage.service';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersMonitorFacade extends FacadeBase {
-  constructor(public api: UsersApiService, public router: Router) {
+  showType: UITypeFilterShow = {
+    calendar: false,
+    columns: false,
+    search: true,
+    sort: true,
+  };
+
+  segments: NzSegmentedOption[] = [
+    { label: 'Todos', value: '0' },
+    { label: 'Activos', value: 'true' },
+    { label: 'Inactivos', value: 'false' },
+  ];
+
+  tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
+  tableFilter = new SubjectProp<UITableFilterBase>(UsersDefaultTableFilter);
+  columns = UsersPageTableColumns;
+
+  constructor(public api: UsersApiService, public router: Router, public storageService: StorageService) {
     super(api);
+    this.columns = this.storageService.get('USERS_COLUMNS') || UtilsDomain.clone(UsersPageTableColumns);
+    this.fetchUsers();
+    this.bindEvents();
   }
 
   override initialize() {}
@@ -26,12 +57,36 @@ export class UsersMonitorFacade extends FacadeBase {
    */
 
   fetchUsers() {
-    this.api.getUsers();
+    this.api.getPagedUsers({
+      page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
+      pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
+      sortBy: this.tableFilter.value?.sortBy ?? null,
+      sortOrder: this.tableFilter.value?.sortOrder ?? 'asc',
+      search: this.tableFilter.value?.search ?? null,
+      disabled: this.getSegmentDisabled(this.tableFilter.value?.segment ?? '0'),
+    });
   }
 
   /**
    * UI Events
    */
+
+  onTablePaginationChange(filter: UITablePagination) {
+    this.tablePagination.value = filter;
+    this.fetchUsers();
+  }
+
+  onColumnsChange(columns: UITableColumn[]) {
+    console.log('👉🏽 save columns', columns);
+    this.storageService.set('USERS_COLUMNS', columns);
+    this.columns = UtilsDomain.clone(columns);
+  }
+
+  onFiltersChange(filter: UITableFilterBase) {
+    console.log('👉🏽 filter', filter);
+    this.tableFilter.value = filter as UITableFilterBase;
+    this.fetchUsers();
+  }
 
   onNewUser() {
     this.router.navigate([routes.UserDraft]);
@@ -41,5 +96,20 @@ export class UsersMonitorFacade extends FacadeBase {
     this.router.navigate([routes.UserDraft]);
   }
 
+  /**
+   * Getters
+   */
 
+  getSegmentDisabled(segment: string): boolean | null {
+    switch (segment) {
+      case '0':
+        return null;
+      case '1':
+        return true;
+      case '2':
+        return false;
+      default:
+        return null;
+    }
+  }
 }

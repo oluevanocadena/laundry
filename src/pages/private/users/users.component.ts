@@ -13,6 +13,26 @@ export class UsersPageComponent extends HelperPage implements AfterViewInit {
     super();
   }
   /**
+   * Getters
+   */
+
+  get rowCount() {
+    return this.facade.api.pagedUsers.value?.count ?? 0;
+  }
+
+  get columns() {
+    return this.facade.columns;
+  }
+
+  get data() {
+    return this.facade.api.pagedUsers.value?.data ?? [];
+  }
+
+  get busy() {
+    return this.facade.api.busy.value;
+  }
+
+  /**
    * Lifecycle
    */
 

@@ -4,7 +4,7 @@
 
 import { DeliveryTypes, DiscountTypes, PaymentMethods } from '@bussiness/orders/types/orders.types';
 import { Organization } from '@bussiness/session/interfaces/organizations.interface';
-import { Account } from '@bussiness/users/users.interfaces';
+import { Account } from '@bussiness/users/interfaces/users.interfaces';
 import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
 import { Customer } from '../../customers/customers.interfaces';
 import { OrderItem } from './orders.items.interfaces';

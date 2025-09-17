@@ -1,58 +1,50 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '@environments/environment';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { SessionService } from '@bussiness/session/services/session.service';
-import { Account } from '@bussiness/users/users.interfaces';
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
-import { SubjectProp } from '@globals/types/subject.type';
+import { Account, UsersRequest } from '@bussiness/users/interfaces/users.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { PagedResults } from '@globals/interfaces/supabase.interface';
+import { ApiBaseService } from '@globals/services/api.service.base';
+import { SubjectProp } from '@globals/types/subject.type';
+import { UsersQueryDomain } from '../domains/users.query.domain';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client: SupabaseClient;
-
+export class UsersApiService extends ApiBaseService {
   accounts = new SubjectProp<Account[]>([]);
+  pagedUsers = new SubjectProp<PagedResults<Account>>(null);
 
-  constructor(
-    public nzMessageService: NzMessageService,
-    public sessionService: SessionService
-  ) {
-    this.client = createClient(supabase.url, supabase.key);
+  constructor(public sessionService: SessionService) {
+    super();
   }
 
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error(
-        '¡Ocurrió un error al intentar realizar la acción!'
-      );
-      console.error('⛔ Error:', error);
-      return null;
-    } finally {
-      this.busy.value = false;
-    }
+  getPagedUsers(request: UsersRequest) {
+    return this.executeWithBusy(async () => {
+      const query = UsersQueryDomain.buildQuery(request, this.client, this.sessionService);
+      const countQuery = UsersQueryDomain.buildTotalCountQuery(request, this.client, this.sessionService);
+
+      const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
+      const { data, error } = queryResult;
+      const totalCount = totalCountResult.count ?? 0;
+      this.pagedUsers.value = {
+        data: (data as unknown as Account[]) ?? [],
+        count: totalCount,
+      };
+      return super.handleResponse(data, error);
+    }, 'Fetching Users');
   }
 
   getUsers() {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(SupabaseTables.Accounts)
-        .select(`*, Organization: ${SupabaseTables.Organizations}(*)`);
-      if (error) throw error;
+        .select(`*, Organization: ${SupabaseTables.Organizations}(*)`)
+        .eq('OrganizationId', this.sessionService.organizationId)
+        .eq('Deleted', false);
+
       this.accounts.value = data as unknown as Account[];
-      return data;
+      return super.handleResponse(data as unknown as Account[], error);
     });
   }
 }

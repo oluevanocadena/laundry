@@ -1,48 +1,22 @@
 import { Injectable } from '@angular/core';
-import { supabase } from '@environments/environment';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
+import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
+import { ApiBaseService } from '@globals/services/api.service.base';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RolesApiService implements FacadeApiBase {
-  public busy = new BusyProp(false);
-  public client: SupabaseClient;
-
-  constructor(public nzMessageService: NzMessageService) {
-    this.client = createClient(supabase.url, supabase.key);
-  }
-
-  private async executeWithBusy<T>(
-    callback: () => Promise<T>,
-    message?: string
-  ): Promise<T | null> {
-    console.log(`🚀 [Session API] ${message || 'Executing operation'}`);
-    this.busy.value = true;
-    try {
-      const result = await callback();
-      return result;
-    } catch (error) {
-      this.nzMessageService.error('Ocurrió un error al realizar la acción');
-      console.error('⛔ Error:', error);
-      return error as any;
-    } finally {
-      this.busy.value = false;
-    }
+export class RolesApiService extends ApiBaseService {
+  constructor(public sessionService: SessionService) {
+    super();
   }
 
   getRoles() {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.Roles)
-        .select('*');
-      if (error) throw error;
-      return data;
+      const { data, error } = await this.client.from(SupabaseTables.Roles).select('*').eq('Deleted', false);
+      return super.handleResponse(data as unknown as Role[], error);
     });
   }
 }

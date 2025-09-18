@@ -1,4 +1,5 @@
 import { Organization } from '@bussiness/session/interfaces/organizations.interface';
+import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 
 export interface Account {
@@ -28,13 +29,8 @@ export interface Account {
 
   OrganizationId: string;
   Organization?: Organization;
-}
 
-export interface Role {
-  id?: string; // uuid
-  createdAt?: string;
-  Name: string;
-  Description?: string;
+  AccountRoles?: AccountRole[]; // For UI only
 }
 
 export interface AccountRole {

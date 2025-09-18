@@ -69,10 +69,7 @@ export class FormInputComponent implements ControlValueAccessor {
   protected stringify: TuiStringHandler<UISelectOption> = (x) => {
     return x.Name;
   };
-  protected identityMatcher: TuiIdentityMatcher<UISelectOption> = (
-    a: UISelectOption | string,
-    b: UISelectOption | string,
-  ) => {
+  protected identityMatcher: TuiIdentityMatcher<UISelectOption> = (a: UISelectOption | string, b: UISelectOption | string) => {
     let result = false;
     if (typeof a === 'string' && typeof b === 'object') {
       result = a === b.id;
@@ -101,6 +98,8 @@ export class FormInputComponent implements ControlValueAccessor {
     return this.isIos ? '+[0-9-]{1,20}' : null;
   }
 
+  isDisabled = false;
+
   constructor() {}
 
   setupSearchDebounce(): void {
@@ -121,6 +120,15 @@ export class FormInputComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+    if (isDisabled) {
+      this.valueControl.disable({ emitEvent: false });
+    } else {
+      this.valueControl.enable({ emitEvent: false });
+    }
   }
 
   onInputSearch(value: any): void {

@@ -7,7 +7,11 @@ export class UsersQueryDomain {
   static buildQuery(request: UsersRequest, client: SupabaseClient, sessionService: SessionService) {
     let query = client
       .from(SupabaseTables.Accounts)
-      .select('*')
+      .select(
+        `*, 
+        Organization: ${SupabaseTables.Organizations}(*), 
+        AccountRoles: ${SupabaseTables.AccountRoles}(*, Role: ${SupabaseTables.Roles}(*))`,
+      )
       .eq('OrganizationId', sessionService.organizationId)
       .eq('Deleted', false);
 

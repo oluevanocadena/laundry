@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { UsersPageTableColumns } from '@bussiness/users/constants/users.columns.constant';
 import { UsersDefaultTableFilter } from '@bussiness/users/constants/users.constants';
 import { Account } from '@bussiness/users/interfaces/users.interfaces';
-import { UsersApiService } from '@bussiness/users/services/users.api.service';
+import { AccountsApiService } from '@bussiness/users/services/users.api.service';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
@@ -14,12 +15,12 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 import { StorageService } from '@services/common/storage.service';
-import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
+import { StorageProp } from '@globals/types/storage.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersMonitorFacade extends FacadeBase {
+export class AccountsMonitorFacade extends FacadeBase {
   showType: UITypeFilterShow = {
     calendar: false,
     columns: false,
@@ -37,7 +38,9 @@ export class UsersMonitorFacade extends FacadeBase {
   tableFilter = new SubjectProp<UITableFilterBase>(UsersDefaultTableFilter);
   columns = UsersPageTableColumns;
 
-  constructor(public api: UsersApiService, public router: Router, public storageService: StorageService) {
+  selectedAccount = new StorageProp<Account>(null, 'ACCOUNT_SELECTED');
+
+  constructor(public api: AccountsApiService, public router: Router, public storageService: StorageService) {
     super(api);
     this.columns = this.storageService.get('USERS_COLUMNS') || UtilsDomain.clone(UsersPageTableColumns);
     this.fetchUsers();
@@ -93,8 +96,10 @@ export class UsersMonitorFacade extends FacadeBase {
   }
 
   onUserClick(user: Account) {
+    this.selectedAccount.value = user;
     this.router.navigate([routes.UserDraft]);
   }
+
 
   /**
    * Getters

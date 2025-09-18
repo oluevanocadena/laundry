@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { UsersMonitorFacade } from '@bussiness/users/controllers/users.monitor.facade';
+import { AccountsMonitorFacade } from '@bussiness/users/controllers/users.monitor.facade';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({
@@ -9,7 +9,7 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersPageComponent extends HelperPage implements AfterViewInit {
-  constructor(public facade: UsersMonitorFacade) {
+  constructor(public facade: AccountsMonitorFacade) {
     super();
   }
   /**

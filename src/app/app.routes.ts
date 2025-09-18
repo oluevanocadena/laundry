@@ -22,6 +22,7 @@ import { RegisterPageComponent } from '@pages/private/session/register/register-
 import { SettingsPageComponent } from '@pages/private/settings/settings-page.component';
 import { SetupPageComponent } from '@pages/private/setup/setup.component';
 import { SupportPageComponent } from '@pages/private/support/support.component';
+import { UsersDraftComponent } from '@pages/private/users/draft/users-draft.component';
 import { UsersPageComponent } from '@pages/private/users/users.component';
 
 import { LandingComponent } from '@pages/public/landing/landing.component';
@@ -53,11 +54,6 @@ export const routes: Routes = [
     component: CustomersDraftComponent,
   },
   {
-    path: 'customers/edit/:id',
-    canActivate: [SessionGuard],
-    component: CustomersDraftComponent,
-  },
-  {
     path: 'locations',
     canActivate: [SessionGuard],
     component: LocationsPageComponent,
@@ -79,11 +75,6 @@ export const routes: Routes = [
     component: OrdersDraftPageComponent,
   },
   {
-    path: 'orders/edit/:id',
-    canActivate: [SessionGuard],
-    component: OrdersDraftPageComponent,
-  },
-  {
     path: 'product-categories',
     canActivate: [SessionGuard],
     component: ProductCategoriesPageComponent,
@@ -98,12 +89,8 @@ export const routes: Routes = [
     canActivate: [SessionGuard],
     component: ProductsDraftComponent,
   },
-  {
-    path: 'products/edit/:id',
-    canActivate: [SessionGuard],
-    component: ProductsDraftComponent,
-  },
   { path: 'users', canActivate: [SessionGuard], component: UsersPageComponent },
+  { path: 'users/draft', canActivate: [SessionGuard], component: UsersDraftComponent },
   {
     path: 'reports',
     canActivate: [SessionGuard],

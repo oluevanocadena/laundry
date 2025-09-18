@@ -7,11 +7,12 @@ import { PagedResults } from '@globals/interfaces/supabase.interface';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UsersQueryDomain } from '../domains/users.query.domain';
+import { UtilsDomain } from '@globals/utils/utils.domain';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UsersApiService extends ApiBaseService {
+export class AccountsApiService extends ApiBaseService {
   accounts = new SubjectProp<Account[]>([]);
   pagedUsers = new SubjectProp<PagedResults<Account>>(null);
 
@@ -39,12 +40,64 @@ export class UsersApiService extends ApiBaseService {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client
         .from(SupabaseTables.Accounts)
-        .select(`*, Organization: ${SupabaseTables.Organizations}(*)`)
+        .select(
+          `*, 
+          Organization: ${SupabaseTables.Organizations}(*), 
+          AccountRoles: ${SupabaseTables.AccountRoles}(*, Role: ${SupabaseTables.Roles}(*))`,
+        )
         .eq('OrganizationId', this.sessionService.organizationId)
         .eq('Deleted', false);
 
       this.accounts.value = data as unknown as Account[];
       return super.handleResponse(data as unknown as Account[], error);
+    });
+  }
+
+  saveAccount(account: Account) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.from(SupabaseTables.Accounts).upsert(account).select().single();
+
+      //Comporobar en aith supabase Auhentiucation no table si existe el usuario, si no creatlo
+      const { data: existingUser, error: existingUserError } = await this.client.auth.admin.getUserById(account.Email);
+      if (existingUserError) {
+        return super.handleResponse(null, existingUserError);
+      }
+      if (!existingUser) {
+        const { data, error } = await this.client.auth.admin.createUser({
+          email: account.Email,
+          password: UtilsDomain.generateRandomString(10),
+        });
+      }
+
+      return super.handleResponse(data as unknown as Account, error);
+    });
+  }
+
+  getAccount(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.from(SupabaseTables.Accounts).select('*').eq('id', id).single();
+      return super.handleResponse(data as unknown as Account, error);
+    });
+  }
+
+  deleteAccount(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Deleted: true }).eq('id', id).single();
+      return super.handleResponse(data as unknown as Account, error);
+    });
+  }
+
+  disableAccount(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Disabled: true }).eq('id', id).single();
+      return super.handleResponse(data as unknown as Account, error);
+    });
+  }
+
+  enableAccount(id: string) {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Disabled: false }).eq('id', id).single();
+      return super.handleResponse(data as unknown as Account, error);
     });
   }
 }

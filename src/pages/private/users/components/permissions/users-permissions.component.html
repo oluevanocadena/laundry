@@ -1,0 +1,26 @@
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+    <span class="f-14 fw-500 f-05 f-lh-12">Permisos</span>
+
+    <ng-template tuiAccordionItemContent>
+        <grid [gap]="[8,16]" [direction]="'row'" [padding]="'1rem 0 0'">
+            <span class="f-15 f-lh-16 f-06 fw-400">
+                Selecciona los permisos que el usuario tendrá.
+            </span>
+            <ng-container *ngFor="let role of roles">
+                <grid [direction]="'row'" [gap]="[0,0]">
+
+                    <label nz-checkbox [(ngModel)]="role.Checked">
+                        <span class="f-14 f-lh-16 f-01 fw-600">
+                            {{ role.Name }}
+                        </span>
+                        -
+                        <span class="f-13 f-lh-16 f-06 fw-400">
+                            {{ role.Description }}
+                        </span>
+                    </label>
+                </grid>
+            </ng-container>
+        </grid>
+
+    </ng-template>
+</tui-accordion-item>

@@ -92,6 +92,7 @@ export class SessionFacade extends FacadeBase {
       this.router.navigate([routes.Home]);
     } catch (error: any) {
       console.error(error);
+      this.signOut();
       this.nzMessageService.error(error?.message || 'Ocurrió un error al iniciar sesión, intenta nuevamente.');
     }
   }

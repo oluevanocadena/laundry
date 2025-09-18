@@ -64,7 +64,7 @@
                             <td>{{item.Phone}}</td>
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
-                                    <status-badge [label]="item?.IsOwner ? 'Administrador' : 'Staff'"
+                                    <status-badge [label]="item?.IsOwner ? 'Propietario' : 'Staff'"
                                         [appearance]="item?.IsOwner ? 'success' : 'default'" [size]="'m'" />
                                 </grid>
                             </td>

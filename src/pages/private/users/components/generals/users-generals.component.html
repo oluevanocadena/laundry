@@ -14,11 +14,12 @@
                     <form-input [label]="'Correo electrónico'" [type]="'email'" [placeholder]="'Correo electrónico'"
                         formControlName="Email" [required]="true" />
                     <form-input [label]="'Teléfono'" [type]="'phone'" [placeholder]="'Teléfono'" [countryCode]="'+52'"
-                        formControlName="Phone" />
+                        formControlName="Phone" [required]="!!facade.phone.value && facade.phone.value.length > 0" />
                 </grid>
                 <grid [padding]="'1rem 0 0 0'">
                     <span class="f-13 f-lh-16 f-06">
-                        El correo electrónico es necesario para poder enviar una invitación al usuario y validar su cuenta.
+                        El correo electrónico es necesario para poder enviar una invitación al usuario y validar su
+                        cuenta.
                     </span>
                 </grid>
             </grid>

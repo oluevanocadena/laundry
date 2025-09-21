@@ -15,5 +15,9 @@ export class UsersAddressComponent extends HelperPage implements OnInit {
     super();
   }
 
+  get streetRequired() {
+    return !!this.facade.street.value && this.facade.street.value.length > 0;
+  }
+
   ngOnInit() {}
 }

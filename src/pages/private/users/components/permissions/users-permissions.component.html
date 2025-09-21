@@ -7,13 +7,15 @@
                 Selecciona los permisos que el usuario tendrá.
             </span>
             <ng-container *ngFor="let role of roles">
-                <grid [direction]="'row'" [gap]="[0,0]">
-
-                    <label nz-checkbox [(ngModel)]="role.Checked">
+                <grid [direction]="'row'" [gap]="[0,0]"> 
+                    <label *ngIf="isRoleOwner(role) ? (currentUserIsOwner && isEdition) : true" nz-checkbox [(ngModel)]="role.Checked"
+                        [nzDisabled]="isRoleOwner(role)">
                         <span class="f-14 f-lh-16 f-01 fw-600">
                             {{ role.Name }}
                         </span>
-                        -
+                        <span class="f-error">
+                            -
+                        </span>
                         <span class="f-13 f-lh-16 f-06 fw-400">
                             {{ role.Description }}
                         </span>

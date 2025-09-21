@@ -12,6 +12,7 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { StorageProp } from '@globals/types/storage.type';
 import { SubjectProp } from '@globals/types/subject.type';
 import { Role } from '../interfaces/users.roles.interfaces';
+import { FormProp } from '@globals/types/form.type';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,8 @@ export class AccountsDraftFacade extends FacadeBase {
   });
 
   //Subjects
+  public phone = new FormProp<string>(this.formGroup, 'Phone');
+  public street = new FormProp<string>(this.formGroup, 'Street');
   public account = new StorageProp<Account>(null, 'ACCOUNT_SELECTED');
   public roles = new SubjectProp<Role[]>([]);
 
@@ -57,7 +60,15 @@ export class AccountsDraftFacade extends FacadeBase {
     this.fillForm();
   }
 
-  bindEvents() {}
+  bindEvents() {
+    this.phone.onChange((value) => {
+      if (value && value.length > 0) {
+        this.formGroup.controls.Phone.setValidators([Validators.required, Validators.minLength(10)]);
+      } else {
+        this.formGroup.controls.Phone.clearValidators();
+      }
+    });
+  }
 
   clearState() {
     this.formGroup.reset();

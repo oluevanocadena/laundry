@@ -7,7 +7,6 @@ import { PagedResults } from '@globals/interfaces/supabase.interface';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UsersQueryDomain } from '../domains/users.query.domain';
-import { UtilsDomain } from '@globals/utils/utils.domain';
 
 @Injectable({
   providedIn: 'root',
@@ -63,10 +62,7 @@ export class AccountsApiService extends ApiBaseService {
         return super.handleResponse(null, existingUserError);
       }
       if (!existingUser) {
-        const { data, error } = await this.client.auth.admin.createUser({
-          email: account.Email,
-          password: UtilsDomain.generateRandomString(10),
-        });
+        const { data, error } = await this.client.auth.admin.inviteUserByEmail(account.Email);
       }
 
       return super.handleResponse(data as unknown as Account, error);

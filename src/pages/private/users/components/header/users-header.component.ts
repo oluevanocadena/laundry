@@ -11,6 +11,8 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./users-header.component.scss'],
 })
 export class UsersHeaderComponent extends HelperPage implements OnInit {
+  now = moment().locale('es').toDate().toString();
+
   constructor(public facade: AccountsDraftFacade) {
     super();
   }
@@ -28,7 +30,7 @@ export class UsersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get dateCreated(): string {
-    return this.facade.account.value?.created_at || moment().locale('es').toDate().toString();
+    return this.facade.account.value?.created_at || this.now;
   }
 
   get accountStatus() {

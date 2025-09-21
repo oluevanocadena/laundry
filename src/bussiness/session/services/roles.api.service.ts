@@ -15,7 +15,11 @@ export class RolesApiService extends ApiBaseService {
 
   getRoles() {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(SupabaseTables.Roles).select('*').eq('Deleted', false);
+      const { data, error } = await this.client
+        .from(SupabaseTables.Roles)
+        .select('*')
+        .eq('Deleted', false)
+        .order('id', { ascending: true });
       return super.handleResponse(data as unknown as Role[], error);
     });
   }

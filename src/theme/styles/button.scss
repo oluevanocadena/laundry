@@ -28,7 +28,7 @@ button {
     &[small] {
         padding: 0.45rem 0.75rem 0.125rem !important;
         font-size: 13.5px;
-        height: 32px;
+        min-height: 32px;
     }
 
     &[medium] {

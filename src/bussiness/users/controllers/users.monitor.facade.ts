@@ -92,6 +92,7 @@ export class AccountsMonitorFacade extends FacadeBase {
   }
 
   onNewUser() {
+    this.selectedAccount.value = null;
     this.router.navigate([routes.UserDraft]);
   }
 

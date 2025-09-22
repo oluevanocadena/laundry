@@ -94,6 +94,7 @@ export class AccountsApiService extends ApiBaseService {
 
       if (accountRoles.length > 0) {
         //Delete first all account roles
+        console.log('👉🏽 accountRoles to delete for accountId', accountId);
         const { data, error: accountRolesDeletedError } = await this.client
           .from(SupabaseTables.AccountRoles)
           .delete()
@@ -101,16 +102,20 @@ export class AccountsApiService extends ApiBaseService {
         error = accountRolesDeletedError;
 
         // Insert new account roles
-        accountRoles.forEach(async (role) => {
-          role.AccountId = accountId;
-          role.OrganizationId = this.sessionService.organizationId;
-          const { data: accountRolesSaved, error: accountRolesError } = await this.client
-            .from(SupabaseTables.AccountRoles)
-            .upsert(role)
-            .select()
-            .single();
-          error = accountRolesError;
+        accountRoles = accountRoles.map((role) => {
+          delete role.id;
+          return {
+            ...role,
+            AccountId: accountId,
+            OrganizationId: this.sessionService.organizationId,
+          };
         });
+        console.log('👉🏽 accountRoles to insert', accountRoles);
+        const { data: accountRolesSaved, error: accountRolesError } = await this.client
+          .from(SupabaseTables.AccountRoles)
+          .insert(accountRoles)
+          .select();
+        error = accountRolesError;
       }
 
       return super.handleResponse(accountId as unknown as Account, error ?? null);

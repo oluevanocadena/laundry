@@ -111,9 +111,10 @@ export class AccountsDraftFacade extends FacadeBase {
       .map((role) => ({
         id: role.id! as unknown as number,
         RoleId: role.id as unknown as number,
-        AccountId: account.id as string,
+        AccountId: this.account.value?.id as string,
         OrganizationId: this.sessionService.organizationId,
       }));
+    console.log('accountRoles to save', accountRoles);
     this.api.saveAccount(account, accountRoles).then((response) => {
       if (response.success) {
         this.router.navigate([routes.Users]);

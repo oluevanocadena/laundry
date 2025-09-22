@@ -128,6 +128,10 @@ export class AccountsApiService extends ApiBaseService {
     });
   }
 
+  changePassword(id: string, password: string) {
+    return this.callEdgeFunction('change-password', { id, password });
+  }
+
   deleteAccount(id: string) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Deleted: true }).eq('id', id).single();

@@ -23,6 +23,7 @@ export class AccountsDraftFacade extends FacadeBase {
   public edition: boolean = false;
   public showDeleteModal: boolean = false;
   public showDisabledModal: boolean = false;
+  public showChangePasswordModal: boolean = false;
 
   public formGroup = new FormGroup({
     FirstName: new FormControl('', [Validators.required]),
@@ -78,6 +79,7 @@ export class AccountsDraftFacade extends FacadeBase {
     this.edition = false;
     this.showDeleteModal = false;
     this.showDisabledModal = false;
+    this.showChangePasswordModal = false;
   }
 
   submitForm() {
@@ -203,7 +205,23 @@ export class AccountsDraftFacade extends FacadeBase {
     }
   }
 
+  onChangePassword() {
+    this.showChangePasswordModal = false;
+  }
+
   onBack() {
     this.router.navigate([routes.Users]);
+  }
+
+  openDeleteModal() {
+    this.showDeleteModal = true;
+  }
+
+  openDisabledModal() {
+    this.showDisabledModal = true;
+  }
+
+  openChangePasswordModal() {
+    this.showChangePasswordModal = true;
   }
 }

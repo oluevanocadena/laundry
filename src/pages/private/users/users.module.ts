@@ -11,12 +11,15 @@ import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 import { PipesModule } from '@pipes/pipes.module';
 
+import { UsersAddressComponent } from '@private/users/components/address/users-address.component';
+import { UsersChangePasswordModalComponent } from '@private/users/components/change-password-modal/users-change-password-modal.component';
+import { UsersConfirmDeleteModalComponent } from '@private/users/components/confirm-delete-modal/users-confirm-delete-modal.component';
+import { UsersConfirmDisableModalComponent } from '@private/users/components/confirm-disable-modal/users-confirm-disable-modal.component';
 import { UsersGeneralsComponent } from '@private/users/components/generals/users-generals.component';
 import { UsersHeaderComponent } from '@private/users/components/header/users-header.component';
 import { UsersPermissionsComponent } from '@private/users/components/permissions/users-permissions.component';
 import { UsersDraftComponent } from '@private/users/draft/users-draft.component';
 import { UsersPageComponent } from '@private/users/users.component';
-import { UsersAddressComponent } from './components/address/users-address.component';
 
 const components = [
   UsersPageComponent,
@@ -25,6 +28,9 @@ const components = [
   UsersGeneralsComponent,
   UsersAddressComponent,
   UsersPermissionsComponent,
+  UsersChangePasswordModalComponent,
+  UsersConfirmDeleteModalComponent,
+  UsersConfirmDisableModalComponent,
 ];
 
 @NgModule({

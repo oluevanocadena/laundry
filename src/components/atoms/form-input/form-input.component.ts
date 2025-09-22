@@ -1,22 +1,11 @@
-import {
-  Component,
-  ContentChild,
-  EventEmitter,
-  Injector,
-  Input,
-  Optional,
-  Output,
-  Self,
-  ViewChild,
-  forwardRef,
-  inject,
-} from '@angular/core';
+import { Component, EventEmitter, Injector, Input, Output, ViewChild, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { InputDateDropdownComponent } from '@components/atoms/input-date-dropdown/input-date-dropdown.component';
 import { type MaskitoTimeMode } from '@maskito/kit';
 import { TUI_IS_IOS, TuiBooleanHandler, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
 import { TuiSizeL, TuiSizeS } from '@taiga-ui/core';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'form-input',
   standalone: false,
@@ -161,11 +150,12 @@ export class FormInputComponent implements ControlValueAccessor {
    */
 
   ngAfterContentInit() {
-    let ngControl = this.injector.get(NgControl, null);
-    if (ngControl && ngControl.control) {
-      ngControl.valueAccessor = this;
-      this.valueControl.setValidators(ngControl.control.validator);
-      this.valueControl.setAsyncValidators(ngControl.control.asyncValidator);
+    const ngControl = this.injector.get(NgControl, null);
+    if (ngControl?.control) {
+      // ✅ usa únicamente los validadores del padre
+      this.valueControl.setValidators(ngControl.control.validator ?? null);
+      this.valueControl.setAsyncValidators(ngControl.control.asyncValidator ?? null);
+
       this.valueControl.updateValueAndValidity({ emitEvent: false });
     }
 

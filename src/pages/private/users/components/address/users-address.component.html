@@ -1,11 +1,11 @@
-<tui-accordion-item class="container" [open]="!collapsed && streetRequired" [size]="'s'">
+<tui-accordion-item class="container" [open]="!collapsed" [size]="'s'">
     <span class="f-14 fw-500 f-06 f-lh-12">Dirección (opcional)</span>
 
     <ng-template tuiAccordionItemContent>
         <form [formGroup]="facade.formGroup">
             <grid [direction]="'row'" [gap]="[16,16]" [padding]="'0 0 1rem 0'">
                 <form-input [label]="'Calle'" [type]="'text'" [placeholder]="'Calle'" formControlName="Street"
-                    [required]="true" />
+                    [required]="false" />
                 <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 1fr'">
                     <form-input [label]="'# Exterior'" [type]="'text'" [placeholder]="'# Exterior'"
                         formControlName="ExtNumber" />
@@ -13,19 +13,18 @@
                         formControlName="IntNumber" />
                 </grid>
                 <form-input [label]="'Colonia'" [type]="'text'" [placeholder]="'Colonia'" formControlName="Neighborhood"
-                    [required]="true" />
+                    [required]="false" />
                 <form-input [label]="'Municipio'" [type]="'text'" [placeholder]="'Municipio'"
-                    formControlName="Municipality" [required]="true" />
+                    formControlName="Municipality" [required]="false" />
                 <grid [gap]="[16,16]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr 1fr'">
                     <form-input [label]="'Estado'" [type]="'text'" [placeholder]="'Estado'" formControlName="State"
-                        [required]="true" />
+                        [required]="false" />
                     <form-input [label]="'Código postal'" [type]="'text'" [placeholder]="'Código postal'"
-                        formControlName="ZipCode" [required]="true" />
+                        formControlName="ZipCode" [required]="false" />
                 </grid>
 
                 <form-input [label]="'País'" [type]="'text'" [placeholder]="'País'" formControlName="Country"
                     [disabled]="true" />
- 
             </grid>
         </form>
     </ng-template>

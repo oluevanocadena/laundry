@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { RolesApiService } from '@bussiness/session/services/roles.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { Account, AccountRole } from '@bussiness/users/interfaces/users.interfaces';
+import { Account } from '@bussiness/users/interfaces/users.interfaces';
+import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
 import { AccountsApiService } from '@bussiness/users/services/users.api.service';
 import { system } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
+import { FormProp } from '@globals/types/form.type';
 import { StorageProp } from '@globals/types/storage.type';
 import { SubjectProp } from '@globals/types/subject.type';
-import { Role } from '../interfaces/users.roles.interfaces';
-import { FormProp } from '@globals/types/form.type';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { validators } from '@globals/types/validators.type';
 
 @Injectable({
   providedIn: 'root',
@@ -28,16 +29,16 @@ export class AccountsDraftFacade extends FacadeBase {
   public formGroup = new FormGroup({
     FirstName: new FormControl('', [Validators.required]),
     LastName: new FormControl('', [Validators.required]),
-    Email: new FormControl('', [Validators.required, Validators.email]),
-    Phone: new FormControl('', [Validators.required, Validators.minLength(10)]),
-    Country: new FormControl({ value: system.defaultCountry, disabled: true }),
-    ExtNumber: new FormControl(''),
-    IntNumber: new FormControl(''),
-    Neighborhood: new FormControl(''),
-    Municipality: new FormControl(''),
-    State: new FormControl(''),
-    Street: new FormControl(''),
-    ZipCode: new FormControl(''),
+    Email: new FormControl('', validators.Email),
+    Phone: new FormControl('', []),
+    Country: new FormControl({ value: system.defaultCountry, disabled: true }, []),
+    ExtNumber: new FormControl('', []),
+    IntNumber: new FormControl('', []),
+    Neighborhood: new FormControl('', []),
+    Municipality: new FormControl('', []),
+    State: new FormControl('', []),
+    Street: new FormControl('', []),
+    ZipCode: new FormControl('', []),
   });
 
   //Subjects
@@ -54,13 +55,15 @@ export class AccountsDraftFacade extends FacadeBase {
     public nzMessageService: NzMessageService,
   ) {
     super(api);
-    this.formGroup.controls.Country.disable();
   }
 
   override initialize() {
     super.initialize();
     this.fetchRoles();
     this.fillForm();
+
+    this.formGroup.controls.Country.disable();
+    this.formGroup.controls.Country.setValue(system.defaultCountry);
   }
 
   bindEvents() {
@@ -75,6 +78,9 @@ export class AccountsDraftFacade extends FacadeBase {
 
   clearState() {
     this.formGroup.reset();
+    this.formGroup.controls.Country.setValue(system.defaultCountry);
+    this.formGroup.controls.Country.disable();
+    this.formGroup.controls.Phone.clearValidators();
     this.account.value = null;
     this.edition = false;
     this.showDeleteModal = false;
@@ -139,6 +145,7 @@ export class AccountsDraftFacade extends FacadeBase {
     } else {
       this.clearState();
     }
+    console.log(this.formGroup.controls);
   }
 
   /**

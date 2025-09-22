@@ -1,0 +1,57 @@
+<grid [direction]="'column'" [align]="'center-center'" height="100vh" class="bg-01">
+    <grid [gap]="[40,24]" [direction]="'column'" [template]="'1fr'" [width]="isMobile ? '100%': '400px'" padding="2rem"
+        card primary>
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
+            <logo />
+            <span class="f-19 f-03 fw-600">
+                Wofloo
+            </span>
+        </grid>
+        <ng-container *ngIf="facade.token.value">
+            <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
+                <span class="f-20 f-lh-24 fw-600">
+                    Gracias por confirmar tu correo electrónico.
+                </span>
+                <span class="f-14 f-06">
+                    Establece una contraseña para tu cuenta.
+                </span>
+
+                <form [formGroup]="facade.formGroup">
+                    <grid [direction]="'row'" [gap]="[16,16]">
+                        <form-input [label]="'Contraseña'" [type]="'password'" [placeholder]="'Contraseña'"
+                            [formControlName]="'password'" />
+                        <form-input [label]="'Confirmar contraseña'" [type]="'password'"
+                            [placeholder]="'Confirmar contraseña'" [formControlName]="'confirmPassword'" />
+                        <span *ngIf="showInstructions" class="f-05 f-13">
+                            La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un
+                            caracter especial.
+                        </span>
+                        <span class="f-03 f-13 f-error" *ngIf="passwordNotMatch">
+                            Las contraseñas no coinciden
+                        </span>
+                    </grid>
+                </form>
+            </grid>
+
+            <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
+                <button large full primary [disabled]="!canSetPassword" [showLoader]="facade.api.busy.value"
+                    (click)="facade.onClickSetPassword()">
+                    Establecer contraseña
+                </button>
+            </grid>
+        </ng-container>
+        <ng-container *ngIf="!facade.token.value">
+            <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
+                <span class="f-20 f-lh-24 fw-600">
+                    No se pudo validar el token de invitación.
+                </span>
+                <span class="f-14 f-06">
+                    Por favor, contacta con tu administrador para obtener ayuda.
+                </span>
+                <button large full primary [routerLink]="routes.Login">
+                    Ir a inicio de sesión
+                </button>
+            </grid>
+        </ng-container>
+    </grid>
+</grid>

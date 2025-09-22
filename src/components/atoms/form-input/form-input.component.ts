@@ -1,5 +1,17 @@
-import { Component, EventEmitter, Input, Output, ViewChild, forwardRef, inject } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  ContentChild,
+  EventEmitter,
+  Injector,
+  Input,
+  Optional,
+  Output,
+  Self,
+  ViewChild,
+  forwardRef,
+  inject,
+} from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { InputDateDropdownComponent } from '@components/atoms/input-date-dropdown/input-date-dropdown.component';
 import { type MaskitoTimeMode } from '@maskito/kit';
 import { TUI_IS_IOS, TuiBooleanHandler, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
@@ -100,7 +112,7 @@ export class FormInputComponent implements ControlValueAccessor {
 
   isDisabled = false;
 
-  constructor() {}
+  constructor(private injector: Injector) {}
 
   setupSearchDebounce(): void {
     this.searchSubject
@@ -111,7 +123,7 @@ export class FormInputComponent implements ControlValueAccessor {
   }
 
   writeValue(value: any): void {
-    this.valueControl.setValue(value, { emitEvent: false });
+    this.valueControl.setValue(value, { emitEvent: true });
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -149,6 +161,14 @@ export class FormInputComponent implements ControlValueAccessor {
    */
 
   ngAfterContentInit() {
+    let ngControl = this.injector.get(NgControl, null);
+    if (ngControl && ngControl.control) {
+      ngControl.valueAccessor = this;
+      this.valueControl.setValidators(ngControl.control.validator);
+      this.valueControl.setAsyncValidators(ngControl.control.asyncValidator);
+      this.valueControl.updateValueAndValidity({ emitEvent: false });
+    }
+
     this.valueControl.valueChanges?.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((value: any) => {
       if (this.type === 'switch') {
         this.onChange(value);
@@ -160,6 +180,7 @@ export class FormInputComponent implements ControlValueAccessor {
         this.onChange(value);
       }
       this.onTouched();
+      this.valueControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     });
 
     if (this.type === 'search') {

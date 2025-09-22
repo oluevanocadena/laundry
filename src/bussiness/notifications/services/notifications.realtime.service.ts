@@ -5,7 +5,6 @@ import { NotificationsDomain } from '@bussiness/notifications/domains/notificati
 import { Notification as INotifications } from '@bussiness/notifications/interfaces/notifications.interfaces';
 import { NotificationChannel } from '@bussiness/notifications/interfaces/notifications.strategy.interfaces';
 import { NOTIFICATION_CHANNEL } from '@bussiness/notifications/strategy/notifications.composite';
-import { SessionService } from '@bussiness/session/services/session.service';
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
@@ -24,7 +23,6 @@ export class NotificationsRealtimeService extends ApiBaseService {
   constructor(
     @Inject(NOTIFICATION_CHANNEL)
     private notificationChannel: NotificationChannel,
-    private sessionService: SessionService,
   ) {
     super();
     this.initialize();

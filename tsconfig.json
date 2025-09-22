@@ -22,17 +22,18 @@
       "@bussiness/*": ["./src/bussiness/*"],
       "@directives/*": ["./src/directives/*"],
       "@components/*": ["./src/components/*"],
-      "@pages/*": ["./src/pages/*"], 
+      "@pages/*": ["./src/pages/*"],
       "@private/*": ["./src/pages/private/*"],
       "@services/*": ["./src/services/*"],
       "@globals/*": ["./src/globals/*"],
-      "@utils/*": ["./src/globals/utils/*"], 
+      "@utils/*": ["./src/globals/utils/*"],
       "@pipes/*": ["./src/pipes/*"],
       "@guards/*": ["./src/guards/*"],
-      "@environments/*": ["./src/environments/*"],
+      "@environments/*": ["./src/environments/*"]
     }
   },
   "angularCompilerOptions": {
+    "exclude": ["node_modules", "supabase/functions"],
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,

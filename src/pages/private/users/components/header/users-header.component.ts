@@ -41,6 +41,14 @@ export class UsersHeaderComponent extends HelperPage implements OnInit {
     return this.facade.account.value?.Disabled ? 'error' : 'success';
   }
 
+  get canSave(): boolean {
+    return this.facade.formGroup.valid && (this.facade.roles.value || []).some((role) => role.Checked);
+  }
+
+  get canSendInvitation() {
+    return this.facade.account.value?.invitation_sent === false;
+  }
+
   /**
    * Life Cycle
    */

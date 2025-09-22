@@ -16,6 +16,7 @@ import { ProductCategoriesPageComponent } from '@pages/private/product-categorie
 import { ProductsDraftComponent } from '@pages/private/products/draft/products-draft.component';
 import { ProductsPageComponent } from '@pages/private/products/products-page.component';
 import { ReportsPageComponent } from '@pages/private/reports/reports.component';
+import { InvitationConfirmComponent } from '@pages/private/session/invitation-confirm/invitation-confirm.component';
 import { LoginPageComponent } from '@pages/private/session/login/login-page.component';
 import { RegisterConfirmComponent } from '@pages/private/session/register-confirm/register-confirm.component';
 import { RegisterPageComponent } from '@pages/private/session/register/register-page.component';
@@ -104,6 +105,7 @@ export const routes: Routes = [
 
   { path: 'register', component: RegisterPageComponent },
   { path: 'register-confirmation', component: RegisterConfirmComponent },
+  { path: 'invitation-confirmation', component: InvitationConfirmComponent },
   { path: 'support', component: SupportPageComponent },
 
   { path: 'login', component: LoginPageComponent },

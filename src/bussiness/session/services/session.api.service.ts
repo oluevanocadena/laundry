@@ -3,6 +3,7 @@ import { routes } from '@app/routes';
 import { Session } from '@supabase/supabase-js';
 
 import { ApiBaseService } from '@globals/services/api.service.base';
+import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class SessionApiService extends ApiBaseService {
         error,
         error?.message === 'Email not confirmed'
           ? '¡Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!'
-          : '¡Usuario y/o contraseña incorrectos!'
+          : '¡Usuario y/o contraseña incorrectos!',
       );
     }, 'Signing in');
   }
@@ -39,25 +40,14 @@ export class SessionApiService extends ApiBaseService {
           emailRedirectTo: window.location.origin + routes.RegisterConfirm,
         },
       });
-      return super.handleResponse(
-        data as unknown as Session,
-        error,
-        'Ocurrió un error al crear la cuenta'
-      );
+      return super.handleResponse(data as unknown as Session, error, 'Ocurrió un error al crear la cuenta');
     }, 'Signing up');
   }
 
   async confirmEmail(email: string) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.auth.admin.updateUserById(
-        email,
-        { email_confirm: true }
-      );
-      return super.handleResponse(
-        data,
-        error,
-        'Ocurrió un error al confirmar el email'
-      );
+      const { data, error } = await this.client.auth.admin.updateUserById(email, { email_confirm: true });
+      return super.handleResponse(data, error, 'Ocurrió un error al confirmar el email');
     }, 'Confirming email');
   }
 
@@ -65,11 +55,7 @@ export class SessionApiService extends ApiBaseService {
   async signOut() {
     return this.executeWithBusy(async () => {
       const { error } = await this.client.auth.signOut();
-      return super.handleResponse(
-        null,
-        error,
-        'Ocurrió un error al cerrar sesión'
-      );
+      return super.handleResponse(null, error, 'Ocurrió un error al cerrar sesión');
     }, 'Signing out');
   }
 
@@ -78,23 +64,32 @@ export class SessionApiService extends ApiBaseService {
       const { data, error } = await this.client.auth.signInWithOAuth({
         provider,
       });
-      return super.handleResponse(
-        data,
-        error,
-        'Ocurrió un error al iniciar sesión con proveedor'
-      );
+      return super.handleResponse(data, error, 'Ocurrió un error al iniciar sesión con proveedor');
     }, 'Signing in with provider');
   }
 
   // Obtener usuario actual
-  getUser() {
+  async getUser() {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.auth.getUser();
-      return super.handleResponse(
-        data,
-        error,
-        'Ocurrió un error al obtener el usuario'
-      );
+      return super.handleResponse(data, error, 'Ocurrió un error al obtener el usuario');
     }, 'Getting user');
+  }
+
+  async getSession() {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await this.client.auth.getSession();
+      console.log('🔑 Sesión obtenida:', data);
+      console.log('🔑 Error:', error);
+      return super.handleResponse(data, error, 'Ocurrió un error al obtener la sesión');
+    }, 'Getting session');
+  }
+
+  setPassword(request: SetPasswordRequest) {
+    return this.callEdgeFunction('set-password', {
+      password: request.password,
+      token: request.token,
+      userId: request.userId,
+    });
   }
 }

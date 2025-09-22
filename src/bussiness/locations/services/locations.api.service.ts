@@ -16,7 +16,7 @@ export class LocationsApiService extends ApiBaseService {
   locations = new SubjectProp<Location[]>([]);
   pagedLocations = new SubjectProp<PagedResults<Location>>(null);
 
-  constructor(public sessionService: SessionService) {
+  constructor() {
     super();
   }
 

@@ -60,30 +60,31 @@ export class SessionFacade extends FacadeBase {
    */
 
   async login() {
+    const genericError = 'Usuario y/o contraseña incorrectos';
     if (!this.formGroup.valid) {
       this.nzMessageService.warning('Por favor, complete todos los campos.');
       return;
     }
 
     try {
-      const session = await this.api.signIn(this.email.value!, this.password.value!);
-      if (!session) {
-        throw new Error('Session not found');
+      const responseSession = await this.api.signIn(this.email.value!, this.password.value!);
+      if (!responseSession?.data?.user) {
+        throw new Error(genericError);
       }
 
-      const account = await this.apiAccounts.getAccount(session.data!.user?.email!);
-      if (!account) {
-        throw new Error('Account not found');
+      const responseAccount = await this.apiAccounts.getAccount(responseSession.data!.user?.email!);
+      if (!responseAccount?.data?.id) {
+        throw new Error(genericError);
       }
 
-      const roles = await this.apiAccounts.getAccountRoles(account.data!.id!);
+      const roles = await this.apiAccounts.getAccountRoles(responseAccount.data!.id!);
       if (!roles) {
-        throw new Error('Roles not found');
+        throw new Error(genericError);
       }
-      const responseLocation = await this.apiLocations.getDefaultLocation(account.data!.OrganizationId);
+      const responseLocation = await this.apiLocations.getDefaultLocation(responseAccount.data!.OrganizationId);
       const sessionInfo: SessionInfo = {
-        Session: session.data!,
-        Account: account.data!,
+        Session: responseSession.data!,
+        Account: responseAccount.data!,
         Location: responseLocation.data ?? null,
         Roles: roles.data ?? [],
       };

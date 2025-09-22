@@ -1,7 +1,6 @@
 <grid [direction]="'column'" [template]="'1fr max-content'">
     <grid [gap]="[16,16]" [direction]="'row'">
-        <grid [gap]="[0,0]" [direction]="isMobileOrTablet ? 'row':'column'"
-            [align]="'top-left'" height="fit-content">
+        <grid [gap]="[0,0]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'" height="fit-content">
             <grid [direction]="'row'" [gap]="isMobileOrTablet ? [8,8] : [0,0]">
                 <grid [direction]="'column'" [align]="'top-left'" [gap]="[8,16]">
                     <button (click)="facade.onBack()" outline small icon>
@@ -28,8 +27,8 @@
     </grid>
 
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
-        <button (click)="facade.submitForm()" [disabled]="busy || facade.formGroup.valid === false" [showLoader]="busy"
-            outline small primary>
+        <button (click)="facade.submitForm()" [disabled]="busy || canSave === false" [showLoader]="busy" outline small
+            primary>
             Guardar
         </button>
         <button *ngIf="facade.edition === true" outline small icon [disabled]="busy" [showLoader]="busy" nz-dropdown
@@ -45,7 +44,7 @@
                     <tui-icon icon="@tui.key" class="f-12 fw-100 f-info" />
                     Cambiar contraseña
                 </button>
-                <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.showDeleteModal = true">
+                <button *ngIf="canSendInvitation" (click)="facade.onResendInvitation()" flat small flex [width]="'100%'" class="f-13 f-03">
                     <tui-icon icon="@tui.mail" class="f-12 fw-100 f-primary" />
                     Reenviar invitación
                 </button>

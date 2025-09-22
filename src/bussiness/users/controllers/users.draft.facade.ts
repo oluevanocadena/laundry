@@ -5,7 +5,7 @@ import { routes } from '@app/routes';
 
 import { RolesApiService } from '@bussiness/session/services/roles.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { Account } from '@bussiness/users/interfaces/users.interfaces';
+import { Account, AccountRole } from '@bussiness/users/interfaces/users.interfaces';
 import { AccountsApiService } from '@bussiness/users/services/users.api.service';
 import { system } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
@@ -13,6 +13,7 @@ import { StorageProp } from '@globals/types/storage.type';
 import { SubjectProp } from '@globals/types/subject.type';
 import { Role } from '../interfaces/users.roles.interfaces';
 import { FormProp } from '@globals/types/form.type';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,7 @@ export class AccountsDraftFacade extends FacadeBase {
     public rolesApi: RolesApiService,
     public router: Router,
     public sessionService: SessionService,
+    public nzMessageService: NzMessageService,
   ) {
     super(api);
     this.formGroup.controls.Country.disable();
@@ -95,21 +97,22 @@ export class AccountsDraftFacade extends FacadeBase {
       IntNumber: value.IntNumber || '',
       OrganizationId: this.sessionService.organizationId,
     };
-    this.api.saveAccount(account).then(() => {
-      this.router.navigate([routes.Users]);
-    });
-  }
 
-  /**
-   * API Calls
-   */
-
-  fetchRoles() {
-    this.rolesApi.getRoles().then((response) => {
-      response.data?.forEach((role) => {
-        role.Checked = this.account.value?.AccountRoles?.some((accountRole) => accountRole.RoleId === role.id);
-      });
-      this.roles.value = response.data ?? [];
+    const accountRoles = (this.roles.value || [])
+      .filter((role) => role.Checked)
+      .map((role) => ({
+        id: role.id! as unknown as number,
+        RoleId: role.id as unknown as number,
+        AccountId: account.id as string,
+        OrganizationId: this.sessionService.organizationId,
+      }));
+    this.api.saveAccount(account, accountRoles).then((response) => {
+      if (response.success) {
+        this.router.navigate([routes.Users]);
+        this.nzMessageService.success('Usuario guardado correctamente');
+      } else {
+        this.nzMessageService.error('Ocurrió un error al guardar el usuario, intenta nuevamente.');
+      }
     });
   }
 
@@ -133,6 +136,40 @@ export class AccountsDraftFacade extends FacadeBase {
       });
     } else {
       this.clearState();
+    }
+  }
+
+  /**
+   * API Calls
+   */
+
+  fetchRoles() {
+    this.rolesApi.getRoles().then((response) => {
+      response.data?.forEach((role) => {
+        role.Checked = this.account.value?.AccountRoles?.some(
+          (accountRole) => accountRole.RoleId.toString() === role.id?.toString(),
+        );
+      });
+      this.roles.value = response.data ?? [];
+    });
+  }
+
+  onResendInvitation() {
+    const account = this.account.value;
+    const message = this.nzMessageService.create('info', 'Reenviando invitación...', {
+      nzDuration: 0,
+      nzPauseOnHover: true,
+      nzAnimate: true,
+    });
+    if (account?.id) {
+      this.api.inviteUser({ action: 'resend', email: account.Email }).then((response) => {
+        this.nzMessageService.remove(message.messageId);
+        if (response.success) {
+          this.nzMessageService.success('Invitación reenviada correctamente');
+        } else {
+          this.nzMessageService.error('Ocurrió un error al reenviar la invitación, intenta nuevamente.');
+        }
+      });
     }
   }
 

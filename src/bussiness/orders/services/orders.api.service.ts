@@ -17,7 +17,7 @@ export class OrdersApiService extends ApiBaseService {
   //Results
   pagedOrders = new SubjectProp<OrderPagedResults>(null);
 
-  constructor(public sessionService: SessionService) {
+  constructor() {
     super();
   }
 

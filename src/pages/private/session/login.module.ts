@@ -10,11 +10,12 @@ import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
+import { InvitationConfirmComponent } from '@pages/private/session/invitation-confirm/invitation-confirm.component';
 import { LoginPageComponent } from '@pages/private/session/login/login-page.component';
 import { RegisterConfirmComponent } from '@pages/private/session/register-confirm/register-confirm.component';
 import { RegisterPageComponent } from '@pages/private/session/register/register-page.component';
 
-const components = [LoginPageComponent, RegisterPageComponent, RegisterConfirmComponent];
+const components = [LoginPageComponent, RegisterPageComponent, RegisterConfirmComponent, InvitationConfirmComponent];
 
 @NgModule({
   imports: [

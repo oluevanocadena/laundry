@@ -19,7 +19,7 @@ export class ProductCategoriesApiService extends ApiBaseService {
   productCategories = new SubjectProp<ProductCategory[]>([]);
   pagedProductCategories = new SubjectProp<PagedResults<ProductCategory>>(null);
 
-  constructor(public sessionService: SessionService) {
+  constructor() {
     super();
   }
 

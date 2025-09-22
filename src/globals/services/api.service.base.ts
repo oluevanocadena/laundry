@@ -1,11 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Inject } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { firstValueFrom } from 'rxjs';
+import { Session } from '@supabase/supabase-js';
+
+import { SessionService } from '@bussiness/session/services/session.service';
+import { supabase } from '@environments/environment';
+import { EdgeFunctionResponse, SupabaseBaseResponse } from '@globals/interfaces/supabase.interface';
 import { supabaseClient } from '@globals/singleton/supabase.client';
 import { BusyProp } from '@globals/types/busy.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { SupabaseBaseResponse } from '@globals/interfaces/supabase.interface';
-import { Session } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 export class ApiBaseService implements FacadeApiBase {
   public busy = new BusyProp(false);
@@ -15,6 +20,12 @@ export class ApiBaseService implements FacadeApiBase {
 
   @Inject(NzMessageService)
   public nzMessageService: NzMessageService = inject(NzMessageService);
+
+  @Inject(HttpClient)
+  public http: HttpClient = inject(HttpClient);
+
+  @Inject(SessionService)
+  public sessionService: SessionService = inject(SessionService);
 
   constructor() {
     // Mantener la sesión en memoria
@@ -30,7 +41,7 @@ export class ApiBaseService implements FacadeApiBase {
 
   protected async executeWithBusy<T>(
     fn: () => Promise<SupabaseBaseResponse<T>>,
-    message?: string
+    message?: string,
   ): Promise<SupabaseBaseResponse<T>> {
     this.busy.value = true;
     try {
@@ -53,12 +64,42 @@ export class ApiBaseService implements FacadeApiBase {
     }
   }
 
-  protected handleResponse<T>(
-    data: T | null,
-    error: any,
-    message?: string,
-    count?: number | null
-  ): SupabaseBaseResponse<T> {
+  protected async callEdgeFunction(endpoint: string, body: any): Promise<EdgeFunctionResponse> {
+    this.busy.value = true;
+    try {
+      // Incluir JWT del usuario logueado
+      const token = await this.sessionService.getToken();
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      // Llamada HTTP al endpoint de Supabase Edge Function
+      const response = await firstValueFrom(
+        this.http.post<EdgeFunctionResponse>(`${supabase.url}/functions/v1/${endpoint}`, body, { headers }),
+      );
+
+      // Siempre devolver la respuesta de la función
+      return (
+        response ?? {
+          success: false,
+          error: true,
+          message: 'No se recibió respuesta del servidor',
+          statusCode: 500,
+        }
+      );
+    } catch (err: any) {
+      // Error de red o HTTP
+      return {
+        success: false,
+        error: true,
+        message: err?.message || 'Error desconocido',
+        statusCode: err?.status || 500,
+      };
+    } finally {
+      this.busy.value = false;
+    }
+  }
+
+  protected handleResponse<T>(data: T | null, error: any, message?: string, count?: number | null): SupabaseBaseResponse<T> {
     if (error) {
       console.error('⛔ Error:', error);
     }

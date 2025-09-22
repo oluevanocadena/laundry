@@ -6,7 +6,6 @@ import {
   NotificationPagedResults,
   NotificationRequest,
 } from '@bussiness/notifications/interfaces/notifications.interfaces';
-import { SessionService } from '@bussiness/session/services/session.service';
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
@@ -20,7 +19,7 @@ export class NotificationsApiService extends ApiBaseService {
 
   private accountId = '';
 
-  constructor(private sessionService: SessionService) {
+  constructor() {
     super();
     this.accountId = this.sessionService.accountId;
   }

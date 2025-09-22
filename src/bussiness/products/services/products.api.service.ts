@@ -25,7 +25,7 @@ export class ProductsApiService extends ApiBaseService {
   pagedProducts = new SubjectProp<PagedResults<Product>>(null);
   unitMeasures = new SubjectProp<UnitMeasure[]>([]);
 
-  constructor(public sessionService: SessionService) {
+  constructor() {
     super();
   }
 

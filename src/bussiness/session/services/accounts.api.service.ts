@@ -28,11 +28,7 @@ export class AccountsApiService extends ApiBaseService {
 
   saveAccountRoles(accountRoles: AccountRole[]) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.AccountRoles)
-        .upsert(accountRoles)
-        .select()
-        .single();
+      const { data, error } = await this.client.from(SupabaseTables.AccountRoles).upsert(accountRoles).select().single();
       return super.handleResponse(data as unknown as AccountRole[], error);
     });
   }
@@ -52,7 +48,7 @@ export class AccountsApiService extends ApiBaseService {
         .from(SupabaseTables.Accounts)
         .select(`*, Organization: ${SupabaseTables.Organizations}(*)`)
         .eq('Email', email)
-        .single();
+        .maybeSingle();
       return super.handleResponse(data as unknown as Account, error);
     });
   }
@@ -69,20 +65,14 @@ export class AccountsApiService extends ApiBaseService {
 
   deleteAccount(id: string) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.Accounts)
-        .update({ Deleted: true })
-        .eq('id', id);
+      const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Deleted: true }).eq('id', id);
       return super.handleResponse(data as unknown as Account, error);
     });
   }
 
   deleteAccountRoles(ids: number[]) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.AccountRoles)
-        .delete()
-        .in('id', ids);
+      const { data, error } = await this.client.from(SupabaseTables.AccountRoles).delete().in('id', ids);
       return super.handleResponse(null, error);
     });
   }

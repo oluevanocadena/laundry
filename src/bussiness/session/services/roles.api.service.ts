@@ -9,7 +9,7 @@ import { SessionService } from '@bussiness/session/services/session.service';
   providedIn: 'root',
 })
 export class RolesApiService extends ApiBaseService {
-  constructor(public sessionService: SessionService) {
+  constructor() {
     super();
   }
 

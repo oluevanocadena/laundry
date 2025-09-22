@@ -15,7 +15,6 @@ import { NativeNotificationChannel } from '@bussiness/notifications/strategy/nat
 import { CompositeNotificationChannel } from '@bussiness/notifications/strategy/notifications.composite';
 import { NzMessageNotificationChannel } from '@bussiness/notifications/strategy/nz-message.notification.channel';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
-import { SessionService } from '@bussiness/session/services/session.service';
 
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { of } from 'rxjs';
@@ -42,14 +41,14 @@ export const appConfig: ApplicationConfig = {
     provideEventPlugins(),
     {
       provide: NotificationsRealtimeService,
-      useFactory: (nz: NzNotificationService, router: Router, ss: SessionService, orders: OrdersApiService) => {
+      useFactory: (nz: NzNotificationService, router: Router, orders: OrdersApiService) => {
         const composite = new CompositeNotificationChannel([
           new NzMessageNotificationChannel(nz, router),
           new NativeNotificationChannel(),
         ]);
-        return new NotificationsRealtimeService(composite, ss);
+        return new NotificationsRealtimeService(composite);
       },
-      deps: [NzNotificationService, Router, SessionService, OrdersApiService],
+      deps: [NzNotificationService, Router, OrdersApiService],
     },
     provideNzConfig(ngZorroConfig),
     {

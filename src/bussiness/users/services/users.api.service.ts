@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { SessionService } from '@bussiness/session/services/session.service';
-import { Account, UsersRequest } from '@bussiness/users/interfaces/users.interfaces';
+import { Account, AccountRole, InviteUserRequest, UsersRequest } from '@bussiness/users/interfaces/users.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { PagedResults } from '@globals/interfaces/supabase.interface';
+import { EdgeFunctionResponse, PagedResults } from '@globals/interfaces/supabase.interface';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UsersQueryDomain } from '../domains/users.query.domain';
@@ -15,7 +14,7 @@ export class AccountsApiService extends ApiBaseService {
   accounts = new SubjectProp<Account[]>([]);
   pagedUsers = new SubjectProp<PagedResults<Account>>(null);
 
-  constructor(public sessionService: SessionService) {
+  constructor() {
     super();
   }
 
@@ -52,21 +51,74 @@ export class AccountsApiService extends ApiBaseService {
     });
   }
 
-  saveAccount(account: Account) {
+  saveAccount(account: Account, accountRoles: AccountRole[]) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(SupabaseTables.Accounts).upsert(account).select().single();
+      let error = null;
+      // Verificar si existe el usuario
+      const { data: existingUser, error: existingUserError } = await this.client
+        .from(SupabaseTables.Accounts)
+        .select('*')
+        .eq('Email', account.Email)
+        .maybeSingle();
 
-      //Comporobar en aith supabase Auhentiucation no table si existe el usuario, si no creatlo
-      const { data: existingUser, error: existingUserError } = await this.client.auth.admin.getUserById(account.Email);
-      if (existingUserError) {
-        return super.handleResponse(null, existingUserError);
-      }
-      if (!existingUser) {
-        const { data, error } = await this.client.auth.admin.inviteUserByEmail(account.Email);
+      error = existingUserError;
+      let accountId = account.id ?? existingUser?.id;
+
+      if (existingUser) {
+        // Si el usuario existe, solo actualizar sus datos
+        const { data: accountSaved, error: accountSavedError } = await this.client
+          .from(SupabaseTables.Accounts)
+          .update(account)
+          .eq('id', accountId)
+          .select()
+          .single();
+      } else {
+        // Si el usuario no existe, crearlo
+        const { data: accountSaved, error: accountSavedError } = await this.client
+          .from(SupabaseTables.Accounts)
+          .insert(account)
+          .select()
+          .single();
+        console.log('👉🏽 accountSaved', accountSaved);
+        accountId = accountSaved?.id;
+
+        // Enviar invitación por email
+        const response = await this.inviteUser({ action: 'invite', email: account.Email });
+        if (response?.error) {
+          error = response.error;
+          // Eliminar la cuenta si falla el envío de invitación
+          await this.client.from(SupabaseTables.Accounts).delete().eq('id', accountId);
+          return super.handleResponse(null, response.error);
+        }
       }
 
-      return super.handleResponse(data as unknown as Account, error);
+      if (accountRoles.length > 0) {
+        //Delete first all account roles
+        const { data, error: accountRolesDeletedError } = await this.client
+          .from(SupabaseTables.AccountRoles)
+          .delete()
+          .eq('AccountId', accountId);
+        error = accountRolesDeletedError;
+
+        // Insert new account roles
+        accountRoles.forEach(async (role) => {
+          role.AccountId = accountId;
+          role.OrganizationId = this.sessionService.organizationId;
+          const { data: accountRolesSaved, error: accountRolesError } = await this.client
+            .from(SupabaseTables.AccountRoles)
+            .upsert(role)
+            .select()
+            .single();
+          error = accountRolesError;
+        });
+      }
+
+      return super.handleResponse(accountId as unknown as Account, error ?? null);
     });
+  }
+
+  async inviteUser(request: InviteUserRequest): Promise<EdgeFunctionResponse> {
+    return this.callEdgeFunction('invite-user', request);
   }
 
   getAccount(id: string) {

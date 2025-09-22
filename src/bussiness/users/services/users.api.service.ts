@@ -6,6 +6,7 @@ import { EdgeFunctionResponse, PagedResults } from '@globals/interfaces/supabase
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UsersQueryDomain } from '../domains/users.query.domain';
+import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -133,8 +134,8 @@ export class AccountsApiService extends ApiBaseService {
     });
   }
 
-  changePassword(id: string, password: string) {
-    return this.callEdgeFunction('change-password', { id, password });
+  changePassword(request: SetPasswordRequest) {
+    return this.callEdgeFunction<SetPasswordRequest>('set-password', request);
   }
 
   deleteAccount(id: string) {
@@ -144,17 +145,11 @@ export class AccountsApiService extends ApiBaseService {
     });
   }
 
-  disableAccount(id: string) {
-    return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Disabled: true }).eq('id', id).single();
-      return super.handleResponse(data as unknown as Account, error);
-    });
+  disableAccount(email: string) {
+    return this.callEdgeFunction('disable-user', { action: 'disable', email: email });
   }
 
-  enableAccount(id: string) {
-    return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Disabled: false }).eq('id', id).single();
-      return super.handleResponse(data as unknown as Account, error);
-    });
+  enableAccount(email: string) {
+    return this.callEdgeFunction('disable-user', { action: 'enable', email: email });
   }
 }

@@ -41,10 +41,16 @@ export class AccountsDraftFacade extends FacadeBase {
     ZipCode: new FormControl('', []),
   });
 
+  public formGroupPassword = new FormGroup({
+    password: new FormControl('', validators.Password),
+    confirmPassword: new FormControl('', validators.Password),
+  });
+
   //Subjects
   public phone = new FormProp<string>(this.formGroup, 'Phone');
   public street = new FormProp<string>(this.formGroup, 'Street');
   public account = new StorageProp<Account>(null, 'ACCOUNT_SELECTED');
+  public password = new FormProp<string>(this.formGroupPassword, 'password');
   public roles = new SubjectProp<Role[]>([]);
 
   constructor(
@@ -184,38 +190,62 @@ export class AccountsDraftFacade extends FacadeBase {
   }
 
   onDelete() {
+    const error = 'Ocurrió un error al intentar borrar el usuario, intenta nuevamente.';
     const account = this.account.value;
     if (account?.id) {
       this.api.deleteAccount(account.id).then((response) => {
         if (response?.success) {
           this.router.navigate([routes.Users]);
+        } else {
+          this.nzMessageService.error(error);
         }
       });
     }
   }
 
   onDisable() {
+    const error = 'Ocurrió un error al intentar realizar la acción, intenta nuevamente.';
     const user = this.account.value;
     if (user?.id) {
       if (user.Disabled) {
-        this.api.enableAccount(user.id).then(() => {
-          if (this.account.value) {
-            this.account.value.Disabled = false;
+        this.api.enableAccount(user.Email).then((response) => {
+          if (response.success) {
+            this.nzMessageService.success('Usuario habilitado correctamente');
+            this.router.navigate([routes.Users]);
+          } else {
+            this.nzMessageService.error(error);
           }
         });
       } else {
-        this.api.disableAccount(user.id).then(() => {
-          if (this.account.value) {
-            this.account.value.Disabled = true;
+        this.api.disableAccount(user.Email).then((response) => {
+          if (response.success) {
+            this.nzMessageService.success('Usuario deshabilitado correctamente');
+            this.router.navigate([routes.Users]);
+          } else {
+            this.nzMessageService.error(error);
           }
         });
       }
     }
   }
 
-  onChangePassword() {
-    this.showChangePasswordModal = false;
+  async onChangePassword() {
+    const user = this.account.value;
+    if (user?.id) {
+      this.api.changePassword({ userId: user.id, password: this.password.value! }).then((response) => {
+        if (response.success) {
+          this.nzMessageService.success('Contraseña cambiada correctamente');
+          this.showChangePasswordModal = false;
+        } else {
+          this.nzMessageService.error('Ocurrió un error al cambiar la contraseña, intenta nuevamente.');
+        }
+      });
+    }
   }
+
+  /**
+   * UI Events
+   */
 
   onBack() {
     this.router.navigate([routes.Users]);

@@ -87,8 +87,7 @@ export class SessionApiService extends ApiBaseService {
 
   setPassword(request: SetPasswordRequest) {
     return this.callEdgeFunction('set-password', {
-      password: request.password,
-      token: request.token,
+      password: request.password, 
       userId: request.userId,
     });
   }

@@ -7,7 +7,6 @@ import { routes } from '@app/routes';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
-import { SubjectProp } from '@globals/types/subject.type';
 import { validators } from '@globals/types/validators.type';
 
 @Injectable({
@@ -21,7 +20,6 @@ export class InvitationFacade extends FacadeBase {
 
   pwd = new FormProp<string>(this.formGroup, 'password', '');
   pwdConfirm = new FormProp<string>(this.formGroup, 'confirmPassword', '');
-  token = new SubjectProp<string>('');
 
   constructor(public api: SessionApiService, public router: Router, public nzMessageService: NzMessageService) {
     super(api);
@@ -40,7 +38,7 @@ export class InvitationFacade extends FacadeBase {
    */
 
   onClickSetPassword() {
-    this.api.setPassword({ password: this.pwd.value!, token: this.token.value! }).then((response) => {
+    this.api.setPassword({ password: this.pwd.value! }).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Contraseña establecida correctamente');
         this.router.navigate([routes.Login]);

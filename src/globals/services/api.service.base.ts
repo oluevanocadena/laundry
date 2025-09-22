@@ -64,7 +64,7 @@ export class ApiBaseService implements FacadeApiBase {
     }
   }
 
-  protected async callEdgeFunction(endpoint: string, body: any): Promise<EdgeFunctionResponse> {
+  protected async callEdgeFunction<T>(endpoint: string, body: T): Promise<EdgeFunctionResponse> {
     this.busy.value = true;
     try {
       // Incluir JWT del usuario logueado

@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -23,6 +23,7 @@ import { routes } from './app.routes';
 import { registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { es_ES, NZ_I18N } from 'ng-zorro-antd/i18n';
+import { AuthInterceptor } from '@globals/interceptors/http.interceptor';
 registerLocaleData(es);
 
 const ngZorroConfig: NzConfig = {
@@ -57,6 +58,7 @@ export const appConfig: ApplicationConfig = {
     },
     { provide: NzIsMenuInsideDropDownToken, useValue: false },
     { provide: NZ_I18N, useValue: es_ES },
+    provideHttpClient(withInterceptors([AuthInterceptor])),
     MenuService,
     NzMenuModule,
     NzModalService,

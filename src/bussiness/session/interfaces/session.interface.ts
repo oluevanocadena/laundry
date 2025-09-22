@@ -10,7 +10,6 @@ export interface SessionInfo {
 }
 
 export interface SetPasswordRequest {
-  password: string;
-  token?: string;
+  password: string; 
   userId?: string;
 }

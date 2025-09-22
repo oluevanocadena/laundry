@@ -41,17 +41,13 @@
                     Acciones
                 </span>
                 <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.openChangePasswordModal()">
-                    <tui-icon icon="@tui.key" class="f-12 fw-100 f-info" />
+                    <tui-icon icon="@tui.key" class="f-12 fw-100 f-warning" />
                     Cambiar contraseña
                 </button>
                 <button *ngIf="canSendInvitation" (click)="facade.onResendInvitation()" flat small flex [width]="'100%'"
                     class="f-13 f-03">
                     <tui-icon icon="@tui.mail" class="f-12 fw-100 f-primary" />
                     Reenviar invitación
-                </button>
-                <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.openDeleteModal()">
-                    <tui-icon icon="@tui.trash" class="f-12 fw-100 f-error" />
-                    Eliminar
                 </button>
                 <button *ngIf="facade.account.value?.Disabled === false" flat small flex [width]="'100%'"
                     class="f-13 f-03" (click)="facade.openDisabledModal()">
@@ -63,6 +59,10 @@
                     <tui-icon icon="@tui.check" class="f-12 fw-100 f-success" />
                     Habilitar
                 </button>
+                <button flat small flex [width]="'100%'" class="f-13 f-03" (click)="facade.openDeleteModal()">
+                    <tui-icon icon="@tui.trash" class="f-12 fw-100 f-error" />
+                    Eliminar
+                </button>
             </grid>
         </nz-dropdown-menu>
     </grid>
@@ -72,5 +72,4 @@
 <users-confirm-delete-modal [(show)]="facade.showDeleteModal" (onConfirm)="facade.onDelete()" />
 <users-confirm-disable-modal [(show)]="facade.showDisabledModal" (onConfirm)="facade.onDisable()"
     [disabled]="facade.account.value?.Disabled || false" />
-<users-change-password-modal [(show)]="facade.showChangePasswordModal"
-    (onConfirm)="facade.onChangePassword()" />
+<users-change-password-modal [(show)]="facade.showChangePasswordModal" (onConfirm)="facade.onChangePassword()" />

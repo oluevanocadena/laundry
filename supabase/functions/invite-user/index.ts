@@ -1,6 +1,7 @@
 /// <reference types="deno.ns" />
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { SupabaseTables } from '../constants/supabase-tables.constants.ts';
+import { SupabaseTables } from '../shared/constants/supabase-tables.constants.js';
+import { TokenDomain } from '../shared/domains/token.domain.js';
 
 // Cliente con service_role
 const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
@@ -45,17 +46,6 @@ function successResponse(data: any, message = 'OK', statusCode = 200): Response 
 // ---------------------
 // Validación JWT y autorización
 // ---------------------
-async function verifyJWT(req: Request) {
-  const token = req.headers.get('Authorization')?.replace('Bearer ', '');
-  if (!token) throw { message: 'Unauthorized: falta token', status: 401 };
-
-  const { data: user, error } = await supabase.auth.getUser(token);
-  console.log('💡 user verifyJWT found', user);
-  if (error || !user) throw { message: 'Unauthorized: token inválido', status: 401 };
-
-  console.log('🔑 JWT verificado para user_id:', user.id);
-  return user;
-}
 
 async function verifyOwner(userId: string) {
   const { data: account, error } = await supabase.from('Accounts').select('*').eq('user_id', userId).eq('owner', true).single();
@@ -120,7 +110,7 @@ Deno.serve(async (req) => {
     const preflight = await handlePreflight(req);
     if (preflight) return preflight;
 
-    const user = await verifyJWT(req);
+    const user = await TokenDomain.verifyJWT(req);
     // await verifyOwner(user.id);
 
     const body = await req.json();
@@ -141,8 +131,9 @@ Deno.serve(async (req) => {
         throw { message: 'Action no válida', status: 400 };
     }
   } catch (err: any) {
+    console.log('⛔ error', err);
     const status = err.status || 500;
-    const message = err.message || 'Error desconocido';
+    const message = 'Error desconocido';
     return errorResponse(message, status);
   }
 });

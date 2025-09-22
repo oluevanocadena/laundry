@@ -2,47 +2,58 @@
     [height]="isMobileOrTablet ? 'calc(-129px + 100vh)' : 'calc(var(--full-vh) - 1rem)'">
     <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%" width="100%">
         <menu width="100%">
-            <menu-item [collapsed]="collapsed" [icon]="'location_away'" [iconType]="'google'" [label]="'Inicio'"
-                [urlBase]="routes.Home" [link]="routes.Home" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'local_mall'" [iconType]="'google'" [label]="'Pedidos'"
-                [urlBase]="routes.Orders" [link]="routes.Orders" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'" [label]="'Clientes'"
-                [urlBase]="routes.Customers" [link]="routes.Customers" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'notifications'" [iconType]="'google'" [label]="'Notificaciones'"
-                [urlBase]="routes.Notifications" [link]="routes.Notifications" [isGroup]="false" [level]="0"
-                [badgeCount]="unReadNotifications" />
+            <menu-item *roleShow="'1,3,4,5,6,7,8'" [collapsed]="collapsed" [icon]="'location_away'" [iconType]="'google'"
+                [label]="'Inicio'" [urlBase]="routes.Home" [link]="routes.Home" [level]="0" />
+            <menu-item *roleShow="'1,3,4'" [collapsed]="collapsed" [icon]="'local_mall'" [iconType]="'google'"
+                [label]="'Pedidos'" [urlBase]="routes.Orders" [link]="routes.Orders" [isGroup]="false" [level]="0" />
+            <menu-item *roleShow="'1,3,4'" [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'"
+                [label]="'Clientes'" [urlBase]="routes.Customers" [link]="routes.Customers" [isGroup]="false"
+                [level]="0" />
+            <menu-item *roleShow="'1,3,4'" [collapsed]="collapsed" [icon]="'notifications'" [iconType]="'google'"
+                [label]="'Notificaciones'" [urlBase]="routes.Notifications" [link]="routes.Notifications"
+                [isGroup]="false" [level]="0" [badgeCount]="unReadNotifications" />
 
-            <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
+            <ng-container *roleShow="'1,2,3'">
+                <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
 
-            <menu-item [collapsed]="collapsed" [icon]="'package_2'" [iconType]="'google'" [label]="'Productos'"
-                [urlBase]="routes.Products" [link]="routes.Products" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'interests'" [iconType]="'google'" [label]="'Categorías'"
-                [urlBase]="routes.ProductCategories" [link]="routes.ProductCategories" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'package_2'" [iconType]="'google'" [label]="'Productos'"
+                    [urlBase]="routes.Products" [link]="routes.Products" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'interests'" [iconType]="'google'" [label]="'Categorías'"
+                    [urlBase]="routes.ProductCategories" [link]="routes.ProductCategories" [isGroup]="false"
+                    [level]="0" />
+            </ng-container>
 
-            <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
+            <ng-container *roleShow="'1,2'">
+                <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
 
-            <menu-item [collapsed]="collapsed" [icon]="'location_on'" [iconType]="'google'" [label]="'Sucursales'"
-                [urlBase]="routes.Locations" [link]="routes.Locations" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'" [label]="'Usuarios'"
-                [urlBase]="routes.Users" [link]="routes.Users" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'location_on'" [iconType]="'google'" [label]="'Sucursales'"
+                    [urlBase]="routes.Locations" [link]="routes.Locations" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'" [label]="'Usuarios'"
+                    [urlBase]="routes.Users" [link]="routes.Users" [isGroup]="false" [level]="0" />
+            </ng-container>
 
-            <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
+            <ng-container *roleShow="'1,2,7,8'">
+                <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
 
-            <menu-item [collapsed]="collapsed" [icon]="'show_chart'" [iconType]="'google'" [label]="'Reportes'"
-                [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'analytics'" [iconType]="'google'" [label]="'Analitica'"
-                [urlBase]="routes.Analytics" [link]="routes.Analytics" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'show_chart'" [iconType]="'google'" [label]="'Reportes'"
+                    [urlBase]="routes.Reports" [link]="routes.Reports" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'analytics'" [iconType]="'google'" [label]="'Analitica'"
+                    [urlBase]="routes.Analytics" [link]="routes.Analytics" [isGroup]="false" [level]="0" />
+            </ng-container>
 
-            <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
+            <ng-container *roleShow="'1,2,6'">
+                <grid class="brdr-bottom" [width]="'100%'" [height]="'2px'" [margin]="'0.20rem 0 0.5rem'" />
 
-            <menu-item [collapsed]="collapsed" [icon]="'storefront'" [iconType]="'google'" [label]="'Tienda'"
-                [urlBase]="routes.Plugins" [link]="routes.Plugins" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'deployed_code'" [iconType]="'google'" [label]="'Plugins'"
-                [urlBase]="routes.Plugins" [link]="routes.Plugins" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'support_agent'" [iconType]="'google'" [label]="'Soporte'"
-                [urlBase]="routes.Support" [link]="routes.Support" [isGroup]="false" [level]="0" />
-            <menu-item [collapsed]="collapsed" [icon]="'settings'" [iconType]="'google'" [label]="'Configuración'"
-                [urlBase]="routes.Settings" [link]="routes.Settings" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'storefront'" [iconType]="'google'" [label]="'Tienda'"
+                    [urlBase]="routes.Plugins" [link]="routes.Plugins" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'deployed_code'" [iconType]="'google'" [label]="'Plugins'"
+                    [urlBase]="routes.Plugins" [link]="routes.Plugins" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'support_agent'" [iconType]="'google'" [label]="'Soporte'"
+                    [urlBase]="routes.Support" [link]="routes.Support" [isGroup]="false" [level]="0" />
+                <menu-item [collapsed]="collapsed" [icon]="'settings'" [iconType]="'google'" [label]="'Configuración'"
+                    [urlBase]="routes.Settings" [link]="routes.Settings" [isGroup]="false" [level]="0" />
+            </ng-container>
+
         </menu>
         <menu *ngIf="!isMobileOrTablet">
             <!-- Settings -->
@@ -51,4 +62,4 @@
                 (click)="menuService.toggleMenu()" />
         </menu>
     </grid>
-</grid>
+</grid>7

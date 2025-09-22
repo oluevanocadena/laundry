@@ -1,5 +1,6 @@
 /// <reference types="deno.ns" />
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { TokenDomain } from '../shared/domains/token.domain';
 
 // Cliente con service_role (permite modificar usuarios)
 const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
@@ -57,13 +58,8 @@ function successResponse(data: any, message = 'OK', statusCode = 200): Response 
 // ---------------------
 
 // 1️⃣ Usuario establece contraseña con token del correo de invitación
-async function setPassword(password: string, token: string) {
+async function setPassword(password: string, user: any) {
   if (!password) throw { message: 'Contraseña requerida', status: 400 };
-  if (!token) throw { message: 'Token requerido', status: 400 };
-
-  console.log('🔑 Verificando token recibido');
-  const { data: user, error: userError } = await supabase.auth.getUser(token);
-  if (userError || !user?.user) throw { message: 'Token inválido', status: 401 };
 
   console.log('🔑 Actualizando contraseña para el usuario:', user.user.id);
   const { data, error } = await supabase.auth.admin.updateUserById(user.user.id, {
@@ -97,21 +93,24 @@ Deno.serve(async (req) => {
     const preflight = await handlePreflight(req);
     if (preflight) return preflight;
 
-    const { password, token, userId } = await req.json();
+    const user = await TokenDomain.verifyJWT(req);
+
+    const { password, userId } = await req.json();
 
     let data;
     if (userId) {
       // ✅ flujo de administrador
       data = await adminSetPassword(userId, password);
-    } else if (token) {
+    } else if (user.id) {
       // ✅ flujo de invitación
-      data = await setPassword(password, token);
+      data = await setPassword(password, user);
     } else {
-      throw { message: 'Debes enviar userId o token', status: 400 };
+      console.log('⛔ user no encontrado', user, userId);
+      throw { message: 'Bad Request', status: 400 };
     }
-
     return successResponse(data, 'Contraseña actualizada correctamente');
   } catch (err: any) {
-    return errorResponse(err.message || 'Error desconocido', err.status || 500);
+    console.log('⛔ error', err);
+    return errorResponse('Error desconocido', err.status || 500);
   }
 });

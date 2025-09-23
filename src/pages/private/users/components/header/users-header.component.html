@@ -16,6 +16,9 @@
                                 [appearance]="'warning'" />
                             <status-badge *ngIf="!busy && facade.edition === true" [label]="accountStatus" [size]="'m'"
                                 [appearance]="accountStatusAppearance" />
+                            <status-badge *ngIf="facade.edition === true"
+                                [label]="verifiedEmail ? 'Verificado' : 'No verificado'" [size]="'m'"
+                                [appearance]="verifiedEmail ? 'success' : 'warning'" />
                         </grid>
                     </grid>
                 </grid>
@@ -51,7 +54,9 @@
                 </button>
                 <button *ngIf="facade.account.value?.Disabled === false" flat small flex [width]="'100%'"
                     class="f-13 f-03" (click)="facade.openDisabledModal()">
-                    <tui-icon icon="@tui.lock" class="f-12 fw-100 f-warning" />
+                    <span class="material-symbols-outlined f-14 fw-500 f-warning-secondary">
+                        block
+                    </span>
                     Inhabilitar
                 </button>
                 <button *ngIf="facade.account.value?.Disabled === true" flat small flex [width]="'100%'"
@@ -69,7 +74,9 @@
 
 </grid>
 
-<users-confirm-delete-modal [(show)]="facade.showDeleteModal" (onConfirm)="facade.onDelete()" />
+<users-confirm-delete-modal [(show)]="facade.showDeleteModal" (onConfirm)="facade.onDelete()"
+    (onClose)="facade.showDeleteModal = false" />
 <users-confirm-disable-modal [(show)]="facade.showDisabledModal" (onConfirm)="facade.onDisable()"
-    [disabled]="facade.account.value?.Disabled || false" />
-<users-change-password-modal [(show)]="facade.showChangePasswordModal" (onConfirm)="facade.onChangePassword()" />
+    [disabled]="facade.account.value?.Disabled || false" (onClose)="facade.showDisabledModal = false" />
+<users-change-password-modal [(show)]="facade.showChangePasswordModal" (onConfirm)="facade.onChangePassword()"
+    (onClose)="facade.showChangePasswordModal = false" />

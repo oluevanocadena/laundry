@@ -1,4 +1,4 @@
-import { Component, ContentChildren, Input, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HelperPage } from '@components/common/helper.page';
 
@@ -7,6 +7,7 @@ import { HelperPage } from '@components/common/helper.page';
   standalone: false,
   templateUrl: './menu-item.component.html',
   styleUrls: ['./menu-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuItemComponent extends HelperPage {
   @Input() icon?: string;
@@ -25,6 +26,9 @@ export class MenuItemComponent extends HelperPage {
       this._level = value;
     }
     this.levelPadding = this.calculatePadding();
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 10);
   }
   get level(): number {
     return this._level;
@@ -35,7 +39,7 @@ export class MenuItemComponent extends HelperPage {
   private _hasContent = false;
   public levelPadding = '0.25rem 0rem';
 
-  constructor(public activatedRoute: ActivatedRoute) {
+  constructor(public activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
     super();
   }
 

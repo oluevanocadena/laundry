@@ -4,6 +4,7 @@ import { Session } from '@supabase/supabase-js';
 
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
+import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,11 @@ export class SessionApiService extends ApiBaseService {
   async confirmEmail(email: string) {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.auth.admin.updateUserById(email, { email_confirm: true });
-      return super.handleResponse(data, error, 'Ocurrió un error al confirmar el email');
+      const { data: account, error: accountError } = await this.client
+        .from(SupabaseTables.Accounts)
+        .update({ VerifiedEmail: true, UserId: data.user?.id })
+        .eq('Email', email);
+      return super.handleResponse(account, error || accountError, 'Ocurrió un error al confirmar el email');
     }, 'Confirming email');
   }
 
@@ -87,7 +92,7 @@ export class SessionApiService extends ApiBaseService {
 
   setPassword(request: SetPasswordRequest) {
     return this.callEdgeFunction('set-password', {
-      password: request.password, 
+      password: request.password,
       userId: request.userId,
     });
   }

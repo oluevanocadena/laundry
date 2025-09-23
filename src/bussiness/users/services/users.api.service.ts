@@ -139,10 +139,7 @@ export class AccountsApiService extends ApiBaseService {
   }
 
   deleteAccount(id: string) {
-    return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(SupabaseTables.Accounts).update({ Deleted: true }).eq('id', id).single();
-      return super.handleResponse(data as unknown as Account, error);
-    });
+    return this.callEdgeFunction('delete-user', { email: id });
   }
 
   disableAccount(email: string) {

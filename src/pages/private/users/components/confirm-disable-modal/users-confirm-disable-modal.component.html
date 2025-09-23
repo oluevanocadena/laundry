@@ -27,8 +27,8 @@
             <grid [direction]="'row'" [width]="'100%'" [padding]="'0.5rem 1rem'" class="bg-02 brdr-radius-6 brdr">
                 <span class="f-13 f-lh-16 f-04 fw-500 t-left">
                     {{ disabled ?
-                    'Se habilitará la usuario nuevamente ahora mismo. 🫡' :
-                    'Se eliminarán todos los datos y contraseña del usuario. 🤔' }}
+                    'Se habilitará la usuario nuevamente ahora mismo. 🛡️' :
+                    'Se inhabilitará el acceso a la plataforma del usuario. ⛔' }}
                 </span>
                 <span class="f-13 f-lh-16 f-07 fw-400 t-left">
                     {{ disabled ?
@@ -38,7 +38,7 @@
                     }}
                 </span>
             </grid>
-            <span class="f-14 f-04 fw-400 t-left">
+            <span class="f-13 f-04 fw-400 t-left">
                 {{ disabled ?
                 'Por favor, confirma que deseas habilitar esta usuario.' :
                 'Por favor, confirma que deseas deshabilitar esta usuario.' }}

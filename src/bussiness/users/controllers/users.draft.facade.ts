@@ -192,11 +192,12 @@ export class AccountsDraftFacade extends FacadeBase {
   onDelete() {
     const error = 'Ocurrió un error al intentar borrar el usuario, intenta nuevamente.';
     const account = this.account.value;
-    if (account?.id) {
-      this.api.deleteAccount(account.id).then((response) => {
+    if (account?.Email) {
+      this.api.deleteAccount(account.Email).then((response) => {
         if (response?.success) {
           this.router.navigate([routes.Users]);
         } else {
+          this.showDeleteModal = false;
           this.nzMessageService.error(error);
         }
       });
@@ -213,6 +214,7 @@ export class AccountsDraftFacade extends FacadeBase {
             this.nzMessageService.success('Usuario habilitado correctamente');
             this.router.navigate([routes.Users]);
           } else {
+            this.showDisabledModal = false;
             this.nzMessageService.error(error);
           }
         });
@@ -222,6 +224,7 @@ export class AccountsDraftFacade extends FacadeBase {
             this.nzMessageService.success('Usuario deshabilitado correctamente');
             this.router.navigate([routes.Users]);
           } else {
+            this.showDisabledModal = false;
             this.nzMessageService.error(error);
           }
         });
@@ -230,15 +233,15 @@ export class AccountsDraftFacade extends FacadeBase {
   }
 
   async onChangePassword() {
-    const user = this.account.value;
-    if (user?.id) {
-      this.api.changePassword({ userId: user.id, password: this.password.value! }).then((response) => {
+    const account = this.account.value;
+    if (account?.id) {
+      this.api.changePassword({ userId: account.UserId, password: this.password.value! }).then((response) => {
         if (response.success) {
           this.nzMessageService.success('Contraseña cambiada correctamente');
-          this.showChangePasswordModal = false;
         } else {
           this.nzMessageService.error('Ocurrió un error al cambiar la contraseña, intenta nuevamente.');
         }
+        this.showChangePasswordModal = false;
       });
     }
   }

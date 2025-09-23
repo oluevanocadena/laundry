@@ -1,3 +1,4 @@
+
 $start: 4;
 $end: 80;
 
@@ -42,6 +43,10 @@ $end: 80;
 
 .f-secondary {
   color: #707ead; // Secondary text
+}
+
+.f-warning-secondary {
+  color: var(--warning-secondary) !important;
 }
 
 .f-white {

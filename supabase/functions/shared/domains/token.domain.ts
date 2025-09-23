@@ -1,4 +1,4 @@
-import { User } from '@supabase/supabase-js';
+import { User } from 'https://esm.sh/@supabase/supabase-js@2';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 export class TokenDomain {
@@ -8,11 +8,11 @@ export class TokenDomain {
     const token = req.headers.get('Authorization')?.replace('Bearer ', '');
     if (!token) throw { message: 'Unauthorized: falta token', status: 401 };
 
-    const { data: user, error } = await supabase.auth.getUser(token);
-    console.log('💡 user verifyJWT found', user);
-    if (error || !user) throw { message: 'Unauthorized: token inválido', status: 401 };
+    const { data, error } = await supabase.auth.getUser(token);
+    console.log('💡 user verifyJWT found', data);
+    if (error || !data) throw { message: 'Unauthorized: token inválido', status: 401 };
 
-    console.log('🔑 JWT verificado para user_id:', user.id);
-    return user;
+    console.log('🔑 JWT verificado para user:', data);
+    return data.user;
   }
 }

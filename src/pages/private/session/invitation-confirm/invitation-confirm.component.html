@@ -7,7 +7,7 @@
                 Wofloo
             </span>
         </grid>
-        <ng-container *ngIf="facade.token.value">
+        <ng-container *ngIf="showSetPasswordForm">
             <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
                 <span class="f-20 f-lh-24 fw-600">
                     Gracias por confirmar tu correo electrónico.
@@ -40,7 +40,7 @@
                 </button>
             </grid>
         </ng-container>
-        <ng-container *ngIf="!facade.token.value">
+        <ng-container *ngIf="!showSetPasswordForm">
             <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
                 <span class="f-20 f-lh-24 fw-600">
                     No se pudo validar el token de invitación.

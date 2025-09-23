@@ -29,6 +29,10 @@ export class UsersHeaderComponent extends HelperPage implements OnInit {
     return this.facade.account.value;
   }
 
+  get verifiedEmail() {
+    return this.facade.account.value?.VerifiedEmail === true;
+  }
+
   get dateCreated(): string {
     return this.facade.account.value?.created_at || this.now;
   }

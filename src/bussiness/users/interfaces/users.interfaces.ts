@@ -28,11 +28,14 @@ export interface Account {
 
   Deleted?: boolean;
   Disabled?: boolean;
+  VerifiedEmail?: boolean;
 
   OrganizationId: string;
   Organization?: Organization;
 
   AccountRoles?: AccountRole[]; // For UI only
+
+  UserId?: string;
 }
 
 export interface AccountRole {

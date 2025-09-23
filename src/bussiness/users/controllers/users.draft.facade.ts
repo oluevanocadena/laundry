@@ -83,15 +83,16 @@ export class AccountsDraftFacade extends FacadeBase {
   }
 
   clearState() {
-    this.formGroup.reset();
-    this.formGroup.controls.Country.setValue(system.defaultCountry);
-    this.formGroup.controls.Country.disable();
-    this.formGroup.controls.Phone.clearValidators();
     this.account.value = null;
     this.edition = false;
+    this.formGroup.controls.Country.disable();
+    this.formGroup.controls.Country.setValue(system.defaultCountry);
+    this.formGroup.controls.Phone.clearValidators();
+    this.formGroup.reset();
+    this.formGroupPassword.reset();
+    this.showChangePasswordModal = false;
     this.showDeleteModal = false;
     this.showDisabledModal = false;
-    this.showChangePasswordModal = false;
   }
 
   submitForm() {
@@ -135,6 +136,9 @@ export class AccountsDraftFacade extends FacadeBase {
     const value = this.account.value;
     if (value) {
       this.edition = true;
+      this.showChangePasswordModal = false;
+      this.showDeleteModal = false;
+      this.showDisabledModal = false;
       this.formGroup.patchValue({
         FirstName: value.FirstName,
         LastName: value.LastName,
@@ -150,7 +154,9 @@ export class AccountsDraftFacade extends FacadeBase {
         ZipCode: value.ZipCode,
       });
     } else {
-      this.clearState();
+      setTimeout(() => {
+        this.clearState();
+      }, 1);
     }
     console.log(this.formGroup.controls);
   }

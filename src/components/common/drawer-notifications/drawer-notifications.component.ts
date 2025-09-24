@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NotificationsMonitorFacade } from '@bussiness/notifications/controllers/notifications.monitor.facade';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { HelperPage } from '../helper.page';
-import { NotificationsMonitorFacade } from '@bussiness/notifications/controllers/notifications.monitor.facade';
 
 @Component({
   selector: 'drawer-notifications',
@@ -26,7 +25,7 @@ export class DrawerNotificationsComponent extends HelperPage {
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(public facade: NotificationsMonitorFacade) {
+  constructor(public facade: NotificationsMonitorFacade, public cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -45,6 +44,7 @@ export class DrawerNotificationsComponent extends HelperPage {
       sortBy: 'Readed',
       sortOrder: 'asc',
     });
+    this.cdr.detectChanges();
   }
 
   markAllAsRead() {
@@ -67,6 +67,7 @@ export class DrawerNotificationsComponent extends HelperPage {
   }
 
   get busy() {
+    console.log('👉🏽 busy', this.facade.api.busy.value);
     return this.facade.api.busy.value;
   }
 

@@ -45,7 +45,7 @@
                     </ng-container>
                 </grid>
 
-                <grid *ngIf="busy === true" [direction]="'column'" [align]="'center-center'">
+                <grid *ngIf="busy === true" [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" [padding]="'2rem'">
                     <tui-loader [size]="'s'" />
                     Cargando...
                 </grid>

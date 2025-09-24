@@ -12,6 +12,10 @@ nz-segmented {
             padding: 2px 0.35rem 0 !important;
         }
 
+        label.ant-segmented-item:hover {
+            background-color: var(--background-04) !important;
+        }
+
         label.ant-segmented-item-selected,
         label.ant-segmented-thumb {
             background-color: var(--primary-hsl) !important;

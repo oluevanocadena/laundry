@@ -176,7 +176,7 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   fetchProducts(search: string) {
-    this.apiProducts.getProducts(search, 1, 5);
+    this.apiProducts.getProducts(search, 1, 5, this.sessionService.locationId);
   }
 
   updateOrderItemStatus(status: OrderItemStatusEnum) {
@@ -319,10 +319,7 @@ export class OrdersDraftFacade extends FacadeBase {
 
   onDeleteItem() {
     if (this.orderItemSelected.value) {
-      this.orderItems.value = OrdersCartDomain.removeProductItem(
-        this.orderItems.value ?? [],
-        this.orderItemSelected.value,
-      );
+      this.orderItems.value = OrdersCartDomain.removeProductItem(this.orderItems.value ?? [], this.orderItemSelected.value);
       this.orderItemSelected.value = null;
       this.showAdjustQuantity = false;
     }

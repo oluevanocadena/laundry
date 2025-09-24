@@ -69,7 +69,7 @@
                             </td>
                             <td *ifColumn="{columns: columns, key: 'Readed'}">
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
-                                    <status-badge [label]="item?.Readed ? 'Leído' : 'No leído'"
+                                    <status-badge [label]="item?.Readed ? 'Leído' : 'Sin leer'"
                                         [appearance]="item?.Readed ? 'default' : 'warning'" [size]="'m'" />
                                 </grid>
                             </td>

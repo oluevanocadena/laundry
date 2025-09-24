@@ -1,7 +1,5 @@
-import moment from 'moment';
 
 import { NotificationRequest } from '@bussiness/notifications/interfaces/notifications.interfaces';
-import { SessionService } from '@bussiness/session/services/session.service';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseClient } from '@supabase/supabase-js';
 
@@ -16,13 +14,13 @@ export class NotificationsQueryDomain {
       query = query.eq('Readed', request.readed);
     }
 
-    if (request.dateFrom) {
-      query = query.gte('created_At', moment(request.dateFrom).startOf('day').toISOString());
-    }
+    // if (request.dateFrom) {
+    //   query = query.gte('created_At', moment(request.dateFrom).startOf('day').toISOString());
+    // }
 
-    if (request.dateTo) {
-      query = query.lt('created_At', moment(request.dateTo).add(1, 'day').startOf('day').toISOString());
-    }
+    // if (request.dateTo) {
+    //   query = query.lt('created_At', moment(request.dateTo).add(1, 'day').startOf('day').toISOString());
+    // }
 
     const sortBy = request.sortBy || 'created_At';
     const sortOrder = request.sortOrder ? request.sortOrder === 'asc' : true;
@@ -47,13 +45,13 @@ export class NotificationsQueryDomain {
       .select('*', { count: 'exact', head: true })
       .eq('AccountId', accountId);
 
-    if (request.dateFrom) {
-      totalCountQuery = totalCountQuery.gte('created_At', moment(request.dateFrom).startOf('day').toISOString());
-    }
+    // if (request.dateFrom) {
+    //   totalCountQuery = totalCountQuery.gte('created_At', moment(request.dateFrom).startOf('day').toISOString());
+    // }
 
-    if (request.dateTo) {
-      totalCountQuery = totalCountQuery.lt('created_At', moment(request.dateTo).add(1, 'day').startOf('day').toISOString());
-    }
+    // if (request.dateTo) {
+    //   totalCountQuery = totalCountQuery.lt('created_At', moment(request.dateTo).add(1, 'day').startOf('day').toISOString());
+    // }
 
     if (request.readed !== null && request.readed !== undefined) {
       totalCountQuery = totalCountQuery.eq('Readed', request.readed);

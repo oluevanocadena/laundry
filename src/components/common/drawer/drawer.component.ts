@@ -35,6 +35,8 @@ export class DrawerComponent extends HelperPage {
   @Input() closeLabel = 'Cancelar';
   @Input() confirmLabel = 'Confirmar';
   @Input() confirmStyle: DrawerConfirmStyleButton = 'danger';
+  @Input() showCancelButton: boolean = true;
+  @Input() showConfirmButton: boolean = true;
   @Input() large: string = '500px';
   @Input() closable: boolean = true;
   @Input() busy: boolean = false;

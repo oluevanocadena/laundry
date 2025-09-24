@@ -52,7 +52,7 @@ export class ProductsApiService extends ApiBaseService {
     }, 'Fetching Unit Measures');
   }
 
-  getProducts(search: string, page: number = 1, pageSize: number = 50) {
+  getProducts(search: string, page: number = 1, pageSize: number = 50, locationId: string) {
     return this.executeWithBusy(async () => {
       let query = this.client
         .from(SupabaseTables.Products)
@@ -72,8 +72,9 @@ export class ProductsApiService extends ApiBaseService {
         );
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
-      const { data, error } = await query.overrideTypes<Product[], { merge: false }>();
-      return super.handleResponse(data, error);
+      const { data, error } = await query;
+      this.products.value = data as unknown as Product[];
+      return super.handleResponse(this.products.value, error);
     }, 'Fetching Products');
   }
 

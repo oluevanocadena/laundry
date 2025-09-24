@@ -17,10 +17,11 @@
             </grid>
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" [padding]="'1rem 1.5rem'"
                 class="brdr-top">
-                <button outline small [disabled]="busy" (click)="close()">
+                <button *ngIf="showCancelButton" outline small [disabled]="busy" (click)="close()">
                     {{closeLabel}}
                 </button>
-                <button #buttonConfirm small [disabled]="busy" [showLoader]="busy" (click)="confirm()">
+                <button *ngIf="showConfirmButton" #buttonConfirm small [disabled]="busy" [showLoader]="busy"
+                    (click)="confirm()">
                     {{confirmLabel}}
                 </button>
             </grid>

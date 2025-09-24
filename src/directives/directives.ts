@@ -79,25 +79,27 @@ export class ShowLoaderDirective implements OnChanges {
     }
   }
 
+  private originalNodes: ChildNode[] = [];
+
   private toggleLoader(show: boolean): void {
     const element = this.el.nativeElement;
 
     if (show) {
-      if (!this.originalContent) {
-        this.originalContent = element.innerHTML;
+      if (this.originalNodes.length === 0) {
+        this.originalNodes = Array.from(element.childNodes);
       }
 
-      // Crea el loader
       this.loaderEl = this.renderer.createElement('span');
       this.renderer.addClass(this.loaderEl, 'loader');
       this.renderer.setStyle(this.loaderEl, 'vertical-align', 'middle');
 
-      this.renderer.setProperty(element, 'innerHTML', '');
+      // Vaciar y meter el loader
+      this.originalNodes.forEach((n) => this.renderer.removeChild(element, n));
       this.renderer.appendChild(element, this.loaderEl);
     } else {
-      if (this.originalContent !== null) {
-        this.renderer.setProperty(element, 'innerHTML', this.originalContent);
-        this.originalContent = null;
+      if (this.originalNodes.length > 0) {
+        this.renderer.removeChild(element, this.loaderEl);
+        this.originalNodes.forEach((n) => this.renderer.appendChild(element, n));
       }
     }
   }
@@ -109,7 +111,7 @@ export class ShowLoaderDirective implements OnChanges {
 })
 export class IfColumnDirective {
   @Input('ifColumn') set config(value: { columns: UITableColumn[]; key: string }) {
-    this.viewContainer.clear(); 
+    this.viewContainer.clear();
     if (!value?.columns || !value?.key) return;
 
     const col = value.columns.find((c) => c.key === value.key);

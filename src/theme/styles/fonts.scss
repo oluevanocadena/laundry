@@ -1,4 +1,3 @@
-
 $start: 4;
 $end: 80;
 
@@ -12,6 +11,10 @@ $end: 80;
   .f-0#{$i} {
     color:var(--text-0#{$i}) !important;
   }
+}
+
+.f-cairo {
+  font-family: "Cairo", sans-serif;
 }
 
 .link {

@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { AfterViewInit, Component } from '@angular/core';
+
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { HelperPage } from '@components/common/helper.page';
+import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { MenuService } from '@globals/services/menu.service';
 
 @Component({
@@ -9,8 +11,8 @@ import { MenuService } from '@globals/services/menu.service';
   templateUrl: './menu-content.component.html',
   styleUrls: ['./menu-content.component.scss'],
 })
-export class MenuContentComponent extends HelperPage implements OnInit {
-  constructor(public notifService: NotificationsApiService, public menuService: MenuService) {
+export class MenuContentComponent extends HelperPage implements AfterViewInit {
+  constructor(public notificationsApi: NotificationsApiService, public menuService: MenuService) {
     super();
   }
 
@@ -19,12 +21,26 @@ export class MenuContentComponent extends HelperPage implements OnInit {
    */
 
   get unReadNotifications() {
-    return this.notifService.pagedNotifications.value?.unReadCount ?? 0;
+    return this.notificationsApi.pagedNotifications.value?.unReadCount ?? 0;
   }
 
   get collapsed() {
     return this.menuService.collapsed.value;
   }
 
-  ngOnInit() {}
+  ngAfterViewInit() {
+    if ((this.notificationsApi.pagedNotifications.value?.data?.length ?? 0) > 0 === false) {
+      this.notificationsApi.getPagedNotifications({
+        page: UITableConstants.DefaultPage,
+        pageSize: UITableConstants.DefaultPageSize,
+        dateFrom: '',
+        dateTo: '',
+        readed: null,
+        select: null,
+        search: null,
+        sortBy: 'created_At',
+        sortOrder: 'desc',
+      });
+    }
+  }
 }

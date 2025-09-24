@@ -3,7 +3,7 @@
         [template]="'max-content max-content 1fr max-content'">
         <grid [direction]="'column'" [template]="!isMobileOrTablet ? '1fr' : '1fr max-content'"
             [padding]="isMobileOrTablet ? '0.5rem 1rem' : '1rem'">
-            <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [height]="'100%'">
                 <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
                     Sucursales
                 </span>

@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
@@ -23,10 +15,7 @@ import { UtilsDomain } from '@globals/utils/utils.domain';
   styleUrls: ['./orders-search-product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrdersSearchProductComponent
-  extends HelperTablePage<Product>
-  implements OnInit
-{
+export class OrdersSearchProductComponent extends HelperTablePage<Product> implements OnInit {
   utils = UtilsDomain;
 
   //Show
@@ -48,11 +37,7 @@ export class OrdersSearchProductComponent
   search = new FormProp(this.formGroup, 'search', '');
   quantity = new FormProp(this.formGroup, 'quantity', 1);
 
-  constructor(
-    public facade: OrdersDraftFacade,
-    public sessionService: SessionService,
-    public cdr: ChangeDetectorRef
-  ) {
+  constructor(public facade: OrdersDraftFacade, public sessionService: SessionService, public cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -85,9 +70,7 @@ export class OrdersSearchProductComponent
 
   getPriceAtStore(product: Product): number {
     const locationId = this.sessionService.sessionInfo.value?.Location?.id;
-    const productPrice = product?.ProductLocationPrice?.find(
-      (price) => price.LocationId === locationId
-    );
+    const productPrice = product?.ProductLocationPrice?.find((price) => price.LocationId === locationId);
     return productPrice?.Price ?? 0;
   }
 
@@ -103,9 +86,7 @@ export class OrdersSearchProductComponent
     return (
       this.facade.apiProducts.products.value?.filter((product) => {
         return product.ProductLocationPrice?.find(
-          (price) =>
-            price.LocationId ===
-            this.sessionService.sessionInfo.value?.Location?.id
+          (price) => price.LocationId === this.sessionService.sessionInfo.value?.Location?.id,
         );
       }) ?? []
     );
@@ -116,9 +97,7 @@ export class OrdersSearchProductComponent
   }
 
   get postFixText(): string {
-    return this.product?.UnitMeasure?.Name
-      ? ' ' + this.product?.UnitMeasure?.Name + '(s)'
-      : '';
+    return this.product?.UnitMeasure?.Name ? ' ' + this.product?.UnitMeasure?.Name + '(s)' : '';
   }
 
   /**

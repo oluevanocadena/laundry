@@ -1,16 +1,22 @@
 <button *ngIf="!isMobileOrTablet" outline small flex icon-google (click)="openModal()">
-    <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+    <!-- <span class="material-symbols-outlined f-20 f-lh-16 f-06">
         {{isAsc ? 'arrow_upward' : 'arrow_downward'}}
-    </span>
+    </span> -->
     Ordenar por {{selectedColumnName}}
+    <span class="f-cairo f-12 f-lh-20 f-06 fw-600 pdd-0">
+        {{isAsc ? 'ASC' : 'DESC'}}
+    </span>
 </button>
 
 <grid *ngIf="isMobileOrTablet" [direction]="'row'" [align]="'center-right'" [padding]="'1px 0 0 0'">
     <button outline small flex icon-google (click)="openModal()">
-        <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+        <!-- <span class="material-symbols-outlined f-20 f-lh-16 f-06">
             arrow_upward
-        </span>
+        </span> -->
         {{selectedColumnName}}
+        <span class="f-cairo f-12 f-lh-20 f-06 fw-600 pdd-0">
+            {{isAsc ? 'ASC' : 'DESC'}}
+        </span>
     </button>
 </grid>
 

@@ -1,77 +1,71 @@
-<nz-drawer [nzClosable]="false" [(nzVisible)]="show" nzPlacement="right" [nzTitle]="undefined"
-    (nzOnClose)="closeShortMenu()" [nzWidth]="isMobile ? '100%' : '350px'">
-    <ng-container *nzDrawerContent>
-        <grid [direction]="'row'" [gap]="[16,16]" [template]="'1fr'" height="100%">
-            <grid [gap]="[16,16]" [direction]="'row'" [template]="'max-content 1fr'" height="100%" width="100%">
-                <grid [direction]="'column'" [template]="'1fr max-content'">
-                    <grid [direction]="'column'" [align]="'center-left'">
-                        <span class="f-18 fw-600 f-02">
-                            Notifications
-                        </span>
-                    </grid>
-                    <grid [direction]="'column'" [align]="'center-right'">
-                        <button (click)="closeShortMenu()" tuiButton tuiRoundButton tuiIconButton
-                            [appearance]="'secondary'" [size]="'s'">
-                            <tui-icon icon="@tui.x" class="f-18 fw-600 f-02" />
-                        </button>
-                    </grid>
-                </grid>
-                <grid [direction]="'column'" [align]="'top-left'" height="100%">
-                    <grid [gap]="[0,8]" [direction]="'row'" [template]="'1fr'" width="100%" height="100%"
-                        class="scroll-v">
-                        <ng-container *ngFor="let notification of notifications">
-                            <ng-container *ngTemplateOutlet="notificationOrder; context: { item: notification }">
-                            </ng-container>
-                        </ng-container>
-                    </grid>
-                </grid>
-            </grid>
-        </grid>
-    </ng-container>
-</nz-drawer>
-
-<ng-template #notificationOrder let-item="item">
-    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr'" padding="0.75rem 0 1rem"
-        class="border-bottom-06 pointer bg-secondary-hover">
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'max-content 1fr'">
-            <tui-avatar src="@tui.shopping-bag" [size]="'s'" class="f-info" />
-            <grid [gap]="[8,0]" [direction]="'column'" [template]="'1fr'">
-                <grid [direction]="'column'" [template]="'1fr'">
-                    <grid [direction]="'column'" [template]="'1fr max-content'">
-                        <span class="f-16 f-lh-16 fw-500 f-01">
-                            New order
-                        </span>
-                        <grid [gap]="[4,4]" [direction]="'column'" [align]="'center-right'">
-                            <span class="material-symbols-outlined f-info f-13 icon-fill">
-                                fiber_manual_record
-                            </span>
-                            <span class="f-13 f-lh-15 f-04">
-                                {{ '10 mins ago' }}
-                            </span>
-                        </grid>
-                    </grid>
-                    <span class="f-14 f-lh-16 fw-400 f-03">
-                        Review the order #000015 from John Doe
-                    </span>
-                </grid>
-                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                    <grid [direction]="'column'" [align]="'center-left'" height="100%">
-                        <button tuiButton [appearance]="'secondary'" [size]="'xs'">
-                            <span class="f-02 f-13" padding="0">
-                                Decline
-                            </span>
-                        </button>
-                    </grid>
-                    <grid [direction]="'column'" [align]="'center-right'" height="100%">
-                        <button tuiButton [appearance]="'primary'" [size]="'xs'">
-                            <span class="f-white f-13" padding="0">
-                                Open
-                            </span>
-                        </button>
-                    </grid>
-                </grid>
-            </grid>
-        </grid>
-
+<drawer [(show)]="show" (onClose)="close()" [closable]="true" [busy]="busy"
+    [large]="isMobileOrTablet ? '100%' : '500px'" [confirmStyle]="'success'" [closeLabel]="'Cerrar'"
+    [confirmLabel]="'Marcar todas como leídas'" (onConfirm)="showConfirmModal = true">
+    <grid title [gap]="[8,16]" [direction]="'column'" [align]="'center-left'">
+        <span class="f-16 f-03 fw-600 t-left">
+            Notificaciones
+        </span>
     </grid>
-</ng-template>
+    <grid body [height]="'100%'">
+        <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" class="baseline">
+            <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem 1.5rem'">
+                <grid [direction]="'column'" [template]="'1fr max-content'">
+                    <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                        <nz-segmented [nzOptions]="facade.segments" [nzSize]="'default'"
+                            (nzValueChange)="refresh($event)" [width]="'fit-content'"></nz-segmented>
+                    </grid>
+                    <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
+                        <button (click)="refresh()" outline small icon-google class="f-02">
+                            <span class="material-symbols-outlined f-20 f-lh-16 fw-200">
+                                cached
+                            </span>
+                        </button>
+                    </grid>
+                </grid>
+
+                <grid *ngIf="busy === false" [direction]="'row'" [gap]="[16,16]">
+                    <ng-container *ngFor="let notification of notifications">
+                        <button full medium flat flex class="brdr-bottom">
+                            <grid [direction]="'row'" [gap]="[0,0]">
+                                <span class="f-14 f-01 f-lh-16 fw-600 t-left">
+                                    {{notification.Title}}
+                                </span>
+                                <span class="f-13 f-05 f-lh-15 t-left">
+                                    {{notification.Message}}
+                                </span>
+                                <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+                                    <status-badge [label]="notification.Readed ? 'Leído' : 'Sin leer'"
+                                        [appearance]="notification.Readed ? 'default' : 'warning'" [size]="'m'" />
+                                    <span class="f-12 f-07 f-lh-15">
+                                        {{notification.created_At | dateFormat: 'DD MMM YYYY' | capitalization }}
+                                    </span>
+                                </grid>
+                            </grid>
+                        </button>
+                    </ng-container>
+                </grid>
+
+                <grid *ngIf="busy === true" [direction]="'column'" [align]="'center-center'">
+                    <tui-loader [size]="'s'" />
+                    Cargando...
+                </grid>
+
+            </grid>
+        </grid>
+    </grid>
+</drawer>
+
+<modal [(show)]="showConfirmModal" [closeLabel]="'Cerrar'" [confirmLabel]="'Si, confirmar'" [confirmStyle]="'warning'"
+    (onConfirm)="markAllAsRead()" [width]="'356px'">
+    <span class="f-16 fw-600 f-01" title>
+        Marcar todas como leídas
+    </span>
+    <grid body [gap]="[16,16]" [padding]="'1rem 1.5rem'">
+        <span class="f-13 f-01 f-lh-15">
+            ¿Estás seguro de querer marcar todas como leídas?
+        </span>
+        <span class="f-13 f-06 f-lh-15">
+            Esta acción marcará todas como leídas y no podrás deshacerla.
+        </span>
+    </grid>
+</modal>

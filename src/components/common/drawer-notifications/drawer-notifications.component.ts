@@ -1,10 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { HelperPage } from '../helper.page';
+import { NotificationsMonitorFacade } from '@bussiness/notifications/controllers/notifications.monitor.facade';
 
 @Component({
   selector: 'drawer-notifications',
@@ -14,50 +12,68 @@ import { HelperPage } from '../helper.page';
 })
 export class DrawerNotificationsComponent extends HelperPage {
   //Flag Management
+  showConfirmModal = false;
 
   private _show: boolean = false;
   @Input() set show(value: boolean) {
     this._show = value;
+    if (value) {
+      this.refresh();
+    }
   }
   get show() {
     return this._show;
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //Arrays
-  notifications: INotifications[] = [
-    { id: 1, label: 'Lorem Ipsum', readed: false },
-    { id: 2, label: 'Lorem Ipsum', readed: false },
-    { id: 3, label: 'Lorem Ipsum', readed: false },
-    { id: 4, label: 'Lorem Ipsum', readed: true },
-    { id: 5, label: 'Lorem Ipsum', readed: true },
-    { id: 6, label: 'Lorem Ipsum', readed: true },
-    { id: 7, label: 'Lorem Ipsum', readed: true },
-    { id: 8, label: 'Lorem Ipsum', readed: true },
-  ];
-
-  constructor() {
+  constructor(public facade: NotificationsMonitorFacade) {
     super();
   }
 
   /**
    * UI Events
    */
-
-  openShortMenu() {
-    this.show = true;
-    this.showChange.emit(this.show);
+  refresh(segment: string | number = '0') {
+    this.facade.api.getPagedNotifications({
+      page: UITableConstants.DefaultPage,
+      pageSize: UITableConstants.DefaultPageSize,
+      dateFrom: '',
+      dateTo: '',
+      readed: segment === '0' ? null : segment === 'false' ? false : true,
+      select: null,
+      search: null,
+      sortBy: 'Readed',
+      sortOrder: 'asc',
+    });
   }
 
-  closeShortMenu() {
+  markAllAsRead() {
+    this.facade.api.markAllAsRead().then((response) => {
+      if (response.success) {
+        this.refresh();
+      }
+    });
+  }
+
+  close() {
     this.show = false;
     this.showChange.emit(this.show);
+  }
+  /**
+   * Getters
+   */
+  get notifications() {
+    return this.facade.api.pagedNotifications.value?.data ?? [];
+  }
+
+  get busy() {
+    return this.facade.api.busy.value;
   }
 
   /**
    * Life Cycle
    */
-  ngOnInit() {}
+  ngAfterViewInit() {}
 }
 
 export interface INotifications {

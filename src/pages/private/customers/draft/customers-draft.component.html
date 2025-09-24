@@ -1,5 +1,5 @@
 <layout>
-    <grid [gap]="[32,16]" [direction]="'row'" [template]="'max-content max-content'"
+    <grid [gap]="isMobileOrTablet ? [16,16] : [32,16]" [direction]="'row'" [template]="'max-content max-content'"
         [padding]="isMobile ? '1.5rem 1rem':'1.5rem'" height="100%">
         <customers-header />
         <grid [gap]="[24,24]" [direction]="'column'"

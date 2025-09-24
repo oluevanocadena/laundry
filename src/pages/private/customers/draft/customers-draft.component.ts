@@ -13,7 +13,7 @@ export class CustomersDraftComponent extends HelperPage {
     super();
   }
 
-  ngOnInit() {
-    this.facade.fillForm();
+  ngAfterViewInit() {
+    this.facade.initialize();
   }
 }

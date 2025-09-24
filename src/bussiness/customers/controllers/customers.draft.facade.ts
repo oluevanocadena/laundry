@@ -41,25 +41,19 @@ export class CustomersDraftFacade extends FacadeBase {
   public customer = new StorageProp<Customer>(null, 'CUSTOMER_EDITION');
   public phone = new FormProp<string>(this.formGroup, 'phone');
 
-  constructor(
-    public api: CustomersApiService,
-    public router: Router,
-    public sessionService: SessionService
-  ) {
+  constructor(public api: CustomersApiService, public router: Router, public sessionService: SessionService) {
     super(api);
   }
 
   override initialize() {
     super.initialize();
+    this.fillForm();
   }
 
   bindEvents() {
     this.phone.onChange((value) => {
       if (value && value.length > 0) {
-        this.formGroup.controls.phone.setValidators([
-          Validators.required,
-          Validators.minLength(10),
-        ]);
+        this.formGroup.controls.phone.setValidators([Validators.required, Validators.minLength(10)]);
       } else {
         this.formGroup.controls.phone.clearValidators();
       }

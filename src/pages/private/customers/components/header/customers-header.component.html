@@ -1,9 +1,9 @@
 <grid [direction]="'column'" [template]="'1fr max-content'">
     <grid [gap]="[16,16]" [direction]="'row'">
         <grid [gap]="[16,16]" [direction]="isMobileOrTablet ? 'row':'column'" [align]="'top-left'" height="fit-content">
-            <grid [direction]="'row'" [gap]="[8,8]">
+            <grid [direction]="'row'" [gap]="isMobileOrTablet ? [16,8] : [0,8]">
                 <grid [direction]="'column'" [align]="'top-left'" [gap]="[8,16]">
-                    <button (click)="onBack()" outline xsmall>
+                    <button (click)="onBack()" outline small icon>
                         <tui-icon icon="@tui.chevron-left" class="f-14 f-04" />
                     </button>
                     <grid [gap]="[4,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr max-content'">
@@ -22,7 +22,7 @@
                         </grid>
                     </grid>
                 </grid>
-                <span class="f-13 fw-400 f-06 f-lh-13" [padding]="'0 0 0 2.35rem'">
+                <span class="f-13 fw-400 f-06 f-lh-13" [padding]="'0 0 0 3rem'">
                     {{dateCreated | dateFormat: 'DD/MM/yyyy [a las] hh:mm A' }}
                 </span>
             </grid>

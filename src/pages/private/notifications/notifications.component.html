@@ -13,11 +13,16 @@
                 </button>
             </grid>
         </grid>
-        
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Marcar todas como leídas'"
-            [columns]="facade.columns" [segments]="facade.segments" [showType]="facade.showType"
-            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onMarkAllAsReadClick()"
-            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+
+        <grid [direction]="'row'" [gap]="[0,0]">
+            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Marcar todas como leídas'"
+                [columns]="facade.columns" [segments]="facade.segments" [showType]="facade.showType"
+                [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onMarkAllAsReadClick()"
+                (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+
+            <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
+                [actions]="facade.actions" />
+        </grid>
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
@@ -56,7 +61,7 @@
                         <tr hoverable *ngFor="let item of data; let i = index"
                             (click)="facade.onNotificationClick(item)">
                             <td>
-                                <label nz-checkbox></label>
+                                <label nz-checkbox [(ngModel)]="item.Checked"></label>
                             </td>
                             <td *ifColumn="{columns: columns, key: 'created_At'}">
                                 {{item.created_At || '' | dateFormat: 'DD MMM YYYY' | capitalization }}
@@ -85,3 +90,6 @@
 
 
 </layout>
+
+<notifications-confirm-delete-modal [(show)]="facade.showDeleteNotificationsModal" (onConfirm)="facade.onDeleteNotifications()"
+    (onClose)="facade.showDeleteNotificationsModal = false" />

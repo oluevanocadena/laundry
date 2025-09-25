@@ -22,6 +22,10 @@ async function deleteUser(email: string) {
     throw { message: 'Usuario no encontrado en tabla Accounts', status: 404 };
   }
 
+  if (account.IsOwner) {
+    throw { message: 'El usuario no puede ser eliminado', status: 400 };
+  }
+
   // 2. Borrar roles en AccountRoles
   const { error: rolesError } = await supabase.from(SupabaseTables.AccountRoles).delete().eq('AccountId', account.id);
 

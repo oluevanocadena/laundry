@@ -13,7 +13,7 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -23,6 +23,9 @@ import { StorageService } from '@services/common/storage.service';
   providedIn: 'root',
 })
 export class NotificationsMonitorFacade extends FacadeBase {
+  // Flag Management
+  showDeleteNotificationsModal = false;
+
   showType: UITypeFilterShow = {
     calendar: false,
     columns: false,
@@ -34,6 +37,11 @@ export class NotificationsMonitorFacade extends FacadeBase {
     { label: 'Todas', value: '0' },
     { label: 'No leídas', value: 'false' },
     { label: 'Leídas', value: 'true' },
+  ];
+
+  actions: UITableActions[] = [
+    { label: 'Eliminar', icon: 'delete', appearance: 'danger', action: () => this.openDeleteNotificationsModal() },
+    { label: 'Marcar como leídas', icon: 'check', appearance: 'default', action: () => this.onMarkManyAsReadClick() },
   ];
 
   tableFilter = new SubjectProp<UITableFilterBase>(NotificationsDefaultTableFilter);
@@ -57,11 +65,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
     this.bindEvents();
   }
 
-  bindEvents() {
-    this.api.pagedNotifications.onChange((notifications) => {
-      console.log('👉🏽 notifications', notifications);
-    });
-  }
+  bindEvents() {}
 
   clearState() {}
 
@@ -121,19 +125,51 @@ export class NotificationsMonitorFacade extends FacadeBase {
     });
   }
 
-  onNotificationClick(notification: Notification) {
-    this.api.markAsRead(notification?.id!).then((response) => {
-      console.log('👉🏽 response', response);
+  onMarkManyAsReadClick() {
+    const ids = this.selectedRows
+      .filter((notification) => notification.Readed === false)
+      .map((notification) => notification.id!);
+    this.api.markManyAsRead(ids).then((response) => {
       if (response.success) {
-        this.nzMessageService.success('Notificación marcada como leída');
+        this.nzMessageService.success('Notificaciones actualizadas');
         this.fetchNotifications();
       } else {
-        this.nzMessageService.error('Ocurrió un error al marcar la notificación como leída');
+        this.nzMessageService.error('Ocurrió un error al actualizar las notificaciones');
       }
     });
   }
 
+  onNotificationClick(notification: Notification) {
+    if (notification.Readed === false) {
+      this.api.markAsRead(notification?.id!).then((response) => {
+        console.log('👉🏽 response', response);
+        if (response.success) {
+          this.nzMessageService.success('Notificación marcada como leída');
+          this.fetchNotifications();
+        } else {
+          this.nzMessageService.error('Ocurrió un error al marcar la notificación como leída');
+        }
+      });
+    }
+  }
+
   onNewNotification() {
     // this.router.navigate([routes.NotificationDraft]);
+  }
+
+  onDeleteNotifications() {
+    console.log('👉🏽 delete notifications', this.selectedRows);
+  }
+
+  openDeleteNotificationsModal() {
+    this.showDeleteNotificationsModal = true;
+  }
+
+  /**
+   * Getters
+   */
+
+  get selectedRows() {
+    return this.api.pagedNotifications.value?.data.filter((notification) => notification.Checked) ?? [];
   }
 }

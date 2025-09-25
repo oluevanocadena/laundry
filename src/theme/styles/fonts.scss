@@ -32,40 +32,37 @@ $end: 80;
   text-decoration: underline;
 }
 
-.f-primary-hover:hover {
-  color: var(--primary) !important
+.f-danger,
+.f-error {
+  color: var(--error) !important;
+}
+
+.f-default {
+  color: var(--text-01) !important;
+}
+
+.f-info {
+  color: var(--info) !important;
 }
 
 .f-primary {
   color: var(--primary) !important
 }
 
-.f-tertiary {
-  color: var(--tertiary) !important
+.f-primary-hover:hover {
+  color: var(--primary) !important
 }
 
 .f-secondary {
   color: #707ead; // Secondary text
 }
 
-.f-warning-secondary {
-  color: var(--warning-secondary) !important;
-}
-
-.f-white {
-  color: #ffffff; // White text
-}
-
-.f-error {
-  color: var(--error) !important;
-}
-
 .f-success {
   color: var(--success) !important;
 }
 
-.f-info {
-  color: var(--info) !important;
+.f-tertiary {
+  color: var(--tertiary) !important
 }
 
 .f-warning {
@@ -77,7 +74,11 @@ $end: 80;
 }
 
 .f-warning-secondary {
-  color: var(--warning-secondary);
+  color: var(--warning-secondary) !important;
+}
+
+.f-white {
+  color: #ffffff; // White text
 }
 
 

@@ -11,9 +11,9 @@ import { MenuService, NzIsMenuInsideDropDownToken, NzMenuModule } from 'ng-zorro
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
-import { NativeNotificationChannel } from '@bussiness/notifications/strategy/native.notification.channel';
+import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
 import { CompositeNotificationChannel } from '@bussiness/notifications/strategy/notifications.composite';
-import { NzMessageNotificationChannel } from '@bussiness/notifications/strategy/nz-message.notification.channel';
+import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';

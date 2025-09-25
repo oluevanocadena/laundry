@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { NotificationsMonitorFacade } from '@bussiness/notifications/controllers/notifications.monitor.facade';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { HelperPage } from '../helper.page';
+import { HelperPage } from '@components/common/helper.page';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'drawer-notifications',
@@ -17,7 +18,7 @@ export class DrawerNotificationsComponent extends HelperPage {
   @Input() set show(value: boolean) {
     this._show = value;
     if (value) {
-      this.refresh();
+      this.refresh(this.selectedSegment);
     }
   }
   get show() {
@@ -25,26 +26,38 @@ export class DrawerNotificationsComponent extends HelperPage {
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(public facade: NotificationsMonitorFacade, public cdr: ChangeDetectorRef) {
+  selectedSegment: string | number = '0';
+
+  constructor(
+    public facade: NotificationsMonitorFacade,
+    public cdr: ChangeDetectorRef,
+    public nzMessageService: NzMessageService,
+  ) {
     super();
   }
 
   /**
    * UI Events
    */
-  refresh(segment: string | number = '0') {
-    this.facade.api.getPagedNotifications({
-      page: UITableConstants.DefaultPage,
-      pageSize: UITableConstants.DefaultPageSize,
-      dateFrom: '',
-      dateTo: '',
-      readed: segment === '0' ? null : segment === 'false' ? false : true,
-      select: null,
-      search: null,
-      sortBy: 'Readed',
-      sortOrder: 'asc',
-    });
-    this.cdr.detectChanges();
+  refresh(segment: string | number = '0', showMessage = false) {
+    this.selectedSegment = segment;
+    this.facade.api
+      .getPagedNotifications({
+        page: UITableConstants.DefaultPage,
+        pageSize: UITableConstants.DefaultPageSize,
+        dateFrom: '',
+        dateTo: '',
+        readed: segment === '0' ? null : segment === 'false' ? false : true,
+        select: null,
+        search: null,
+        sortBy: 'Readed',
+        sortOrder: 'asc',
+      })
+      .then(() => {
+        if (showMessage) {
+          this.nzMessageService.success('Actualización exitosa');
+        }
+      });
   }
 
   markAllAsRead() {
@@ -67,7 +80,6 @@ export class DrawerNotificationsComponent extends HelperPage {
   }
 
   get busy() {
-    console.log('👉🏽 busy', this.facade.api.busy.value);
     return this.facade.api.busy.value;
   }
 

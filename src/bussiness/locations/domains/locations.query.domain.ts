@@ -4,7 +4,7 @@ import { LocationRequest } from '../interfaces/locations.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 export class LocationsQueryDomain {
-  static buildQuery(request: LocationRequest, client: SupabaseClient, sessionService: SessionService) {
+  static buildPagedQuery(request: LocationRequest, client: SupabaseClient, sessionService: SessionService) {
     let query = client
       .from(SupabaseTables.Locations)
       .select('*')
@@ -31,5 +31,29 @@ export class LocationsQueryDomain {
       .eq('OrganizationId', sessionService.organizationId)
       .eq('Deleted', false);
     return query;
+  }
+
+  static buildLocationsQuery(disabled: boolean | null, client: SupabaseClient, sessionService: SessionService) {
+    let query = client
+      .from(SupabaseTables.Locations)
+      .select('*')
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('Deleted', false);
+
+    if (disabled !== null) {
+      query = query.eq('Disabled', disabled);
+    }
+
+    return query;
+  }
+
+  static buildDefaultLocationQuery(organizationId: string, client: SupabaseClient) {
+    return client
+      .from(SupabaseTables.Locations)
+      .select('*')
+      .eq('OrganizationId', organizationId)
+      .eq('Default', true)
+      .eq('Deleted', false)
+      .single();
   }
 }

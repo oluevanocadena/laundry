@@ -8,14 +8,14 @@
     </grid>
     <grid body [height]="'100%'">
         <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" class="baseline">
-            <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 1.5rem 1.5rem 1.5rem'">
-                <grid [direction]="'column'" [template]="'1fr max-content'">
+            <grid [direction]="'row'" [gap]="[16,16]">
+                <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'1.5rem 1.25rem 0 1.5rem'">
                     <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
                         <nz-segmented [nzOptions]="facade.segments" [nzSize]="'default'"
                             (nzValueChange)="refresh($event)" [width]="'fit-content'"></nz-segmented>
                     </grid>
                     <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
-                        <button (click)="refresh()" outline small icon-google class="f-02">
+                        <button (click)="refresh(selectedSegment, true)" outline small icon-google class="f-02">
                             <span class="material-symbols-outlined f-20 f-lh-16 fw-200">
                                 cached
                             </span>
@@ -23,10 +23,10 @@
                     </grid>
                 </grid>
 
-                <grid *ngIf="busy === false" [direction]="'row'" [gap]="[16,16]">
+                <grid *ngIf="busy === false && notifications.length > 0" [direction]="'row'" [gap]="[0,16]">
                     <ng-container *ngFor="let notification of notifications">
                         <button full medium flat flex class="brdr-bottom">
-                            <grid [direction]="'row'" [gap]="[0,0]">
+                            <grid [direction]="'row'" [gap]="[0,0]" [padding]="'0 1rem 0.25rem'">
                                 <span class="f-14 f-01 f-lh-16 fw-600 t-left">
                                     {{notification.Title}}
                                 </span>
@@ -45,7 +45,14 @@
                     </ng-container>
                 </grid>
 
-                <grid *ngIf="busy === true" [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" [padding]="'2rem'">
+                <grid *ngIf="busy === false && notifications.length === 0" [gap]="[8,8]" [direction]="'column'"
+                    [align]="'center-center'" [padding]="'2rem'">
+                    <tui-icon icon="@tui.inbox" class="f-20 f-06" />
+                    <span class="fw-400 f-06">No hay notificaciones disponibles</span>
+                </grid>
+
+                <grid *ngIf="busy === true" [gap]="[8,8]" [direction]="'column'" [align]="'center-center'"
+                    [padding]="'2rem'">
                     <tui-loader [size]="'s'" />
                     Cargando...
                 </grid>

@@ -27,6 +27,9 @@ export class AccountsApiService extends ApiBaseService {
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
+      (data as unknown as Account[]).forEach((user) => {
+        user.Checked = false;
+      });
       this.pagedUsers.value = {
         data: (data as unknown as Account[]) ?? [],
         count: totalCount,

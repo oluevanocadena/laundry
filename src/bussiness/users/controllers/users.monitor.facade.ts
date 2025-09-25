@@ -10,7 +10,7 @@ import { AccountsApiService } from '@bussiness/users/services/users.api.service'
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -21,6 +21,9 @@ import { StorageProp } from '@globals/types/storage.type';
   providedIn: 'root',
 })
 export class AccountsMonitorFacade extends FacadeBase {
+  // Flag Management
+  showDeleteUsersModal = false;
+
   showType: UITypeFilterShow = {
     calendar: false,
     columns: false,
@@ -34,10 +37,13 @@ export class AccountsMonitorFacade extends FacadeBase {
     { label: 'Inactivos', value: 'false' },
   ];
 
+  actions: UITableActions[] = [
+    { label: 'Eliminar', icon: 'delete', appearance: 'danger', action: () => this.openDeleteUsersModal() },
+  ];
+
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
   tableFilter = new SubjectProp<UITableFilterBase>(UsersDefaultTableFilter);
   columns = UsersPageTableColumns;
-
   selectedAccount = new StorageProp<Account>(null, 'ACCOUNT_SELECTED');
 
   constructor(public api: AccountsApiService, public router: Router, public storageService: StorageService) {
@@ -101,10 +107,21 @@ export class AccountsMonitorFacade extends FacadeBase {
     this.router.navigate([routes.UserDraft]);
   }
 
+  onDeleteUsers() {
+    console.log('👉🏽 delete users', this.selectedRows);
+  }
+
+  openDeleteUsersModal() {
+    this.showDeleteUsersModal = true;
+  }
 
   /**
    * Getters
    */
+
+  get selectedRows() {
+    return this.api.pagedUsers.value?.data.filter((user) => user.Checked) ?? [];
+  }
 
   getSegmentDisabled(segment: string): boolean | null {
     switch (segment) {

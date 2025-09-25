@@ -1,23 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Inject } from '@angular/core';
+import { Session } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { firstValueFrom } from 'rxjs';
-import { Session } from '@supabase/supabase-js';
 
 import { SessionService } from '@bussiness/session/services/session.service';
 import { supabase } from '@environments/environment';
 import { EdgeFunctionResponse, SupabaseBaseResponse } from '@globals/interfaces/supabase.interface';
 import { supabaseClient } from '@globals/singleton/supabase.client';
+import { MemoryCacheStore } from '@globals/strategies/cache/memory.cache.store';
 import { BusyProp } from '@globals/types/busy.type';
+import { ICacheStore } from '@globals/types/cache.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 export class ApiBaseService implements FacadeApiBase {
   public busy = new BusyProp(false);
   public client = supabaseClient;
-
+  public cacheStore: ICacheStore;
   public session = new SubjectProp<Session | null>(null);
 
+  //Injects
   @Inject(NzMessageService)
   public nzMessageService: NzMessageService = inject(NzMessageService);
 
@@ -28,6 +31,8 @@ export class ApiBaseService implements FacadeApiBase {
   public sessionService: SessionService = inject(SessionService);
 
   constructor() {
+    this.cacheStore = this.getCacheStore();
+
     // Mantener la sesión en memoria
     this.client.auth.getSession().then(({ data }) => {
       this.session.value = data.session;
@@ -37,6 +42,10 @@ export class ApiBaseService implements FacadeApiBase {
     this.client.auth.onAuthStateChange((_event, session) => {
       this.session.value = session;
     });
+  }
+
+  protected getCacheStore(): ICacheStore {
+    return new MemoryCacheStore();
   }
 
   protected async executeWithBusy<T>(
@@ -114,5 +123,40 @@ export class ApiBaseService implements FacadeApiBase {
         code: error?.code?.toString() ?? '500',
       },
     };
+  }
+
+  protected async getWithCache<T>(
+    key: string,
+    fetchFn: () => Promise<SupabaseBaseResponse<T>>,
+    ttlMs: number = 0,
+    onCacheHit?: (data: T) => void,
+  ): Promise<SupabaseBaseResponse<T>> {
+    const cached = this.cacheStore.get<T>(key);
+
+    if (cached) {
+      onCacheHit?.(cached);
+      return { data: cached, success: true, count: 0, error: null };
+    }
+
+    const result = await fetchFn();
+
+    if (result.success && ttlMs > 0 && result.data) {
+      this.cacheStore.set(key, result.data, ttlMs);
+    }
+
+    return result;
+  }
+
+  protected clearCache(key?: string) {
+    this.cacheStore.clear(key);
+  }
+
+  protected clearAllCaches(): void {
+    this.cacheStore.clear();
+  }
+
+  protected buildCacheKey(prefix: string, params: any): string {
+    const stableStringify = (obj: any) => JSON.stringify(obj, Object.keys(obj).sort());
+    return `${prefix}:${stableStringify(params)}`;
   }
 }

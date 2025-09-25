@@ -32,6 +32,7 @@ import { ModalComponent } from '@components/common/modal/modal.component';
 import { ProfileMenuComponent } from '@components/common/profile-menu/profile-menu.component';
 import { SideMenuComponent } from '@components/common/side-menu/side-menu.component';
 import { StatusBadgeComponent } from '@components/common/status-badge/status-badge.component';
+import { TableActionsComponent } from '@components/common/table-actions/table-actions.component';
 import { TableFiltersComponent } from '@components/common/table-filters/table-filters.component';
 import { TablePaginationComponent } from '@components/common/table-pagination/table-pagination.component';
 import { TopBarButtonsComponent } from '@components/common/top-bar-buttons/top-bar-buttons.component';
@@ -42,7 +43,6 @@ const components = [
   ButtonResponsiveComponent,
   DrawerComponent,
   DrawerMenuComponent,
-  DrawerNotificationsComponent,
   FooterComponent,
   HeaderComponent,
   ImageUploadComponent,
@@ -65,7 +65,9 @@ const components = [
   TablePaginationComponent,
   TopBarButtonsComponent,
   TopBarComponent,
+  TableActionsComponent,
   TopBarOrganizationComponent,
+  DrawerNotificationsComponent,
 ];
 
 @NgModule({

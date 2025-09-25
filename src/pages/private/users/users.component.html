@@ -15,14 +15,18 @@
             </grid>
         </grid>
 
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo usuario'"
-            [segments]="facade.segments" [showType]="facade.showType" [columns]="facade.columns"
-            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewUser()"
-            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+        <grid [direction]="'row'" [gap]="[0,0]">
+            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo usuario'"
+                [segments]="facade.segments" [showType]="facade.showType" [columns]="facade.columns"
+                [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewUser()"
+                (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+            <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
+                [actions]="facade.actions" />
+        </grid>
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
-            <table [width]="isMobileOrTablet ? '1300px' : '100%'">
+            <table [width]="isMobileOrTablet ? '1000px' : '100%'">
                 <thead>
                     <tr>
                         <th width="40px"> </th>
@@ -56,7 +60,7 @@
                     <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onUserClick(item)">
                             <td>
-                                <label nz-checkbox></label>
+                                <label nz-checkbox [(ngModel)]="item.Checked" [nzDisabled]="item.IsOwner"></label>
                             </td>
                             <td>{{item.created_at || '' | dateFormat:'DD MMMM[,] YYYY' | capitalization }}</td>
                             <td>{{item.FullName}}</td>
@@ -86,3 +90,6 @@
 
 
 </layout>
+
+<users-confirm-delete-modal [(show)]="facade.showDeleteUsersModal" (onConfirm)="facade.onDeleteUsers()"
+    (onClose)="facade.showDeleteUsersModal = false" />

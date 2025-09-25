@@ -1,4 +1,3 @@
-
 import { NotificationRequest } from '@bussiness/notifications/interfaces/notifications.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -66,5 +65,17 @@ export class NotificationsQueryDomain {
       .select('*', { count: 'exact', head: true })
       .eq('AccountId', accountId)
       .eq('Readed', false);
+  }
+
+  static buildMarkAllAsReadQuery(client: SupabaseClient, accountId: string) {
+    return client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('AccountId', accountId).eq('Readed', false);
+  }
+
+  static buildMarkAsReadQuery(client: SupabaseClient, id: string) {
+    return client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('id', id);
+  }
+
+  static buildMarkManyAsReadQuery(client: SupabaseClient, ids: string[]) {
+    return client.from(SupabaseTables.Notifications).update({ Readed: true }).in('id', ids);
   }
 }

@@ -36,6 +36,7 @@ export interface Account {
   AccountRoles?: AccountRole[]; // For UI only
 
   UserId?: string;
+  Checked?: boolean; // For UI only
 }
 
 export interface AccountRole {

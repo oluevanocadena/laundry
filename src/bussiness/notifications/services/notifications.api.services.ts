@@ -3,12 +3,15 @@ import { Injectable } from '@angular/core';
 import { NotificationsQueryDomain } from '@bussiness/notifications/domains/notifications.query.domain';
 import {
   Notification as INotification,
+  Notification,
   NotificationPagedResults,
   NotificationRequest,
 } from '@bussiness/notifications/interfaces/notifications.interfaces';
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
+import { LocalStorageCacheStore } from '@globals/strategies/cache/storage.cache.store';
+import { ICacheStore } from '@globals/types/cache.type';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
@@ -24,54 +27,91 @@ export class NotificationsApiService extends ApiBaseService {
     this.accountId = this.sessionService.accountId;
   }
 
-  getUnReadCount() {
-    return this.executeWithBusy(async () => {
-      const { data, error } = await NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
-      return super.handleResponse(data, error);
-    }, 'Fetching Unread Count');
+  protected override getCacheStore(): ICacheStore {
+    return new LocalStorageCacheStore(); //Define cache strategy
   }
 
-  getPagedNotifications(request: NotificationRequest) {
-    return this.executeWithBusy(async () => {
-      // Inicializar query base
-      let query = NotificationsQueryDomain.buildQuery(request, this.client, this.accountId);
-      // Consulta separada para obtener el conteo total sin filtros
-      let totalCountQuery = NotificationsQueryDomain.buildTotalCountQuery(request, this.client, this.accountId);
-      // Consulta separada para obtener el conteo de notificaciones no leídas
-      const unReadCountQuery = NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
+  getUnReadCount(useCache = true) {
+    const cacheKey = this.buildCacheKey(`unReadCount:${this.accountId}`, {});
 
-      // Ejecutar consultas
-      const [queryResult, totalCountResult, unReadCountResult] = await Promise.all([query, totalCountQuery, unReadCountQuery]);
+    return this.getWithCache(
+      cacheKey,
+      async () => {
+        const { data, error } = await NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
+        return super.handleResponse(data, error);
+      },
+      useCache ? 60_000 : 0, // TTL de 1 minuto
+    );
+  }
 
-      // Obtener resultados
-      const { data, error } = queryResult;
-      const totalCount = totalCountResult.count;
-      const unReadCount = unReadCountResult.count;
+  getPagedNotifications(request: NotificationRequest, useCache = true) {
+    const cacheKey = this.buildCacheKey(`pagedNotifications:${this.accountId}`, request);
 
-      // Actualizar valor del observable
-      this.pagedNotifications.value = {
-        data: data ?? [],
-        count: totalCount ?? 0,
-        unReadCount: unReadCount ?? 0,
-      };
-      return super.handleResponse(data, error, undefined, totalCount);
-    });
+    return this.getWithCache(
+      cacheKey,
+      async () => {
+        // Inicializar query base
+        let query = NotificationsQueryDomain.buildQuery(request, this.client, this.accountId);
+        let totalCountQuery = NotificationsQueryDomain.buildTotalCountQuery(request, this.client, this.accountId);
+        const unReadCountQuery = NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
+
+        // Ejecutar consultas
+        const [queryResult, totalCountResult, unReadCountResult] = await Promise.all([
+          query,
+          totalCountQuery,
+          unReadCountQuery,
+        ]);
+
+        // Obtener resultados
+        const { data, error } = queryResult;
+        const totalCount = totalCountResult.count;
+        const unReadCount = unReadCountResult.count;
+        (data as unknown as Notification[]).forEach((notification) => {
+          notification.Checked = false;
+        });
+        // Actualizar observable
+        this.pagedNotifications.value = {
+          data: data ?? [],
+          count: totalCount ?? 0,
+          unReadCount: unReadCount ?? 0,
+        };
+
+        return super.handleResponse(data, error, undefined, totalCount);
+      },
+      useCache ? 60_000 : 0, // TTL de 1 minuto,
+      (cachedData) => {
+        this.pagedNotifications.value = {
+          data: cachedData,
+          count: Array.isArray(cachedData) ? cachedData.length : 0,
+          unReadCount: 0, // opcional: si quieres conservar el último
+        };
+      },
+    );
   }
 
   markAllAsRead() {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client
-        .from(SupabaseTables.Notifications)
-        .update({ Readed: true })
-        .eq('AccountId', this.accountId)
-        .eq('Readed', false);
+      const query = NotificationsQueryDomain.buildMarkAllAsReadQuery(this.client, this.accountId);
+      const { data, error } = await query;
+      this.clearAllCaches();
+      return super.handleResponse(data as unknown as INotification[], error);
+    });
+  }
+
+  markManyAsRead(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = NotificationsQueryDomain.buildMarkManyAsReadQuery(this.client, ids);
+      const { data, error } = await query;
+      this.clearAllCaches();
       return super.handleResponse(data as unknown as INotification[], error);
     });
   }
 
   markAsRead(id: string) {
     return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('id', id);
+      const query = NotificationsQueryDomain.buildMarkAsReadQuery(this.client, id);
+      const { data, error } = await query;
+      this.clearAllCaches();
       return super.handleResponse(data as unknown as INotification[], error);
     });
   }

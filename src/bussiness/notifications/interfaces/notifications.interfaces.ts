@@ -24,6 +24,8 @@ export interface Notification {
 
   OrganizationId: string;
   Organization?: Organization; // For UI only
+
+  Checked?: boolean; // For UI only
 }
 
 export interface NotificationMetadata {

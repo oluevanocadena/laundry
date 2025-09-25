@@ -45,4 +45,14 @@ export class ProductsQueryDomain {
       .eq('Deleted', false);
     return query;
   }
+
+  static buildDeleteProductsQuery(client: SupabaseClient, ids: string[]) {
+    return client.from(SupabaseTables.Products).update({ Deleted: true }).in('id', ids).select('*');
+  }
+
+  static buildToggleProductsQuery(client: SupabaseClient, ids: string[]) {
+    return client.rpc('products_toggle_disabled', { ids }).then(async () => {
+      return { data: [], error: null };
+    });
+  }
 }

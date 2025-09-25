@@ -14,6 +14,7 @@ import { PipesModule } from '@pipes/pipes.module';
 import { ProductsAvailabilityComponent } from '@private/products/components/availability/products-availability.component';
 import { ProductsGeneralsComponent } from '@private/products/components/generals/products-generals.component';
 import { ProductsConfirmDeleteModalComponent } from '@private/products/components/header/components/products-confirm-delete-modal/products-confirm-delete-modal.component';
+import { ProductsConfirmDisableModalComponent } from '@private/products/components/header/components/products-confirm-disable-modal/products-confirm-disable-modal.component';
 import { ProductsHeaderComponent } from '@private/products/components/header/products-header.component';
 import { ProductsMediaComponent } from '@private/products/components/media/products-media.component';
 import { ProductsPrincingComponent } from '@private/products/components/princing/products-princing.component';
@@ -29,6 +30,7 @@ const components: any[] = [
   ProductsPageComponent,
   ProductsPrincingComponent,
   ProductsConfirmDeleteModalComponent,
+  ProductsConfirmDisableModalComponent,
 ];
 
 @NgModule({

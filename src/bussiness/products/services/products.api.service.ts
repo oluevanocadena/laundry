@@ -37,6 +37,9 @@ export class ProductsApiService extends ApiBaseService {
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
+      (data as unknown as Product[]).forEach((product) => {
+        product.Checked = false;
+      });
       this.pagedProducts.value = {
         data: (data as unknown as Product[]) ?? [],
         count: totalCount,
@@ -216,5 +219,21 @@ export class ProductsApiService extends ApiBaseService {
         .eq('id', productId);
       return super.handleResponse(null, error);
     }, 'Deleting Product');
+  }
+
+  deleteProducts(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = ProductsQueryDomain.buildDeleteProductsQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as Product[], error);
+    });
+  }
+
+  disableProducts(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = ProductsQueryDomain.buildToggleProductsQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as Product[], error);
+    });
   }
 }

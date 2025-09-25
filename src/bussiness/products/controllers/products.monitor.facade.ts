@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
 
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { ProductPageTableColumns } from '@bussiness/products/constants/product.columns.constants';
@@ -13,7 +14,7 @@ import { ProductsApiService } from '@bussiness/products/services/products.api.se
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -23,6 +24,10 @@ import { StorageService } from '@services/common/storage.service';
   providedIn: 'root',
 })
 export class ProductsMonitorFacade extends FacadeBase {
+  //Flag Management
+  showDeleteProductsModal = false;
+  showDisableProductsModal = false;
+
   showType: UITypeFilterShow = {
     calendar: false,
     columns: false,
@@ -41,11 +46,22 @@ export class ProductsMonitorFacade extends FacadeBase {
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
   columns = ProductPageTableColumns;
 
+  actions: UITableActions[] = [
+    { label: 'Eliminar', icon: 'delete', appearance: 'danger', action: () => this.openDeleteProductsModal() },
+    {
+      label: 'Habilitar/Deshabilitar',
+      icon: 'block',
+      appearance: 'default',
+      action: () => this.openDisableProductsModal(),
+    },
+  ];
+
   constructor(
     public router: Router,
     public api: ProductsApiService,
     public draftFacade: ProductsDraftFacade,
     public storageService: StorageService,
+    private nzMessageService: NzMessageService,
   ) {
     super(api);
   }
@@ -120,5 +136,47 @@ export class ProductsMonitorFacade extends FacadeBase {
       default:
         return false;
     }
+  }
+
+  onDeleteProducts() {
+    const ids = this.selectedRows.map((product) => product.id!.toString());
+    this.api.deleteProducts(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Productos eliminados');
+        this.fetchProducts();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al eliminar los productos');
+      }
+      this.showDeleteProductsModal = false;
+    });
+  }
+
+  onDisableProducts() {
+    const ids = this.selectedRows.map((product) => product.id!.toString());
+    this.api.disableProducts(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Productos deshabilitados');
+        this.fetchProducts();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al deshabilitar los productos');
+      }
+      this.showDisableProductsModal = false;
+    });
+  }
+
+  openDeleteProductsModal() {
+    this.showDeleteProductsModal = true;
+  }
+
+  openDisableProductsModal() {
+    this.showDisableProductsModal = true;
+  }
+
+  /**
+   * Getters
+   */
+  
+  get selectedRows() {
+    return this.api.pagedProducts.value?.data.filter((product) => product.Checked) ?? [];
   }
 }

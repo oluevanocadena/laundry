@@ -27,6 +27,7 @@ export interface Product {
   Deleted?: boolean;
   Disabled?: boolean;
   Deletable?: boolean;
+  Checked?: boolean; //Only for UI
 
   OrganizationId: string;
 

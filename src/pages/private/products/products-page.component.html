@@ -15,10 +15,15 @@
             </grid>
         </grid>
 
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo producto'"
-            [segments]="facade.segments" [showType]="facade.showType" [columns]="facade.columns"
-            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewProductClick()"
-            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+        <grid [direction]="'row'" [gap]="[0,0]">
+            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo producto'"
+                [columns]="facade.columns" [segments]="facade.segments" [showType]="facade.showType"
+                [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewProductClick()"
+                (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+
+            <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
+                [actions]="facade.actions" />
+        </grid>
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
@@ -56,7 +61,7 @@
                     <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onProductClick(item)">
                             <td>
-                                <label nz-checkbox></label>
+                                <label nz-checkbox [(ngModel)]="item.Checked"></label>
                             </td>
                             <td>
                                 <grid [padding]="'0.5rem 0'">
@@ -75,7 +80,7 @@
                             <td>{{item.ProductCategory?.Name}}</td>
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
-                                    <status-badge [label]="item?.Disabled ? 'Inactiva' : 'Activa'"
+                                    <status-badge [label]="item?.Disabled ? 'Inactivo' : 'Activo'"
                                         [appearance]="item?.Disabled ? 'error' : 'success'" [size]="'m'" />
                                 </grid>
                             </td>
@@ -91,3 +96,9 @@
 
 
 </layout>
+
+<products-confirm-delete-modal [(show)]="facade.showDeleteProductsModal" (onConfirm)="facade.onDeleteProducts()"
+    (onClose)="facade.showDeleteProductsModal = false" />
+
+<products-confirm-disable-modal [(show)]="facade.showDisableProductsModal" (onConfirm)="facade.onDisableProducts()"
+    (onClose)="facade.showDisableProductsModal = false" />

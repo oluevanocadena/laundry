@@ -88,6 +88,7 @@ export class ModalComponent extends HelperPage {
 }
 
 export type ModalConfirmStyleButton =
+  | 'default'
   | 'danger'
   | 'primary'
   | 'warning'
@@ -95,6 +96,7 @@ export type ModalConfirmStyleButton =
   | 'info';
 
 export const BUTTON_STYLES = [
+  'default',
   'danger',
   'primary',
   'warning',

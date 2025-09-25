@@ -68,14 +68,18 @@ export class NotificationsQueryDomain {
   }
 
   static buildMarkAllAsReadQuery(client: SupabaseClient, accountId: string) {
-    return client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('AccountId', accountId).eq('Readed', false);
+    return client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('AccountId', accountId).eq('Readed', false).select();
   }
 
   static buildMarkAsReadQuery(client: SupabaseClient, id: string) {
-    return client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('id', id);
+    return client.from(SupabaseTables.Notifications).update({ Readed: true }).eq('id', id).select();
   }
 
   static buildMarkManyAsReadQuery(client: SupabaseClient, ids: string[]) {
-    return client.from(SupabaseTables.Notifications).update({ Readed: true }).in('id', ids);
+    return client.from(SupabaseTables.Notifications).update({ Readed: true }).in('id', ids).select();
+  }
+
+  static buildDeleteNotificationsQuery(client: SupabaseClient, ids: string[]) {
+    return client.from(SupabaseTables.Notifications).delete().in('id', ids).select();
   }
 }

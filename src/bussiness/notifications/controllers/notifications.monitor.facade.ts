@@ -103,13 +103,11 @@ export class NotificationsMonitorFacade extends FacadeBase {
   }
 
   onColumnsChange(columns: UITableColumn[]) {
-    console.log('👉🏽 save columns', columns);
     this.storageService.set('NOTIFICATIONS_COLUMNS', columns);
     this.columns = UtilsDomain.clone(columns);
   }
 
   onFiltersChange(filter: UITableFilterBase) {
-    console.log('👉🏽 filter', filter);
     this.tableFilter.value = filter as UITableFilterBase;
     this.fetchNotifications();
   }
@@ -142,7 +140,6 @@ export class NotificationsMonitorFacade extends FacadeBase {
   onNotificationClick(notification: Notification) {
     if (notification.Readed === false) {
       this.api.markAsRead(notification?.id!).then((response) => {
-        console.log('👉🏽 response', response);
         if (response.success) {
           this.nzMessageService.success('Notificación marcada como leída');
           this.fetchNotifications();
@@ -158,7 +155,16 @@ export class NotificationsMonitorFacade extends FacadeBase {
   }
 
   onDeleteNotifications() {
-    console.log('👉🏽 delete notifications', this.selectedRows);
+    const ids = this.selectedRows.map((notification) => notification.id!);
+    this.api.deleteNotifications(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Notificaciones eliminadas');
+        this.fetchNotifications();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al eliminar las notificaciones');
+      }
+      this.showDeleteNotificationsModal = false;
+    });
   }
 
   openDeleteNotificationsModal() {

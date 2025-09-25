@@ -115,4 +115,14 @@ export class NotificationsApiService extends ApiBaseService {
       return super.handleResponse(data as unknown as INotification[], error);
     });
   }
+
+  deleteNotifications(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = NotificationsQueryDomain.buildDeleteNotificationsQuery(this.client, ids);
+      const { data, error } = await query; 
+      this.clearAllCaches();
+      return super.handleResponse(data as unknown as INotification[], error);
+    });
+  }
+
 }

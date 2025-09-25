@@ -27,6 +27,7 @@ export interface Customer {
   OrganizationId: string;
   Deleted?: boolean;
   Disabled?: boolean;
+  Checked?: boolean; //Only for UI
 }
 
 export interface CustomerRequest extends UITableFilter {

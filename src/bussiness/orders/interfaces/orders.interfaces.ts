@@ -2,13 +2,14 @@
 // Models
 // ::::::::::::::::::::::::::::::::::::::
 
-import { DeliveryTypes, DiscountTypes, PaymentMethods } from '@bussiness/orders/types/orders.types';
+import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
 import { Organization } from '@bussiness/session/interfaces/organizations.interface';
 import { Account } from '@bussiness/users/interfaces/users.interfaces';
-import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
-import { Customer } from '../../customers/customers.interfaces';
-import { OrderItem } from './orders.items.interfaces';
+import { PagedResults } from '@globals/interfaces/supabase.interface';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
+import { Customer } from '../../customers/customers.interfaces';
+import { PaymentMethods, PaymentStatus } from '../types/payments.type';
+import { OrderItem } from './orders.items.interfaces';
 
 export interface Delivery {
   DeliveryType: DeliveryTypes;
@@ -28,6 +29,9 @@ export interface Order {
 
   StatusId: number;
   OrderStatus?: OrderStatus; // For UI only
+
+  PaymentStatusId?: number;
+  PaymentStatus?: PaymentStatus; // For UI only
 
   DiscountType?: DiscountTypes;
   DiscountRate: number; //For percentage o amount

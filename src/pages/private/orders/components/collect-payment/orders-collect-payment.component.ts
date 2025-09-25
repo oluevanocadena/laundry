@@ -8,7 +8,8 @@ import { FormProp } from '@globals/types/form.type';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { PaymentMethodsEnum } from '@bussiness/orders/enums/order.payment.enums';
-import { DeliveryTypes, PaymentMethods } from '@bussiness/orders/types/orders.types';
+import { DeliveryTypes } from '@bussiness/orders/types/orders.types';
+import { PaymentMethods } from '@bussiness/orders/types/payments.type';
 
 @Component({
   selector: 'orders-collect-payment',
@@ -59,10 +60,7 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   }
 
   collectPayment() {
-    this.facade.onCollectPayment(
-      this.paymentMethod.value as PaymentMethodsEnum,
-      this.transactionNumber.value ?? undefined,
-    );
+    this.facade.onCollectPayment(this.paymentMethod.value as PaymentMethodsEnum, this.transactionNumber.value ?? undefined);
     this.close();
   }
 

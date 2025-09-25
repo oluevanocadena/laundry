@@ -13,7 +13,7 @@ export class CustomersQueryDomain {
       .from(SupabaseTables.Customers)
       .select(`*`)
       .eq('OrganizationId', sessionService.organizationId)
-      .eq('Disabled', false);
+      .eq('Deleted', false);
 
     if (request.search && request.search.trim() !== '') {
       const searchTerm = request.search.trim();
@@ -39,8 +39,18 @@ export class CustomersQueryDomain {
       .from(SupabaseTables.Customers)
       .select('*', { count: 'exact', head: true })
       .eq('OrganizationId', sessionService.organizationId)
-      .eq('Disabled', false);
+      .eq('Deleted', false);
 
     return query;
+  }
+
+  static buildDeleteCustomersQuery(client: SupabaseClient, ids: string[]) {
+    return client.from(SupabaseTables.Customers).update({ Deleted: true }).in('id', ids).select('*');
+  }
+
+  static buildToggleCustomersQuery(client: SupabaseClient, ids: string[]) {
+    return client.rpc('customers_toggle_disabled', { ids }).then(async () => {
+      return { data: [], error: null };
+    });
   }
 }

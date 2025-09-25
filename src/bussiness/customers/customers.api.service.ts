@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Customer, CustomerPagedResults, CustomerRequest } from '@bussiness/customers/customers.interfaces';
+import { CustomersQueryDomain } from '@bussiness/customers/domains/customer.query.domain';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { CustomersQueryDomain } from './domains/customer.query.domain';
 
 @Injectable({
   providedIn: 'root',
@@ -46,6 +46,9 @@ export class CustomersApiService extends ApiBaseService {
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
+      (data as unknown as Customer[]).forEach((customer) => {
+        customer.Checked = false;
+      });
       this.pagedCustomers.value = {
         data: (data as unknown as Customer[]) ?? [],
         count: totalCount,
@@ -80,5 +83,21 @@ export class CustomersApiService extends ApiBaseService {
       const { error } = await this.client.from(SupabaseTables.Customers).update({ Disabled: false }).eq('id', id);
       return super.handleResponse(null, error, undefined, 1);
     }, 'enabling customer');
+  }
+
+  deleteCustomers(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = CustomersQueryDomain.buildDeleteCustomersQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as Customer[], error);
+    });
+  }
+
+  disableCustomers(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = CustomersQueryDomain.buildToggleCustomersQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as Customer[], error);
+    });
   }
 }

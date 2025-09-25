@@ -35,4 +35,14 @@ export class ProductCategoriesQueryDomain {
       .eq('Deleted', false);
     return query;
   }
+
+  static buildDeleteProductCategoriesQuery(client: SupabaseClient, ids: string[]) {
+    return client.from(SupabaseTables.ProductCategories).update({ Deleted: true }).in('id', ids).select();
+  }
+
+  static buildToggleProductCategoriesQuery(client: SupabaseClient, ids: string[]) {
+    return client.rpc('productcategories_toggle_disabled', { ids }).then(async () => {
+      return { data: [], error: null };
+    });
+  }
 }

@@ -1,23 +1,27 @@
 <grid [direction]="'row'" [gap]="[0,0]" class="wrap brdr-top bg-02">
 
-    <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [width]="isMobileOrTablet ? '100vw' : '100%'"
-        [padding]="'0.25rem 1rem'" class="scroll-h">
-        <span class="f-13 f-06 fw-400 t-left no-wrap">
-            <span class="fw-600 pdd-0 f-01">
-                {{selectedRows.length}}&nbsp;
+    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'"
+        [width]="isMobileOrTablet ? '100vw' : '100%'" [padding]="'0.25rem 1rem'" class="scroll-h">
+        <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]">
+            <button small outline flex *ngFor="let action of actions" (click)="action.action()">
+                <span *ngIf="action.icon"
+                    class="material-symbols-outlined f-17 f-lh-16 f-{{action.appearance === 'default' ? '06' : action.appearance}}">
+                    {{action.icon}}
+                </span>
+                <span class="f-13 pdd-0 no-wrap f-{{action.appearance}}">
+                    {{action.label}}
+                </span>
+            </button>
+        </grid>
+        <grid [direction]="'column'" [align]="'center-right'" [height]="'100%'">
+            <span class="f-14 f-06 fw-400 t-left no-wrap">
+                <span class="f-14 fw-600 pdd-0 f-01">
+                    {{selectedRows.length}}&nbsp;
+                </span>
+                {{selectedRows.length > 1 ? 'filas' : 'fila'}}
+                {{selectedRows.length > 1 ? 'seleccionadas' : 'seleccionada'}}
             </span>
-            {{selectedRows.length > 1 ? 'filas' : 'fila'}}
-            {{selectedRows.length > 1 ? 'selecciadas' : 'seleccionada'}}
-        </span>
-        <button small outline flex *ngFor="let action of actions" (click)="action.action()">
-            <span *ngIf="action.icon"
-                class="material-symbols-outlined f-17 f-lh-16 f-{{action.appearance === 'default' ? '06' : action.appearance}}">
-                {{action.icon}}
-            </span>
-            <span class="f-13 pdd-0 no-wrap f-{{action.appearance}}">
-                {{action.label}}
-            </span>
-        </button>
+        </grid>
     </grid>
 
 </grid>

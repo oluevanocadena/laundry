@@ -8,6 +8,7 @@ export interface ProductCategory extends Omit<UISelectOption, 'id'> {
   OrganizationId: string;
   Deleted?: boolean;
   Disabled?: boolean;
+  Checked?: boolean; //Only for UI
 }
 
 export interface ProductCategoryRequest extends Omit<UITableFilter, 'dateFrom' | 'dateTo'> {

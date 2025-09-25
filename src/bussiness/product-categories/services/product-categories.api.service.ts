@@ -5,7 +5,6 @@ import {
   ProductCategory,
   ProductCategoryRequest,
 } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
-import { SessionService } from '@bussiness/session/services/session.service';
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { PagedResults, SupabaseResponse } from '@globals/interfaces/supabase.interface';
@@ -31,6 +30,9 @@ export class ProductCategoriesApiService extends ApiBaseService {
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
+      (data as unknown as ProductCategory[]).forEach((productCategory) => {
+        productCategory.Checked = false;
+      });
       this.pagedProductCategories.value = {
         data: (data as unknown as ProductCategory[]) ?? [],
         count: totalCount,
@@ -83,5 +85,21 @@ export class ProductCategoriesApiService extends ApiBaseService {
         .eq('id', id);
       return super.handleResponse(data, error);
     }, 'Deleting Product Category');
+  }
+
+  deleteProductCategories(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = ProductCategoriesQueryDomain.buildDeleteProductCategoriesQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as ProductCategory[], error);
+    });
+  }
+
+  disableProductCategories(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = ProductCategoriesQueryDomain.buildToggleProductCategoriesQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as ProductCategory[], error);
+    });
   }
 }

@@ -15,10 +15,15 @@
             </grid>
         </grid>
 
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nueva categoría'"
-            [segments]="facade.segments" [showType]="facade.showType" [columns]="facade.columns"
-            [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewProductCategoryClick()"
-            (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+        <grid [direction]="'row'" [gap]="[0,0]">
+            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nueva categoría'"
+                [columns]="facade.columns" [segments]="facade.segments" [showType]="facade.showType"
+                [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewProductCategoryClick()"
+                (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+
+            <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
+                [actions]="facade.actions" />
+        </grid>
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" width="100%"
             class="scroll-h scroll-v bg-02 baseline">
@@ -57,7 +62,7 @@
                         <tr hoverable *ngFor="let item of data; let i = index"
                             (click)="facade.onProductCategoryClick(item)">
                             <td>
-                                <label nz-checkbox></label>
+                                <label nz-checkbox [(ngModel)]="item.Checked"></label>
                             </td>
                             <td *ifColumn="{columns: columns, key: 'created_At'}">
                                 {{item.created_At || '' | dateFormat: 'DD MMMM[,] YYYY' | capitalization }}
@@ -86,3 +91,9 @@
 
 <product-categories-drawer-draft [(show)]="facade.showProductCategoryDrawer"
     (showChange)="facade.fetchProductCategories()" />
+
+<product-categories-confirm-delete-modal [(show)]="facade.showDeleteProductCategoriesModal"
+    (onConfirm)="facade.onDeleteProductCategories()" (onClose)="facade.showDeleteProductCategoriesModal = false" />
+
+<product-categories-confirm-disable-modal [(show)]="facade.showDisableProductCategoriesModal"
+    (onConfirm)="facade.onDisableProductCategories()" (onClose)="facade.showDisableProductCategoriesModal = false" />

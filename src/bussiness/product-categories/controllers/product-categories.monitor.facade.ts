@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { StorageService } from '@services/common/storage.service';
@@ -8,7 +9,7 @@ import { ProductCategoriesDefaultTableFilter } from '@bussiness/product-categori
 import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -21,6 +22,8 @@ import { ProductCategoriesDraftFacade } from './product-categories.draft.facade'
 export class ProductCategoriesMonitorFacade extends FacadeBase {
   //Flag Management
   showProductCategoryDrawer = false;
+  showDeleteProductCategoriesModal = false;
+  showDisableProductCategoriesModal = false;
 
   //showType
   showType: UITypeFilterShow = {
@@ -40,17 +43,29 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
   columns = ProductCategoriesPageTableColumns;
 
+  actions: UITableActions[] = [
+    { label: 'Eliminar', icon: 'delete', appearance: 'danger', action: () => this.openDeleteProductCategoriesModal() },
+    {
+      label: 'Habilitar/Deshabilitar',
+      icon: 'block',
+      appearance: 'default',
+      action: () => this.openDisableProductCategoriesModal(),
+    },
+  ];
+
   constructor(
     public api: ProductCategoriesApiService,
     public draftFacade: ProductCategoriesDraftFacade,
     public storageService: StorageService,
+    private nzMessageService: NzMessageService,
   ) {
     super(api);
   }
 
   override initialize() {
     super.initialize();
-    this.columns = this.storageService.get('PRODUCT_CATEGORIES_COLUMNS') || UtilsDomain.clone(ProductCategoriesPageTableColumns);
+    this.columns =
+      this.storageService.get('PRODUCT_CATEGORIES_COLUMNS') || UtilsDomain.clone(ProductCategoriesPageTableColumns);
     this.fetchProductCategories();
     this.bindEvents();
   }
@@ -68,7 +83,7 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
   fetchProductCategories() {
     this.api.getPagedProductCategories({
       page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
-      pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,     
+      pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
       sortBy: this.tableFilter.value?.sortBy ?? null,
       sortOrder: this.tableFilter.value?.sortOrder ?? 'asc',
       search: this.tableFilter.value?.search ?? null,
@@ -122,5 +137,47 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
       default:
         return false;
     }
+  }
+
+  onDeleteProductCategories() {
+    const ids = this.selectedRows.map((productCategory) => productCategory.id!.toString());
+    this.api.deleteProductCategories(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Categorías eliminadas');
+        this.fetchProductCategories();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al eliminar las categorías');
+      }
+      this.showDeleteProductCategoriesModal = false;
+    });
+  }
+
+  onDisableProductCategories() {
+    const ids = this.selectedRows.map((productCategory) => productCategory.id!.toString());
+    this.api.disableProductCategories(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Categorías deshabilitadas');
+        this.fetchProductCategories();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al deshabilitar las categorías');
+      }
+      this.showDisableProductCategoriesModal = false;
+    });
+  }
+
+  openDeleteProductCategoriesModal() {
+    this.showDeleteProductCategoriesModal = true;
+  }
+
+  openDisableProductCategoriesModal() {
+    this.showDisableProductCategoriesModal = true;
+  }
+
+  /**
+   * Getters
+   */
+
+  get selectedRows() {
+    return this.api.pagedProductCategories.value?.data.filter((productCategory) => productCategory.Checked) ?? [];
   }
 }

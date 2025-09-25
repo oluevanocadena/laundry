@@ -131,19 +131,21 @@ export class ApiBaseService implements FacadeApiBase {
     ttlMs: number = 0,
     onCacheHit?: (data: T) => void,
   ): Promise<SupabaseBaseResponse<T>> {
+    this.busy.value = true;
     const cached = this.cacheStore.get<T>(key);
 
     if (cached) {
       onCacheHit?.(cached);
+      this.busy.value = false;
       return { data: cached, success: true, count: 0, error: null };
     }
 
     const result = await fetchFn();
+    this.busy.value = false;
 
     if (result.success && ttlMs > 0 && result.data) {
       this.cacheStore.set(key, result.data, ttlMs);
     }
-
     return result;
   }
 

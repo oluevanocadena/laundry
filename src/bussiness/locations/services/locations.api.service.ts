@@ -37,6 +37,9 @@ export class LocationsApiService extends ApiBaseService {
         const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
         const { data, error } = queryResult;
         const totalCount = totalCountResult.count ?? 0;
+        (data as unknown as Location[]).forEach((location) => {
+          location.Checked = false;
+        });
         this.pagedLocations.value = {
           data: (data as unknown as Location[]) ?? [],
           count: totalCount,
@@ -106,5 +109,23 @@ export class LocationsApiService extends ApiBaseService {
       this.clearAllCaches();
       return super.handleResponse(data, error);
     }, 'Deleting Location');
+  }
+
+  deleteLocations(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = LocationsQueryDomain.buildDeleteLocationsQuery(this.client, ids);
+      const { data, error } = await query;
+      this.clearAllCaches();
+      return super.handleResponse(data as unknown as Location[], error);
+    });
+  }
+
+  disableLocations(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = LocationsQueryDomain.buildToggleLocationsQuery(this.client, ids);
+      const { data, error } = await query;
+      this.clearAllCaches();
+      return super.handleResponse(data as unknown as Location[], error);
+    });
   }
 }

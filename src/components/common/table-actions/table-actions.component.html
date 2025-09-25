@@ -2,8 +2,10 @@
 
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [width]="isMobileOrTablet ? '100vw' : '100%'"
         [padding]="'0.25rem 1rem'" class="scroll-h">
-        <span class="f-13 f-04 fw-400 t-left no-wrap">
-            {{selectedRows.length}}
+        <span class="f-13 f-06 fw-400 t-left no-wrap">
+            <span class="fw-600 pdd-0 f-01">
+                {{selectedRows.length}}&nbsp;
+            </span>
             {{selectedRows.length > 1 ? 'filas' : 'fila'}}
             {{selectedRows.length > 1 ? 'selecciadas' : 'seleccionada'}}
         </span>

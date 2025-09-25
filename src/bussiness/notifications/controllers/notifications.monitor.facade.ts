@@ -99,6 +99,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
 
   onTablePaginationChange(filter: UITablePagination) {
     this.tablePagination.value = filter;
+    this.api.cacheStore.clear();
     this.fetchNotifications();
   }
 

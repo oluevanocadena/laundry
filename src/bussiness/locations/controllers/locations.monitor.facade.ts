@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { StorageService } from '@services/common/storage.service';
@@ -11,7 +12,7 @@ import { LocationsApiService } from '@bussiness/locations/services/locations.api
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -22,6 +23,8 @@ import { UtilsDomain } from '@globals/utils/utils.domain';
 export class LocationsMonitorFacade extends FacadeBase {
   //Flag Management
   showLocationDrawer = false;
+  showDeleteLocationsModal = false;
+  showDisableLocationsModal = false;
 
   //showType
   showType: UITypeFilterShow = {
@@ -41,10 +44,16 @@ export class LocationsMonitorFacade extends FacadeBase {
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
   columns = LocationsPageTableColumns;
 
+  actions: UITableActions[] = [
+    { label: 'Eliminar', icon: 'delete', appearance: 'danger', action: () => this.openDeleteLocationsModal() },
+    { label: 'Habilitar/Deshabilitar', icon: 'block', appearance: 'default', action: () => this.openDisableLocationsModal() },
+  ];
+
   constructor(
     public api: LocationsApiService,
     public draftFacade: LocationsDraftFacade,
     public storageService: StorageService,
+    private nzMessageService: NzMessageService,
   ) {
     super(api);
   }
@@ -86,6 +95,7 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   onTablePaginationChange(filter: UITablePagination) {
     this.tablePagination.value = filter;
+    this.api.cacheStore.clear();
     this.fetchLocations();
   }
 
@@ -111,6 +121,40 @@ export class LocationsMonitorFacade extends FacadeBase {
     this.showLocationDrawer = true;
   }
 
+  onDeleteLocations() {
+    const ids = this.selectedRows.map((location) => location.id!);
+    this.api.deleteLocations(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Sucursales eliminadas');
+        this.fetchLocations();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al eliminar las sucursales');
+      }
+      this.showDeleteLocationsModal = false;
+    });
+  }
+
+  onDisableLocations() {
+    const ids = this.selectedRows.map((location) => location.id!);
+    this.api.disableLocations(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Sucursales deshabilitadas');
+        this.fetchLocations();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al deshabilitar las sucursales');
+      }
+      this.showDisableLocationsModal = false;
+    });
+  }
+
+  openDeleteLocationsModal() {
+    this.showDeleteLocationsModal = true;
+  }
+
+  openDisableLocationsModal() {
+    this.showDisableLocationsModal = true;
+  }
+
   /**
    * Getters
    */
@@ -126,5 +170,9 @@ export class LocationsMonitorFacade extends FacadeBase {
       default:
         return false;
     }
+  }
+
+  get selectedRows() {
+    return this.api.pagedLocations.value?.data.filter((location) => location.Checked && location.Default === false) ?? [];
   }
 }

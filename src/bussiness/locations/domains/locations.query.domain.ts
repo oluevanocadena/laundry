@@ -56,4 +56,14 @@ export class LocationsQueryDomain {
       .eq('Deleted', false)
       .single();
   }
+
+  static buildDeleteLocationsQuery(client: SupabaseClient, ids: string[]) {
+    return client.from(SupabaseTables.Locations).delete().in('id', ids).select();
+  }
+
+  static buildToggleLocationsQuery(client: SupabaseClient, ids: string[]) {
+    return client.rpc('location_toggle_disabled', { ids }).then(async () => {
+      return { data: [], error: null };
+    });
+  }
 }

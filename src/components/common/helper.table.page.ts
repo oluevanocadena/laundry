@@ -1,24 +1,24 @@
-import { Component, Input } from "@angular/core";
-import { HelperPage } from "./helper.page";
-
+import { Component, Input } from '@angular/core';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   template: '<ng-content></ng-content>',
-  styles: ['']
+  styles: [''],
 })
 export class HelperTablePage<T> extends HelperPage {
-
   protected _dataSource: any[] | T[] = [];
   @Input() set dataSource(value: any[] | T[]) {
     this._dataSource = value;
     this.filterData();
   }
-  get dataSource() { return this._dataSource; }
+  get dataSource() {
+    return this._dataSource;
+  }
 
   public data: any[] | T[] = [];
   public page: number = 1;
   public pageSize: 10 | 20 | 50 = 50;
-  public currentColumnFilters: { field: (keyof T | keyof any), value: string }[] = [];
+  public currentColumnFilters: { field: keyof T | keyof any; value: string }[] = [];
   public usePagination: boolean = true;
   public modeFilter: ICoolModeFilter = 'and';
 
@@ -26,17 +26,19 @@ export class HelperTablePage<T> extends HelperPage {
     let filteredData = this.dataSource || [];
 
     if (this.currentColumnFilters?.length) {
-      if (this.modeFilter === 'and') { // Filtra con 'AND': todos los filtros deben coincidir
-        filteredData = filteredData.filter(item =>
+      if (this.modeFilter === 'and') {
+        // Filtra con 'AND': todos los filtros deben coincidir
+        filteredData = filteredData.filter((item) =>
           this.currentColumnFilters.every(({ field, value }) =>
-            String(item[field])?.toLowerCase().includes(value?.toLowerCase())
-          )
+            String(item[field])?.toLowerCase().includes(value?.toLowerCase()),
+          ),
         );
-      } else if (this.modeFilter === 'or') { // Filtra con 'OR': al menos uno de los filtros debe coincidir
-        filteredData = filteredData?.filter(item =>
+      } else if (this.modeFilter === 'or') {
+        // Filtra con 'OR': al menos uno de los filtros debe coincidir
+        filteredData = filteredData?.filter((item) =>
           this.currentColumnFilters.some(({ field, value }) =>
-            String(item[field])?.toLowerCase().includes(value?.toLowerCase())
-          )
+            String(item[field])?.toLowerCase().includes(value?.toLowerCase()),
+          ),
         );
       }
     }
@@ -56,8 +58,7 @@ export class HelperTablePage<T> extends HelperPage {
     }
     if (this.usePagination) {
       this.filterData();
-    }
-    else {
+    } else {
       this.data = this.dataSource;
     }
   }
@@ -73,7 +74,6 @@ export class HelperTablePage<T> extends HelperPage {
   get canNext() {
     return this.data?.length >= this.pageSize ? true : false;
   }
-
 }
 
 export type ICoolModeFilter = 'and' | 'or';

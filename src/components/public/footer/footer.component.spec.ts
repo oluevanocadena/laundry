@@ -1,26 +1,23 @@
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { FooterComponent } from "./footer.component";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe("FooterComponent", () => {
+import { PublicFooterComponent } from '@components/public/footer/footer.component';
 
-  let fixture: ComponentFixture<FooterComponent>;
-  let component: FooterComponent;
+describe('FooterComponent', () => {
+  let fixture: ComponentFixture<PublicFooterComponent>;
+  let component: PublicFooterComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-      ],
-      declarations: [FooterComponent]
+      providers: [],
+      declarations: [PublicFooterComponent],
     });
 
-    fixture = TestBed.createComponent(FooterComponent);
+    fixture = TestBed.createComponent(PublicFooterComponent);
     component = fixture.componentInstance;
-
   });
 
-  it("should be able to create component instance", () => {
+  it('should be able to create component instance', () => {
     expect(component).toBeDefined();
   });
-  
 });

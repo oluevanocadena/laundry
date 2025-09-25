@@ -1,26 +1,23 @@
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { BoardDrawerMenuComponent } from "./board-drawer-menu.component";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe("BoardDrawerMenuComponent", () => {
+import { DrawerMenuComponent } from '@components/common/drawer-menu/drawer-menu.component';
 
-  let fixture: ComponentFixture<BoardDrawerMenuComponent>;
-  let component: BoardDrawerMenuComponent;
+describe('BoardDrawerMenuComponent', () => {
+  let fixture: ComponentFixture<DrawerMenuComponent>;
+  let component: DrawerMenuComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-      ],
-      declarations: [BoardDrawerMenuComponent]
+      providers: [],
+      declarations: [DrawerMenuComponent],
     });
 
-    fixture = TestBed.createComponent(BoardDrawerMenuComponent);
+    fixture = TestBed.createComponent(DrawerMenuComponent);
     component = fixture.componentInstance;
-
   });
 
-  it("should be able to create component instance", () => {
+  it('should be able to create component instance', () => {
     expect(component).toBeDefined();
   });
-  
 });

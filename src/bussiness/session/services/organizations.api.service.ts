@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
+import { Organization } from '@bussiness/session/interfaces/organizations.interface';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { StorageProp } from '@globals/types/storage.type';
-import { Organization } from '../interfaces/organizations.interface';
 
 @Injectable({
   providedIn: 'root',

@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
-import { HelperPage } from '@components/common/helper.page';
 import { UISelectOption } from '@components/atoms/form-input/form-input.component';
+import { HelperPage } from '@components/common/helper.page';
+import { ModalColumnsSort } from '@components/common/modal-columns-sort/modal-columns-sort.component';
 import { UIDefaultTableFilter } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn, UITableFilterBase } from '@globals/interfaces/ui.interfaces';
 import { FormProp } from '@globals/types/form.type';
-import moment from 'moment';
-import { ModalColumnsSort } from '../modal-columns-sort/modal-columns-sort.component';
-import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 @Component({
   selector: 'table-filters',
@@ -119,7 +118,6 @@ export class TableFiltersComponent extends HelperPage {
   get showSelect() {
     return this.options && this.options.length > 0;
   }
- 
 
   get showSegments() {
     return this.segments && this.segments.length > 0;

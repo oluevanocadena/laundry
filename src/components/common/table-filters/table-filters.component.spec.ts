@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { TableFiltersComponent } from "./table-filters.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { TableFiltersComponent } from "@components/common/table-filters/table-filters.component";
 
 describe("TableFiltersComponent", () => {
 

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { ProductsPrincingComponent } from "./products-princing.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { ProductsPrincingComponent } from "@private/products/components/princing/products-princing.component";
 
 describe("ProductsPrincingComponent", () => {
 

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
+import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
+import { UsersQueryDomain } from '@bussiness/users/domains/users.query.domain';
 import { Account, AccountRole, InviteUserRequest, UsersRequest } from '@bussiness/users/interfaces/users.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { EdgeFunctionResponse, PagedResults } from '@globals/interfaces/supabase.interface';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { UsersQueryDomain } from '../domains/users.query.domain';
-import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
 
 @Injectable({
   providedIn: 'root',

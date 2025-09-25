@@ -1,36 +1,29 @@
+import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import es from '@angular/common/locales/es';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
+import { of } from 'rxjs';
 
 import { provideEventPlugins } from '@taiga-ui/event-plugins';
 import { TUI_LANGUAGE, TUI_SPANISH_LANGUAGE } from '@taiga-ui/i18n';
-import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
+import { provideNzConfig } from 'ng-zorro-antd/core/config';
+import { es_ES, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { MenuService, NzIsMenuInsideDropDownToken, NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
-import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
-import { CompositeNotificationChannel } from '@bussiness/notifications/strategy/notifications.composite';
-import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
-import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
-
+import { routes } from '@app/app.routes';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
-import { of } from 'rxjs';
-import { routes } from './app.routes';
-
-import { registerLocaleData } from '@angular/common';
-import es from '@angular/common/locales/es';
-import { es_ES, NZ_I18N } from 'ng-zorro-antd/i18n';
+import { CompositeNotificationChannel } from '@bussiness/notifications/strategy/notifications.composite';
+import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { AuthInterceptor } from '@globals/interceptors/http.interceptor';
-registerLocaleData(es);
+import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
+import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
 
-const ngZorroConfig: NzConfig = {
-  modal: {
-    nzDirection: 'ltr',
-  },
-};
+registerLocaleData(es);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,7 +44,11 @@ export const appConfig: ApplicationConfig = {
       },
       deps: [NzNotificationService, Router, OrdersApiService],
     },
-    provideNzConfig(ngZorroConfig),
+    provideNzConfig({
+      modal: {
+        nzDirection: 'ltr',
+      },
+    }),
     {
       provide: TUI_LANGUAGE,
       useValue: of(TUI_SPANISH_LANGUAGE),

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { TablePaginationComponent } from "./table-pagination.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { TablePaginationComponent } from "@components/common/table-pagination/table-pagination.component";
 
 describe("TablePaginationComponent", () => {
 

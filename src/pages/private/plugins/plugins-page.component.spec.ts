@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { PluginsPageComponent } from "./plugins-page.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { PluginsPageComponent } from "@private/plugins/plugins-page.component";
 
 describe("PluginsPageComponent", () => {
 

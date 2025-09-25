@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { RegisterPageComponent } from "./register-page.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { RegisterPageComponent } from "@private/session/register/register-page.component";
 
 describe("RegisterPageComponent", () => {
 

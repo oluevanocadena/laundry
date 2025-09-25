@@ -9,8 +9,8 @@ import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/or
 import { Delivery, Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
+import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { PaymentStatusIdEnum } from '../types/payments.type';
 
 export class OrdersDomain {
   //Methods

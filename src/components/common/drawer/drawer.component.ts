@@ -1,13 +1,6 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild } from '@angular/core';
+
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'drawer',
@@ -71,11 +64,7 @@ export class DrawerComponent extends HelperPage {
       BUTTON_STYLES.forEach((style) => {
         this.renderer.removeAttribute(this.buttonConfirm.nativeElement, style);
       });
-      this.renderer.setAttribute(
-        this.buttonConfirm.nativeElement,
-        this.confirmStyle,
-        ''
-      );
+      this.renderer.setAttribute(this.buttonConfirm.nativeElement, this.confirmStyle, '');
     }
   }
 
@@ -86,17 +75,6 @@ export class DrawerComponent extends HelperPage {
   ngOnInit() {}
 }
 
-export type DrawerConfirmStyleButton =
-  | 'danger'
-  | 'primary'
-  | 'warning'
-  | 'success'
-  | 'info';
+export type DrawerConfirmStyleButton = 'danger' | 'primary' | 'warning' | 'success' | 'info';
 
-export const BUTTON_STYLES = [
-  'danger',
-  'primary',
-  'warning',
-  'success',
-  'info',
-] as const;
+export const BUTTON_STYLES = ['danger', 'primary', 'warning', 'success', 'info'] as const;

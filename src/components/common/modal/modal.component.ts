@@ -1,15 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  Renderer2,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'modal',
@@ -74,11 +64,7 @@ export class ModalComponent extends HelperPage {
       BUTTON_STYLES.forEach((style) => {
         this.renderer.removeAttribute(this.buttonConfirm.nativeElement, style);
       });
-      this.renderer.setAttribute(
-        this.buttonConfirm.nativeElement,
-        this.confirmStyle,
-        ''
-      );
+      this.renderer.setAttribute(this.buttonConfirm.nativeElement, this.confirmStyle, '');
     }
   }
 
@@ -87,19 +73,6 @@ export class ModalComponent extends HelperPage {
    */
 }
 
-export type ModalConfirmStyleButton =
-  | 'default'
-  | 'danger'
-  | 'primary'
-  | 'warning'
-  | 'success'
-  | 'info';
+export type ModalConfirmStyleButton = 'default' | 'danger' | 'primary' | 'warning' | 'success' | 'info';
 
-export const BUTTON_STYLES = [
-  'default',
-  'danger',
-  'primary',
-  'warning',
-  'success',
-  'info',
-] as const;
+export const BUTTON_STYLES = ['default', 'danger', 'primary', 'warning', 'success', 'info'] as const;

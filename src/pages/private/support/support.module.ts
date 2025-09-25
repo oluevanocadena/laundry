@@ -9,7 +9,7 @@ import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
-import { SupportPageComponent } from './support.component';
+import { SupportPageComponent } from '@private/support/support.component';
 
 const components = [SupportPageComponent];
 

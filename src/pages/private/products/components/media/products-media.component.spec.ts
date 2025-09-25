@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { ProductsMediaComponent } from "./products-media.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { ProductsMediaComponent } from "@private/products/components/media/products-media.component";
 
 describe("ProductsMediaComponent", () => {
 

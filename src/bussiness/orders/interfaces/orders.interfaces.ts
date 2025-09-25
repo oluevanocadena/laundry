@@ -1,16 +1,15 @@
-// ::::::::::::::::::::::::::::::::::::::
-// Models
-// ::::::::::::::::::::::::::::::::::::::
-
+import { Customer } from '@bussiness/customers/customers.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
+import { PaymentMethods } from '@bussiness/orders/types/payments.type';
 import { Organization } from '@bussiness/session/interfaces/organizations.interface';
 import { Account } from '@bussiness/users/interfaces/users.interfaces';
 import { PagedResults } from '@globals/interfaces/supabase.interface';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
-import { Customer } from '../../customers/customers.interfaces';
-import { PaymentMethods, PaymentStatus } from '../types/payments.type';
-import { OrderItem } from './orders.items.interfaces';
 
+// ::::::::::::::::::::::::::::::::::::::
+// Models
+// ::::::::::::::::::::::::::::::::::::::
 export interface Delivery {
   DeliveryType: DeliveryTypes;
   Date: Date | string | undefined;

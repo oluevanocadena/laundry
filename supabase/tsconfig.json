@@ -5,7 +5,10 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "strict": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "@shared/*": ["./shared/*"]
+    }
   },
   "include": ["./**/*.ts"]
 }

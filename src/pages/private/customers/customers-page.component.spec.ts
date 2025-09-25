@@ -1,26 +1,23 @@
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { CustomersPageComponent } from "./customers-page.component";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe("CustomersPageComponent", () => {
+import { CustomersPageComponent } from '@private/customers/customers-page.component';
 
+describe('CustomersPageComponent', () => {
   let fixture: ComponentFixture<CustomersPageComponent>;
   let component: CustomersPageComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-      ],
-      declarations: [CustomersPageComponent]
+      providers: [],
+      declarations: [CustomersPageComponent],
     });
 
     fixture = TestBed.createComponent(CustomersPageComponent);
     component = fixture.componentInstance;
-
   });
 
-  it("should be able to create component instance", () => {
+  it('should be able to create component instance', () => {
     expect(component).toBeDefined();
   });
-  
 });

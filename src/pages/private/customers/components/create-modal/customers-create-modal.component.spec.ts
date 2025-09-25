@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { CustomersCreateModalComponent } from "./customers-create-modal.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { CustomersCreateModalComponent } from "@private/customers/components/create-modal/customers-create-modal.component";
 
 describe("CustomersCreateModalComponent", () => {
 

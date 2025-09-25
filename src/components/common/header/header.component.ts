@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'header',
@@ -9,12 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent extends HelperPage {
-
-
   // Arrays
-  menuOptions: MenuOptions[] = [
-    { label: 'Inicio', url: this.routes.Home },
-  ];
+  menuOptions: MenuOptions[] = [{ label: 'Inicio', url: this.routes.Home }];
 
   constructor(public router: Router) {
     super();

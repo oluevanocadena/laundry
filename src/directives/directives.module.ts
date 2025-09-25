@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { UIModule } from '../components/ui.module';
-import { ShowLoaderDirective, StyleDirective, IfColumnDirective } from './directives';
-import { RoleShowDirective } from './roles.directive';
+
+import { IfColumnDirective, ShowLoaderDirective, StyleDirective } from '@directives/directives';
+import { RoleShowDirective } from '@directives/roles.directive';
 
 const directives = [StyleDirective, ShowLoaderDirective, IfColumnDirective, RoleShowDirective];
 

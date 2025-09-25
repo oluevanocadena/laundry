@@ -1,7 +1,8 @@
-import { SessionService } from '@bussiness/session/services/session.service';
-import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseClient } from '@supabase/supabase-js';
-import { UsersRequest } from '../interfaces/users.interfaces';
+
+import { SessionService } from '@bussiness/session/services/session.service';
+import { UsersRequest } from '@bussiness/users/interfaces/users.interfaces';
+import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 export class UsersQueryDomain {
   static buildQuery(request: UsersRequest, client: SupabaseClient, sessionService: SessionService) {

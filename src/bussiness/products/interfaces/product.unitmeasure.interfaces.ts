@@ -1,5 +1,5 @@
 import { UISelectOption } from '@components/atoms/form-input/form-input.component';
-import { UnitMeasureType } from '../Types/products.types';
+import { UnitMeasureType } from '@bussiness/products/Types/products.types';
 
 export interface UnitMeasure extends UISelectOption {
   id: string;

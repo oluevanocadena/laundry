@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { ModalColumnsSortComponent } from "./modal-columns-sort.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { ModalColumnsSortComponent } from "@components/common/modal-columns-sort/modal-columns-sort.component";
 
 describe("ModalColumnsSortComponent", () => {
 

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { OrdersItemsProcessingStatusComponent } from "./orders-items-processing-status.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { OrdersItemsProcessingStatusComponent } from "@private/orders/components/items-processing-status/orders-items-processing-status.component";
 
 describe("OrdersItemsProcessingStatusComponent", () => {
 

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { AnalyticsPageComponent } from "./analytics-page.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { AnalyticsPageComponent } from "@private/analytics/analytics-page.component";
 
 describe("AnalyticsPageComponent", () => {
 

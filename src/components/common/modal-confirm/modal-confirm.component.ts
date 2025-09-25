@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ModalConfirmStyleButton } from '../modal/modal.component';
+
+import { ModalConfirmStyleButton } from '@components/common/modal/modal.component';
 
 @Component({
   selector: 'modal-confirm',

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { SubjectProp } from './subject.type';
-import { BusyProp } from './busy.type';
 import { SupabaseClient } from '@supabase/supabase-js';
+
+import { BusyProp } from '@globals/types/busy.type';
+import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable()
 export abstract class FacadeBase implements LifecycleStrategy {

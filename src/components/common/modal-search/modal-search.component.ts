@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HelperPage } from '../helper.page';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TuiDay, TuiDayRange, TuiPortals } from '@taiga-ui/cdk';
-import moment from 'moment';
+
+import { HelperPage } from '@components/common/helper.page';
 import { FormProp } from '@globals/types/form.type';
 
 @Component({
@@ -33,7 +32,7 @@ export class ModalSearchComponent extends HelperPage implements OnInit {
   constructor() {
     super();
   }
- 
+
   /**
    * UI Events
    */
@@ -59,7 +58,6 @@ export class ModalSearchComponent extends HelperPage implements OnInit {
   get showDot() {
     return this.search.value?.toString().trim() !== '' && this.search.value !== null;
   }
- 
 
   /**
    * Lifecycle

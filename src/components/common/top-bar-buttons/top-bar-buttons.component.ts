@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
+
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
-import { HelperPage } from '../helper.page';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'top-bar-buttons',

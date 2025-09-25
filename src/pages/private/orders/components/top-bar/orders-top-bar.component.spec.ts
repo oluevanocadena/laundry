@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { OrdersTopBarComponent } from "./orders-top-bar.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { OrdersTopBarComponent } from "@private/orders/components/top-bar/orders-top-bar.component";
 
 describe("OrdersTopBarComponent", () => {
 

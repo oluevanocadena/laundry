@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { StorageProp } from '@globals/types/storage.type';
-import { SessionInfo } from '../interfaces/session.interface';
+
+import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { supabaseClient } from '@globals/singleton/supabase.client';
+import { StorageProp } from '@globals/types/storage.type';
 
 @Injectable({
   providedIn: 'root',

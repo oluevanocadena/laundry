@@ -1,7 +1,7 @@
+import { LocationRequest } from '@bussiness/locations/interfaces/locations.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { SupabaseClient } from '@supabase/supabase-js';
-import { LocationRequest } from '../interfaces/locations.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 export class LocationsQueryDomain {
   static buildPagedQuery(request: LocationRequest, client: SupabaseClient, sessionService: SessionService) {

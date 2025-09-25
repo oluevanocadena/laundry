@@ -1,8 +1,9 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
-import { routes } from '../../app/routes';
+import { Component, HostListener, inject } from '@angular/core';
 import moment from 'moment';
-import { BrowserService } from '../../services/common/browser.service';
+
+import { routes } from '@app/routes';
 import { system } from '@environments/environment';
+import { BrowserService } from '@services/common/browser.service';
 
 @Component({
   template: '<ng-content></ng-content>',
@@ -47,13 +48,11 @@ export class HelperPage {
     if (this.browserService.isBrowser()) {
       // Detecta Safari en iOS
       const isIOS =
-        /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
       // Detecta específicamente Safari (excluye Chrome y otros navegadores)
       const isSafari =
-        /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
-        !/(Chrome|CriOS|FxiOS|Edge)/.test(navigator.userAgent);
+        /^((?!chrome|android).)*safari/i.test(navigator.userAgent) && !/(Chrome|CriOS|FxiOS|Edge)/.test(navigator.userAgent);
 
       this.isAppleDevice = isIOS && isSafari;
     }

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { InputDateDropdownComponent } from "./input-date-dropdown.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { InputDateDropdownComponent } from "@components/atoms/input-date-dropdown/input-date-dropdown.component";
 
 describe("InputDateDropdownComponent", () => {
 

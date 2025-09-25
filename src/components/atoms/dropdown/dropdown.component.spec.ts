@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { DropdownComponent } from "./dropdown.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { DropdownComponent } from "@components/atoms/dropdown/dropdown.component";
 
 describe("DropdownComponent", () => {
 

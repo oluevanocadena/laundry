@@ -1,7 +1,8 @@
+import { SupabaseClient } from '@supabase/supabase-js';
+
+import { ProductCategoryRequest } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { SupabaseClient } from '@supabase/supabase-js';
-import { ProductCategoryRequest } from '../interfaces/product-categories.interfaces';
 
 export class ProductCategoriesQueryDomain {
   static buildQuery(request: ProductCategoryRequest, client: SupabaseClient, sessionService: SessionService) {

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { ProductsPageComponent } from "./products-page.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { ProductsPageComponent } from "@private/products/products-page.component";
 
 describe("ProductsPageComponent", () => {
 

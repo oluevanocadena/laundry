@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { ProductsDraftComponent } from "./products-draft.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { ProductsDraftComponent } from "@private/products/draft/products-draft.component";
 
 describe("ProductsDraftComponent", () => {
 

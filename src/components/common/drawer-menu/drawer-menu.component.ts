@@ -1,12 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-} from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { HomeFacade } from '@bussiness/home/controllers/home.facade';
+import { HelperPage } from '@components/common/helper.page';
 @Component({
   selector: 'drawer-menu-options',
   standalone: false,
@@ -25,15 +20,13 @@ export class DrawerMenuComponent extends HelperPage {
   }
   @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
- 
   constructor(public facade: HomeFacade) {
     super();
   }
- 
+
   /**
    * UI Events
    */
- 
 
   openShortMenu() {
     this.show = true;
@@ -48,8 +41,7 @@ export class DrawerMenuComponent extends HelperPage {
   /**
    * Life Cycle
    */
-  ngOnInit() { 
-  }
+  ngOnInit() {}
 }
 
 export interface IBoardDrawerMenuComponent {

@@ -9,7 +9,7 @@ import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
-import { SettingsPageComponent } from './settings-page.component';
+import { SettingsPageComponent } from '@private/settings/settings-page.component';
 
 const components = [SettingsPageComponent];
 

@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { UIAtomsModule } from '@components/atoms/ui.atoms.module';
 import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { StyleDirective } from '@directives/directives';
 import { DirectivesModule } from '@directives/directives.module';
-import { UIAtomsModule } from './atoms/ui.atoms.module';
 
 const components: any[] = [];
 

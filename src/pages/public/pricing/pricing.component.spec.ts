@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { PricingComponent } from "./pricing.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { PricingComponent } from "@pages/public/pricing/pricing.component";
 
 describe("PricingComponent", () => {
 

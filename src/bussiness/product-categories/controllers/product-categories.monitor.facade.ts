@@ -6,6 +6,8 @@ import { StorageService } from '@services/common/storage.service';
 
 import { ProductCategoriesPageTableColumns } from '@bussiness/product-categories/constants/product-categories.columns.constants';
 import { ProductCategoriesDefaultTableFilter } from '@bussiness/product-categories/constants/product-categories.constants';
+import { ProductCategoriesDraftFacade } from '@bussiness/product-categories/controllers/product-categories.draft.facade';
+import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
 import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
@@ -13,8 +15,6 @@ import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } f
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
-import { ProductCategory } from '../interfaces/product-categories.interfaces';
-import { ProductCategoriesDraftFacade } from './product-categories.draft.facade';
 
 @Injectable({
   providedIn: 'root',

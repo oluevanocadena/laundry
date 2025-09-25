@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
 import { HomeFacade } from '@bussiness/home/controllers/home.facade';
-import { HelperPage } from '../helper.page';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'top-bar-organization',

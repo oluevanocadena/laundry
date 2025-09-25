@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { ModalColumnsTableComponent } from "./modal-columns-table.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { ModalColumnsTableComponent } from "@components/common/modal-columns-table/modal-columns-table.component";
 
 describe("ModalColumnsTableComponent", () => {
 

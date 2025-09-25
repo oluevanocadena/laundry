@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { OrdersAdjustDeliveryTrackingComponent } from "./orders-adjust-delivery-tracking.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { OrdersAdjustDeliveryTrackingComponent } from "@private/orders/components/adjust-delivery-tracking/orders-adjust-delivery-tracking.component";
 
 describe("OrdersAdjustDeliveryTrackingComponent", () => {
 

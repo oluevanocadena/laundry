@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HelperPage } from '../helper.page';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
+
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'button-responsive',
@@ -12,7 +13,7 @@ export class ButtonResponsiveComponent extends HelperPage implements OnInit {
   @Input() loading: boolean = false;
   @Input() disabled: boolean = false;
   @Input() icon: string = '';
-  @Input() size: "m" | "l" | "xl" | "s" | "xs" = "m";
+  @Input() size: 'm' | 'l' | 'xl' | 's' | 'xs' = 'm';
   @Input() label: string = '';
   @Input() appearance: TuiAppearanceOptions['appearance'] = 'outline';
   @Input() link: string = '';

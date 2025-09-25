@@ -1,5 +1,5 @@
 import { UIButtonAppearance } from '@globals/types/ui.button.type';
-import { PagedRequest } from './supabase.interface';
+import { PagedRequest } from '@globals/interfaces/supabase.interface';
 
 export interface UITableColumn {
   label: string;

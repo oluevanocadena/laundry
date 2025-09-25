@@ -10,7 +10,7 @@ import { UIModule } from '@components/ui.module';
 
 import { DirectivesModule } from '@directives/directives.module';
 import { PipesModule } from '@pipes/pipes.module';
-import { ReportsPageComponent } from './reports.component';
+import { ReportsPageComponent } from '@private/reports/reports.component';
 
 const components = [ReportsPageComponent];
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HelperPage } from '../helper.page';
 import { FormControl, FormGroup } from '@angular/forms';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'modal-sort',

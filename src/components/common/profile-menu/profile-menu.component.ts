@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionFacade } from '@bussiness/session/controllers/session.facade';
-import { HelperPage } from '../helper.page';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'profile-menu',

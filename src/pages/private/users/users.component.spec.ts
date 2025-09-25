@@ -1,20 +1,21 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { UsersComponent } from "./users.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { UsersPageComponent } from "@private/users/users.component";
 
 describe("UsersComponent", () => {
 
-  let fixture: ComponentFixture<UsersComponent>;
-  let component: UsersComponent;
+  let fixture: ComponentFixture<UsersPageComponent>;
+  let component: UsersPageComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [UsersComponent]
+      declarations: [UsersPageComponent]
     });
 
-    fixture = TestBed.createComponent(UsersComponent);
+    fixture = TestBed.createComponent(UsersPageComponent);
     component = fixture.componentInstance;
 
   });

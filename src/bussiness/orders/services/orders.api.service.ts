@@ -3,12 +3,11 @@ import { Injectable } from '@angular/core';
 import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order, OrderPagedResults, OrderRequest } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
-import { SessionService } from '@bussiness/session/services/session.service';
 
+import { OrdersQueryDomain } from '@bussiness/orders/domains/orders.query.domain';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { ApiBaseService } from '@globals/services/api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { OrdersQueryDomain } from '../domains/orders.query.domain';
 
 @Injectable({
   providedIn: 'root',

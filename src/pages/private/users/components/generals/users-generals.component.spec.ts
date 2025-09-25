@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { UsersGeneralsComponent } from "./users-generals.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { UsersGeneralsComponent } from "@private/users/components/generals/users-generals.component";
 
 describe("UsersGeneralsComponent", () => {
 

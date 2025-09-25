@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { UsersPermissionsComponent } from "./users-permissions.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { UsersPermissionsComponent } from "@private/users/components/permissions/users-permissions.component";
 
 describe("UsersPermissionsComponent", () => {
 

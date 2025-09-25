@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { Component } from '@angular/core';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'layout',

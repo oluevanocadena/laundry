@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HelperPage } from '../helper.page';
+import { HelperPage } from '@components/common/helper.page';
 
 @Component({
   selector: 'logo',

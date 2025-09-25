@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { SettingsPageComponent } from "./settings-page.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { SettingsPageComponent } from "@private/settings/settings-page.component";
 
 describe("SettingsPageComponent", () => {
 

@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { RegisterConfirmComponent } from "./register-confirm.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+
+import { RegisterConfirmComponent } from "@private/session/register-confirm/register-confirm.component";
 
 describe("RegisterConfirmComponent", () => {
 

@@ -9,7 +9,7 @@ import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
-import { SetupPageComponent } from './setup.component';
+import { SetupPageComponent } from '@private/setup/setup.component';
 
 const components: any[] = [SetupPageComponent];
 

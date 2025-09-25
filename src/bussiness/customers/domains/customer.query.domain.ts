@@ -1,8 +1,8 @@
-import { SessionService } from '@bussiness/session/services/session.service';
-import { CustomerRequest } from '../customers.interfaces';
 import { SupabaseClient } from '@supabase/supabase-js';
+
+import { CustomerRequest } from '@bussiness/customers/customers.interfaces';
+import { SessionService } from '@bussiness/session/services/session.service';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import moment from 'moment';
 
 export class CustomersQueryDomain {
   static buildQuery(request: CustomerRequest, client: SupabaseClient, sessionService: SessionService) {

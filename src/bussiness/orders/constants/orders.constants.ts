@@ -3,6 +3,7 @@ import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 import { UIDefaultTableFilter } from '../../../globals/constants/supabase-tables.constants';
+import { PaymentStatusIdEnum } from '../types/payments.type';
 
 export const OrderEmpty: Order = {
   CustomerId: undefined,
@@ -17,7 +18,7 @@ export const OrderEmpty: Order = {
   DiscountRate: 0,
   ItemCount: 0,
   OrderItems: [],
-  Paid: false,
+  PaymentStatusId: PaymentStatusIdEnum.Pending,
   PaymentCardTransactionNumber: undefined,
   PaymentDate: undefined,
   PaymentMethod: undefined,

@@ -30,9 +30,6 @@ export interface Order {
   StatusId: number;
   OrderStatus?: OrderStatus; // For UI only
 
-  PaymentStatusId?: number;
-  PaymentStatus?: PaymentStatus; // For UI only
-
   DiscountType?: DiscountTypes;
   DiscountRate: number; //For percentage o amount
   Discount: number; //Result of the discount conversion
@@ -44,10 +41,11 @@ export interface Order {
   ItemCount: number;
   Notes?: string;
 
-  Paid: boolean;
   PaymentMethod: PaymentMethods | undefined;
   PaymentDate: Date | string | undefined;
   PaymentCardTransactionNumber: string | undefined;
+  PaymentStatusId?: number;
+  PaymentStatus?: string;
 
   CustomerId: string | undefined;
   CustomerName?: string;
@@ -76,6 +74,7 @@ export interface Order {
   Account?: Account; // For UI only
 
   Deleted: boolean;
+  CreatedBy?: string;
 }
 
 export interface OrderStatus {

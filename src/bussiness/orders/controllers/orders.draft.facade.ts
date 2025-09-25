@@ -27,7 +27,7 @@ import { Delivery, Order, OrderTotals } from '@bussiness/orders/interfaces/order
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
-import { PaymentMethods } from '@bussiness/orders/types/payments.type';
+import { PaymentMethods, PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { ProductsApiService } from '@bussiness/products/services/products.api.service';
@@ -328,16 +328,30 @@ export class OrdersDraftFacade extends FacadeBase {
 
   onCollectPayment(paymentMethod: PaymentMethodsEnum, transactionNumber?: string) {
     this.showCollectPaymentModal = false;
-    this.order.value!.Paid = paymentMethod === PaymentMethodsEnum.None ? false : true;
+    this.order.value!.PaymentStatusId = this.getPaymentStatusByMethod(paymentMethod);
     this.order.value!.PaymentMethod = paymentMethod as PaymentMethods;
     this.order.value!.PaymentCardTransactionNumber = transactionNumber;
     this.order.value!.PaymentDate = moment().format('YYYY-MM-DD HH:mm:ss');
     this.submitForm();
   }
 
+  getPaymentStatusByMethod(paymentMethod: PaymentMethodsEnum) {
+    switch (paymentMethod) {
+      case PaymentMethodsEnum.None:
+        return PaymentStatusIdEnum.Pending;
+      case PaymentMethodsEnum.Card:
+      case PaymentMethodsEnum.Cash:
+        return PaymentStatusIdEnum.Paid;
+      case PaymentMethodsEnum.CashOnDelivery:
+        return PaymentStatusIdEnum.PendingOnDelivery;
+      default:
+        return PaymentStatusIdEnum.Pending;
+    }
+  }
+
   onRefund() {
     this.showRefundModal = false;
-    this.order.value!.Paid = false;
+    this.order.value!.PaymentStatusId = PaymentStatusIdEnum.Refunded;
     this.order.value!.PaymentMethod = undefined;
     this.order.value!.PaymentCardTransactionNumber = undefined;
     this.order.value!.PaymentDate = undefined;

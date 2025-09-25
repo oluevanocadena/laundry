@@ -7,6 +7,7 @@ import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
+import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
 
 @Component({
   selector: 'orders-header',
@@ -54,12 +55,12 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get paid(): boolean {
-    return this.facade.order.value?.Paid ?? false;
+    return this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.Paid;
   }
 
   get orderStatus(): string {
     return OrderStatusEnum[this.facade.order.value?.StatusId ?? 0] || 'Pending';
-  } 
+  }
 
   get orderTotals(): OrderTotals | null {
     return this.facade.orderTotals.value;
@@ -74,7 +75,10 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get canPaid(): boolean {
-    return this.facade.order.value?.Paid === false && (this.total ?? 0) > 0;
+    return (
+      this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.Pending ||
+      (this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.PendingOnDelivery && (this.total ?? 0) > 0)
+    );
   }
 
   get saveLabelButton(): string {

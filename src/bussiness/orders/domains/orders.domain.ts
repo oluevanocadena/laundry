@@ -10,6 +10,7 @@ import { Delivery, Order, OrderTotals } from '@bussiness/orders/interfaces/order
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
 import { SessionService } from '@bussiness/session/services/session.service';
+import { PaymentStatusIdEnum } from '../types/payments.type';
 
 export class OrdersDomain {
   //Methods
@@ -44,7 +45,7 @@ export class OrdersDomain {
       Subtotal: orderTotals.Subtotal ?? 0,
       Total: orderTotals.Total ?? 0,
 
-      Paid: order.Paid ?? false,
+      PaymentStatusId: order.PaymentStatusId ?? PaymentStatusIdEnum.Pending,
       PaymentMethod: order.PaymentMethod ?? PaymentMethodsEnum.Cash,
       PaymentDate: order.PaymentDate ?? undefined,
       PaymentCardTransactionNumber: order.PaymentCardTransactionNumber ?? undefined,
@@ -93,7 +94,7 @@ export class OrdersDomain {
     if (!order) return false;
     const isDraft = order.StatusId === OrderStatusEnum.Draft;
     const isPending = order.StatusId === OrderStatusEnum.Pending;
-    return order.Paid === false && (isDraft || isPending);
+    return order.PaymentStatusId === PaymentStatusIdEnum.Pending && (isDraft || isPending);
   }
 
   static buildOrderItems(orderItems: OrderItem[]): OrderItem[] {
@@ -162,7 +163,7 @@ export class OrdersDomain {
     const itemCount = order.ItemCount;
     const customerId = order.CustomerId;
     const isCancelled = order.StatusId === OrderStatusEnum.Cancelled;
-    const isPaid = order.Paid;
+    const isPaid = order.PaymentStatusId === PaymentStatusIdEnum.Paid;
     return isCancelled === false && isPaid === false && itemCount > 0 && customerId !== undefined;
   }
 

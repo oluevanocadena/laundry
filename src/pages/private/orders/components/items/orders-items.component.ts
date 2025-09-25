@@ -4,6 +4,7 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
+import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
@@ -21,10 +22,7 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
   itemsDomain = OrdersItemsDomain;
   ordersDomain = OrdersDomain;
 
-  constructor(
-    public facade: OrdersDraftFacade,
-    public sessionService: SessionService
-  ) {
+  constructor(public facade: OrdersDraftFacade, public sessionService: SessionService) {
     super();
   }
 
@@ -33,13 +31,9 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
    */
   getPriceAtStore(product: Product): number {
     const locationId = this.sessionService.sessionInfo.value?.Location?.id;
-    const productPrice = product?.ProductLocationPrice?.find(
-      (price) => price.LocationId === locationId
-    );
+    const productPrice = product?.ProductLocationPrice?.find((price) => price.LocationId === locationId);
     return productPrice?.Price ?? 0;
   }
-
-  
 
   /**
    * Getters
@@ -54,13 +48,15 @@ export class OrdersItemsComponent extends HelperPage implements OnInit {
   }
 
   get isPendingPayment() {
-    return this.facade.order.value?.Paid === false;
+    return (
+      this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.Pending ||
+      this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.PendingOnDelivery
+    );
   }
 
   get order(): Order | null {
     return this.facade.order.value;
   }
- 
 
   /**
    * Life cycle method

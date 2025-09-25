@@ -7,6 +7,8 @@ import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn } from '@globals/interfaces/ui.interfaces';
+import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 
 @Component({
   selector: 'app-orders-page',
@@ -31,6 +33,25 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
   onColumnsChange(columns: UITableColumn[]) {
     this.facade.onColumnsChange(columns);
     this.cdr.detectChanges();
+  }
+
+  getPaymentStatusAppearance(order: Order) {
+    switch (order.PaymentStatusId) {
+      case PaymentStatusIdEnum.Pending:
+        return 'warning';
+      case PaymentStatusIdEnum.PendingOnDelivery:
+        return 'info';
+      case PaymentStatusIdEnum.Paid:
+        return 'success';
+      case PaymentStatusIdEnum.Rejected:
+        return 'error';
+      case PaymentStatusIdEnum.Refunded:
+        return 'success';
+      case PaymentStatusIdEnum.Cancelled:
+        return 'error';
+      default:
+        return 'default';
+    }
   }
 
   /**

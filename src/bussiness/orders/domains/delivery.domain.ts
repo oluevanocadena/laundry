@@ -1,7 +1,8 @@
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Delivery, Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { DeliveryTypes } from '../types/orders.types';
+import { DeliveryTypes } from '@bussiness/orders/types/orders.types';
+import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
 
 export class DeliveryDomain {
   static canAdjustDelivery(order: Order | null): boolean {
@@ -14,7 +15,7 @@ export class DeliveryDomain {
     if (!order) return false;
     const isDraft = order.StatusId === OrderStatusEnum.Draft;
     const itemCount = order.ItemCount;
-    const isPendingPayment = order.Paid === false;
+    const isPendingPayment = order.PaymentStatusId === PaymentStatusIdEnum.Pending;
     return isDraft ? itemCount > 0 : isPendingPayment;
   }
 

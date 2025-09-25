@@ -4,12 +4,12 @@ import moment from 'moment';
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { DiscountTypesEnum } from '@bussiness/orders/enums/order.discount.enums';
-import { PaymentMethodsEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { PaymentMethodsEnum, PaymentStatusIdEnum, PaymentStatusNameEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Delivery, Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
-import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
+import { PaymentMethods } from '@bussiness/orders/types/payments.type';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 export class OrdersDomain {
@@ -46,6 +46,7 @@ export class OrdersDomain {
       Total: orderTotals.Total ?? 0,
 
       PaymentStatusId: order.PaymentStatusId ?? PaymentStatusIdEnum.Pending,
+      PaymentStatus: order.PaymentStatus ?? PaymentStatusNameEnum.Pending,
       PaymentMethod: order.PaymentMethod ?? PaymentMethodsEnum.Cash,
       PaymentDate: order.PaymentDate ?? undefined,
       PaymentCardTransactionNumber: order.PaymentCardTransactionNumber ?? undefined,
@@ -158,7 +159,7 @@ export class OrdersDomain {
     }
   }
 
-  static canSaveOrder(order: Order | null): boolean {
+  static canCollectPayment(order: Order | null): boolean {
     if (!order) return false;
     const itemCount = order.ItemCount;
     const customerId = order.CustomerId;
@@ -172,5 +173,19 @@ export class OrdersDomain {
     const isCompleted = order.StatusId === OrderStatusEnum.Completed;
     const isCancelled = order.StatusId === OrderStatusEnum.Cancelled;
     return isCancelled === false && isCompleted === false;
+  }
+
+  static canChangeCustomer(order: Order | null): boolean {
+    if (!order) return false;
+    const isDraft = order.StatusId === OrderStatusEnum.Draft;
+    return isDraft;
+  }
+
+  static canSaveOrder(paymentMethod: PaymentMethods | null, transactionNumber: string | null): boolean {
+    return (
+      paymentMethod === PaymentMethodsEnum.Cash ||
+      paymentMethod === PaymentMethodsEnum.CashOnDelivery ||
+      (paymentMethod === PaymentMethodsEnum.Card && transactionNumber !== null && transactionNumber !== undefined)
+    );
   }
 }

@@ -1,5 +1,6 @@
 <modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="collectPaymentLabel" [confirmStyle]="'success'"
-    (onConfirm)="collectPayment()" (onClose)="close()" [disableConfirm]="!canSave">
+    (onConfirm)="collectPayment()" (onClose)="close()"
+    [disableConfirm]="!OrdersDomain.canSaveOrder(paymentMethod.value, transactionNumber.value)">
     <span title>
         Recibir pago
     </span>
@@ -8,7 +9,7 @@
             Selecciona el método de pago o registra el voucher.
         </span>
         <form tuiGroup [orientation]="'vertical'" class="group" [collapsed]="false" [formGroup]="formGroup">
-            <label tuiBlock [tuiBlock]="'s'">
+            <label tuiBlock [tuiBlock]="'s'" hoverable>
                 <input formControlName="paymentMethod" tuiRadio type="radio" value="cash" size="s" />
                 <grid [direction]="'row'" [gap]="[0,16]">
                     <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
@@ -22,8 +23,8 @@
                     </span>
                 </grid>
             </label>
-            <label tuiBlock [tuiBlock]="'s'">
-                <input formControlName="paymentMethod" tuiRadio type="radio" value="none" size="s" />
+            <label tuiBlock [tuiBlock]="'s'" hoverable>
+                <input formControlName="paymentMethod" tuiRadio type="radio" value="cashOnDelivery" size="s" />
                 <grid [direction]="'row'" [gap]="[0,16]">
                     <grid [gap]="[4,8]" [direction]="'column'" [align]="'center-left'">
                         <span class="material-symbols-outlined f-18 f-02">
@@ -38,7 +39,7 @@
                     </span>
                 </grid>
             </label>
-            <label tuiBlock [tuiBlock]="'s'">
+            <label tuiBlock [tuiBlock]="'s'" hoverable>
                 <input formControlName="paymentMethod" tuiRadio type="radio" value="card" size="s" />
                 <grid [gap]="[8,8]" [direction]="'row'" [padding]="'0 0 0.5rem 0'">
                     <grid [direction]="'row'" [gap]="[0,0]">

@@ -5,10 +5,10 @@ import { NotificationsRealtimeService } from '@bussiness/notifications/services/
 import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
 import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
+import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableColumn } from '@globals/interfaces/ui.interfaces';
-import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
-import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 
 @Component({
   selector: 'app-orders-page',

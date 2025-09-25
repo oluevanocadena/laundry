@@ -4,9 +4,9 @@ import moment from 'moment';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
+import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
-import { Order, OrderTotals } from '@bussiness/orders/interfaces/orders.interfaces';
-import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({
@@ -56,29 +56,6 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
 
   get paid(): boolean {
     return this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.Paid;
-  }
-
-  get orderStatus(): string {
-    return OrderStatusEnum[this.facade.order.value?.StatusId ?? 0] || 'Pending';
-  }
-
-  get orderTotals(): OrderTotals | null {
-    return this.facade.orderTotals.value;
-  }
-
-  get itemsCount(): number {
-    return this.facade.orderItems.value?.length ?? 0;
-  }
-
-  get total(): number {
-    return this.facade.orderTotals?.value?.Total ?? 0;
-  }
-
-  get canPaid(): boolean {
-    return (
-      this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.Pending ||
-      (this.facade.order.value?.PaymentStatusId === PaymentStatusIdEnum.PendingOnDelivery && (this.total ?? 0) > 0)
-    );
   }
 
   get saveLabelButton(): string {

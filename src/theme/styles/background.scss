@@ -64,3 +64,9 @@
 .bg-white {
     color: #000000; // Black text for light backgrounds
 }
+
+* {
+    &[hoverable]:hover {
+        background-color: var(--background-04);
+    }
+}

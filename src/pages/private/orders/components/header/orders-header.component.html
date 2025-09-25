@@ -41,7 +41,7 @@
 
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
         <button *ngIf="ordersDomain.canShowSaveButton(order)" (click)="facade.openCollectPayment()" primary small
-            [disabled]="ordersDomain.canSaveOrder(order) === false">
+            [disabled]="ordersDomain.canCollectPayment(order) === false">
             {{saveLabelButton}}
         </button>
         <button *ngIf="canShowMoreMenu" outline small icon-google [disabled]="busy" [showLoader]="busy" nz-dropdown

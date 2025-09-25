@@ -16,7 +16,7 @@ import { SubjectProp } from '@globals/types/subject.type';
 
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { DiscountTypesEnum } from '@bussiness/orders/enums/order.discount.enums';
-import { PaymentMethodsEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { PaymentMethodsEnum, PaymentStatusIdEnum, PaymentStatusNameEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
@@ -27,12 +27,13 @@ import { Delivery, Order, OrderTotals } from '@bussiness/orders/interfaces/order
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
-import { PaymentMethods, PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
+import { PaymentMethods } from '@bussiness/orders/types/payments.type';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { ProductsApiService } from '@bussiness/products/services/products.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { UtilsDomain } from '@globals/utils/utils.domain';
+import { OrdersPaymentDomain } from '../domains/orders.payment.domain';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
 
@@ -40,6 +41,7 @@ const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
   providedIn: 'root',
 })
 export class OrdersDraftFacade extends FacadeBase {
+  //Flag Management
   edition: boolean = false;
   showAdjustDelivery: boolean = false;
   showAdjustDiscountModal: boolean = false;
@@ -294,6 +296,7 @@ export class OrdersDraftFacade extends FacadeBase {
   onSelectCustomer(customer: Customer | null) {
     if (customer !== null) {
       this.orderCustomer.value = customer;
+      this.order.value!.CustomerId = customer.id;
       this.showCustomerModal = false;
       this.orderDelivery.value = {
         Address: customer.Address || '',
@@ -328,30 +331,18 @@ export class OrdersDraftFacade extends FacadeBase {
 
   onCollectPayment(paymentMethod: PaymentMethodsEnum, transactionNumber?: string) {
     this.showCollectPaymentModal = false;
-    this.order.value!.PaymentStatusId = this.getPaymentStatusByMethod(paymentMethod);
+    this.order.value!.PaymentStatusId = OrdersPaymentDomain.getPaymentStatusByMethod(paymentMethod);
+    this.order.value!.PaymentStatus = OrdersPaymentDomain.getPaymentStatusNameByMethod(this.order.value!.PaymentStatusId);
     this.order.value!.PaymentMethod = paymentMethod as PaymentMethods;
     this.order.value!.PaymentCardTransactionNumber = transactionNumber;
     this.order.value!.PaymentDate = moment().format('YYYY-MM-DD HH:mm:ss');
     this.submitForm();
   }
 
-  getPaymentStatusByMethod(paymentMethod: PaymentMethodsEnum) {
-    switch (paymentMethod) {
-      case PaymentMethodsEnum.None:
-        return PaymentStatusIdEnum.Pending;
-      case PaymentMethodsEnum.Card:
-      case PaymentMethodsEnum.Cash:
-        return PaymentStatusIdEnum.Paid;
-      case PaymentMethodsEnum.CashOnDelivery:
-        return PaymentStatusIdEnum.PendingOnDelivery;
-      default:
-        return PaymentStatusIdEnum.Pending;
-    }
-  }
-
   onRefund() {
     this.showRefundModal = false;
     this.order.value!.PaymentStatusId = PaymentStatusIdEnum.Refunded;
+    this.order.value!.PaymentStatus = OrdersPaymentDomain.getPaymentStatusNameByMethod(this.order.value!.PaymentStatusId);
     this.order.value!.PaymentMethod = undefined;
     this.order.value!.PaymentCardTransactionNumber = undefined;
     this.order.value!.PaymentDate = undefined;

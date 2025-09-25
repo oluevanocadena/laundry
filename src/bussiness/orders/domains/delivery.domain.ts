@@ -1,8 +1,8 @@
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
+import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Delivery, Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { DeliveryTypes } from '@bussiness/orders/types/orders.types';
-import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
 
 export class DeliveryDomain {
   static canAdjustDelivery(order: Order | null): boolean {

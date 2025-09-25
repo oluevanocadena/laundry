@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
+
 import { Customer } from '@bussiness/customers/customers.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { HelperPage } from '@components/common/helper.page';
-import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
-
 @Component({
   selector: 'orders-customer',
   standalone: false,
@@ -12,6 +12,7 @@ import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
   styleUrls: ['./orders-customer.component.scss'],
 })
 export class OrdersCustomerComponent extends HelperPage implements OnInit {
+  OrdersDomain = OrdersDomain;
   //Input
   @Input() edition: boolean = false;
 
@@ -41,10 +42,6 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
 
   get customer() {
     return this.facade.orderCustomer.value;
-  }
-
-  get canChangeCustomer(): boolean {
-    return this.facade.order.value?.StatusId === OrderStatusEnum.Draft;
   }
 
   get customerStatus(): string {

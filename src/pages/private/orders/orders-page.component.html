@@ -14,10 +14,15 @@
                 </button>
             </grid>
         </grid>
-        <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Crear pedido'" [columns]="facade.columns"
-            [showType]="facade.showType" [defaultSortBy]="facade.tableFilter.value?.sortBy!"
-            (onCtaClick)="facade.onNewOrder()" (onFiltersChange)="facade.onFiltersChange($event)"
-            (columnsChange)="onColumnsChange($event)" />
+        <grid [direction]="'row'" [gap]="[0,0]">
+            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Crear pedido'" [columns]="facade.columns"
+                [showType]="facade.showType" [defaultSortBy]="facade.tableFilter.value?.sortBy!"
+                (onCtaClick)="facade.onNewOrder()" (onFiltersChange)="facade.onFiltersChange($event)"
+                (columnsChange)="onColumnsChange($event)" />
+
+            <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
+                [actions]="facade.actions" />
+        </grid>
 
         <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
             class="scroll-h scroll-v bg-02 baseline">
@@ -57,7 +62,7 @@
                     <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onOrderClick(item)">
                             <td>
-                                <label nz-checkbox></label>
+                                <label nz-checkbox [(ngModel)]="item.Checked" (click)="$event.stopPropagation()"></label>
                             </td>
                             <td *ifColumn="{columns: columns, key: 'OrderNumber'}">
                                 {{item.OrderNumber}}
@@ -100,9 +105,14 @@
                     </ng-container>
                 </tbody>
             </table>
-
         </grid>
 
         <table-pagination [rowCount]="rowCount" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 </layout>
+
+<orders-confirm-delete-modal [(show)]="facade.showDeleteOrdersModal" (onConfirm)="facade.onDeleteOrders()"
+    (onClose)="facade.showDeleteOrdersModal = false" />
+
+<orders-confirm-disable-modal [(show)]="facade.showDisableOrdersModal" (onConfirm)="facade.onDisableOrders()"
+    (onClose)="facade.showDisableOrdersModal = false" />

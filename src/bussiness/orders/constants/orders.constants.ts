@@ -1,7 +1,7 @@
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
+import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { UIDefaultTableFilter } from '@globals/constants/supabase-tables.constants';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 

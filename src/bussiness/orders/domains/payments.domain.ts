@@ -1,6 +1,6 @@
 import { OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
+import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
 
 export class PaymentsDomain {
   static canRefund(order: Order | null): boolean {

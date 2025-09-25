@@ -3,6 +3,8 @@ import { HomeFacade } from '@bussiness/home/controllers/home.facade';
 import { OrdersMonitorFacade } from '@bussiness/orders/controllers/orders.monitor.facade';
 import { DeliveryDomain } from '@bussiness/orders/domains/delivery.domain';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
+import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { SessionFacade } from '@bussiness/session/controllers/session.facade';
 import { HelperPage } from '@components/common/helper.page';
 
@@ -29,6 +31,25 @@ export class HomeComponent extends HelperPage {
   /**
    * UI Events
    */
+
+  getPaymentStatusAppearance(order: Order) {
+    switch (order.PaymentStatusId) {
+      case PaymentStatusIdEnum.Pending:
+        return 'warning';
+      case PaymentStatusIdEnum.PendingOnDelivery:
+        return 'info';
+      case PaymentStatusIdEnum.Paid:
+        return 'success';
+      case PaymentStatusIdEnum.Rejected:
+        return 'error';
+      case PaymentStatusIdEnum.Refunded:
+        return 'success';
+      case PaymentStatusIdEnum.Cancelled:
+        return 'error';
+      default:
+        return 'default';
+    }
+  }
 
   /**
    * Getters

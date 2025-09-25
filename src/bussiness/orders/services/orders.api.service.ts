@@ -30,6 +30,9 @@ export class OrdersApiService extends ApiBaseService {
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
+      (data as unknown as Order[]).forEach((order) => {
+        order.Checked = false;
+      });
       this.pagedOrders.value = {
         data: (data as unknown as Order[]) ?? [],
         count: totalCount,
@@ -142,5 +145,21 @@ export class OrdersApiService extends ApiBaseService {
         throw new Error(errorMessage);
       }
     }, 'Updating Order Item Status All');
+  }
+
+  deleteOrders(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = OrdersQueryDomain.buildDeleteOrdersQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as Order[], error);
+    });
+  }
+
+  disableOrders(ids: string[]) {
+    return this.executeWithBusy(async () => {
+      const query = OrdersQueryDomain.buildToggleOrdersQuery(this.client, ids);
+      const { data, error } = await query;
+      return super.handleResponse(data as unknown as Order[], error);
+    });
   }
 }

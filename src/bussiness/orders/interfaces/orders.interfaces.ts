@@ -74,6 +74,7 @@ export interface Order {
 
   Deleted: boolean;
   CreatedBy?: string;
+  Checked?: boolean; //Only for UI
 }
 
 export interface OrderStatus {

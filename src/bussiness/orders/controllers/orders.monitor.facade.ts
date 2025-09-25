@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { routes } from '@app/routes';
 import moment from 'moment';
 
+import { NzMessageService } from 'ng-zorro-antd/message';
+
 import { OrderPageTableColumns } from '@bussiness/orders/constants/orders.columns.constant';
 import { OrderDefaultTableFilter } from '@bussiness/orders/constants/orders.constants';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
@@ -13,7 +15,7 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -23,6 +25,10 @@ import { StorageService } from '@services/common/storage.service';
   providedIn: 'root',
 })
 export class OrdersMonitorFacade extends FacadeBase {
+  //Flag Management
+  showDeleteOrdersModal = false;
+  showDisableOrdersModal = false;
+
   showType: UITypeFilterShow = {
     calendar: true,
     columns: false,
@@ -34,12 +40,23 @@ export class OrdersMonitorFacade extends FacadeBase {
   tableFilter = new SubjectProp<UITableFilterBase>(OrderDefaultTableFilter);
   columns: UITableColumn[] = [];
 
+  actions: UITableActions[] = [
+    { label: 'Eliminar', icon: 'delete', appearance: 'danger', action: () => this.openDeleteOrdersModal() },
+    {
+      label: 'Habilitar/Deshabilitar',
+      icon: 'block',
+      appearance: 'default',
+      action: () => this.openDisableOrdersModal(),
+    },
+  ];
+
   constructor(
     public api: OrdersApiService,
     public draftFacade: OrdersDraftFacade,
     public router: Router,
     public sessionService: SessionService,
     public storageService: StorageService,
+    private nzMessageService: NzMessageService,
   ) {
     super(api);
   }
@@ -114,5 +131,43 @@ export class OrdersMonitorFacade extends FacadeBase {
   onNewOrder() {
     this.draftFacade.clearState();
     this.router.navigate([routes.OrderDraft]);
+  }
+
+  onDeleteOrders() {
+    const ids = this.selectedRows.map((order) => order.id!.toString());
+    this.api.deleteOrders(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Pedidos eliminados');
+        this.fetchOrders();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al eliminar los pedidos');
+      }
+      this.showDeleteOrdersModal = false;
+    });
+  }
+
+  onDisableOrders() {
+    const ids = this.selectedRows.map((order) => order.id!.toString());
+    this.api.disableOrders(ids).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success('Pedidos deshabilitados');
+        this.fetchOrders();
+      } else {
+        this.nzMessageService.error('Ocurrió un error al deshabilitar los pedidos');
+      }
+      this.showDisableOrdersModal = false;
+    });
+  }
+
+  openDeleteOrdersModal() {
+    this.showDeleteOrdersModal = true;
+  }
+
+  openDisableOrdersModal() {
+    this.showDisableOrdersModal = true;
+  }
+
+  get selectedRows() {
+    return this.api.pagedOrders.value?.data.filter((order) => order.Checked) ?? [];
   }
 }

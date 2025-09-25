@@ -6,6 +6,7 @@ import { HelperPage } from '@components/common/helper.page';
 import { FormProp } from '@globals/types/form.type';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { PaymentMethodsEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { DeliveryTypes } from '@bussiness/orders/types/orders.types';
@@ -18,6 +19,8 @@ import { PaymentMethods } from '@bussiness/orders/types/payments.type';
   styleUrls: ['./orders-collect-payment.component.scss'],
 })
 export class OrdersCollectPaymentComponent extends HelperPage {
+  OrdersDomain = OrdersDomain;
+
   //Show
   private _show: boolean = false;
   @Input() set show(value: boolean) {
@@ -68,14 +71,6 @@ export class OrdersCollectPaymentComponent extends HelperPage {
    * Getters
    */
 
-  get canSave() {
-    return (
-      this.paymentMethod.value === PaymentMethodsEnum.Cash ||
-      this.paymentMethod.value === PaymentMethodsEnum.None ||
-      (this.paymentMethod.value === PaymentMethodsEnum.Card && this.transactionNumber.value)
-    );
-  }
-
   get orderTotals() {
     return this.facade.orderTotals.value;
   }
@@ -85,7 +80,7 @@ export class OrdersCollectPaymentComponent extends HelperPage {
   }
 
   get collectPaymentLabel() {
-    return this.paymentMethod.value === PaymentMethodsEnum.None
+    return this.paymentMethod.value === PaymentMethodsEnum.CashOnDelivery
       ? `${this.orderId ? 'Guardar' : 'Crear'} orden sin pago`
       : `Cobrar ${numeral(this.orderTotals?.Total ?? 0).format('$0,0.00')} `;
   }

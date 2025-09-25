@@ -23,6 +23,7 @@ export class OrdersQueryDomain {
           Organization: ${SupabaseTables.Organizations}(*),
           OrderStatus: ${SupabaseTables.OrderStatuses}(*)`,
       )
+      .eq('Deleted', false)
       .eq('OrganizationId', sessionService.organizationId);
 
     // Aplicar filtro de StatusId solo si no es nulo/undefined
@@ -96,5 +97,15 @@ export class OrdersQueryDomain {
     }
 
     return query;
+  }
+
+  static buildDeleteOrdersQuery(client: SupabaseClient, ids: string[]) {
+    return client.from(SupabaseTables.Orders).update({ Deleted: true }).in('id', ids).select('*');
+  }
+
+  static buildToggleOrdersQuery(client: SupabaseClient, ids: string[]) {
+    return client.rpc('orders_toggle_disabled', { ids }).then(async () => {
+      return { data: [], error: null };
+    });
   }
 }

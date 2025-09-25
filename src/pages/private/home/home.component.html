@@ -173,8 +173,8 @@
                                 </td>
                                 <td>
                                     <grid [direction]="'column'" [align]="'center-center'">
-                                        <status-badge [label]="item?.Paid ? 'Pagado' : 'Sin pago'"
-                                            [appearance]="item?.Paid ? 'success' : 'error'" [size]="'m'" />
+                                        <status-badge [label]="item?.PaymentStatus"
+                                            [appearance]="getPaymentStatusAppearance(item)" [size]="'m'" />
                                     </grid>
                                 </td>
                                 <td>{{item.Total | numeralFormat: '$0,0.00'}}</td>

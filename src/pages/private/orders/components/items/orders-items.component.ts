@@ -4,7 +4,7 @@ import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.fa
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { PaymentStatusIdEnum } from '@bussiness/orders/types/payments.type';
+import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 

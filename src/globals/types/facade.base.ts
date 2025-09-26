@@ -4,13 +4,14 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 import { BusyProp } from '@globals/types/busy.type';
 import { SubjectProp } from '@globals/types/subject.type';
+import { IRepository } from '@globals/interfaces/repository.interface';
 
 @Injectable()
 export abstract class FacadeBase implements LifecycleStrategy {
   // public routes = Routes;
   // public strings = Strings;
 
-  constructor(api: FacadeApiBase) {}
+  constructor(api: FacadeApiBase | IRepository<any>) {}
 
   //Initialize facade state and get data from api
   public initialize(): void {

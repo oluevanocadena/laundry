@@ -7,7 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
-import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
+import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
@@ -35,7 +35,7 @@ export class SessionFacade extends FacadeBase {
   constructor(
     public api: SessionApiService,
     public realTimeNotifications: NotificationsRealtimeService,
-    public apiOrders: OrdersApiService,
+    public apiOrders: OrdersSupabaseRepository,
     public apiAccounts: AccountsApiService,
     public apiLocations: LocationsApiService,
     public nzMessageService: NzMessageService,

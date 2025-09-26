@@ -58,7 +58,7 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
    * Getters
    */
 
-  get data() {
+  get data(): Order[] {
     return this.facade.api.pagedOrders.value?.data ?? [];
   }
 

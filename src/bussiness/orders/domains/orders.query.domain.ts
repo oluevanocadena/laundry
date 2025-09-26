@@ -1,8 +1,12 @@
-import { OrderRequest } from '@bussiness/orders/interfaces/orders.interfaces';
-import { SessionService } from '@bussiness/session/services/session.service';
-import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseClient } from '@supabase/supabase-js';
 import moment from 'moment';
+
+import { OrderItemStatusEnum } from '@bussiness/orders/enums/orders.enums';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
+import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
+import { OrderRequest } from '@bussiness/orders/repository/orders.repository';
+import { SessionService } from '@bussiness/session/services/session.service';
+import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 export class OrdersQueryDomain {
   static buildQuery(request: OrderRequest, client: SupabaseClient, sessionService: SessionService) {
@@ -57,7 +61,7 @@ export class OrdersQueryDomain {
           `DeliveryTrackingNumber.ilike.%${searchTerm}%`,
           `DeliveryTransportCompany.ilike.%${searchTerm}%`,
         ].join(','),
-      ); 
+      );
     }
 
     if (request.dateFrom) {
@@ -84,6 +88,7 @@ export class OrdersQueryDomain {
     let query = client
       .from(SupabaseTables.Orders)
       .select('*', { count: 'exact', head: true })
+      .eq('Deleted', false)
       .eq('OrganizationId', sessionService.organizationId);
     if (request.locationId !== null && request.locationId !== undefined) {
       query = query.eq('LocationId', request.locationId);
@@ -107,5 +112,40 @@ export class OrdersQueryDomain {
     return client.rpc('orders_toggle_disabled', { ids }).then(async () => {
       return { data: [], error: null };
     });
+  }
+
+  static buildGetSingleOrderQuery(client: SupabaseClient, id: string) {
+    return client
+      .from(SupabaseTables.Orders)
+      .select(
+        `*, 
+      OrderItems: ${SupabaseTables.OrderItems}(*, 
+        Product: ${SupabaseTables.Products}(*),  
+        ItemStatus: ${SupabaseTables.OrderItemStatuses}(*),
+        UnitMeasure: ${SupabaseTables.UnitMeasures}(*)
+      ),
+      Customer:${SupabaseTables.Customers}(*),
+      Location:${SupabaseTables.Locations}(*),
+      Organization:${SupabaseTables.Organizations}(*),
+      OrderStatus: ${SupabaseTables.OrderStatuses}(*)`,
+      )
+      .eq('id', id)
+      .single();
+  }
+
+  static buildUpdateOrderQuery(client: SupabaseClient, order: Order, orderItems: OrderItem[]) {
+    return client.from(SupabaseTables.Orders).upsert(order).select().single();
+  }
+
+  static buildUpdateOrderItemQuery(client: SupabaseClient, orderItem: OrderItem) {
+    return client.from(SupabaseTables.OrderItems).upsert(orderItem).select().single();
+  }
+
+  static buildUpdateAllOrderItemsStatusQuery(client: SupabaseClient, orderId: string, status: OrderItemStatusEnum) {
+    return client.from(SupabaseTables.OrderItems).update({ ItemStatusId: status }).eq('OrderId', orderId).select();
+  }
+
+  static buildDeleteOrderQuery(client: SupabaseClient, id: string) {
+    return client.from(SupabaseTables.Orders).update({ Deleted: true }).eq('id', id).single();
   }
 }

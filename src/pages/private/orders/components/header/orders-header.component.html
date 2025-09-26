@@ -40,7 +40,7 @@
     </grid>
 
     <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
-        <button *ngIf="ordersDomain.canShowSaveButton(order)" (click)="facade.openCollectPayment()" primary small
+        <button *ngIf="ordersDomain.canShowSaveButton(order)" (click)="facade.openCollectPaymentModal()" primary small
             [disabled]="ordersDomain.canCollectPayment(order) === false">
             {{saveLabelButton}}
         </button>

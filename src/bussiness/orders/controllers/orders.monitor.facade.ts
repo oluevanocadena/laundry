@@ -9,7 +9,7 @@ import { OrderPageTableColumns } from '@bussiness/orders/constants/orders.column
 import { OrderDefaultTableFilter } from '@bussiness/orders/constants/orders.constants';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
-import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
+import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
@@ -51,7 +51,7 @@ export class OrdersMonitorFacade extends FacadeBase {
   ];
 
   constructor(
-    public api: OrdersApiService,
+    public api: OrdersSupabaseRepository,
     public draftFacade: OrdersDraftFacade,
     public router: Router,
     public sessionService: SessionService,
@@ -89,8 +89,7 @@ export class OrdersMonitorFacade extends FacadeBase {
     const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
     const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
 
-    this.api.getPagedOrders({
-      accountId: null,
+    this.api.getPaged({
       page: pagination?.page ?? UITableConstants.DefaultPage,
       pageSize: pagination?.pageSize ?? UITableConstants.DefaultPageSize,
       locationId: this.sessionService?.locationId ?? null,
@@ -135,7 +134,7 @@ export class OrdersMonitorFacade extends FacadeBase {
 
   onDeleteOrders() {
     const ids = this.selectedRows.map((order) => order.id!.toString());
-    this.api.deleteOrders(ids).then((response) => {
+    this.api.deleteMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Pedidos eliminados');
         this.fetchOrders();
@@ -148,7 +147,7 @@ export class OrdersMonitorFacade extends FacadeBase {
 
   onDisableOrders() {
     const ids = this.selectedRows.map((order) => order.id!.toString());
-    this.api.disableOrders(ids).then((response) => {
+    this.api.toggleEnableStateMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Pedidos deshabilitados');
         this.fetchOrders();
@@ -168,6 +167,6 @@ export class OrdersMonitorFacade extends FacadeBase {
   }
 
   get selectedRows() {
-    return this.api.pagedOrders.value?.data.filter((order) => order.Checked) ?? [];
+    return this.api.pagedOrders.value?.data?.filter((order) => order.Checked) ?? [];
   }
 }

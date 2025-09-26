@@ -44,7 +44,7 @@
             <grid *ngIf="itemsCount > 0" [direction]="'column'" [template]="'1fr'" padding="1rem 0 0 0"
                 class="border-top-02">
                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
-                    <button *ngIf="paymentsDomain.canAddDiscount(order)" (click)="facade.openDiscount()" secondary
+                    <button *ngIf="paymentsDomain.canAddDiscount(order)" (click)="facade.openDiscountModal()" secondary
                         small>
                         Agregar descuento
                     </button>
@@ -53,7 +53,7 @@
                         Quitar descuento
                     </button>
 
-                    <button *ngIf="paymentsDomain.canRefund(order)" (click)="facade.openRefund()" danger small>
+                    <button *ngIf="paymentsDomain.canRefund(order)" (click)="facade.openRefundModal()" danger small>
                         Reembolsar pago
                     </button>
                 </grid>

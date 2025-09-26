@@ -6,13 +6,14 @@ import { firstValueFrom } from 'rxjs';
 
 import { SessionService } from '@bussiness/session/services/session.service';
 import { supabase } from '@environments/environment';
-import { EdgeFunctionResponse, SupabaseBaseResponse } from '@globals/interfaces/supabase.interface';
+import { EdgeFunctionResponse } from '@globals/interfaces/supabase.interface';
 import { supabaseClient } from '@globals/singleton/supabase.client';
 import { MemoryCacheStore } from '@globals/strategies/cache/memory.cache.store';
 import { BusyProp } from '@globals/types/busy.type';
 import { ICacheStore } from '@globals/types/cache.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
+import { ResponseResult } from '@globals/interfaces/requests.interface';
 
 export class SupabaseBaseApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
@@ -48,10 +49,7 @@ export class SupabaseBaseApiService implements FacadeApiBase {
     return new MemoryCacheStore();
   }
 
-  protected async executeWithBusy<T>(
-    fn: () => Promise<SupabaseBaseResponse<T>>,
-    message?: string,
-  ): Promise<SupabaseBaseResponse<T>> {
+  protected async executeWithBusy<T>(fn: () => Promise<ResponseResult<T>>, message?: string): Promise<ResponseResult<T>> {
     this.busy.value = true;
     try {
       return await fn();
@@ -108,12 +106,12 @@ export class SupabaseBaseApiService implements FacadeApiBase {
     }
   }
 
-  protected handleResponse<T>(data: T | null, error: any, message?: string, count?: number | null): SupabaseBaseResponse<T> {
+  protected handleResponse<T>(data: T | null, error: any, message?: string, count?: number | null): ResponseResult<T> {
     if (error) {
       console.error('⛔ Error:', error);
     }
     return {
-      data: data,
+      data: data as T | null,
       success: !error ? true : false,
       count: count ?? 0,
       error: {
@@ -127,17 +125,17 @@ export class SupabaseBaseApiService implements FacadeApiBase {
 
   protected async getWithCache<T>(
     key: string,
-    fetchFn: () => Promise<SupabaseBaseResponse<T>>,
+    fetchFn: () => Promise<ResponseResult<T>>,
     ttlMs: number = 0,
     onCacheHit?: (data: T) => void,
-  ): Promise<SupabaseBaseResponse<T>> {
+  ): Promise<ResponseResult<T>> {
     this.busy.value = true;
     const cached = this.cacheStore.get<T>(key);
 
     if (cached) {
       onCacheHit?.(cached);
       this.busy.value = false;
-      return { data: cached, success: true, count: 0, error: null };
+      return { data: cached as T | null, success: true, count: 0, error: null };
     }
 
     const result = await fetchFn();

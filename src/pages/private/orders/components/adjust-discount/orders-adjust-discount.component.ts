@@ -79,7 +79,7 @@ export class OrdersAdjustDiscountComponent extends HelperPage {
    * Life cycle method
    */
   ngOnInit() {
-    this.facade.api.busy.onChange((value) => {
+    this.facade.repo.busy.onChange((value) => {
       this.cdr.detectChanges();
     }); 
   }

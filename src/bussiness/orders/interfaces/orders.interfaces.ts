@@ -92,17 +92,4 @@ export interface OrderTotals {
   Subtotal: number;
   Total: number;
 }
-
-/**
- * Requests
- */
-export interface OrderRequest extends UITableFilter {
-  accountId?: string | null;
-  locationId?: string | null;
-}
-
-/**
- * Responses
- */
-
-export interface OrderPagedResults extends PagedResults<Order> {}
+ 

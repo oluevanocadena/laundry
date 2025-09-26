@@ -10,7 +10,7 @@
                 Selecciona el tipo de descuento que quieres aplicar al pedido.
             </span>
         </grid>
-        <form tuiGroup [orientation]="'horizontal'" class="group" [collapsed]="false" [formGroup]="facade.formGroup">
+        <form tuiGroup [orientation]="'horizontal'" class="group" [collapsed]="false" [formGroup]="facade.formDiscount">
             <label tuiBlock tuiBlock="s">
                 <input formControlName="discountType" tuiRadio type="radio" (ngModelChange)="resetAmount()"
                     [value]="'amount'" size="s" />
@@ -43,7 +43,7 @@
             </label>
         </form>
         <grid [direction]="'row'" [gap]="[16,16]">
-            <form [formGroup]="facade.formGroup">
+            <form [formGroup]="facade.formDiscount">
                 <form-input [label]="placeholder" [type]="'number'" [placeholder]="placeholder" [min]="0"
                     [max]="maxNumber" [step]="stepIncrement" [formControlName]="'discount'"
                     [prefixIcon]="postFixText" />

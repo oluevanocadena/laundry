@@ -43,7 +43,7 @@ export class OrdersHeaderComponent extends HelperPage implements OnInit {
    */
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   get orderName() {

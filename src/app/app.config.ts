@@ -18,12 +18,16 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { routes } from '@app/app.routes';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { CompositeNotificationChannel } from '@bussiness/notifications/strategy/notifications.composite';
-import { OrdersApiService } from '@bussiness/orders/services/orders.api.service';
+import { IOrdersRepository } from '@bussiness/orders/repository/orders.repository';
+import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { AuthInterceptor } from '@globals/interceptors/http.interceptor';
 import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
 import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
+import * as moment from 'moment-timezone';
 
 registerLocaleData(es);
+moment.tz.setDefault('America/Mexico_City'); 
+moment.tz.setDefault('UTC');
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,28 +37,22 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideEventPlugins(),
+    { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
     {
       provide: NotificationsRealtimeService,
-      useFactory: (nz: NzNotificationService, router: Router, orders: OrdersApiService) => {
+      useFactory: (nz: NzNotificationService, router: Router, orders: OrdersSupabaseRepository) => {
         const composite = new CompositeNotificationChannel([
           new NzMessageNotificationChannel(nz, router),
           new NativeNotificationChannel(),
         ]);
         return new NotificationsRealtimeService(composite);
       },
-      deps: [NzNotificationService, Router, OrdersApiService],
+      deps: [NzNotificationService, Router, OrdersSupabaseRepository],
     },
-    provideNzConfig({
-      modal: {
-        nzDirection: 'ltr',
-      },
-    }),
-    {
-      provide: TUI_LANGUAGE,
-      useValue: of(TUI_SPANISH_LANGUAGE),
-    },
+    { provide: TUI_LANGUAGE, useValue: of(TUI_SPANISH_LANGUAGE) },
     { provide: NzIsMenuInsideDropDownToken, useValue: false },
     { provide: NZ_I18N, useValue: es_ES },
+    provideNzConfig({ modal: { nzDirection: 'ltr' } }),
     provideHttpClient(withInterceptors([AuthInterceptor])),
     MenuService,
     NzMenuModule,

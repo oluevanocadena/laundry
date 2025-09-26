@@ -6,13 +6,13 @@ import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces'
 
 import { OrdersQueryDomain } from '@bussiness/orders/domains/orders.query.domain';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrdersApiService extends ApiBaseService {
+export class OrdersApiService extends SupabaseBaseApiService {
   //Results
   pagedOrders = new SubjectProp<OrderPagedResults>(null);
 

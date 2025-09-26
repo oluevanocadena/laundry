@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { OrdersItemsDomain } from '@bussiness/orders/domains/orders.items.domain';
-import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
+import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 

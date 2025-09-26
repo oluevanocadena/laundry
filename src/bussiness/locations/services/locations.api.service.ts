@@ -4,7 +4,7 @@ import { LocationsQueryDomain } from '@bussiness/locations/domains/locations.que
 import { Location, LocationRequest } from '@bussiness/locations/interfaces/locations.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { PagedResults, SupabaseResponse } from '@globals/interfaces/supabase.interface';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { LocalStorageCacheStore } from '@globals/strategies/cache/storage.cache.store';
 import { ICacheStore } from '@globals/types/cache.type';
 import { SubjectProp } from '@globals/types/subject.type';
@@ -12,7 +12,7 @@ import { SubjectProp } from '@globals/types/subject.type';
 @Injectable({
   providedIn: 'root',
 })
-export class LocationsApiService extends ApiBaseService {
+export class LocationsApiService extends SupabaseBaseApiService {
   locations = new SubjectProp<Location[]>([]);
   pagedLocations = new SubjectProp<PagedResults<Location>>(null);
 

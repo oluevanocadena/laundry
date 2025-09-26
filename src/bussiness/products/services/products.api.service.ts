@@ -15,12 +15,12 @@ import { SessionService } from '@bussiness/session/services/session.service';
 
 import { SupabaseBuckets, SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { PagedResults } from '@globals/interfaces/supabase.interface';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsApiService extends ApiBaseService {
+export class ProductsApiService extends SupabaseBaseApiService {
   products = new SubjectProp<Product[]>([]);
   pagedProducts = new SubjectProp<PagedResults<Product>>(null);
   unitMeasures = new SubjectProp<UnitMeasure[]>([]);

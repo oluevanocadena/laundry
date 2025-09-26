@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { Account, AccountRole } from '@bussiness/users/interfaces/users.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { StorageProp } from '@globals/types/storage.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AccountsApiService extends ApiBaseService {
+export class AccountsApiService extends SupabaseBaseApiService {
   public account = new StorageProp<Account | null>(null, 'ACCOUNT_COOKIE');
 
   constructor() {

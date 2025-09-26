@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Customer, CustomerPagedResults, CustomerRequest } from '@bussiness/customers/customers.interfaces';
 import { CustomersQueryDomain } from '@bussiness/customers/domains/customer.query.domain';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomersApiService extends ApiBaseService {
+export class CustomersApiService extends SupabaseBaseApiService {
   customers = new SubjectProp<Customer[]>([]);
   pagedCustomers = new SubjectProp<CustomerPagedResults>(null);
 

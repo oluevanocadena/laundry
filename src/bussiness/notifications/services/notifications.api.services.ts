@@ -9,7 +9,7 @@ import {
 } from '@bussiness/notifications/interfaces/notifications.interfaces';
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { LocalStorageCacheStore } from '@globals/strategies/cache/storage.cache.store';
 import { ICacheStore } from '@globals/types/cache.type';
 import { SubjectProp } from '@globals/types/subject.type';
@@ -17,7 +17,7 @@ import { SubjectProp } from '@globals/types/subject.type';
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationsApiService extends ApiBaseService {
+export class NotificationsApiService extends SupabaseBaseApiService {
   public pagedNotifications = new SubjectProp<NotificationPagedResults>(null);
 
   private accountId = '';

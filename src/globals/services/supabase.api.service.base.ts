@@ -14,7 +14,7 @@ import { ICacheStore } from '@globals/types/cache.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
-export class ApiBaseService implements FacadeApiBase {
+export class SupabaseBaseApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
   public client = supabaseClient;
   public cacheStore: ICacheStore;

@@ -7,13 +7,13 @@ import { NotificationChannel } from '@bussiness/notifications/interfaces/notific
 import { NOTIFICATION_CHANNEL } from '@bussiness/notifications/strategy/notifications.composite';
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationsRealtimeService extends ApiBaseService {
+export class NotificationsRealtimeService extends SupabaseBaseApiService {
   private accountId = '';
   private token = '';
   private channel: RealtimeChannel | null = null;

@@ -8,13 +8,13 @@ import {
 
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { PagedResults, SupabaseResponse } from '@globals/interfaces/supabase.interface';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductCategoriesApiService extends ApiBaseService {
+export class ProductCategoriesApiService extends SupabaseBaseApiService {
   productCategories = new SubjectProp<ProductCategory[]>([]);
   pagedProductCategories = new SubjectProp<PagedResults<ProductCategory>>(null);
 

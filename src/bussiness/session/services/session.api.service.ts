@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { routes } from '@app/routes';
 import { Session } from '@supabase/supabase-js';
 
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SessionApiService extends ApiBaseService {
+export class SessionApiService extends SupabaseBaseApiService {
   constructor() {
     super();
   }

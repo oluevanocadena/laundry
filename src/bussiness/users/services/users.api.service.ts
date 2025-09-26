@@ -5,13 +5,13 @@ import { UsersQueryDomain } from '@bussiness/users/domains/users.query.domain';
 import { Account, AccountRole, InviteUserRequest, UsersRequest } from '@bussiness/users/interfaces/users.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { EdgeFunctionResponse, PagedResults } from '@globals/interfaces/supabase.interface';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AccountsApiService extends ApiBaseService {
+export class AccountsApiService extends SupabaseBaseApiService {
   accounts = new SubjectProp<Account[]>([]);
   pagedUsers = new SubjectProp<PagedResults<Account>>(null);
 

@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RolesApiService extends ApiBaseService {
+export class RolesApiService extends SupabaseBaseApiService {
   constructor() {
     super();
   }

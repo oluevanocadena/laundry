@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { Organization } from '@bussiness/session/interfaces/organizations.interface';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { ApiBaseService } from '@globals/services/api.service.base';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { StorageProp } from '@globals/types/storage.type';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrganizationsApiService extends ApiBaseService {
+export class OrganizationsApiService extends SupabaseBaseApiService {
   public organization = new StorageProp<Organization | null>(
     null,
     'ORGANIZATION_COOKIE'

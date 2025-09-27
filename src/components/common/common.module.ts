@@ -18,7 +18,6 @@ import { FooterComponent } from '@components/common/footer/footer.component';
 import { HeaderComponent } from '@components/common/header/header.component';
 import { ImageUploadComponent } from '@components/common/image-upload/image-upload.component';
 import { LayoutComponent } from '@components/common/layout/layout.component';
-import { LogoComponent } from '@components/common/logo/logo.component';
 import { MenuContentComponent } from '@components/common/menu-content/menu-content.component';
 import { MenuItemComponent } from '@components/common/menu-item/menu-item.component';
 import { MenuComponent } from '@components/common/menu/menu.component';
@@ -49,7 +48,6 @@ const components = [
   HeaderComponent,
   ImageUploadComponent,
   LayoutComponent,
-  LogoComponent,
   MenuComponent,
   MenuContentComponent,
   MenuItemComponent,

@@ -6,6 +6,7 @@ import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { SessionFacade } from '@bussiness/session/controllers/session.facade';
+import { UILineChartOptions } from '@components/atoms/line-chart/interfaces/line.chart.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({
@@ -18,6 +19,27 @@ import { HelperPage } from '@components/common/helper.page';
 export class HomeComponent extends HelperPage {
   ordersDomain = OrdersDomain;
   deliveryDomain = DeliveryDomain;
+
+  salesChart: UILineChartOptions = {
+    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+    series: [
+      {
+        label: 'Ventas',
+        data: [30, 50, 40, 60, 80, 95],
+        color: 'var(--primary)',
+      },
+      {
+        label: 'Usuarios Activos',
+        data: [20, 35, 25, 50, 65, 85],
+        color: 'var(--secondary)',
+      },
+      {
+        label: 'Conversiones',
+        data: [10, 18, 15, 25, 30, 45],
+        color: 'var(--success)',
+      },
+    ],
+  };
 
   constructor(
     public facade: HomeFacade,

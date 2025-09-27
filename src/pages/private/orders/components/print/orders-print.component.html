@@ -1,0 +1,163 @@
+<modal [(show)]="show" [closeLabel]="'Cancelar'" [confirmLabel]="'Imprimir ticket'" [confirmStyle]="'success'"
+    (onConfirm)="printTicket()" (onClose)="close()" [width]="'360px'">
+
+    <span title>
+        Imprimir ticket
+    </span>
+
+    <!-- Aquí va tu ticket -->
+    <grid body [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" [padding]="'1rem 1.5rem 1.5rem'"
+        [maxHeight]="isMobileOrTablet ? 'calc(100vh - 72px)' : '650px'" class="scroll-v no-scroll-h baseline">
+
+        <grid [direction]="'row'" [gap]="[16,16]">
+
+            <span class="f-13 f-06 f-lh-16">
+                Aqui puedes imprimir el ticket de tu pedido para tu cliente.
+            </span>
+            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" class="wrap" nz-tooltip
+                nzTooltipTitle="Esta funcionalidad no esta disponible en dispositivos móviles.">
+                <span class="material-symbols-outlined f-warning f-16 pointer">
+                    warning
+                </span>
+                <span class="f-13 f-warning f-lh-16 pointer">
+                    Importante
+                </span>
+            </grid>
+            <grid id="ticket-content" [direction]="'row'" [padding]="'1rem 1.5rem 1.5rem'" [width]="'306px'"
+                [height]="'100%'" class="bg-white baseline ticket">
+                <grid [direction]="'column'" [align]="'center-center'">
+                    <span class="f-ticketing f-15 f-lh-15 fw-600 f-09 uppercase">
+                        {{organization?.Name}}
+                    </span>
+                </grid>
+                <grid [direction]="'row'" [padding]="'0.5rem 0'" class="brdr-bottom">
+                    <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                        {{currentLocation?.Name}}
+                    </span>
+                    <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                        {{currentLocation?.Address}}
+                    </span>
+                    <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                        TEL: {{currentLocation?.Phone ?? 'N/A'}}
+                    </span>
+                </grid>
+
+                <grid [direction]="'row'" [padding]="'0.5rem 0'" class="brdr-bottom">
+                    <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase">
+                        Te atendió:
+                    </span>
+                    <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                        {{employeeName}}
+                    </span>
+                </grid>
+
+                <grid [direction]="'row'" [padding]="'0.5rem 0'" class="brdr-bottom">
+                    <grid [gap]="[8,8]" [direction]="'column'" [template]="'max-content 1fr max-content max-content'">
+                        <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                            #
+                        </span>
+                        <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                            Articulos
+                        </span>
+                        <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                            Precio
+                        </span>
+                        <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                            Total
+                        </span>
+                    </grid>
+                    <ng-container *ngFor="let item of orderItems; let i = index">
+                        <grid [gap]="[8,8]" [direction]="'column'"
+                            [padding]="i === (orderItems || []).length - 1 ? '0 0 0.5rem 0' : '0'"
+                            [template]="'max-content 1fr max-content max-content'">
+                            <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                                {{item.Quantity | numeralFormat: '0,0.0'}}
+                            </span>
+                            <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                                {{item.Name}}
+                            </span>
+                            <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                                {{item.Price | numeralFormat: '$0,0.00'}}
+                            </span>
+                            <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                                {{item.Quantity * item.Price | numeralFormat: '$0,0.00'}}
+                            </span>
+                        </grid>
+                    </ng-container>
+                    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" [padding]="'0.5rem 0 0 0'"
+                        class="brdr-top">
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            Subtotal
+                        </span>
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            {{orderTotals?.Subtotal ?? 0 | numeralFormat: '$0,0.00'}}
+                        </span>
+                    </grid>
+                    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'">
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            Impuestos
+                        </span>
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            {{orderTotals?.Taxes ?? 0 | numeralFormat: '$0,0.00'}}
+                        </span>
+                    </grid>
+                    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'">
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            Envío
+                        </span>
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            {{orderTotals?.Delivery ?? 0 | numeralFormat: '$0,0.00'}}
+                        </span>
+                    </grid>
+                    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'">
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            Descuento
+                        </span>
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            {{orderTotals?.Discount ?? 0 | numeralFormat: '$0,0.00'}}
+                        </span>
+                    </grid>
+                    <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'">
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            Total
+                        </span>
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-right">
+                            {{orderTotals?.Total ?? 0 | numeralFormat: '$0,0.00'}}
+                        </span>
+                    </grid>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-left'">
+                    <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase">
+                        Método de pago:
+                    </span>
+                    <span class="f-ticketing f-13 f-lh-13 fw-600 f-09 uppercase">
+                        {{paymentMethod | titlecase}}
+                    </span>
+                </grid>
+
+                <grid [direction]="'column'" [align]="'center-center'" [padding]="'1rem 0 0'">
+                    <grid [direction]="'row'" [gap]="[0,0]">
+                        <bar-code *ngIf="order?.OrderNumber" [value]="order?.OrderNumber ?? ''" [widthLine]="1"
+                            [heightLine]="30" [displayValue]="false"></bar-code>
+                        <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-center pdd-0">
+                            {{order?.OrderNumber ?? ''}}
+                        </span>
+                    </grid>
+                </grid>
+                <grid [direction]="'column'" [align]="'center-center'" [padding]="'1rem 0'">
+                    <span class="f-ticketing f-12 f-lh-12 fw-600 f-09 uppercase t-center">
+                        Gracias por su preferencia.
+                    </span>
+                </grid>
+            </grid>
+            <nz-alert nzType="info" [nzMessage]="info" nzCloseable="true"></nz-alert>
+            <ng-template #info>
+                <span class="f-13 f-info f-lh-16">
+                    Para una impresión óptima de sus tickets, por favor asegúrese de seleccionar su impresora térmica y
+                    configurar el tamaño de papel adecuado (80mm o 83mm) según las especificaciones de su dispositivo.
+                </span>
+            </ng-template>
+        </grid>
+    </grid>
+
+</modal>

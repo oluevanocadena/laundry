@@ -10,8 +10,9 @@ import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { StyleDirective } from '@directives/directives';
 import { DirectivesModule } from '@directives/directives.module';
+import { BarCodeComponent } from './bar-code/bar-code.component';
 
-const components = [GridComponent, FormInputComponent, InputDateDropdownComponent, DropdownComponent];
+const components = [GridComponent, FormInputComponent, InputDateDropdownComponent, DropdownComponent, BarCodeComponent];
 
 @NgModule({
   declarations: components,

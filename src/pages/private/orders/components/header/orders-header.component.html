@@ -31,7 +31,8 @@
                         </grid>
                     </grid>
                 </grid>
-                <span class="f-13 fw-400 f-06 f-lh-16" [padding]="isMobileOrTablet ? '0px 0px 0px 2.5rem' : '0px 0px 0px 3rem'">
+                <span class="f-13 fw-400 f-06 f-lh-16"
+                    [padding]="isMobileOrTablet ? '0px 0px 0px 2.5rem' : '0px 0px 0px 3rem'">
                     {{dateCreated | dateFormat: 'DD/MM/yyyy [a las] hh:mm A' }}
                 </span>
             </grid>
@@ -55,9 +56,17 @@
                 <span class="f-12 f-03 fw-300" [padding]="'0.5rem 0 0.5rem 0.5rem'">
                     Acciones
                 </span>
+                <button (click)="facade.openPrintModal()" flat small flex [width]="'100%'" class="f-13 f-03">
+                    <span class="material-symbols-outlined f-16 fw-600 f-success">
+                        print
+                    </span>
+                    Imprimir ticket
+                </button>
                 <button (click)="facade.openCancelOrderModal()" flat small flex [width]="'100%'" class="f-13 f-03"
                     (click)="facade.showDeleteModal = true">
-                    <tui-icon icon="@tui.x" class="f-12 fw-100 f-error" />
+                    <span class="material-symbols-outlined f-18 fw-600 f-error">
+                        close
+                    </span>
                     Cancelar pedido
                 </button>
             </grid>
@@ -86,3 +95,5 @@
         </span>
     </grid>
 </modal-confirm>
+
+<orders-print [(show)]="facade.showPrintModal" (onClose)="facade.showPrintModal = false" />

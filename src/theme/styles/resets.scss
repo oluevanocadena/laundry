@@ -5,13 +5,13 @@
     --tui-font-heading: var(--font);
     --tui-font-text-s: normal 0.94rem/1.25rem var(--tui-font-text);
     --t-group-margin: -0px;
-} 
+}
 
 body {
     margin: 0;
     padding: 0;
 }
-
+ 
 tui-opt-group:before {
     font-size: 13px !important;
 }
@@ -158,4 +158,3 @@ span:not(.material-symbols-outlined):not(.material-symbols-filled):not(.icon):no
         transform: rotate(360deg);
     }
 }
- 

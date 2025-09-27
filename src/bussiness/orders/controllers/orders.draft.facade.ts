@@ -55,6 +55,7 @@ export class OrdersDraftFacade extends FacadeBase {
   showItemsProcessing: boolean = false;
   showRefundModal: boolean = false;
   showSearchProduct: boolean = false;
+  showPrintModal: boolean = false;
 
   order = new SubjectProp<Order>(UtilsDomain.clone(OrderEmpty));
 
@@ -112,6 +113,7 @@ export class OrdersDraftFacade extends FacadeBase {
     } else {
       this.clearState();
     }
+    this.order.value!.CreatedBy = this.order.value!.CreatedBy ?? this.sessionService.sessionInfo.value?.Account.FullName;
   }
 
   bindEvents() {
@@ -142,6 +144,7 @@ export class OrdersDraftFacade extends FacadeBase {
     this.showItemsProcessing = false;
     this.showRefundModal = false;
     this.showSearchProduct = false;
+    this.showPrintModal = false;
   }
 
   submitForm() {
@@ -420,6 +423,10 @@ export class OrdersDraftFacade extends FacadeBase {
 
   openCancelOrderModal() {
     this.showCancelOrderModal = true;
+  }
+
+  openPrintModal() {
+    this.showPrintModal = true;
   }
 
   /**

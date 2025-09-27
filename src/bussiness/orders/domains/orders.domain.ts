@@ -33,6 +33,7 @@ export class OrdersDomain {
       id: order.id ?? undefined,
       createdAt: order.createdAt ?? now,
       updatedAt: now,
+      CreatedBy: order.CreatedBy ?? sessionService.sessionInfo.value?.Account.FullName ?? '',
       CustomerName: orderCustomer.FullName ?? '',
       CustomerId: orderCustomer.id ?? '',
 

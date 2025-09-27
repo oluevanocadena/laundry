@@ -29,6 +29,7 @@ import { OrdersLaundryComponent } from '@pages/private/orders/components/laundry
 import { OrdersNotesComponent } from '@pages/private/orders/components/notes/orders-notes.component';
 import { OrdersConfirmDeleteModalComponent } from '@pages/private/orders/components/orders-confirm-delete-modal/orders-confirm-delete-modal.component';
 import { OrdersConfirmDisableModalComponent } from '@pages/private/orders/components/orders-confirm-disable-modal/orders-confirm-disable-modal.component';
+import { OrdersPrintComponent } from '@pages/private/orders/components/print/orders-print.component';
 import { OrdersSearchCustomerComponent } from '@pages/private/orders/components/search-customer/orders-search-customer.component';
 import { OrdersSearchProductComponent } from '@pages/private/orders/components/search-product/orders-search-product.component';
 import { OrdersSummaryComponent } from '@pages/private/orders/components/summary/orders-summary.component';
@@ -58,6 +59,7 @@ const components: any[] = [
   OrdersLaundryComponent,
   OrdersNotesComponent,
   OrdersPageComponent,
+  OrdersPrintComponent,
   OrdersSearchCustomerComponent,
   OrdersSearchProductComponent,
   OrdersSummaryComponent,

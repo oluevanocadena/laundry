@@ -27,7 +27,7 @@ import * as moment from 'moment-timezone';
 
 registerLocaleData(es);
 moment.tz.setDefault('America/Mexico_City'); 
-moment.tz.setDefault('UTC');
+// moment.tz.setDefault('UTC');
 
 export const appConfig: ApplicationConfig = {
   providers: [

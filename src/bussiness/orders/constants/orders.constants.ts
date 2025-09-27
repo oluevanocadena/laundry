@@ -26,6 +26,7 @@ export const OrderEmpty: Order = {
   Subtotal: 0,
   Taxes: 0,
   Total: 0,
+  CreatedBy: '',
 };
 
 export const OrderDefaultTableFilter: UITableFilter = {

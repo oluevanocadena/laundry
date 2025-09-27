@@ -26,6 +26,18 @@
     overflow-x: auto;
 }
 
+.scroll-vh {
+    overflow: auto;
+}
+
+.no-scroll-v {
+    overflow-y: hidden;
+}
+
+.no-scroll-h {
+    overflow-x: hidden;
+}
+
 .baseline {
     align-items: baseline !important;
 }

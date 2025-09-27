@@ -1,0 +1,20 @@
+.ant-alert {
+    line-height: 14px !important;
+    border-radius: 6px !important;
+
+    &.ant-alert-info {
+        background-color: var(--info-hsl) !important;
+    }
+
+    &.ant-alert-warning {
+        background-color: var(--warning-hsl) !important;
+    }
+
+    &.ant-alert-success {
+        background-color: var(--success-hsl) !important;
+    }
+
+    *.ant-alert-close-icon .anticon-close {
+        color: var(--text-01) !important;
+    }
+}

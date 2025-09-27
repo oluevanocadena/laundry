@@ -7,20 +7,27 @@
 
     <grid body [direction]="'row'" [gap]="[8,8]" padding="1rem 1.5rem">
         <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-            <span class="f-14 fw-400 f-05 f-lh-15">
-                💡 ¿Qué te gustaría que hiciéramos mejor o qué te gustaría que agregáramos?
+            <span class="f-13 fw-400 f-04 f-lh-17">
+                ¿Qué te gustaría que hiciéramos mejor o qué te gustaría que agregáramos?
             </span>
         </grid>
         <grid [direction]="'row'" [gap]="[16,16]" width="100%">
             <form [formGroup]="formGroup" width="100%">
-                <grid [direction]="'row'" [gap]="[24,16]" width="100%" [padding]="'1rem 0 1rem 0'">
-                    <form-input [type]="'select'" [placeholder]="'Tipo de opinión'" formControlName="type"
-                        [options]="options" />
-                    <form-input [type]="'text'" [placeholder]="'Titulo'" formControlName="title" />
-                    <form-input [type]="'textarea'" [placeholder]="'Platicanos de tu experiencia con nosotros'"
-                        formControlName="description" />
+                <grid [direction]="'row'" [gap]="[16,16]" width="100%" [padding]="'1rem 0 1rem 0'">
+                    <form-input [label]="'Tipo'" [type]="'select'" [placeholder]="'Tipo de opinión'"
+                        formControlName="type" [options]="options" [required]="true" />
+                    <form-input [label]="'Titulo'" [type]="'text'" [placeholder]="'Titulo'" formControlName="title"
+                        [required]="true" />
+                    <form-input [type]="'textarea'" [placeholder]="'Describe tu experiencia'"
+                        [label]="'Platicanos de tu experiencia con nosotros'" formControlName="description"
+                        [required]="true" />
                 </grid>
             </form>
+        </grid>
+        <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
+            <span class="f-13 fw-400 f-06 f-lh-16">
+                Sus comentarios nos ayudan a mejorar, ¡gracias!
+            </span>
         </grid>
     </grid>
 </modal>

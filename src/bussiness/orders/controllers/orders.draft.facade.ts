@@ -186,7 +186,7 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   fetchProducts(search: string) {
-    this.apiProducts.getProducts(search, 1, 5, this.sessionService.locationId);
+    this.apiProducts.searchProducts(search, 1, 5, this.sessionService.locationId);
   }
 
   updateOrderItemStatus(status: OrderItemStatusEnum) {

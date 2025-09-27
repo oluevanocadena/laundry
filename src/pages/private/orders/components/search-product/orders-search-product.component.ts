@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
+import { ProductsDomain } from '@bussiness/products/domains/products.domain';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { HelperTablePage } from '@components/common/helper.table.page';
@@ -17,6 +18,7 @@ import { UtilsDomain } from '@globals/utils/utils.domain';
 })
 export class OrdersSearchProductComponent extends HelperTablePage<Product> implements OnInit {
   utils = UtilsDomain;
+  ProductsDomain = ProductsDomain;
 
   //Show
   private _show: boolean = false;
@@ -66,12 +68,6 @@ export class OrdersSearchProductComponent extends HelperTablePage<Product> imple
 
   isSelected(product: Product) {
     return this.product && this.product.id === product.id;
-  }
-
-  getPriceAtStore(product: Product): number {
-    const locationId = this.sessionService.sessionInfo.value?.Location?.id;
-    const productPrice = product?.ProductLocationPrice?.find((price) => price.LocationId === locationId);
-    return productPrice?.Price ?? 0;
   }
 
   /**

@@ -15,6 +15,7 @@ import { ProductsApiService } from '@bussiness/products/services/products.api.se
 import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { UtilsDomain } from '@globals/utils/utils.domain';
+import { IUnitMeasureRepository } from '../repository/unit.measure.repository';
 
 @Injectable({
   providedIn: 'root',
@@ -47,6 +48,7 @@ export class ProductsDraftFacade extends FacadeBase {
 
   constructor(
     public api: ProductsApiService,
+    public repoUnitMeasures: IUnitMeasureRepository,
     public pcategoriesApi: ProductCategoriesApiService,
     public locationApi: LocationsApiService,
     public nzMessageService: NzMessageService,
@@ -58,7 +60,7 @@ export class ProductsDraftFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
-    this.api.getUnitMeasures();
+    this.repoUnitMeasures.getAll();
     this.pcategoriesApi.getProductCategories();
     this.locationApi.getLocations();
     this.fillForm();

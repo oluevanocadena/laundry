@@ -12,3 +12,10 @@ export abstract class IRepository<T> {
   abstract deleteMany(ids: string[]): Promise<ResponseResult<void>>;
   abstract toggleEnableStateMany(ids: string[]): Promise<ResponseResult<void>>;
 }
+
+export abstract class IRepositoryReadOnly<T> {
+  abstract busy: BusyProp;
+
+  abstract getAll(): Promise<ResponseResult<T[]>>;
+  abstract getById(id: string): Promise<ResponseResult<T> | null>;
+}

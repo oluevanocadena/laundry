@@ -3,15 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { SubjectProp } from '@globals/types/subject.type';
 
-import { ProductsQueryDomain } from '@bussiness/products/domains/product.query.domain';
-import { UnitMeasure } from '@bussiness/products/interfaces/product.unitmeasure.interfaces';
+import { ProductsQueryDomain } from '@bussiness/products/domains/products.query.domain';
 import {
   Product,
   ProductLocation,
   ProductLocationPrice,
   ProductRequest,
 } from '@bussiness/products/interfaces/products.interfaces';
-import { SessionService } from '@bussiness/session/services/session.service';
 
 import { SupabaseBuckets, SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { PagedResults } from '@globals/interfaces/supabase.interface';
@@ -23,7 +21,6 @@ import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.b
 export class ProductsApiService extends SupabaseBaseApiService {
   products = new SubjectProp<Product[]>([]);
   pagedProducts = new SubjectProp<PagedResults<Product>>(null);
-  unitMeasures = new SubjectProp<UnitMeasure[]>([]);
 
   constructor() {
     super();
@@ -48,26 +45,22 @@ export class ProductsApiService extends SupabaseBaseApiService {
     }, 'Fetching Product Categories');
   }
 
-  getUnitMeasures() {
-    return this.executeWithBusy(async () => {
-      const { data, error } = await this.client.from(SupabaseTables.UnitMeasures).select('*').eq('Deleted', false);
-      return super.handleResponse(data, error);
-    }, 'Fetching Unit Measures');
-  }
-
-  getProducts(search: string, page: number = 1, pageSize: number = 50, locationId: string) {
+  searchProducts(search: string, page: number = 1, pageSize: number = 50, locationId: string) {
     return this.executeWithBusy(async () => {
       let query = this.client
         .from(SupabaseTables.Products)
         .select(
-          `*, ProductLocations: ${SupabaseTables.ProductLocations}(*, Location: ${SupabaseTables.Locations}(*)), 
+          `*, 
+              ProductLocations: ${SupabaseTables.ProductLocations}(*, Location: ${SupabaseTables.Locations}(*)), 
               ProductCategory: ${SupabaseTables.ProductCategories}(Name),
               ProductImages: ${SupabaseTables.ProductImages}(*),
-              ProductLocationPrice: ${SupabaseTables.ProductLocationPrices}(*, Location: ${SupabaseTables.Locations}(*)),
+              ProductLocationPrice: ${SupabaseTables.ProductLocationPrices}( * , Location: ${SupabaseTables.Locations}(*))!inner(eq(LocationId,"${locationId}")),
               UnitMeasure: ${SupabaseTables.UnitMeasures}(*) `,
         )
         .eq('Deleted', false)
         .eq('Disabled', false)
+        .eq(`${SupabaseTables.ProductLocations}.LocationId`, locationId)
+        .eq(`${SupabaseTables.ProductLocationPrices}.LocationId`, locationId)
         .eq('OrganizationId', this.sessionService.organizationId);
       if (search) {
         query = query.or(

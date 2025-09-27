@@ -24,9 +24,11 @@ import { AuthInterceptor } from '@globals/interceptors/http.interceptor';
 import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
 import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
 import * as moment from 'moment-timezone';
+import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
+import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
 
 registerLocaleData(es);
-moment.tz.setDefault('America/Mexico_City'); 
+moment.tz.setDefault('America/Mexico_City');
 // moment.tz.setDefault('UTC');
 
 export const appConfig: ApplicationConfig = {
@@ -38,6 +40,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideEventPlugins(),
     { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
+    { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
     {
       provide: NotificationsRealtimeService,
       useFactory: (nz: NzNotificationService, router: Router, orders: OrdersSupabaseRepository) => {

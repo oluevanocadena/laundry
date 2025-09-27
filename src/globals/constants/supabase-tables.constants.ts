@@ -22,6 +22,10 @@ export const SupabaseTables = {
   Products: 'Products',
   Roles: 'Roles',
   Statistics: 'Statistics',
+  SupportTickets: 'SupportTickets',
+  SupportTicketStatuses: 'SupportTicketStatuses',
+  SupportTicketImages: 'SupportTicketImages',
+  SupportTicketComments: 'SupportTicketComments',
   UnitMeasures: 'UnitMeasures',
 };
 

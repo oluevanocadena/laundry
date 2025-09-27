@@ -1,4 +1,4 @@
-import { FeedbackTypeEnum } from '../enums/feeback.enums';
+import { FeedbackTypeEnum } from '@bussiness/feedback/enums/feeback.enums';
 
 export interface Feedback {
   id?: string | null;

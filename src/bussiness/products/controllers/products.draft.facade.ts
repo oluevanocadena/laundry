@@ -11,11 +11,11 @@ import { StorageProp } from '@globals/types/storage.type';
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
-import { ProductsApiService } from '@bussiness/products/services/products.api.service';
 import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/interfaces/products.interfaces';
+import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
+import { ProductsApiService } from '@bussiness/products/services/products.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { UtilsDomain } from '@globals/utils/utils.domain';
-import { IUnitMeasureRepository } from '../repository/unit.measure.repository';
 
 @Injectable({
   providedIn: 'root',

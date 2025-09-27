@@ -65,7 +65,7 @@ export class FeedbackSupabaseRepository extends SupabaseBaseApiService implement
     });
   }
 
-  toggleEnableStateMany(ids: string[]): Promise<ResponseResult<void>> {
+  toggleEnableMany(ids: string[]): Promise<ResponseResult<void>> {
     return this.executeWithBusy(async () => {
       const query = OrdersQueryDomain.buildToggleOrdersQuery(this.client, ids);
       const { data, error } = await query;

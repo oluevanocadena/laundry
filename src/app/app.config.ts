@@ -25,6 +25,8 @@ import { IOrdersRepository } from '@bussiness/orders/repository/orders.repositor
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
 import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
+import { ISupportTicketRepository } from '@bussiness/support/repository/support.measure.repository';
+import { SupportTicketSupabaseRepository } from '@bussiness/support/repository/support.measure.supabase.repository';
 import { AuthInterceptor } from '@globals/interceptors/http.interceptor';
 import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
 import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
@@ -41,9 +43,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideEventPlugins(),
-    { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
-    { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
     { provide: IFeedbackRepository, useClass: FeedbackSupabaseRepository },
+    { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
+    { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },
+    { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
     {
       provide: NotificationsRealtimeService,
       useFactory: (nz: NzNotificationService, router: Router, orders: OrdersSupabaseRepository) => {

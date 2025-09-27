@@ -1,26 +1,115 @@
 <layout>
     <grid [gap]="[0,24]" [direction]="'row'" [height]="'var(--full-vh)'"
         [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
-                Soporte
-            </span>
-        </grid>
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por fecha de apertura
-                </button>
-                <button outline small flex>
-                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-                    Columnas
+        <grid [direction]="'column'" [template]="!isMobileOrTablet ? '1fr' : '1fr max-content'"
+            [padding]="isMobileOrTablet ? '0.5rem 1rem' : '1rem'">
+            <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'">
+                <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+                    Soporte Técnico
+                </span>
+            </grid>
+            <grid *ngIf="isMobileOrTablet" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%">
+                <button primary small (click)="facade.onNewTicket()">
+                    Crear ticket
                 </button>
             </grid>
         </grid>
+        <grid [direction]="'row'" [gap]="[0,0]">
+            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Crear ticket'"
+                [columns]="facade.columns" [showType]="facade.showType"
+                [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewTicket()"
+                (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
+
+            <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
+                [actions]="facade.actions" />
+        </grid>
+            
+        <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
+            class="scroll-h scroll-v bg-02 baseline">
+            <table [width]="isMobileOrTablet ? '900px' : '100%'">
+                <thead>
+                    <tr>
+                        <th width="40px"> </th>
+                        <ng-container *ngFor="let column of facade.columns">
+                            <th [width]="column.width" *ifColumn="{columns: facade.columns, key: column.key}">{{column.label}}
+                            </th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="facade.repo.supportTicketsPaged.value?.success === undefined">
+                        <tr>
+                            <td [attr.colspan]="facade.columns.length + 1">
+                                <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                    <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
+                                        <tui-loader [size]="'m'" />
+                                        Cargando...
+                                    </grid>
+                                </grid>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    <tr *ngIf="facade.repo.supportTicketsPaged.value?.success === true && facade.repo.supportTicketsPaged.value?.data?.length === 0">
+                        <td [attr.colspan]="facade.columns.length + 1">
+                            <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
+                                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
+                                    <tui-icon icon="@tui.inbox" class="f-20 f-06" />
+                                    <span class="fw-400 f-06">No hay tickets disponibles</span>
+                                </grid>
+                            </grid>
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="facade.repo.supportTicketsPaged.value?.success === true">
+                        <tr hoverable *ngFor="let item of facade.repo.supportTicketsPaged.value?.data; let i = index" (click)="facade.onTicketClick(item)">
+                            <td>
+                                <label nz-checkbox [ngModel]="getItemChecked(item)" (ngModelChange)="setItemChecked(item, $event)"
+                                    (click)="$event.stopPropagation()"></label>
+                            </td>
+                            <td *ifColumn="{columns: facade.columns, key: 'Title'}">
+                                <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
+                                    class="f-13 fw-400 f-lh-14 t-left" />
+                                <ng-template #titleClamp>
+                                    <span class="f-13 fw-400 f-01 f-lh-17 t-left">
+                                        {{item.Title}}
+                                    </span>
+                                </ng-template>
+                            </td>
+                            <td *ifColumn="{columns: facade.columns, key: 'Description'}">
+                                <tui-line-clamp [content]="descClamp" [lineHeight]="18" [linesLimit]="2"
+                                    class="f-13 fw-400 f-lh-14 t-left" />
+                                <ng-template #descClamp>
+                                    <span class="f-13 fw-400 f-01 f-lh-17 t-left">
+                                        {{item.Description}}
+                                    </span>
+                                </ng-template>
+                            </td>
+                            <td *ifColumn="{columns: facade.columns, key: 'StatusId'}">
+                                <grid [direction]="'column'" [align]="'center-center'">
+                                    <status-badge [label]="getStatusLabel(item.StatusId)" [size]="'m'"
+                                        [appearance]="getStatusAppearance(item.StatusId)" />
+                                </grid>
+                            </td>
+                            <td *ifColumn="{columns: facade.columns, key: 'Priority'}">
+                                <grid [direction]="'column'" [align]="'center-center'">
+                                    <status-badge [label]="getPriorityLabel(item.Priority)" [size]="'m'"
+                                        [appearance]="getPriorityAppearance(item.Priority)" />
+                                </grid>
+                            </td>
+                            <td *ifColumn="{columns: facade.columns, key: 'created_At'}">
+                                {{(item.created_At || '') | date: 'dd MMM yyyy' }}
+                            </td>
+                            <td *ifColumn="{columns: facade.columns, key: 'updated_At'}">
+                                {{(item.updated_At || '') | date: 'dd MMM yyyy' }}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </grid>
+        
+        <table-pagination [rowCount]="facade.repo.supportTicketsPaged.value?.count || 0" (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 
-
-
+    <!-- Modales de confirmación para tickets de soporte -->
+    <!-- TODO: Crear componentes de modales para support -->
 </layout>

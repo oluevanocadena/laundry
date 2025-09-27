@@ -147,7 +147,7 @@ export class OrdersMonitorFacade extends FacadeBase {
 
   onDisableOrders() {
     const ids = this.selectedRows.map((order) => order.id!.toString());
-    this.api.toggleEnableStateMany(ids).then((response) => {
+    this.api.toggleEnableMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Pedidos deshabilitados');
         this.fetchOrders();

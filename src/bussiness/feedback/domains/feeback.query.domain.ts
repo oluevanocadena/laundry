@@ -1,8 +1,9 @@
-import { PagedRequest } from '@globals/interfaces/requests.interface';
-import { SessionService } from '@bussiness/session/services/session.service';
 import { SupabaseClient } from '@supabase/supabase-js';
+
+import { Feedback } from '@bussiness/feedback/interfaces/feeback.interfaces';
+import { SessionService } from '@bussiness/session/services/session.service';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { Feedback } from '../interfaces/feeback.interfaces';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
 
 export class FeedbackQueryDomain {
   static buildQuery(request: PagedRequest, client: SupabaseClient, sessionService: SessionService) {

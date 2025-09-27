@@ -60,7 +60,7 @@
                     <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index"
                             (click)="facade.onNotificationClick(item)">
-                            <td>
+                            <td (click)="$event.stopPropagation()">
                                 <label nz-checkbox [(ngModel)]="item.Checked"></label>
                             </td>
                             <td *ifColumn="{columns: columns, key: 'created_At'}">
@@ -91,5 +91,5 @@
 
 </layout>
 
-<notifications-confirm-delete-modal [(show)]="facade.showDeleteNotificationsModal" (onConfirm)="facade.onDeleteNotifications()"
-    (onClose)="facade.showDeleteNotificationsModal = false" />
+<notifications-confirm-delete-modal [(show)]="facade.showDeleteNotificationsModal"
+    (onConfirm)="facade.onDeleteNotifications()" (onClose)="facade.showDeleteNotificationsModal = false" />

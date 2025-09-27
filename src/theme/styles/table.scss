@@ -1,5 +1,5 @@
 * {
-    --table-color: var(--background-03); 
+    --table-color: var(--background-03);
 }
 
 table {
@@ -9,7 +9,7 @@ table {
     border-left: none !important;
     border-right: none !important;
     border-bottom: none !important;
-    box-shadow: none !important;    
+    box-shadow: none !important;
     font-size: 13px;
     /* Evitar que la tabla se estire */
     height: auto !important;
@@ -28,7 +28,7 @@ th {
     border-bottom: 1px solid var(--border) !important;
 }
 
-td{
+td {
     padding: 0 0.75rem;
     text-align: left;
     height: 36px;
@@ -47,6 +47,10 @@ tr {
     }
 }
 
+
+td:first-child {
+    cursor: default;
+}
 
 
 thead,
@@ -70,4 +74,3 @@ tbody {
     flex-shrink: 0;
     height: auto !important;
 }
- 

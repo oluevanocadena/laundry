@@ -64,7 +64,7 @@
                     </tr>
                     <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onLocationClick(item)">
-                            <td>
+                            <td (click)="$event.stopPropagation()">
                                 <label nz-checkbox [(ngModel)]="item.Checked" [nzDisabled]="item.Default"
                                     (click)="$event.stopPropagation()"></label>
                             </td>

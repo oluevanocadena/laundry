@@ -59,7 +59,7 @@
                     </tr>
                     <ng-container *ngIf="busy === false">
                         <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onUserClick(item)">
-                            <td>
+                            <td (click)="$event.stopPropagation()">
                                 <label nz-checkbox [(ngModel)]="item.Checked" [nzDisabled]="item.IsOwner"></label>
                             </td>
                             <td>{{item.created_at || '' | dateFormat:'DD MMMM[,] YYYY' | capitalization }}</td>

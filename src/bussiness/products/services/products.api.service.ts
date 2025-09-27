@@ -221,6 +221,20 @@ export class ProductsApiService extends SupabaseBaseApiService {
     }, 'Deleting Product');
   }
 
+  disableProduct(productId: string) {
+    return this.executeWithBusy(async () => {
+      const { error } = await this.client.from(SupabaseTables.Products).update({ Disabled: true }).eq('id', productId);
+      return super.handleResponse(null, error);
+    }, 'Disabling Product');
+  }
+
+  enableProduct(productId: string) {
+    return this.executeWithBusy(async () => {
+      const { error } = await this.client.from(SupabaseTables.Products).update({ Disabled: false }).eq('id', productId);
+      return super.handleResponse(null, error);
+    }, 'Enabling Product');
+  }
+
   deleteProducts(ids: string[]) {
     return this.executeWithBusy(async () => {
       const query = ProductsQueryDomain.buildDeleteProductsQuery(this.client, ids);

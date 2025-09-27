@@ -14,6 +14,7 @@ import { ProductCategoriesApiService } from '@bussiness/product-categories/servi
 import { ProductsApiService } from '@bussiness/products/services/products.api.service';
 import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/interfaces/products.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
+import { UtilsDomain } from '@globals/utils/utils.domain';
 
 @Injectable({
   providedIn: 'root',
@@ -185,5 +186,45 @@ export class ProductsDraftFacade extends FacadeBase {
         this.router.navigate([routes.Products]);
       });
     }
+  }
+
+  onDisable() {
+    const product = this.product.value;
+    if (product?.id) {
+      if (product.Disabled) {
+        this.api.enableProduct(product.id).then((response) => {
+          if (response.success) {
+            this.nzMessageService.success('Producto habilitado correctamente');
+            this.showDisableModal = false;
+            const product = UtilsDomain.clone(this.product.value!);
+            product.Disabled = false;
+            this.product.value = product;
+          } else {
+            this.nzMessageService.error('Ocurrió un error al habilitar el producto');
+          }
+        });
+      } else {
+        this.api.disableProduct(product.id).then((response) => {
+          if (response.success) {
+            this.nzMessageService.success('Producto deshabilitado correctamente');
+            this.showDisableModal = false;
+            const product = UtilsDomain.clone(this.product.value!);
+            product.Disabled = true;
+            this.product.value = product;
+          } else {
+            this.nzMessageService.error('Ocurrió un error al deshabilitar el producto');
+          }
+          this.showDisableModal = false;
+        });
+      }
+    }
+  }
+
+  openDisableModal() {
+    this.showDisableModal = true;
+  }
+
+  openDeleteModal() {
+    this.showDeleteModal = true;
   }
 }

@@ -16,10 +16,10 @@
         </grid>
 
         <grid [direction]="'row'" [gap]="[0,0]">
-            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo cliente'" [columns]="facade.columns"
-                [showType]="facade.showType" [defaultSortBy]="facade.tableFilter.value?.sortBy!"
-                (onCtaClick)="facade.onNewCustomer()" (onFiltersChange)="facade.onFiltersChange($event)"
-                (columnsChange)="facade.onColumnsChange($event)" />
+            <table-filters [tableFilter]="facade.tableFilter.value" [ctaLabel]="'Nuevo cliente'"
+                [columns]="facade.columns" [showType]="facade.showType"
+                [defaultSortBy]="facade.tableFilter.value?.sortBy!" (onCtaClick)="facade.onNewCustomer()"
+                (onFiltersChange)="facade.onFiltersChange($event)" (columnsChange)="facade.onColumnsChange($event)" />
 
             <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
                 [actions]="facade.actions" />
@@ -59,8 +59,9 @@
                     </tr>
                     <ng-container *ngIf="facade.api.busy.value === false">
                         <tr hoverable *ngFor="let item of data; let i = index" (click)="facade.onCustomerClick(item)">
-                            <td>
-                                <label nz-checkbox [(ngModel)]="item.Checked" (click)="$event.stopPropagation()"></label>
+                            <td (click)="$event.stopPropagation()">
+                                <label nz-checkbox [(ngModel)]="item.Checked"
+                                    (click)="$event.stopPropagation()"></label>
                             </td>
                             <td *ifColumn="{columns: columns, key: 'created_at'}">{{item.created_at || '' | dateFormat:
                                 'DD MMMM[,] YYYY' | capitalization }}</td>

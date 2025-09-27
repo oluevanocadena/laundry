@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 
 import { provideEventPlugins } from '@taiga-ui/event-plugins';
 import { TUI_LANGUAGE, TUI_SPANISH_LANGUAGE } from '@taiga-ui/i18n';
+import * as moment from 'moment-timezone';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { es_ES, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { MenuService, NzIsMenuInsideDropDownToken, NzMenuModule } from 'ng-zorro-antd/menu';
@@ -16,16 +17,17 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 import { routes } from '@app/app.routes';
+import { IFeedbackRepository } from '@bussiness/feedback/repository/feeback.repository';
+import { FeedbackSupabaseRepository } from '@bussiness/feedback/repository/feeback.supabase.repository';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { CompositeNotificationChannel } from '@bussiness/notifications/strategy/notifications.composite';
 import { IOrdersRepository } from '@bussiness/orders/repository/orders.repository';
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
+import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
+import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
 import { AuthInterceptor } from '@globals/interceptors/http.interceptor';
 import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
 import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
-import * as moment from 'moment-timezone';
-import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
-import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
 
 registerLocaleData(es);
 moment.tz.setDefault('America/Mexico_City');
@@ -41,6 +43,7 @@ export const appConfig: ApplicationConfig = {
     provideEventPlugins(),
     { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
     { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
+    { provide: IFeedbackRepository, useClass: FeedbackSupabaseRepository },
     {
       provide: NotificationsRealtimeService,
       useFactory: (nz: NzNotificationService, router: Router, orders: OrdersSupabaseRepository) => {

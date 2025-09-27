@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { FeedbackDraftFacade } from '@bussiness/feedback/controllers/feeback.draft.facade';
 
 import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
 import { HelperPage } from '@components/common/helper.page';
@@ -6,7 +7,7 @@ import { HelperPage } from '@components/common/helper.page';
 @Component({
   selector: 'top-bar-buttons',
   standalone: false,
-  templateUrl:   './top-bar-buttons.component.html',
+  templateUrl: './top-bar-buttons.component.html',
   styleUrls: ['./top-bar-buttons.component.scss'],
 })
 export class TopBarButtonsComponent extends HelperPage {
@@ -19,7 +20,7 @@ export class TopBarButtonsComponent extends HelperPage {
   // Properties
   unReadCount: number = 0;
 
-  constructor(public notifService: NotificationsApiService) {
+  constructor(public notifService: NotificationsApiService, public facade: FeedbackDraftFacade) {
     super();
   }
 

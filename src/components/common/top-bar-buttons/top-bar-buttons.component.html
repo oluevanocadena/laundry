@@ -1,7 +1,7 @@
 <grid [direction]="'column'" [template]="'1fr'" height="100%">
     <grid [gap]="[8,16]" [direction]="'column'" [align]="'top-right'" height="100%">
 
-        <button *ngIf="isMobileOrTablet === false" outline small rounded>
+        <button *ngIf="isMobileOrTablet === false" (click)="facade.openFeebackModal()" outline small rounded>
             Danos tu opinión
         </button>
         <grid [direction]="'column'" [align]="'center-left'">
@@ -10,8 +10,8 @@
                     help
                 </span>
             </button>
-            <button *ngIf="isMobileOrTablet === true" outline rounded small icon-google middle
-                (click)="openNotifications()">
+            <button *ngIf="isMobileOrTablet === true" (click)="facade.openFeebackModal()" outline rounded small
+                icon-google middle (click)="openNotifications()">
                 <span class="material-symbols-outlined f-20 f-lh-16 f-06">
                     feedback
                 </span>
@@ -38,3 +38,4 @@
 
 
 <drawer-notifications [(show)]="showNotifications"></drawer-notifications>
+<modal-feeback [(show)]="facade.showModalFeeback" (onClose)="facade.closeFeebackModal()"></modal-feeback>

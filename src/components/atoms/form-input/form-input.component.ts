@@ -164,7 +164,6 @@ export class FormInputComponent implements ControlValueAccessor {
         this.onChange(value);
       } else if (this.type === 'select') {
         const valueSelect = typeof value === 'string' ? value : value.id;
-        console.log('👉🏽 valueSelect', valueSelect);
         this.onChange(valueSelect);
       } else {
         this.onChange(value);

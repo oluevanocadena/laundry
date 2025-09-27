@@ -25,6 +25,7 @@ import { MenuComponent } from '@components/common/menu/menu.component';
 import { ModalColumnsSortComponent } from '@components/common/modal-columns-sort/modal-columns-sort.component';
 import { ModalColumnsTableComponent } from '@components/common/modal-columns-table/modal-columns-table.component';
 import { ModalConfirmComponent } from '@components/common/modal-confirm/modal-confirm.component';
+import { ModalFeebackComponent } from '@components/common/modal-feeback/modal-feeback.component';
 import { ModalSearchComponent } from '@components/common/modal-search/modal-search.component';
 import { ModalSortComponent } from '@components/common/modal-sort/modal-sort.component';
 import { ModalTitleComponent } from '@components/common/modal-title/modal-title.component';
@@ -43,6 +44,7 @@ const components = [
   ButtonResponsiveComponent,
   DrawerComponent,
   DrawerMenuComponent,
+  DrawerNotificationsComponent,
   FooterComponent,
   HeaderComponent,
   ImageUploadComponent,
@@ -51,23 +53,23 @@ const components = [
   MenuComponent,
   MenuContentComponent,
   MenuItemComponent,
-  ModalColumnsTableComponent,
   ModalColumnsSortComponent,
+  ModalColumnsTableComponent,
   ModalComponent,
   ModalConfirmComponent,
+  ModalFeebackComponent,
   ModalSearchComponent,
   ModalSortComponent,
   ModalTitleComponent,
   ProfileMenuComponent,
   SideMenuComponent,
   StatusBadgeComponent,
+  TableActionsComponent,
   TableFiltersComponent,
   TablePaginationComponent,
   TopBarButtonsComponent,
   TopBarComponent,
-  TableActionsComponent,
   TopBarOrganizationComponent,
-  DrawerNotificationsComponent,
 ];
 
 @NgModule({

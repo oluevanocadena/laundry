@@ -3,11 +3,13 @@ import { UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 import moment from 'moment';
 export const SupabaseTables = {
-  Accounts: 'Accounts',
-  Roles: 'Roles',
   AccountRoles: 'AccountRoles',
+  Accounts: 'Accounts',
+  Analytics: 'Analytics',
   Customers: 'Customers',
+  Feedbacks: 'Feedbacks',
   Locations: 'Locations',
+  Notifications: 'Notifications',
   OrderItems: 'OrderItems',
   OrderItemStatuses: 'OrderItemStatuses',
   Orders: 'Orders',
@@ -18,10 +20,9 @@ export const SupabaseTables = {
   ProductLocationPrices: 'ProductLocationPrices',
   ProductLocations: 'ProductLocations',
   Products: 'Products',
-  UnitMeasures: 'UnitMeasures',
-  Notifications: 'Notifications',
+  Roles: 'Roles',
   Statistics: 'Statistics',
-  Analytics: 'Analytics',
+  UnitMeasures: 'UnitMeasures',
 };
 
 export const SupabaseBuckets = {

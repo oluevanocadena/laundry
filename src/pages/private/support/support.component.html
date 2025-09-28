@@ -23,7 +23,7 @@
             <table-actions *ngIf="facade.selectedRows.length > 0" [selectedRows]="facade.selectedRows"
                 [actions]="facade.actions" />
         </grid>
-            
+
         <grid [direction]="'row'" [align]="'top-left'" height="100%" [width]="'100%'"
             class="scroll-h scroll-v bg-02 baseline">
             <table [width]="isMobileOrTablet ? '900px' : '100%'">
@@ -31,7 +31,8 @@
                     <tr>
                         <th width="40px"> </th>
                         <ng-container *ngFor="let column of facade.columns">
-                            <th [width]="column.width" *ifColumn="{columns: facade.columns, key: column.key}">{{column.label}}
+                            <th [width]="column.width" *ifColumn="{columns: facade.columns, key: column.key}">
+                                {{column.label}}
                             </th>
                         </ng-container>
                     </tr>
@@ -49,7 +50,8 @@
                             </td>
                         </tr>
                     </ng-container>
-                    <tr *ngIf="facade.repo.supportTicketsPaged.value?.success === true && facade.repo.supportTicketsPaged.value?.data?.length === 0">
+                    <tr
+                        *ngIf="facade.repo.supportTicketsPaged.value?.success === true && facade.repo.supportTicketsPaged.value?.data?.length === 0">
                         <td [attr.colspan]="facade.columns.length + 1">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-left'" class="f-15">
@@ -60,9 +62,11 @@
                         </td>
                     </tr>
                     <ng-container *ngIf="facade.repo.supportTicketsPaged.value?.success === true">
-                        <tr hoverable *ngFor="let item of facade.repo.supportTicketsPaged.value?.data; let i = index" (click)="facade.onTicketClick(item)">
+                        <tr hoverable *ngFor="let item of facade.repo.supportTicketsPaged.value?.data; let i = index"
+                            (click)="facade.onTicketClick(item)">
                             <td>
-                                <label nz-checkbox [ngModel]="getItemChecked(item)" (ngModelChange)="setItemChecked(item, $event)"
+                                <label nz-checkbox [ngModel]="getItemChecked(item)"
+                                    (ngModelChange)="setItemChecked(item, $event)"
                                     (click)="$event.stopPropagation()"></label>
                             </td>
                             <td *ifColumn="{columns: facade.columns, key: 'Title'}">
@@ -85,14 +89,15 @@
                             </td>
                             <td *ifColumn="{columns: facade.columns, key: 'StatusId'}">
                                 <grid [direction]="'column'" [align]="'center-center'">
-                                    <status-badge [label]="getStatusLabel(item.StatusId)" [size]="'m'"
-                                        [appearance]="getStatusAppearance(item.StatusId)" />
+                                    <status-badge [label]="SupportDomain.statusName(item.StatusId ?? null)" [size]="'m'"
+                                        [appearance]="SupportDomain.statusAppearance(item.StatusId ?? null)" />
                                 </grid>
                             </td>
                             <td *ifColumn="{columns: facade.columns, key: 'Priority'}">
                                 <grid [direction]="'column'" [align]="'center-center'">
-                                    <status-badge [label]="getPriorityLabel(item.Priority)" [size]="'m'"
-                                        [appearance]="getPriorityAppearance(item.Priority)" />
+                                    <status-badge [label]="SupportDomain.priorityName(item.Priority ?? null)"
+                                        [size]="'m'"
+                                        [appearance]="SupportDomain.priorityAppearance(item.Priority ?? null)" />
                                 </grid>
                             </td>
                             <td *ifColumn="{columns: facade.columns, key: 'created_At'}">
@@ -106,8 +111,9 @@
                 </tbody>
             </table>
         </grid>
-        
-        <table-pagination [rowCount]="facade.repo.supportTicketsPaged.value?.count || 0" (onChange)="facade.onTablePaginationChange($event)" />
+
+        <table-pagination [rowCount]="facade.repo.supportTicketsPaged.value?.count || 0"
+            (onChange)="facade.onTablePaginationChange($event)" />
     </grid>
 
     <!-- Modales de confirmación para tickets de soporte -->

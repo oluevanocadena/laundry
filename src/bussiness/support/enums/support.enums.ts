@@ -13,3 +13,15 @@ export const TicketStatusLabels: Record<TicketStatusIdEnum, string> = {
   [TicketStatusIdEnum.Closed]: 'Closed',
   [TicketStatusIdEnum.Cancelled]: 'Cancelled',
 };
+
+export enum SupportTicketPriorityEnum {
+  Low = 1,
+  Medium = 2,
+  High = 3,
+}
+
+export const SupportTicketPriorityLabels: Record<SupportTicketPriorityEnum, string> = {
+  [SupportTicketPriorityEnum.Low]: 'Low',
+  [SupportTicketPriorityEnum.Medium]: 'Medium',
+  [SupportTicketPriorityEnum.High]: 'High',
+};

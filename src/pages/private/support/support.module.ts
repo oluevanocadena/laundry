@@ -9,9 +9,22 @@ import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
+import { SupportCommentsComponent } from '@pages/private/support/components/comments/support-comments.component';
+import { SupportGeneralsComponent } from '@pages/private/support/components/generals/support-generals.component';
+import { SupportHeaderComponent } from '@pages/private/support/components/header/support-header.component';
+import { SupportMediaComponent } from '@pages/private/support/components/media/support-media.component';
+import { PipesModule } from '@pipes/pipes.module';
+import { SupportDraftPageComponent } from '@private/support/draft/support-draft-page.component';
 import { SupportPageComponent } from '@private/support/support.component';
 
-const components = [SupportPageComponent];
+const components = [
+  SupportPageComponent,
+  SupportDraftPageComponent,
+  SupportHeaderComponent,
+  SupportGeneralsComponent,
+  SupportMediaComponent,
+  SupportCommentsComponent,
+];
 
 @NgModule({
   imports: [
@@ -22,6 +35,7 @@ const components = [SupportPageComponent];
     UIAtomsModule,
     UICommonModule,
     DirectivesModule,
+    PipesModule,
     TUIModule,
     NgZorroModule,
   ],

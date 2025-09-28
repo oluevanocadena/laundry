@@ -1,0 +1,29 @@
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+  <span class="f-14 fw-500 f-05 f-lh-12">Imágenes</span>
+
+  <ng-template tuiAccordionItemContent>
+    <form [formGroup]="facade.formGroup">
+      <grid [direction]="'row'" [gap]="[8,8]">
+        <grid [gap]="[8,16]" [direction]="'row'">
+          <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" [padding]="'0 0 0.25rem 0'">
+            <span class="f-13 f-lh-16 f-06">
+              Agrega una o varias imágenes para que documentes el problema.
+            </span>
+          </grid>
+          <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]">
+            <ng-container *ngFor="let url of images">
+              <image-upload [accept]="'image/jpeg,image/png'" [maxSizeMb]="5" [imageUrl]="url.ImageUrl"
+                (onSelected)="facade.onSelectedImage($event)" (onDelete)="facade.onRemoveImage(url)" />
+            </ng-container>
+
+            <image-upload *ngIf="(facade.ticketImages.value || []).length < 5" [accept]="'image/jpeg,image/png'"
+              [maxSizeMb]="5" (onSelected)="facade.onSelectedImage($event)" [avoidDisplay]="true" />
+          </grid>
+
+        </grid>
+
+      </grid>
+    </form>
+
+  </ng-template>
+</tui-accordion-item>

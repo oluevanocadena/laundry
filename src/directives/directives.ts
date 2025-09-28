@@ -5,8 +5,6 @@ import {
   OnChanges,
   Renderer2,
   SimpleChanges,
-  HostListener,
-  EmbeddedViewRef,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';

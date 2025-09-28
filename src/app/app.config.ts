@@ -25,8 +25,10 @@ import { IOrdersRepository } from '@bussiness/orders/repository/orders.repositor
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
 import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
-import { ISupportTicketRepository } from '@bussiness/support/repository/support.measure.repository';
-import { SupportTicketSupabaseRepository } from '@bussiness/support/repository/support.measure.supabase.repository';
+import { ISupportModulesRepository } from '@bussiness/support/repository/support.modules.repository';
+import { SupportModulesSupabaseRepository } from '@bussiness/support/repository/support.modules.supabase.repository';
+import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';
+import { SupportTicketSupabaseRepository } from '@bussiness/support/repository/support.supabase.repository';
 import { AuthInterceptor } from '@globals/interceptors/http.interceptor';
 import { NativeNotificationChannel } from '@globals/strategies/notifications/native.notification.channel';
 import { NzMessageNotificationChannel } from '@globals/strategies/notifications/nz-message.notification.channel';
@@ -45,6 +47,7 @@ export const appConfig: ApplicationConfig = {
     provideEventPlugins(),
     { provide: IFeedbackRepository, useClass: FeedbackSupabaseRepository },
     { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
+    { provide: ISupportModulesRepository, useClass: SupportModulesSupabaseRepository },
     { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },
     { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
     {

@@ -1,0 +1,41 @@
+<tui-accordion-item class="container" [open]="true" [size]="'s'">
+  <span class="f-14 fw-500 f-05 f-lh-12">Comentarios</span>
+
+  <ng-template tuiAccordionItemContent>
+    <grid [direction]="'row'" [gap]="[16,16]">
+      <!-- Agregar nuevo comentario -->
+      <grid [direction]="'row'" [gap]="[16,16]">
+        <span class="f-13 fw-400 f-07 f-lh-15">
+          Agrega comentarios para mantener un historial de la conversación.
+        </span>
+        <form [formGroup]="facade.formComment">
+          <form-input [type]="'textarea'" [placeholder]="'Escribe una nota'" [size]="'s'" formControlName="comment" />
+        </form>
+        <grid [direction]="'column'" [align]="'center-right'">
+          <button primary small (click)="facade.addComment()" [disabled]="canAddComment">
+            Agregar Comentario
+          </button>
+        </grid>
+      </grid>
+
+      <!-- Lista de comentarios -->
+      <grid [direction]="'column'" [gap]="[12,12]" *ngIf="comments && comments.length > 0">
+        <span class="f-13 fw-500 f-01">Historial de comentarios ({{ comments.length }})</span>
+
+        <grid [direction]="'column'" [gap]="[8,8]">
+          <ng-container *ngFor="let comment of comments; let i = index">
+            <grid [direction]="'column'" [gap]="[4,4]" [padding]="'0.75rem'" class="bg-02 brdr"
+              style="border-radius: 0.25rem;">
+              <grid [direction]="'row'" [gap]="[8,8]" [align]="'center-left'" style="justify-content: space-between;">
+                <span class="f-12 fw-500 f-01">Comentario {{ i + 1 }}</span>
+                <span class="f-11 f-06">{{ comment.CreatedAt | dateFormat: 'dd/MM/yyyy HH:mm' }}</span>
+              </grid>
+              <p class="f-13 f-01 f-lh-16 m-0">{{ comment.Comment }}</p>
+            </grid>
+          </ng-container>
+        </grid>
+      </grid>
+
+    </grid>
+  </ng-template>
+</tui-accordion-item>

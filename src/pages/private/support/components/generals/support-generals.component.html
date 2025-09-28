@@ -1,0 +1,27 @@
+<tui-accordion-item class="container" [open]="!collapsed" [size]="'s'">
+  <span class="f-14 fw-500 f-06 f-lh-12">Generales</span>
+
+  <ng-template tuiAccordionItemContent>
+    <form [formGroup]="facade.formGroup">
+      <grid [direction]="'row'" [gap]="[8,8]">
+        <grid [direction]="'row'" [gap]="[16,16]">
+          <form-input [label]="'Asunto'" [type]="'text'" [placeholder]="'Asunto'" formControlName="title"
+            [required]="true" />
+          <form-input [label]="'Módulo'" [type]="'select'" [placeholder]="'Seleccione un módulo'"
+            formControlName="moduleId" [required]="true"
+            [options]="facade.modulesRepo.supportModules.value?.data ?? []" />
+          <form-input [label]="'Descripción'" [type]="'textarea'" [placeholder]="'Describe el problema'"
+            formControlName="description" [required]="true" />
+        </grid>
+        <grid [padding]="'1rem 0 0 0'">
+          <span class="f-13 f-lh-16 f-06">
+            Al crear el ticket, se generará un número de ticket automáticamente y serás notificado por 
+            <span class="f-info">
+              correo electrónico
+            </span>.
+          </span>
+        </grid>
+      </grid>
+    </form>
+  </ng-template>
+</tui-accordion-item>

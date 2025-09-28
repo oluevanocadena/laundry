@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { SupportQueryDomain } from '@bussiness/support/domains/support.query.domain';
 import { TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
 import { SupportTicket, SupportTicketComment, SupportTicketImage } from '@bussiness/support/interfaces/support.interfaces';
-import { ISupportTicketRepository } from '@bussiness/support/repository/support.measure.repository';
+import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';
 import { PagedRequest, ResponseResult } from '@globals/interfaces/requests.interface';
 import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
@@ -38,6 +38,27 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
       );
       return this.supportTicketsPaged.value;
     }, 'Fetching Support Tickets');
+  }
+
+  uploadImage(
+    file: File,
+    ticketId: string,
+    orgId: string,
+    isTicketEdition: boolean = false,
+  ): Promise<ResponseResult<SupportTicketImage>> {
+    return this.executeWithBusy(async () => {
+      const uploadImageResponse = await SupportQueryDomain.buildUploadImageQuery(
+        this.client,
+        file,
+        ticketId,
+        orgId,
+        isTicketEdition,
+      );
+      return super.handleResponse<SupportTicketImage>(
+        uploadImageResponse.data as unknown as SupportTicketImage,
+        uploadImageResponse.error,
+      );
+    }, 'Uploading Support Ticket Image');
   }
 
   getAll(): Promise<ResponseResult<SupportTicket[]>> {

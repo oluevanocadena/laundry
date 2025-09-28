@@ -4,6 +4,8 @@ import moment from 'moment';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
 
+import { routes } from '@app/routes';
+
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
@@ -15,7 +17,8 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import { SupportPageTableColumns } from '@bussiness/support/constants/support.columns.constant';
 import { SupportDraftFacade } from '@bussiness/support/controllers/support.draft.facade';
 import { SupportTicket } from '@bussiness/support/interfaces/support.interfaces';
-import { ISupportTicketRepository } from '@bussiness/support/repository/support.measure.repository';
+import { ISupportModulesRepository } from '@bussiness/support/repository/support.modules.repository';
+import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 @Injectable({
@@ -50,6 +53,7 @@ export class SupportMonitorFacade extends FacadeBase {
 
   constructor(
     public repo: ISupportTicketRepository,
+    public modulesRepo: ISupportModulesRepository,
     public draftFacade: SupportDraftFacade,
     public router: Router,
     public sessionService: SessionService,
@@ -127,7 +131,7 @@ export class SupportMonitorFacade extends FacadeBase {
 
   onNewTicket() {
     this.draftFacade.clearState();
-    // this.router.navigate([routes.SupportDraft]);
+    this.router.navigate([routes.SupportDraft]);
     console.log('New ticket');
   }
 

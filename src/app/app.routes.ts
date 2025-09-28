@@ -22,6 +22,7 @@ import { RegisterConfirmComponent } from '@pages/private/session/register-confir
 import { RegisterPageComponent } from '@pages/private/session/register/register-page.component';
 import { SettingsPageComponent } from '@pages/private/settings/settings-page.component';
 import { SetupPageComponent } from '@pages/private/setup/setup.component';
+import { SupportDraftPageComponent } from '@pages/private/support/draft/support-draft-page.component';
 import { SupportPageComponent } from '@pages/private/support/support.component';
 import { UsersDraftComponent } from '@pages/private/users/draft/users-draft.component';
 import { UsersPageComponent } from '@pages/private/users/users.component';
@@ -103,10 +104,12 @@ export const routes: Routes = [
     component: SettingsPageComponent,
   },
 
+  { path: 'support', component: SupportPageComponent },
+  { path: 'support/draft', component: SupportDraftPageComponent },
+
   { path: 'register', component: RegisterPageComponent },
   { path: 'register-confirmation', component: RegisterConfirmComponent },
   { path: 'invitation-confirmation', component: InvitationConfirmComponent },
-  { path: 'support', component: SupportPageComponent },
 
   { path: 'login', component: LoginPageComponent },
   { path: 'pricing', component: PricingComponent },

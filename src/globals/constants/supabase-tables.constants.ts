@@ -26,11 +26,13 @@ export const SupabaseTables = {
   SupportTicketStatuses: 'SupportTicketStatuses',
   SupportTicketImages: 'SupportTicketImages',
   SupportTicketComments: 'SupportTicketComments',
+  SupportTicketModules: 'SupportTicketModules',
   UnitMeasures: 'UnitMeasures',
 };
 
 export const SupabaseBuckets = {
   Products: 'products',
+  SupportTicketImages: 'support',
 };
 
 export const UITableConstants = {

@@ -3,9 +3,9 @@ import moment from 'moment';
 
 import { SessionService } from '@bussiness/session/services/session.service';
 import { TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
-import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
-import { PagedRequest } from '@globals/interfaces/requests.interface';
 import { SupportTicket, SupportTicketComment, SupportTicketImage } from '@bussiness/support/interfaces/support.interfaces';
+import { SupabaseBuckets, SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
 
 export class SupportQueryDomain {
   static buildQuery(request: PagedRequest, client: SupabaseClient, sessionService: SessionService) {
@@ -85,6 +85,36 @@ export class SupportQueryDomain {
     }
 
     return query;
+  }
+
+  static buildUploadImageQuery(
+    client: SupabaseClient,
+    file: File,
+    ticketId: string,
+    organizationId: string,
+    isTicketEdition: boolean = false,
+  ) {
+    return client.storage
+      .from(SupabaseBuckets.SupportTicketImages)
+      .upload(`${organizationId}/${ticketId}/${file.name}`, file)
+      .then(async (response) => {
+        if (response.error) return response;
+
+        const uploadBucketResponse = client.storage
+          .from(SupabaseBuckets.SupportTicketImages)
+          .getPublicUrl(`${organizationId}/${ticketId}/${file.name}`);
+        if (isTicketEdition) {
+          //Insert directamente si es edición de ticket
+          const { data, error } = await client.from(SupabaseTables.SupportTicketImages).insert({
+            SupportTicketId: ticketId,
+            OrganizationId: organizationId,
+            ImageUrl: uploadBucketResponse.data.publicUrl,
+            UploadedAt: new Date(),
+          });
+          return { data, error };
+        }
+        return { data: { ImageUrl: uploadBucketResponse.data.publicUrl }, error: null };
+      });
   }
 
   static buildDeleteTicketsQuery(client: SupabaseClient, ids: string[]) {

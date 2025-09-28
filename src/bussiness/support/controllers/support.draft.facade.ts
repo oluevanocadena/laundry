@@ -11,11 +11,17 @@ import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 
 import { SessionService } from '@bussiness/session/services/session.service';
-import { TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
-import { SupportTicket, SupportTicketComment, SupportTicketImage } from '@bussiness/support/interfaces/support.interfaces';
-import { ISupportTicketRepository } from '@bussiness/support/repository/support.measure.repository';
-import { SupportTicketPriority } from '@bussiness/support/types/support.types';
 import { SupportTicketEmpty } from '@bussiness/support/constants/support.constants';
+import { SupportTicketPriorityEnum, TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
+import {
+  SupportTicket,
+  SupportTicketComment,
+  SupportTicketImage,
+  SupportTicketModule,
+} from '@bussiness/support/interfaces/support.interfaces';
+import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';
+import moment from 'moment';
+import { ISupportModulesRepository } from '../repository/support.modules.repository';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +29,8 @@ import { SupportTicketEmpty } from '@bussiness/support/constants/support.constan
 export class SupportDraftFacade extends FacadeBase {
   //Flag Management
   edition: boolean = false;
-  showAddCommentModal: boolean = false;
-  showAddImageModal: boolean = false;
-  showAssignModal: boolean = false;
   showCloseTicketModal: boolean = false;
   showConfirmDelete: boolean = false;
-  showDeleteImageModal: boolean = false;
   showResolveTicketModal: boolean = false;
 
   ticket = new SubjectProp<SupportTicket>(UtilsDomain.clone(SupportTicketEmpty));
@@ -42,9 +44,7 @@ export class SupportDraftFacade extends FacadeBase {
   formGroup = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(5)]),
     description: new FormControl('', [Validators.required, Validators.minLength(10)]),
-    priority: new FormControl<SupportTicketPriority>('Medium', [Validators.required]),
-    statusId: new FormControl<TicketStatusIdEnum>(TicketStatusIdEnum.Open, [Validators.required]),
-    assignedTo: new FormControl(''),
+    moduleId: new FormControl('', [Validators.required]),
   });
 
   formComment = new FormGroup({
@@ -58,14 +58,13 @@ export class SupportDraftFacade extends FacadeBase {
   // Form properties
   title = new FormProp<string>(this.formGroup, 'title', '');
   description = new FormProp<string>(this.formGroup, 'description', '');
-  priority = new FormProp<SupportTicketPriority>(this.formGroup, 'priority', 'Medium');
-  statusId = new FormProp<TicketStatusIdEnum>(this.formGroup, 'statusId', TicketStatusIdEnum.Open);
-  assignedTo = new FormProp<string>(this.formGroup, 'assignedTo', '');
   comment = new FormProp<string>(this.formComment, 'comment', '');
   imageUrl = new FormProp<string>(this.formImage, 'imageUrl', '');
+  moduleId = new FormProp<string>(this.formGroup, 'moduleId', '');
 
   constructor(
     public repo: ISupportTicketRepository,
+    public modulesRepo: ISupportModulesRepository,
     public nzMessageService: NzMessageService,
     public router: Router,
     public sessionService: SessionService,
@@ -75,6 +74,7 @@ export class SupportDraftFacade extends FacadeBase {
 
   override initialize() {
     super.initialize();
+    this.fetchModules();
     if (this.selectedTicket.value) {
       this.ticket.value = this.selectedTicket.value;
       this.edition = true;
@@ -82,9 +82,6 @@ export class SupportDraftFacade extends FacadeBase {
     } else {
       this.clearState();
     }
-    this.ticket.value!.CreatedBy = this.ticket.value!.CreatedBy ?? this.sessionService.sessionInfo.value?.Account.FullName;
-    this.ticket.value!.AccountId = this.ticket.value!.AccountId ?? this.sessionService.sessionInfo.value?.Account.id;
-    this.ticket.value!.OrganizationId = this.ticket.value!.OrganizationId ?? this.sessionService.organizationId;
   }
 
   bindEvents() {
@@ -97,7 +94,11 @@ export class SupportDraftFacade extends FacadeBase {
   }
 
   clearState() {
+    const account = this.sessionService.sessionInfo.value?.Account;
     this.ticket.value = UtilsDomain.clone(SupportTicketEmpty);
+    this.ticket.value!.CreatedBy = this.ticket.value!.CreatedBy ?? account?.FullName;
+    this.ticket.value!.AccountId = this.ticket.value!.AccountId ?? account?.id;
+    this.ticket.value!.OrganizationId = this.ticket.value!.OrganizationId ?? account?.OrganizationId;
     this.ticketComments.value = [];
     this.ticketImages.value = [];
     this.newComment.value = null;
@@ -107,12 +108,8 @@ export class SupportDraftFacade extends FacadeBase {
     this.formComment.reset();
     this.formImage.reset();
     this.edition = false;
-    this.showAddCommentModal = false;
-    this.showAddImageModal = false;
-    this.showAssignModal = false;
     this.showCloseTicketModal = false;
     this.showConfirmDelete = false;
-    this.showDeleteImageModal = false;
     this.showResolveTicketModal = false;
   }
 
@@ -126,10 +123,10 @@ export class SupportDraftFacade extends FacadeBase {
       ...this.ticket.value!,
       Title: this.title.value!,
       Description: this.description.value!,
-      Priority: this.priority.value!,
-      StatusId: this.statusId.value!,
-      AssignedTo: this.assignedTo.value || null,
-      updated_At: new Date(),
+      Priority: SupportTicketPriorityEnum.Medium,
+      StatusId: TicketStatusIdEnum.Open,
+      AssignedTo: null,
+      updated_At: moment().toISOString(),
     };
 
     const ticketImages: SupportTicketImage[] = this.ticketImages.value || [];
@@ -153,6 +150,10 @@ export class SupportDraftFacade extends FacadeBase {
   /**
    * API Methods
    */
+
+  fetchModules() {
+    this.modulesRepo.getAll().then(() => {});
+  }
 
   updateTicketStatus(status: TicketStatusIdEnum) {
     if (this.ticket.value?.id) {
@@ -187,7 +188,6 @@ export class SupportDraftFacade extends FacadeBase {
       if (response.success) {
         this.ticketComments.value = [...(this.ticketComments.value || []), response.data!];
         this.formComment.reset();
-        this.showAddCommentModal = false;
         this.nzMessageService.success('Comentario agregado correctamente');
       } else {
         this.nzMessageService.error('Error al agregar el comentario');
@@ -212,15 +212,26 @@ export class SupportDraftFacade extends FacadeBase {
     this.formGroup.patchValue({
       title: ticket.Title,
       description: ticket.Description,
-      priority: ticket.Priority,
-      statusId: ticket.StatusId,
-      assignedTo: ticket.AssignedTo || '',
+    });
+  }
+
+  onSelectedImage(file: File) {
+    this.repo.uploadImage(file, this.ticket.value!.id, this.sessionService.organizationId, this.edition).then((response) => {
+      if (response.success) {
+        if (this.edition && response.data && response.data.id) {
+          this.ticketImages.value = [...(this.ticketImages.value || []), response.data];
+        }
+      }
     });
   }
 
   /**
    * UI Events
    */
+
+  goBack() {
+    this.router.navigate([routes.Support]);
+  }
 
   onAddComment() {
     this.addComment();
@@ -243,13 +254,11 @@ export class SupportDraftFacade extends FacadeBase {
 
     this.ticketImages.value = [...(this.ticketImages.value || []), image];
     this.formImage.reset();
-    this.showAddImageModal = false;
     this.nzMessageService.success('Imagen agregada correctamente');
   }
 
   onRemoveImage(image: SupportTicketImage) {
     this.ticketImages.value = this.ticketImages.value?.filter((img) => img.id !== image.id) || [];
-    this.nzMessageService.success('Imagen eliminada correctamente');
   }
 
   onResolveTicket() {
@@ -268,9 +277,7 @@ export class SupportDraftFacade extends FacadeBase {
   }
 
   onAssignTicket(assignedTo: string) {
-    this.assignedTo.value = assignedTo;
     this.ticket.value!.AssignedTo = assignedTo;
-    this.showAssignModal = false;
     this.nzMessageService.success('Ticket asignado correctamente');
   }
 
@@ -278,29 +285,12 @@ export class SupportDraftFacade extends FacadeBase {
    * Modal Events
    */
 
-  openAddCommentModal() {
-    this.showAddCommentModal = true;
-  }
-
-  openAddImageModal() {
-    this.showAddImageModal = true;
-  }
-
-  openAssignModal() {
-    this.showAssignModal = true;
-  }
-
   openCloseTicketModal() {
     this.showCloseTicketModal = true;
   }
 
   openResolveTicketModal() {
     this.showResolveTicketModal = true;
-  }
-
-  openDeleteImageModal(image: SupportTicketImage) {
-    this.newImage.value = image;
-    this.showDeleteImageModal = true;
   }
 
   openConfirmDelete() {
@@ -329,37 +319,5 @@ export class SupportDraftFacade extends FacadeBase {
 
   get canEdit(): boolean {
     return !this.isClosed && !this.isCancelled;
-  }
-
-  get statusLabel(): string {
-    const status = this.ticket.value?.StatusId;
-    switch (status) {
-      case TicketStatusIdEnum.Open:
-        return 'Abierto';
-      case TicketStatusIdEnum.InProgress:
-        return 'En Progreso';
-      case TicketStatusIdEnum.Resolved:
-        return 'Resuelto';
-      case TicketStatusIdEnum.Closed:
-        return 'Cerrado';
-      case TicketStatusIdEnum.Cancelled:
-        return 'Cancelado';
-      default:
-        return 'Desconocido';
-    }
-  }
-
-  get priorityLabel(): string {
-    const priority = this.ticket.value?.Priority;
-    switch (priority) {
-      case 'Low':
-        return 'Baja';
-      case 'Medium':
-        return 'Media';
-      case 'High':
-        return 'Alta';
-      default:
-        return 'Media';
-    }
   }
 }

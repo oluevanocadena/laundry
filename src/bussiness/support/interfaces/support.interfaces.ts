@@ -1,19 +1,19 @@
-import { TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
-import { SupportTicketPriority } from '@bussiness/support/types/support.types';
+import { SupportTicketPriorityEnum, TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
 
 export interface SupportTicket {
   id: string;
+  TicketNumber?: string;
   AccountId: string;
   CreatedBy?: string | null;
   Title: string;
   Description: string;
-  StatusId: TicketStatusIdEnum;
-  Priority: SupportTicketPriority;
+  StatusId: TicketStatusIdEnum | null;
+  Priority: SupportTicketPriorityEnum | null;
   AssignedTo?: string | null;
-  created_At: Date;
-  updated_At: Date;
-  resolved_At?: Date | null;
-  closed_At?: Date | null;
+  created_At: string;
+  updated_At: string;
+  resolved_At?: string | null;
+  closed_At?: string | null;
   Deleted: boolean;
   OrganizationId: string;
 }
@@ -40,4 +40,12 @@ export interface SupportTicketStatus {
   id: TicketStatusIdEnum; // Relación con el enum
   Name: string; // Nombre del estado (ej: "Open")
   Description: string; // Descripción (ej: "Ticket creado por el cliente y en espera de ser atendido")
+}
+
+export interface SupportTicketModule {
+  id: number; // bigserial (autoincremental)
+  Name: string; // varchar(100), requerido
+  Code: string; // varchar(50), requerido, único
+  Description?: string; // varchar(255), opcional
+  Deleted: boolean; // boolean, por defecto false
 }

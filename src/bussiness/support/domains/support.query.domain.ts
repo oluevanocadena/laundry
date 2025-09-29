@@ -39,13 +39,13 @@ export class SupportQueryDomain {
       query = query.or([`Title.ilike.%${searchTerm}%`, `Description.ilike.%${searchTerm}%`].join(','));
     }
 
-    if (request.dateFrom) {
-      query = query.gte('created_At', moment(request.dateFrom).startOf('day').toISOString());
-    }
+    // if (request.dateFrom) {
+    //   query = query.gte('created_At', moment(request.dateFrom).startOf('day').toISOString());
+    // }
 
-    if (request.dateTo) {
-      query = query.lt('created_At', moment(request.dateTo).add(1, 'day').startOf('day').toISOString());
-    }
+    // if (request.dateTo) {
+    //   query = query.lt('created_At', moment(request.dateTo).add(1, 'day').startOf('day').toISOString());
+    // }
 
     // Aplicar paginación
     query = query.range(from, to);

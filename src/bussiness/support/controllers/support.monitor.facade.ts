@@ -30,7 +30,7 @@ export class SupportMonitorFacade extends FacadeBase {
   showDisableTicketsModal = false;
 
   showType: UITypeFilterShow = {
-    calendar: true,
+    calendar: false,
     columns: false,
     search: true,
     sort: true,
@@ -42,7 +42,7 @@ export class SupportMonitorFacade extends FacadeBase {
     dateTo: moment().toDate(),
     select: null,
     search: null,
-    sortBy: null,
+    sortBy: 'created_At',
     sortOrder: 'asc',
   });
   columns: UITableColumn[] = SupportPageTableColumns;

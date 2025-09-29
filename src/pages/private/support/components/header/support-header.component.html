@@ -8,7 +8,7 @@
           </button>
           <grid [gap]="[4,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr': '1fr max-content'">
             <span class="fw-600 f-01 f-18">
-              {{facade.edition ? 'Ticket |' + ticketNumber : 'Nuevo ticket'}}
+              {{facade.edition ? 'Ticket |' : 'Nuevo ticket'}}
               <label *ngIf="!busy && ticketNumber" [ngClass]="{'skeleton': busy}">
                 {{ticketNumber }}
               </label>

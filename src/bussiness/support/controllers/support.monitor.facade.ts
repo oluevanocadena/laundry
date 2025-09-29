@@ -125,8 +125,7 @@ export class SupportMonitorFacade extends FacadeBase {
 
   onTicketClick(ticket: SupportTicket) {
     this.draftFacade.selectedTicket.value = ticket;
-    // this.router.navigate([routes.SupportDraft]);
-    console.log('Ticket clicked:', ticket);
+    this.router.navigate([routes.SupportDraft]);
   }
 
   onNewTicket() {

@@ -1,7 +1,38 @@
 import { TuiAppearanceOptions } from '@taiga-ui/core';
-import { SupportTicketPriorityEnum, TicketStatusIdEnum } from '../enums/support.enums';
+import moment from 'moment';
+
+import { SupportTicketPriorityEnum, TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
+import { SupportTicket } from '@bussiness/support/interfaces/support.interfaces';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 export class SupportDomain {
+  static buildTicket(ticket: SupportTicket, sessionService: SessionService): SupportTicket {
+    console.log('👉🏽 ticket', ticket);
+    console.log('👉🏽 sessionService', sessionService.sessionInfo.value);
+    const ticketToSave: SupportTicket = {
+      AccountId: ticket.AccountId || sessionService.sessionInfo.value?.Account.id || '',
+      AssignedTo: ticket.AssignedTo ?? null,
+      closed_At: ticket.closed_At ?? null,
+      created_At: ticket.created_At ?? moment().toISOString(),
+      CreatedBy: ticket.CreatedBy || sessionService.sessionInfo.value?.Account.FullName || '',
+      Deleted: ticket.Deleted ?? false,
+      Description: ticket.Description,
+      OrganizationId: ticket.OrganizationId || sessionService.organizationId,
+      Priority: ticket.Priority ?? SupportTicketPriorityEnum.Medium,
+      resolved_At: ticket.resolved_At ?? null,
+      StatusId: ticket.StatusId ?? TicketStatusIdEnum.Open,
+      SupportTicketModuleId: ticket.SupportTicketModuleId,
+      Title: ticket.Title,
+      updated_At: moment().toISOString(),
+      id: ticket.id ?? undefined,
+    };
+    if (!ticketToSave.id) {
+      delete ticketToSave.id;
+    }
+    console.log('👉🏽 ticketToSave', ticketToSave);
+    return ticketToSave;
+  }
+
   static statusName(statusId: TicketStatusIdEnum | null): string {
     if (!statusId) return 'Desconocido';
     switch (statusId) {

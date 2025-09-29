@@ -1,0 +1,20 @@
+.ant-comment-inner {
+    padding: 0 !important;
+
+    * .ant-comment-content-author-name {
+        font-size: 14px !important;
+        color: var(--text-04) !important;
+        padding: 0 0.35rem 0 0 !important;
+    }
+
+    * .ant-comment-content-author-time {
+        color: var(--text-06) !important;
+        padding: 0 !important;
+        font-size: 12px !important;
+    }
+
+    * .ant-comment-content-detail,
+    * .ant-comment-content-detail > * {
+        color: var(--text-06) !important;
+    }
+}

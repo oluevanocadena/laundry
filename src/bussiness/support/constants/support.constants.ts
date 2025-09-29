@@ -18,4 +18,5 @@ export const SupportTicketEmpty: SupportTicket = {
   closed_At: null,
   Deleted: false,
   OrganizationId: '',
+  SupportTicketModuleId: null,
 };

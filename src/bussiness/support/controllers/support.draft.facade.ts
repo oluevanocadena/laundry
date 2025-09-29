@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import moment from 'moment';
 
 import { routes } from '@app/routes';
 import { FacadeBase } from '@globals/types/facade.base';
@@ -12,16 +13,11 @@ import { UtilsDomain } from '@globals/utils/utils.domain';
 
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SupportTicketEmpty } from '@bussiness/support/constants/support.constants';
-import { SupportTicketPriorityEnum, TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
-import {
-  SupportTicket,
-  SupportTicketComment,
-  SupportTicketImage,
-  SupportTicketModule,
-} from '@bussiness/support/interfaces/support.interfaces';
+import { SupportDomain } from '@bussiness/support/domains/support.domains';
+import { TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
+import { SupportTicket, SupportTicketComment, SupportTicketImage } from '@bussiness/support/interfaces/support.interfaces';
+import { ISupportModulesRepository } from '@bussiness/support/repository/support.modules.repository';
 import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';
-import moment from 'moment';
-import { ISupportModulesRepository } from '../repository/support.modules.repository';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +40,7 @@ export class SupportDraftFacade extends FacadeBase {
   formGroup = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(5)]),
     description: new FormControl('', [Validators.required, Validators.minLength(10)]),
-    moduleId: new FormControl('', [Validators.required]),
+    moduleId: new FormControl<number | null>(null, [Validators.required]),
   });
 
   formComment = new FormGroup({
@@ -60,7 +56,7 @@ export class SupportDraftFacade extends FacadeBase {
   description = new FormProp<string>(this.formGroup, 'description', '');
   comment = new FormProp<string>(this.formComment, 'comment', '');
   imageUrl = new FormProp<string>(this.formImage, 'imageUrl', '');
-  moduleId = new FormProp<string>(this.formGroup, 'moduleId', '');
+  moduleId = new FormProp<number | null>(this.formGroup, 'moduleId', null);
 
   constructor(
     public repo: ISupportTicketRepository,
@@ -88,17 +84,14 @@ export class SupportDraftFacade extends FacadeBase {
     // Eventos para cambios en el ticket
     this.ticket.onChange((ticket) => {
       if (ticket) {
-        this.updateFormFromTicket(ticket);
+        this.fillFormTicket(ticket);
       }
     });
   }
 
   clearState() {
-    const account = this.sessionService.sessionInfo.value?.Account;
     this.ticket.value = UtilsDomain.clone(SupportTicketEmpty);
-    this.ticket.value!.CreatedBy = this.ticket.value!.CreatedBy ?? account?.FullName;
-    this.ticket.value!.AccountId = this.ticket.value!.AccountId ?? account?.id;
-    this.ticket.value!.OrganizationId = this.ticket.value!.OrganizationId ?? account?.OrganizationId;
+    this.fillFormTicket(this.ticket.value!);
     this.ticketComments.value = [];
     this.ticketImages.value = [];
     this.newComment.value = null;
@@ -114,23 +107,16 @@ export class SupportDraftFacade extends FacadeBase {
   }
 
   submitForm() {
-    if (!this.formGroup.valid) {
-      this.nzMessageService.error('Por favor complete todos los campos requeridos');
-      return;
-    }
-
-    const ticket: SupportTicket = {
+    const ticketToSave: SupportTicket = {
       ...this.ticket.value!,
       Title: this.title.value!,
       Description: this.description.value!,
-      Priority: SupportTicketPriorityEnum.Medium,
-      StatusId: TicketStatusIdEnum.Open,
-      AssignedTo: null,
-      updated_At: moment().toISOString(),
+      SupportTicketModuleId: this.moduleId.value,
     };
-
-    const ticketImages: SupportTicketImage[] = this.ticketImages.value || [];
-
+    const ticket = SupportDomain.buildTicket(ticketToSave, this.sessionService);
+    const ticketImages = this.ticketImages.value || [];
+    console.log('👉🏽 ticket', ticket);
+    console.log('👉🏽 ticketImages', ticketImages);
     this.repo.save(ticket, ticketImages).then((response) => {
       if (response.success === false) {
         this.nzMessageService.error('Ocurrió un error al guardar el ticket, intente nuevamente.');
@@ -174,25 +160,24 @@ export class SupportDraftFacade extends FacadeBase {
       this.nzMessageService.error('Por favor ingrese un comentario válido');
       return;
     }
-
     const comment: SupportTicketComment = {
-      id: '',
-      SupportTicketId: this.ticket.value!.id,
+      SupportTicketId: this.ticket.value!.id!,
       OrganizationId: this.sessionService.organizationId,
       AuthorId: this.sessionService.sessionInfo.value?.Account.id || '',
       Comment: this.comment.value!,
-      CreatedAt: new Date(),
+      CreatedAt: moment().toISOString(),
     };
-
-    this.repo.addComment(comment, this.ticket.value!.id).then((response) => {
-      if (response.success) {
-        this.ticketComments.value = [...(this.ticketComments.value || []), response.data!];
-        this.formComment.reset();
-        this.nzMessageService.success('Comentario agregado correctamente');
-      } else {
-        this.nzMessageService.error('Error al agregar el comentario');
-      }
-    });
+    if (this.ticket.value?.id) {
+      this.repo.addComment(comment, this.ticket.value.id).then((response) => {
+        if (response.success) {
+          this.ticketComments.value = [...(this.ticketComments.value || []), response.data!];
+          this.formComment.reset();
+          this.nzMessageService.success('Comentario agregado correctamente');
+        } else {
+          this.nzMessageService.error('Error al agregar el comentario');
+        }
+      });
+    }
   }
 
   /**
@@ -203,24 +188,27 @@ export class SupportDraftFacade extends FacadeBase {
     const ticket = this.ticket.value;
     if (!ticket) return;
 
-    this.updateFormFromTicket(ticket);
+    this.fillFormTicket(ticket);
     this.ticketComments.value = (ticket as any).SupportTicketComments || [];
     this.ticketImages.value = (ticket as any).SupportTicketImages || [];
   }
 
-  updateFormFromTicket(ticket: SupportTicket) {
+  fillFormTicket(ticket: SupportTicket) {
     this.formGroup.patchValue({
       title: ticket.Title,
       description: ticket.Description,
+      moduleId: ticket.SupportTicketModuleId,
     });
   }
 
   onSelectedImage(file: File) {
-    this.repo.uploadImage(file, this.ticket.value!.id, this.sessionService.organizationId, this.edition).then((response) => {
-      if (response.success) {
-        if (this.edition && response.data && response.data.id) {
-          this.ticketImages.value = [...(this.ticketImages.value || []), response.data];
-        }
+    this.repo.uploadImage(file, this.ticket.value!.id!, this.sessionService.organizationId, this.edition).then((response) => {
+      console.log('👉🏽 response', response);
+      if (response.success && response.data) {
+        this.ticketImages.value = [...(this.ticketImages.value || []), response.data];
+        this.nzMessageService.success('Imagen cargada correctamente');
+      } else {
+        this.nzMessageService.error('Ocurrió un error al agregar la imagen, intente nuevamente.');
       }
     });
   }
@@ -237,28 +225,17 @@ export class SupportDraftFacade extends FacadeBase {
     this.addComment();
   }
 
-  onAddImage() {
-    if (!this.formImage.valid) {
-      this.nzMessageService.error('Por favor ingrese una URL de imagen válida');
-      return;
-    }
-
-    const image: SupportTicketImage = {
-      id: '',
-      SupportTicketId: this.ticket.value!.id,
-      OrganizationId: this.sessionService.organizationId,
-      ImageUrl: this.imageUrl.value!,
-      UploadedAt: new Date(),
-      UploadedBy: this.sessionService.sessionInfo.value?.Account.id || null,
-    };
-
-    this.ticketImages.value = [...(this.ticketImages.value || []), image];
-    this.formImage.reset();
-    this.nzMessageService.success('Imagen agregada correctamente');
-  }
-
   onRemoveImage(image: SupportTicketImage) {
-    this.ticketImages.value = this.ticketImages.value?.filter((img) => img.id !== image.id) || [];
+    if (this.edition) {
+      this.repo.deleteImage(image.id!).then((response) => {
+        if (response.success) {
+          this.ticketImages.value = this.ticketImages.value?.filter((img) => img.id !== image.id) || [];
+          this.nzMessageService.success('Imagen eliminada correctamente');
+        } else {
+          this.nzMessageService.error('Ocurrió un error al eliminar la imagen, intente nuevamente.');
+        }
+      });
+    }
   }
 
   onResolveTicket() {

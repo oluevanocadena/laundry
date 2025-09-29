@@ -6,6 +6,7 @@ import { TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
 import { SupportTicket, SupportTicketComment, SupportTicketImage } from '@bussiness/support/interfaces/support.interfaces';
 import { SupabaseBuckets, SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { PagedRequest } from '@globals/interfaces/requests.interface';
+import { UtilsDomain } from '@globals/utils/utils.domain';
 
 export class SupportQueryDomain {
   static buildQuery(request: PagedRequest, client: SupabaseClient, sessionService: SessionService) {
@@ -17,10 +18,9 @@ export class SupportQueryDomain {
       .select(
         `*, 
           SupportTicketImages: ${SupabaseTables.SupportTicketImages}(*),
-          SupportTicketComments: ${SupabaseTables.SupportTicketComments}(*),
+          SupportTicketComments: ${SupabaseTables.SupportTicketComments}(*, Author:${SupabaseTables.Accounts}!SupportTicketComments_AuthorId_fkey(FullName)),
           Account: ${SupabaseTables.Accounts}!SupportTickets_AccountId_fkey(*),
-          AssignedToAccount: ${SupabaseTables.Accounts}!SupportTickets_AssignedTo_fkey(*),
-          CreatedByAccount: ${SupabaseTables.Accounts}!SupportTickets_CreatedBy_fkey(*),
+          AssignedToAccount: ${SupabaseTables.Accounts}!SupportTickets_AssignedTo_fkey(*), 
           Organization: ${SupabaseTables.Organizations}(*),
           SupportTicketStatus: ${SupabaseTables.SupportTicketStatuses}(*)`,
       )
@@ -91,30 +91,44 @@ export class SupportQueryDomain {
     client: SupabaseClient,
     file: File,
     ticketId: string,
-    organizationId: string,
+    sessionService: SessionService,
     isTicketEdition: boolean = false,
-  ) {
+  ): Promise<{ data: SupportTicketImage | null; error: any }> {
+    const uniqueFileName = `${UtilsDomain.guid()}.${file.name.split('.').pop()}`;
+    const path = `${sessionService.organizationId}/${uniqueFileName}`;
     return client.storage
       .from(SupabaseBuckets.SupportTicketImages)
-      .upload(`${organizationId}/${ticketId}/${file.name}`, file)
+      .upload(path, file)
       .then(async (response) => {
-        if (response.error) return response;
-
-        const uploadBucketResponse = client.storage
-          .from(SupabaseBuckets.SupportTicketImages)
-          .getPublicUrl(`${organizationId}/${ticketId}/${file.name}`);
-        if (isTicketEdition) {
-          //Insert directamente si es edición de ticket
-          const { data, error } = await client.from(SupabaseTables.SupportTicketImages).insert({
-            SupportTicketId: ticketId,
-            OrganizationId: organizationId,
-            ImageUrl: uploadBucketResponse.data.publicUrl,
-            UploadedAt: new Date(),
-          });
-          return { data, error };
+        if (response.error) {
+          throw response.error;
         }
-        return { data: { ImageUrl: uploadBucketResponse.data.publicUrl }, error: null };
+
+        const uploadBucketResponse = client.storage.from(SupabaseBuckets.SupportTicketImages).getPublicUrl(path);
+
+        const imageData: SupportTicketImage = {
+          ImageUrl: uploadBucketResponse.data.publicUrl,
+          OrganizationId: sessionService.organizationId,
+          SupportTicketId: ticketId,
+          UploadedAt: moment().toISOString(),
+          UploadedBy: sessionService.accountId,
+        };
+
+        //Insert directamente si es edición de ticket
+        if (isTicketEdition && uploadBucketResponse.data.publicUrl) {
+          const { data, error } = await client.from(SupabaseTables.SupportTicketImages).insert(imageData);
+          if (error) throw error;
+        }
+
+        return {
+          data: imageData,
+          error: null,
+        };
       });
+  }
+
+  static buildDeleteTicketImageQuery(client: SupabaseClient, id: string) {
+    return client.from(SupabaseTables.SupportTicketImages).delete().eq('id', id).single();
   }
 
   static buildDeleteTicketsQuery(client: SupabaseClient, ids: string[]) {

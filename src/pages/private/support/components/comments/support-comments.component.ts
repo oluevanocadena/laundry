@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SupportDraftFacade } from '@bussiness/support/controllers/support.draft.facade';
 import { SupportTicketComment } from '@bussiness/support/interfaces/support.interfaces';
+import { Account } from '@bussiness/users/interfaces/users.interfaces';
+import moment from 'moment';
 
 @Component({
   selector: 'support-comments',
@@ -10,6 +12,14 @@ import { SupportTicketComment } from '@bussiness/support/interfaces/support.inte
 })
 export class SupportCommentsComponent {
   constructor(public facade: SupportDraftFacade) {}
+
+  getUserLetter(account: Account): string {
+    return account?.FullName?.substring(0, 2)?.toUpperCase() || 'U';
+  }
+
+  getCreatedAt(createdAt: string): string {
+    return moment(createdAt).fromNow();
+  }
 
   /**
    * Getters

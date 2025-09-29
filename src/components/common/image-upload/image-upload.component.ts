@@ -12,6 +12,8 @@ export class ImageUploadComponent implements OnInit {
   @Input() maxSizeMb: number = 5; // 5MB
   @Input() imageUrl: string | null = null;
   @Input() avoidDisplay: boolean = false;
+  @Input() disableDelete: boolean = false;
+  @Input() busy: boolean = false;
 
   @Output() onSelected = new EventEmitter<File>();
   @Output() onDelete = new EventEmitter<string>();
@@ -84,6 +86,7 @@ export class ImageUploadComponent implements OnInit {
       return;
     }
     this.file = file;
+    console.log('👉🏽 file', file);
     this.onSelected.emit(file);
   }
 

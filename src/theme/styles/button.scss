@@ -48,6 +48,12 @@ button {
     &[icon]:not([flex]) {
         border-radius: 8px;
         padding: 0.425rem 0.5rem 0.25rem !important;
+
+        &[xsmall] {
+            padding: 0.15rem 0.2rem 0.12rem !important;
+            font-size: 12px;
+            height: 24px;
+        }
     }
 
     &[icon-google]:not([flex]) {

@@ -11,12 +11,6 @@ import { SupportTicketImage } from '@bussiness/support/interfaces/support.interf
 export class SupportMediaComponent {
   constructor(public facade: SupportDraftFacade) {}
 
-  addImage() {
-    if (this.facade.formImage.valid) {
-      this.facade.onAddImage();
-    }
-  }
-
   removeImage(image: any) {
     this.facade.onRemoveImage(image);
   }

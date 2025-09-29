@@ -11,13 +11,14 @@
             </span>
           </grid>
           <grid [direction]="'column'" [align]="'center-left'" [gap]="[8,8]">
-            <ng-container *ngFor="let url of images">
-              <image-upload [accept]="'image/jpeg,image/png'" [maxSizeMb]="5" [imageUrl]="url.ImageUrl"
-                (onSelected)="facade.onSelectedImage($event)" (onDelete)="facade.onRemoveImage(url)" />
+            <ng-container *ngFor="let image of images">
+              <image-upload [accept]="'image/jpeg,image/png'" [maxSizeMb]="5" [imageUrl]="image.ImageUrl"
+                (onDelete)="facade.onRemoveImage(image)" [disableDelete]="facade.edition" />
             </ng-container>
 
             <image-upload *ngIf="(facade.ticketImages.value || []).length < 5" [accept]="'image/jpeg,image/png'"
-              [maxSizeMb]="5" (onSelected)="facade.onSelectedImage($event)" [avoidDisplay]="true" />
+              [maxSizeMb]="5" (onSelected)="facade.onSelectedImage($event)" [avoidDisplay]="true"
+              [busy]="facade.repo.busy.value" />
           </grid>
 
         </grid>

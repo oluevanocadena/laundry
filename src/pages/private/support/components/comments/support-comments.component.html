@@ -12,25 +12,26 @@
           <form-input [type]="'textarea'" [placeholder]="'Escribe una nota'" [size]="'s'" formControlName="comment" />
         </form>
         <grid [direction]="'column'" [align]="'center-right'">
-          <button primary small (click)="facade.addComment()" [disabled]="canAddComment">
+          <button primary small (click)="facade.addComment()" [disabled]="!canAddComment">
             Agregar Comentario
           </button>
         </grid>
       </grid>
 
       <!-- Lista de comentarios -->
-      <grid [direction]="'column'" [gap]="[12,12]" *ngIf="comments && comments.length > 0">
-        <span class="f-13 fw-500 f-01">Historial de comentarios ({{ comments.length }})</span>
+      <grid [direction]="'row'" [gap]="[16,16]" *ngIf="comments && comments.length > 0">
+        <span class="f-13 fw-500 f-06">Historial de comentarios</span>
 
-        <grid [direction]="'column'" [gap]="[8,8]">
+        <grid [direction]="'row'" [gap]="[16,16]">
           <ng-container *ngFor="let comment of comments; let i = index">
-            <grid [direction]="'column'" [gap]="[4,4]" [padding]="'0.75rem'" class="bg-02 brdr"
-              style="border-radius: 0.25rem;">
-              <grid [direction]="'row'" [gap]="[8,8]" [align]="'center-left'" style="justify-content: space-between;">
-                <span class="f-12 fw-500 f-01">Comentario {{ i + 1 }}</span>
-                <span class="f-11 f-06">{{ comment.CreatedAt | dateFormat: 'dd/MM/yyyy HH:mm' }}</span>
-              </grid>
-              <p class="f-13 f-01 f-lh-16 m-0">{{ comment.Comment }}</p>
+            <grid [direction]="'column'" [template]="'max-content 1fr'">
+              <nz-avatar [nzText]="getUserLetter(comment?.Author!)" nzShape="square" [nzGap]="0"
+                class="bg-primary-hsl" />
+              <nz-comment [nzAuthor]="comment.Author?.FullName" [nzDatetime]="getCreatedAt(comment.CreatedAt)">
+                <nz-comment-content>
+                  <span>{{ comment.Comment }}</span>
+                </nz-comment-content>
+              </nz-comment>
             </grid>
           </ng-container>
         </grid>

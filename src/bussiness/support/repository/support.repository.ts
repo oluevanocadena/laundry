@@ -9,6 +9,7 @@ export abstract class ISupportTicketRepository extends IRepository<SupportTicket
 
   abstract addComment(comment: SupportTicketComment, ticketId: string): Promise<ResponseResult<SupportTicketComment>>;
   abstract updateStatus(id: string, status: TicketStatusIdEnum): Promise<ResponseResult<SupportTicket>>;
+  abstract deleteImage(id: string): Promise<ResponseResult<SupportTicketImage>>;
   abstract uploadImage(
     file: File,
     ticketId: string,

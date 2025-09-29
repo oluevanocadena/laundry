@@ -40,6 +40,13 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
     }, 'Fetching Support Tickets');
   }
 
+  deleteImage(id: string): Promise<ResponseResult<SupportTicketImage>> {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await SupportQueryDomain.buildDeleteTicketImageQuery(this.client, id);
+      return super.handleResponse<SupportTicketImage>(data as unknown as SupportTicketImage, error);
+    });
+  }
+
   uploadImage(
     file: File,
     ticketId: string,
@@ -51,7 +58,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
         this.client,
         file,
         ticketId,
-        orgId,
+        this.sessionService,
         isTicketEdition,
       );
       return super.handleResponse<SupportTicketImage>(

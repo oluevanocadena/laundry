@@ -5,7 +5,7 @@
     <grid [gap]="[8,8]" [direction]="'row'" [align]="'center-center'" [width]="'100%'" [height]="'100%'">
         <input #file type="file" class="hidden" (change)="onSelectedImage($event)" [accept]="accept" />
 
-        <grid [gap]="[2,2]" [direction]="'row'" [align]="'center-center'" [width]="'fit-content'">
+        <grid *ngIf="!busy" [gap]="[2,2]" [direction]="'row'" [align]="'center-center'" [width]="'fit-content'">
             <grid [direction]="'column'" [align]="'center-center'">
                 <tui-icon icon="@tui.plus" class="f-18 f-06 f-primary" />
             </grid>
@@ -14,7 +14,11 @@
             </span>
         </grid>
 
-        <button outline xsmall (click)="file.click()">
+        <grid *ngIf="busy" [gap]="[2,2]" [direction]="'row'" [align]="'center-center'" [width]="'100%'">
+            <tui-loader [size]="'m'" />
+        </grid>
+
+        <button outline xsmall (click)="file.click()" [showLoader]="busy">
             <grid [gap]="[2,2]" [direction]="'column'" [align]="'center-center'">
                 Seleccionar
             </grid>
@@ -28,8 +32,8 @@
     <div class="image-container">
         <img [src]="imageBase64" [alt]="'Imagen seleccionada'" [width]="'100%'" [height]="'150px'"
             class="brdr-radius-6 img-cover" />
-    </div>
-    <button flat xsmall icon (click)="delete()" class="button-flotade">
+    </div> 
+    <button flat xsmall icon (click)="delete()" class="button-flotade" *ngIf="!disableDelete">
         <grid [gap]="[2,2]" [direction]="'column'" [align]="'center-center'">
             <tui-icon icon="@tui.x" class="f-18 f-04 f-02" />
         </grid>

@@ -1,23 +1,12 @@
 <layout>
-    <grid [gap]="[0,24]" [direction]="'row'" [height]="'var(--full-vh)'"
-        [template]="'max-content max-content 1fr max-content'">
-        <grid [direction]="'column'" [padding]="'1rem'">
-            <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
-                Configuración
-            </span>
+    <grid [gap]="[0,24]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'250px 1fr'">
+        <grid [direction]="'row'" [gap]="[16,16]" class="baseline brdr-right" [height]="'100%'">
+            <settings-menu />
         </grid>
-        <grid [gap]="[8,8]" [direction]="'column'" [template]="'1fr max-content'" height="100%"
-            class="wrap brdr-top bg-02" padding="0.5rem 1rem">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'">
-                <button outline small flex>
-                    <tui-icon icon="@tui.corner-left-up" class="f-16 f-06" />
-                    Ordenado por fecha de apertura
-                </button>
-                <button outline small flex>
-                    <tui-icon icon="@tui.columns-3" class="f-16 f-06" />
-                    Columnas
-                </button>
-            </grid>
+        <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem'">
+            <span class="f-20 fw-600 f-01 f-lh-13">
+                Configuración de Negocio
+            </span>
         </grid>
     </grid>
 

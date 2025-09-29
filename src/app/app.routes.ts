@@ -100,6 +100,16 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
+    redirectTo: 'settings/general',
+    pathMatch: 'full',
+  },
+  {
+    path: 'settings/general',
+    canActivate: [SessionGuard],
+    component: SettingsPageComponent,
+  },
+  {
+    path: 'settings/point-of-sale',
     canActivate: [SessionGuard],
     component: SettingsPageComponent,
   },

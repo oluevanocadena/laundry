@@ -12,8 +12,9 @@ import { DirectivesModule } from '@directives/directives.module';
 import { PipesModule } from '@pipes/pipes.module';
 
 import { PluginsPageComponent } from '@pages/private/plugins/plugins-page.component';
+import { PluginsMenuComponent } from '@private/plugins/plugins-menu/plugins-menu.component';
 
-const components = [PluginsPageComponent];
+const components = [PluginsPageComponent, PluginsMenuComponent];
 
 @NgModule({
   imports: [

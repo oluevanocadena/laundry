@@ -1,15 +1,15 @@
 <layout>
-    <grid [direction]="'row'" [gap]="[0,16]" class="baseline scroll-v">
-        <grid [direction]="'column'" [template]="'1fr max-content'" [padding]="'1rem 1.5rem'" class="brdr-bottom">
-            <grid [direction]="'row'" [padding]="'0.5rem 0 0 0'">
-
-                <span class="f-12 fw-600 f-07">
-                    Organización | Unidad de negocio
-                </span>
-            </grid>
-            <grid [direction]="'column'" [align]="'center-right'">
-                <status-badge [appearance]="'success'" [label]="'Activo'"></status-badge>
-            </grid>
+    <grid [gap]="[0,24]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'250px 1fr'">
+        <grid [direction]="'row'" [gap]="[16,16]" class="baseline brdr-right" [height]="'100%'">
+            <plugins-menu />
+        </grid>
+        <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem'">
+            <span class="f-20 fw-600 f-01 f-lh-13">
+                Integraciones
+            </span>
         </grid>
     </grid>
+
+
+
 </layout>

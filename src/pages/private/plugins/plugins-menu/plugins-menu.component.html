@@ -1,0 +1,33 @@
+<grid [direction]="'row'" [gap]="[0,16]">
+    <grid [padding]="'0.75rem 1rem'" class="brdr-bottom">
+        <span class="fw-500 f-01 f-18">
+            Integraciones
+        </span>
+    </grid>
+    <grid [gap]="[8,4]" class="brdr-bottom" [padding]="'0.5rem 1rem'">
+        <span class="fw-300 f-06 f-14">
+            EXPLORAR
+        </span>
+        <menu width="100%">
+            <menu-item *roleShow="'*'" [label]="'Todos'" [level]="0" [urlBase]="routes.SettingsGeneral"
+                [link]="routes.SettingsGeneral" />
+            <menu-item *roleShow="'*'" [label]="'Pagos'" [level]="0" [urlBase]="routes.SettingsPointOfSale"
+                [link]="routes.SettingsPointOfSale" />
+            <menu-item *roleShow="'*'" [label]="'Facturación'" [level]="0" [urlBase]="routes.SettingsPointOfSale"
+                [link]="routes.SettingsPointOfSale" />
+            <menu-item *roleShow="'*'" [label]="'Marketing'" [level]="0" [urlBase]="routes.SettingsPointOfSale"
+                [link]="routes.SettingsPointOfSale" />
+        </menu>
+    </grid>
+    <grid [gap]="[8,4]" class="brdr-bottom" [padding]="'0.5rem 1rem'">
+        <span class="fw-300 f-06 f-14">
+            FACTURACIÓN
+        </span>
+        <menu width="100%">
+            <menu-item *roleShow="'*'" [label]="'Plan de suscripción'" [level]="0" [urlBase]="routes.SettingsBilling"
+                [link]="routes.SettingsBilling" />
+            <menu-item *roleShow="'*'" [label]="'Historial de facturas'" [level]="0" [urlBase]="routes.SettingsBilling"
+                [link]="routes.SettingsBilling" />
+        </menu>
+    </grid>
+</grid>

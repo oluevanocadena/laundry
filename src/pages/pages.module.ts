@@ -27,6 +27,7 @@ import { SetupModule } from '@pages/private/setup/setup.module';
 import { SupportModule } from '@pages/private/support/support.module';
 import { UsersModule } from '@pages/private/users/users.module';
 
+import { StoreModule } from '@pages/private/store/store.module';
 import { LandingModule } from '@pages/public/landing/landing.module';
 import { PricingModule } from '@pages/public/pricing/pricing.module';
 
@@ -63,6 +64,7 @@ const components: any[] = [];
     SupportModule,
     UsersModule,
     PluginsModule,
+    StoreModule,
   ],
   declarations: components,
   exports: components,

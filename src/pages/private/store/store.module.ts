@@ -9,10 +9,10 @@ import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
-import { SettingsMenuComponent } from '@pages/private/settings/components/settings-menu/settings-menu.component';
-import { SettingsPageComponent } from '@private/settings/settings-page.component';
+import { StoreMenuComponent } from '@pages/private/store/components/store-menu/store-menu.component';
+import { StorePageComponent } from '@pages/private/store/store-page.component';
 
-const components = [SettingsPageComponent, SettingsMenuComponent];
+const components = [StorePageComponent, StoreMenuComponent];
 
 @NgModule({
   imports: [
@@ -29,4 +29,4 @@ const components = [SettingsPageComponent, SettingsMenuComponent];
   declarations: components,
   exports: components,
 })
-export class SettingsModule {}
+export class StoreModule {}

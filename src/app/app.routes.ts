@@ -22,6 +22,7 @@ import { RegisterConfirmComponent } from '@pages/private/session/register-confir
 import { RegisterPageComponent } from '@pages/private/session/register/register-page.component';
 import { SettingsPageComponent } from '@pages/private/settings/settings-page.component';
 import { SetupPageComponent } from '@pages/private/setup/setup.component';
+import { StorePageComponent } from '@pages/private/store/store-page.component';
 import { SupportDraftPageComponent } from '@pages/private/support/draft/support-draft-page.component';
 import { SupportPageComponent } from '@pages/private/support/support.component';
 import { UsersDraftComponent } from '@pages/private/users/draft/users-draft.component';
@@ -97,6 +98,31 @@ export const routes: Routes = [
     path: 'reports',
     canActivate: [SessionGuard],
     component: ReportsPageComponent,
+  },
+  {
+    path: 'store',
+    redirectTo: 'store/general',
+    pathMatch: 'full',
+  },
+  {
+    path: 'store/general',
+    canActivate: [SessionGuard],
+    component: StorePageComponent,
+  },
+  {
+    path: 'store/customization',
+    canActivate: [SessionGuard],
+    component: StorePageComponent,
+  },
+  {
+    path: 'store/domains',
+    canActivate: [SessionGuard],
+    component: StorePageComponent,
+  },
+  {
+    path: 'store/support',
+    canActivate: [SessionGuard],
+    component: StorePageComponent,
   },
   {
     path: 'settings',

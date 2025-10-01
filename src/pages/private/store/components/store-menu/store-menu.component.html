@@ -1,0 +1,29 @@
+<grid [direction]="'row'" [gap]="[0,16]">
+    <grid [padding]="'0.75rem 1rem'" class="brdr-bottom">
+        <span class="fw-500 f-01 f-18">
+            Tienda
+        </span>
+    </grid>
+    <grid [gap]="[8,4]" class="brdr-bottom" [padding]="'0.5rem 1rem'">
+        <span class="fw-300 f-06 f-14">
+            CONFIGURACIÓN DE TIENDA
+        </span>
+        <menu width="100%">
+            <menu-item *roleShow="'*'" [label]="'General'" [level]="0" [urlBase]="routes.StoreGeneral"
+                [link]="routes.StoreGeneral" />
+            <menu-item *roleShow="'*'" [label]="'Personalización'" [level]="0" [urlBase]="routes.StoreCustomization"
+                [link]="routes.StoreCustomization" />
+        </menu>
+    </grid>
+    <grid [gap]="[8,4]" class="brdr-bottom" [padding]="'0.5rem 1rem'">
+        <span class="fw-300 f-06 f-14">
+            DOMINIOS
+        </span>
+        <menu width="100%">
+            <menu-item *roleShow="'*'" [label]="'Dominios'" [level]="0" [urlBase]="routes.StoreDomains"
+                [link]="routes.StoreDomains" />
+            <menu-item *roleShow="'*'" [label]="'Soporte'" [level]="0" [urlBase]="routes.StoreSupport"
+                [link]="routes.StoreSupport" />
+        </menu>
+    </grid>
+</grid>

@@ -1,0 +1,72 @@
+<layout>
+    <grid [gap]="[0,0]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'250px 1fr'">
+        <grid [direction]="'row'" [gap]="[16,0]" class="baseline brdr-right" [height]="'100%'">
+            <store-menu />
+        </grid>
+        <grid [direction]="'row'" [gap]="[24,16]" [padding]="'1.5rem'">
+            <span class="f-20 fw-600 f-01 f-lh-13">
+                Configuración de Tienda
+            </span>
+
+            <grid class="baseline">
+                <settings-store-general />
+            </grid>
+
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="f-20 fw-600 f-01 f-lh-14">
+                    Dominio
+                </span>
+                <span class="f-13 fw-400 f-06 f-lh-16">
+                    Configura el dominio de tu tienda.
+                </span>
+            </grid>
+
+            <grid class="baseline">
+                <settings-store-domain />
+            </grid>
+
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="f-20 fw-600 f-01 f-lh-14">
+                    Personalización
+                </span>
+                <span class="f-13 fw-400 f-06 f-lh-16">
+                    Personaliza tu tienda con un tema y un logo.
+                </span>
+            </grid>
+
+            <grid class="baseline">
+                <settings-store-personalization />
+            </grid>
+
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="f-20 fw-600 f-01 f-lh-14">
+                    Métodos de pago y envío
+                </span>
+                <span class="f-13 fw-400 f-06 f-lh-16">
+                    Configura los métodos de pago y envío de tu tienda.
+                </span>
+            </grid>
+
+            <grid class="baseline">
+                <settings-store-payments-and-shipping />
+            </grid>
+
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="f-20 fw-600 f-01 f-lh-14">
+                    Politicas de inventario y devoluciones
+                </span>
+                <span class="f-13 fw-400 f-06 f-lh-16">
+                    Configura las politicas de inventario y devoluciones de tu tienda.
+                </span>
+            </grid>
+
+            <grid class="baseline">
+                <settings-store-inventory-and-returns />
+            </grid>
+
+        </grid>
+    </grid>
+
+
+
+</layout>

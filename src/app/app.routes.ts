@@ -20,9 +20,12 @@ import { InvitationConfirmComponent } from '@pages/private/session/invitation-co
 import { LoginPageComponent } from '@pages/private/session/login/login-page.component';
 import { RegisterConfirmComponent } from '@pages/private/session/register-confirm/register-confirm.component';
 import { RegisterPageComponent } from '@pages/private/session/register/register-page.component';
-import { SettingsPageComponent } from '@pages/private/settings/settings-page.component';
+import { SettingsBillingPageComponent } from '@pages/private/settings/pages/billing/settings-billing-page.component';
+import { SettingsPageComponent } from '@pages/private/settings/pages/general/settings-page.component';
+import { SettingsPointOfSalePageComponent } from '@pages/private/settings/pages/point-of-sale/settings-point-of-sale-page.component';
+import { SettingsSubsctiptionPlanPageComponent } from '@pages/private/settings/pages/subsctiption-plan/settings-subsctiption-plan-page.component';
 import { SetupPageComponent } from '@pages/private/setup/setup.component';
-import { StorePageComponent } from '@pages/private/store/store-page.component';
+import { SettingsStorePageComponent } from '@pages/private/store/pages/store/settings-store-page.component';
 import { SupportDraftPageComponent } from '@pages/private/support/draft/support-draft-page.component';
 import { SupportPageComponent } from '@pages/private/support/support.component';
 import { UsersDraftComponent } from '@pages/private/users/draft/users-draft.component';
@@ -107,22 +110,22 @@ export const routes: Routes = [
   {
     path: 'store/general',
     canActivate: [SessionGuard],
-    component: StorePageComponent,
+    component: SettingsStorePageComponent,
   },
   {
     path: 'store/customization',
     canActivate: [SessionGuard],
-    component: StorePageComponent,
+    component: SettingsStorePageComponent,
   },
   {
     path: 'store/domains',
     canActivate: [SessionGuard],
-    component: StorePageComponent,
+    component: SettingsStorePageComponent,
   },
   {
     path: 'store/support',
     canActivate: [SessionGuard],
-    component: StorePageComponent,
+    component: SettingsStorePageComponent,
   },
   {
     path: 'settings',
@@ -133,6 +136,21 @@ export const routes: Routes = [
     path: 'settings/general',
     canActivate: [SessionGuard],
     component: SettingsPageComponent,
+  },
+  {
+    path: 'settings/point-of-sale',
+    canActivate: [SessionGuard],
+    component: SettingsPointOfSalePageComponent,
+  },
+  {
+    path: 'settings/subscription',
+    canActivate: [SessionGuard],
+    component: SettingsSubsctiptionPlanPageComponent,
+  },
+  {
+    path: 'settings/billing',
+    canActivate: [SessionGuard],
+    component: SettingsBillingPageComponent,
   },
   {
     path: 'settings/point-of-sale',

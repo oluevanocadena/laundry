@@ -25,6 +25,8 @@ import { IOrdersRepository } from '@bussiness/orders/repository/orders.repositor
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
 import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
+import { IOrganizationsRepository } from '@bussiness/settings/repository/organizations.repository';
+import { OrganizationsSupabaseRepository } from '@bussiness/settings/repository/organizations.supabase.repository';
 import { ISupportModulesRepository } from '@bussiness/support/repository/support.modules.repository';
 import { SupportModulesSupabaseRepository } from '@bussiness/support/repository/support.modules.supabase.repository';
 import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';
@@ -50,6 +52,7 @@ export const appConfig: ApplicationConfig = {
     { provide: ISupportModulesRepository, useClass: SupportModulesSupabaseRepository },
     { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },
     { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
+    { provide: IOrganizationsRepository, useClass: OrganizationsSupabaseRepository },
     {
       provide: NotificationsRealtimeService,
       useFactory: (nz: NzNotificationService, router: Router, orders: OrdersSupabaseRepository) => {

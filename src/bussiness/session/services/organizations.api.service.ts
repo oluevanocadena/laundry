@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Organization } from '@bussiness/session/interfaces/organizations.interface';
+import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { StorageProp } from '@globals/types/storage.type';

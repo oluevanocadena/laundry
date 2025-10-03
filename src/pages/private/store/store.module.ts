@@ -10,9 +10,22 @@ import { UIModule } from '@components/ui.module';
 import { DirectivesModule } from '@directives/directives.module';
 
 import { StoreMenuComponent } from '@pages/private/store/components/store-menu/store-menu.component';
-import { StorePageComponent } from '@pages/private/store/store-page.component';
+import { SettingsStoreDomainComponent } from '@pages/private/store/pages/store/components/store-domain/settings-store-domain.component';
+import { SettingsStoreGeneralComponent } from '@pages/private/store/pages/store/components/store-general/settings-store-general.component';
+import { SettingsStoreInventoryAndReturnsComponent } from '@pages/private/store/pages/store/components/store-inventory-and-returns/settings-store-inventory-and-returns.component';
+import { SettingsStorePaymentsAndShippingComponent } from '@pages/private/store/pages/store/components/store-payments-and-shipping/settings-store-payments-and-shipping.component';
+import { SettingsStorePersonalizationComponent } from '@pages/private/store/pages/store/components/store-personalization/settings-store-personalization.component';
+import { SettingsStorePageComponent } from '@pages/private/store/pages/store/settings-store-page.component';
 
-const components = [StorePageComponent, StoreMenuComponent];
+const components = [
+  SettingsStorePageComponent,
+  StoreMenuComponent,
+  SettingsStoreGeneralComponent,
+  SettingsStoreDomainComponent,
+  SettingsStorePersonalizationComponent,
+  SettingsStorePaymentsAndShippingComponent,
+  SettingsStoreInventoryAndReturnsComponent,
+];
 
 @NgModule({
   imports: [

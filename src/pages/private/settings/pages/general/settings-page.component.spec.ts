@@ -1,20 +1,21 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { StorePageComponent } from "./store-page.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-describe("StorePageComponent", () => {
+import { SettingsPageComponent } from "@pages/private/settings/pages/general/settings-page.component";
 
-  let fixture: ComponentFixture<StorePageComponent>;
-  let component: StorePageComponent;
+describe("SettingsPageComponent", () => {
+
+  let fixture: ComponentFixture<SettingsPageComponent>;
+  let component: SettingsPageComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [StorePageComponent]
+      declarations: [SettingsPageComponent]
     });
 
-    fixture = TestBed.createComponent(StorePageComponent);
+    fixture = TestBed.createComponent(SettingsPageComponent);
     component = fixture.componentInstance;
 
   });

@@ -1,0 +1,28 @@
+<tui-accordion-item class="container" [open]="!collapsed" [size]="'s'">
+    <span class="f-14 fw-500 f-06 f-lh-12">General</span>
+
+    <ng-template tuiAccordionItemContent>
+        <form [formGroup]="facade.formGroup">
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <grid [direction]="'row'" [gap]="[16,16]">
+                    <form-input [label]="'Nombre de Negocio'" [type]="'text'" [placeholder]="'Nombre de tu negocio'"
+                        formControlName="organizationName" [required]="true" />
+                </grid>
+                <grid [padding]="'1rem 0 0 0'">
+                    <span class="f-13 f-lh-16 f-06">
+                        Cambia el nombre de tu negocio para que tus clientes lo reconozcan.
+                    </span>
+                </grid>
+                <grid [gap]="[16,16]" [direction]="'column'" [align]="'center-right'">
+                    <button outline medium>
+                        Cancelar
+                    </button>
+                    <button medium primary (click)="facade.submitForm()">
+                        Guardar
+                    </button>
+                </grid>
+            </grid>
+        </form>
+
+    </ng-template>
+</tui-accordion-item>

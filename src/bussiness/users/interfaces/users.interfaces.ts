@@ -1,4 +1,4 @@
-import { Organization } from '@bussiness/session/interfaces/organizations.interface';
+import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
 import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 

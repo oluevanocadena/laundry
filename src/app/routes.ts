@@ -30,6 +30,7 @@ export const routes = {
   StoreDomains: '/store/domains',
   StoreSupport: '/store/support',
   SettingsGeneral: '/settings/general',
+  SettingsSubscription: '/settings/subscription',
   SettingsBilling: '/settings/billing',
   SettingsPointOfSale: '/settings/point-of-sale',
   Setup: '/setup',

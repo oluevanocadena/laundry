@@ -5,7 +5,7 @@ import { routes } from '@app/routes';
 import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
 import { OrganizationsApiService } from '@bussiness/session/services/organizations.api.service';
-import { Organization } from '@bussiness/session/interfaces/organizations.interface';
+import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { system } from '@environments/environment';

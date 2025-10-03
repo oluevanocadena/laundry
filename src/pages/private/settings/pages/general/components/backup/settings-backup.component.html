@@ -1,0 +1,23 @@
+<grid [direction]="'column'" [gap]="[16,16]" [padding]="'1rem'" [template]="'max-content 1fr max-content'"
+    class="bg-02 brdr-radius-6 brdr">
+    <grid [direction]="'column'" [align]="'top-left'" [height]="'100%'">
+        <span class="material-symbols-outlined f-24 f-06 fw-300">
+            cloud_download
+        </span>
+    </grid>
+    <grid [direction]="'row'" [gap]="[16,16]" [height]="'100%'">
+        <grid [direction]="'row'" [gap]="[8,8]">
+            <span class="f-15 f-lh-16 f-01 fw-600 t-left">
+                Copia de seguridad
+            </span>
+            <span class="f-14 f-lh-17 f-06 fw-500 t-left">
+                Realiza una copia de seguridad de tus datos.
+            </span>
+        </grid>
+    </grid>
+    <grid [direction]="'column'" [align]="'center-right'" [height]="'100%'">
+        <button small outline [width]="'fit-content'">
+            Solicitar respaldo
+        </button>
+    </grid>
+</grid>

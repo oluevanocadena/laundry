@@ -1,10 +1,10 @@
 import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
-import { IRepository } from '@globals/interfaces/repository.interface';
+import { FullRepository } from '@globals/interfaces/repository.definitions';
 import { PagedRequest, ResponseResult } from '@globals/interfaces/requests.interface';
 
-export abstract class IOrdersRepository extends IRepository<Order> {
+export abstract class IOrdersRepository extends FullRepository<Order> {
   // Sobreescribir la paginación y necesitas algo más específico
   abstract override getPaged(request: OrderRequest): Promise<ResponseResult<Order[]>>;
   abstract override update(order: Order, orderItems: OrderItem[]): Promise<ResponseResult<Order>>;

@@ -3,14 +3,14 @@
 
     <ng-template tuiAccordionItemContent>
 
-        <grid [direction]="'row'" [gap]="[8,16]">
-            <span class="f-14 fw-400 f-06 f-lh-16">
-                Notas del pedido
-            </span>
+        <grid [direction]="'row'" [gap]="[16,16]">
             <form [formGroup]="facade.formGroup">
                 <form-input [label]="''" [type]="'textarea'" [placeholder]="'Menciona algo importante de este pedido'"
                     formControlName="notes" />
             </form>
+            <span class="f-14 fw-400 f-06 f-lh-16">
+                Indica algo importante sobre el pedido para que no se te olvide.
+            </span>
         </grid>
     </ng-template>
 </tui-accordion-item>

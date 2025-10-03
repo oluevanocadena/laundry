@@ -1,0 +1,16 @@
+<layout>
+    <grid [gap]="[0,0]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'250px 1fr'">
+        <grid [direction]="'row'" [gap]="[16,0]" class="baseline brdr-right" [height]="'100%'">
+            <settings-menu />
+        </grid>
+        <grid [direction]="'row'" [gap]="[24,16]" [padding]="'1.5rem'">
+            <span class="f-20 fw-600 f-01 f-lh-13">
+                Preferencias Punto de Venta
+            </span>
+
+            <grid class="baseline">
+                <settings-point-of-sale-general />
+            </grid>
+        </grid>
+    </grid>
+</layout>

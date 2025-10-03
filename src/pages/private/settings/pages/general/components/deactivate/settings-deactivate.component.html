@@ -1,0 +1,21 @@
+<grid [direction]="'column'" [gap]="[16,16]" [padding]="'1rem'" [template]="'max-content 1fr'"
+    class="bg-error-hsl-transparent brdr-radius-6 brdr-error">
+    <grid [direction]="'column'" [align]="'top-left'">
+        <span class="material-symbols-outlined f-22 f-error icon-fill">
+            warning
+        </span>
+    </grid>
+    <grid [direction]="'row'" [gap]="[16,16]">
+        <grid [direction]="'row'" [gap]="[8,8]">
+            <span class="f-15 f-lh-16 f-01 fw-600 t-left">
+                Inactivación de cuenta
+            </span>
+            <span class="f-14 f-lh-17 f-06 fw-500 t-left">
+                Antes de desactivar tu cuenta, asegurate de realizar una copia de seguridad de tus datos.
+            </span>
+        </grid>
+        <button small danger [width]="'fit-content'">
+            Desactivar cuenta
+        </button>
+    </grid>
+</grid>

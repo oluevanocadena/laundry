@@ -1,0 +1,45 @@
+<layout>
+    <grid [gap]="[0,0]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'250px 1fr'">
+        <grid [direction]="'row'" [gap]="[16,0]" class="baseline brdr-right" [height]="'100%'">
+            <settings-menu />
+        </grid>
+        <grid [direction]="'row'" [gap]="[24,16]" [padding]="'2rem 1.5rem'">
+            <span class="f-20 fw-600 f-01 f-lh-13">
+                Configuración de Negocio
+            </span>
+
+            <grid class="baseline">
+                <settings-generals />
+            </grid>
+
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="f-18 fw-600 f-01 f-lh-14">
+                    Copia de seguridad
+                </span>
+                <span class="f-13 fw-400 f-06 f-lh-16">
+                    Realiza una copia de seguridad de tus datos.
+                </span>
+            </grid>
+
+            <grid class="baseline">
+                <settings-backup />
+            </grid>
+
+            <grid [direction]="'row'" [gap]="[8,8]">
+                <span class="f-18 fw-600 f-01 f-lh-14">
+                    Desactivar cuenta
+                </span>
+                <span class="f-13 fw-400 f-06 f-lh-16">
+                    Asegurate de que deseas desactivar tu cuenta, tienes hasta 90 días para volver a activar tu cuenta.
+                </span>
+            </grid>
+
+            <grid class="baseline">
+                <settings-deactivate />
+            </grid>
+        </grid>
+    </grid>
+
+
+
+</layout>

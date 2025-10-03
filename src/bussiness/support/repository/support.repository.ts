@@ -1,10 +1,10 @@
 import { TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
 import { SupportTicket, SupportTicketComment, SupportTicketImage } from '@bussiness/support/interfaces/support.interfaces';
-import { IRepository } from '@globals/interfaces/repository.interface';
+import { FullRepository } from '@globals/interfaces/repository.definitions';
 import { ResponseResult } from '@globals/interfaces/requests.interface';
 import { SubjectProp } from '@globals/types/subject.type';
 
-export abstract class ISupportTicketRepository extends IRepository<SupportTicket> {
+export abstract class ISupportTicketRepository extends FullRepository<SupportTicket> {
   abstract supportTicketsPaged: SubjectProp<ResponseResult<SupportTicket[]>>;
 
   abstract addComment(comment: SupportTicketComment, ticketId: string): Promise<ResponseResult<SupportTicketComment>>;

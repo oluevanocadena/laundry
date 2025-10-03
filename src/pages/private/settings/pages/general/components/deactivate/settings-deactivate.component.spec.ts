@@ -1,21 +1,20 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { SettingsDeactivateComponent } from "./settings-deactivate.component";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SettingsPageComponent } from "@private/settings/settings-page.component";
+describe("SettingsDeactivateComponent", () => {
 
-describe("SettingsPageComponent", () => {
-
-  let fixture: ComponentFixture<SettingsPageComponent>;
-  let component: SettingsPageComponent;
+  let fixture: ComponentFixture<SettingsDeactivateComponent>;
+  let component: SettingsDeactivateComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
       ],
-      declarations: [SettingsPageComponent]
+      declarations: [SettingsDeactivateComponent]
     });
 
-    fixture = TestBed.createComponent(SettingsPageComponent);
+    fixture = TestBed.createComponent(SettingsDeactivateComponent);
     component = fixture.componentInstance;
 
   });

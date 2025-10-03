@@ -18,15 +18,7 @@
                     </grid>
                 </grid>
             </grid>
-            <grid [direction]="'column'" [template]="'1fr'" [height]="'100%'" [padding]="'0 1rem'"
-                class="baseline brdr-top bg-02" [width]="'100%'" class="scroll-h">
-                <nz-tabset [nzSize]="'large'" [nzAnimated]="true" [nzSelectedIndex]="facade.tabIndex"
-                    (nzSelectedIndexChange)="facade.onTabIndexChange($event)">
-                    <ng-container *ngFor="let tab of tabsCategories">
-                        <nz-tab [nzTitle]="tab.Name"></nz-tab>
-                    </ng-container>
-                </nz-tabset>
-            </grid>
+            <pos-category-tabs />
         </grid>
         <grid [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" [padding]="'1rem'"
             class="baseline brdr-left bg-02">

@@ -38,9 +38,9 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     }, 'Fetching Product');
   }
 
-  search(search: string, page: number = 1, pageSize: number = 50, locationId: string): Promise<ResponseResult<Product[]>> {
+  search(search: string, page: number = 1, pageSize: number = 50, locationId: string, productCategoryId?: string): Promise<ResponseResult<Product[]>> {
     return this.executeWithBusy(async () => {
-      const query = ProductsQueryDomain.buildSearchQuery(this.client, this.sessionService, search, page, pageSize, locationId);
+      const query = ProductsQueryDomain.buildSearchQuery(this.client, this.sessionService, search, page, pageSize, locationId, productCategoryId);
       const { data, error } = await query;
       const result = super.handleResponse(data as unknown as Product[], error);
       this.products.value = result;

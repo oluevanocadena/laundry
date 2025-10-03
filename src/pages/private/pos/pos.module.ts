@@ -12,10 +12,12 @@ import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 
+import { PosCategoryTabsComponent } from '@pages/private/pos/components/category-tabs/pos-category-tabs.component';
+import { PosProductCardComponent } from '@pages/private/pos/components/product-card/pos-product-card.component';
 import { PosScannerModalComponent } from '@pages/private/pos/components/scanner-modal/pos-scanner-modal.component';
 import { PosPageComponent } from '@pages/private/pos/pos-page.component';
 
-const components = [PosPageComponent, PosScannerModalComponent];
+const components = [PosPageComponent, PosScannerModalComponent, PosCategoryTabsComponent, PosProductCardComponent];
 
 @NgModule({
   imports: [

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
 import { IProductsRepository } from '@bussiness/products/repository/products.repository';
+import { SessionService } from '@bussiness/session/services/session.service';
 import { FacadeBase } from '@globals/types/facade.base';
 
 @Injectable({
@@ -9,7 +10,11 @@ import { FacadeBase } from '@globals/types/facade.base';
 export class PosFacade extends FacadeBase {
   tabIndex = 0;
 
-  constructor(public repoProducts: IProductsRepository, public repoCategories: IProductCategoriesRepository) {
+  constructor(
+    public repoProducts: IProductsRepository,
+    public repoCategories: IProductCategoriesRepository,
+    public sessionService: SessionService,
+  ) {
     super(repoProducts);
   }
 
@@ -35,6 +40,9 @@ export class PosFacade extends FacadeBase {
    */
 
   onTabIndexChange(index: number) {
-    this.tabIndex = index;
+    const locationId = this.sessionService.locationId;
+    const productCategories = this.repoCategories.productCategories.value?.data;
+    const productCategoryId = productCategories?.[index]?.id?.toString();
+    this.repoProducts.search('', 1, 10, locationId, productCategoryId === '0' ? undefined : productCategoryId);
   }
 }

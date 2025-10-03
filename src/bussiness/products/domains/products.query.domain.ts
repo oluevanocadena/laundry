@@ -115,6 +115,7 @@ export class ProductsQueryDomain {
     page: number = 1,
     pageSize: number = 50,
     locationId: string,
+    productCategoryId?: string,
   ) {
     let query = client
       .from(SupabaseTables.Products)
@@ -132,6 +133,10 @@ export class ProductsQueryDomain {
       .eq('Disabled', false)
       .eq('OrganizationId', sessionService.organizationId);
 
+    if (productCategoryId) {
+      query = query.eq('ProductCategoryId', productCategoryId);
+    }
+
     if (search) {
       query = query.or(`Name.ilike.%${search}%,Description.ilike.%${search}%,Barcode.ilike.%${search}%,SKU.ilike.%${search}%`);
     }
@@ -146,42 +151,27 @@ export class ProductsQueryDomain {
 
   // Consultas para el guardado completo de productos con relaciones
   static buildDeleteProductLocationsQuery(client: SupabaseClient, productId: string) {
-    return client
-      .from(SupabaseTables.ProductLocations)
-      .delete()
-      .eq('ProductId', productId);
+    return client.from(SupabaseTables.ProductLocations).delete().eq('ProductId', productId);
   }
 
   static buildInsertProductLocationsQuery(client: SupabaseClient, productLocations: any[]) {
-    return client
-      .from(SupabaseTables.ProductLocations)
-      .upsert(productLocations, { onConflict: 'id' });
+    return client.from(SupabaseTables.ProductLocations).upsert(productLocations, { onConflict: 'id' });
   }
 
   static buildDeleteProductImagesQuery(client: SupabaseClient, productId: string) {
-    return client
-      .from(SupabaseTables.ProductImages)
-      .delete()
-      .eq('ProductId', productId);
+    return client.from(SupabaseTables.ProductImages).delete().eq('ProductId', productId);
   }
 
   static buildInsertProductImagesQuery(client: SupabaseClient, productImages: any[]) {
-    return client
-      .from(SupabaseTables.ProductImages)
-      .upsert(productImages);
+    return client.from(SupabaseTables.ProductImages).upsert(productImages);
   }
 
   static buildDeleteProductLocationPricesQuery(client: SupabaseClient, productId: string) {
-    return client
-      .from(SupabaseTables.ProductLocationPrices)
-      .delete()
-      .eq('ProductId', productId);
+    return client.from(SupabaseTables.ProductLocationPrices).delete().eq('ProductId', productId);
   }
 
   static buildInsertProductLocationPricesQuery(client: SupabaseClient, locationPrices: any[]) {
-    return client
-      .from(SupabaseTables.ProductLocationPrices)
-      .upsert(locationPrices);
+    return client.from(SupabaseTables.ProductLocationPrices).upsert(locationPrices);
   }
 
   // Método principal para guardar producto completo
@@ -190,7 +180,7 @@ export class ProductsQueryDomain {
     product: any,
     locations: any[],
     locationPrices: any[],
-    images: string[]
+    images: string[],
   ) {
     // 1️⃣ Guardar o actualizar producto
     const { data: productSaved, error: productError } = await client
@@ -205,10 +195,7 @@ export class ProductsQueryDomain {
     // 2️⃣ Manejar ubicaciones si existen
     if (locations.length > 0) {
       // Eliminar relaciones previas
-      const { error: deleteError } = await client
-        .from(SupabaseTables.ProductLocations)
-        .delete()
-        .eq('ProductId', productId);
+      const { error: deleteError } = await client.from(SupabaseTables.ProductLocations).delete().eq('ProductId', productId);
 
       if (deleteError) throw deleteError;
 
@@ -233,11 +220,8 @@ export class ProductsQueryDomain {
     // 3️⃣ Manejar imágenes si existen
     if (images.length > 0) {
       // Eliminar imágenes previas
-      const { error: deleteErrorImages } = await client
-        .from(SupabaseTables.ProductImages)
-        .delete()
-        .eq('ProductId', productId);
-      
+      const { error: deleteErrorImages } = await client.from(SupabaseTables.ProductImages).delete().eq('ProductId', productId);
+
       if (deleteErrorImages) throw deleteErrorImages;
 
       // Insertar nuevas imágenes
@@ -247,9 +231,7 @@ export class ProductsQueryDomain {
         Deleted: false,
       }));
 
-      const { error: imageError } = await client
-        .from(SupabaseTables.ProductImages)
-        .upsert(productImages);
+      const { error: imageError } = await client.from(SupabaseTables.ProductImages).upsert(productImages);
 
       if (imageError) throw imageError;
     }
@@ -261,20 +243,18 @@ export class ProductsQueryDomain {
         .from(SupabaseTables.ProductLocationPrices)
         .delete()
         .eq('ProductId', productId);
-      
+
       if (deleteErrorLocationPrice) throw deleteErrorLocationPrice;
 
       // Insertar nuevos precios
-      const { error: locationPriceError } = await client
-        .from(SupabaseTables.ProductLocationPrices)
-        .upsert(
-          locationPrices.map((loc) => ({
-            ProductId: productId,
-            LocationId: loc.LocationId,
-            Price: loc.Price,
-          }))
-        );
-      
+      const { error: locationPriceError } = await client.from(SupabaseTables.ProductLocationPrices).upsert(
+        locationPrices.map((loc) => ({
+          ProductId: productId,
+          LocationId: loc.LocationId,
+          Price: loc.Price,
+        })),
+      );
+
       if (locationPriceError) throw locationPriceError;
     }
 

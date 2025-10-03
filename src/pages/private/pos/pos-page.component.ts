@@ -19,10 +19,7 @@ export class PosPageComponent extends HelperPage implements AfterViewInit {
   /**
    * Getters
    */
-
-  get tabsCategories() {
-    return this.facade.repoCategories.productCategories.value?.data ?? [];
-  }
+ 
 
   /**
    * Lifecycle

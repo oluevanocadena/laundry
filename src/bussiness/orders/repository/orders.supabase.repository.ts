@@ -52,6 +52,13 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
     });
   }
 
+  disable(id: string, state: boolean): Promise<ResponseResult<Order>> {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await OrdersQueryDomain.buildUpdateOrderStatusQuery(this.client, id, state);
+      return super.handleResponse<Order>(data as unknown as Order, error);
+    });
+  }
+
   getById(id: string): Promise<ResponseResult<Order> | null> {
     return this.executeWithBusy(async () => {
       const { data, error } = await OrdersQueryDomain.buildGetSingleOrderQuery(this.client, id);

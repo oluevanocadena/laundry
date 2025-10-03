@@ -9,13 +9,14 @@ export interface PagedRequest {
   page: number;
   pageSize: number;
 
-  dateFrom: string | Date | null;
-  dateTo: string | Date | null;
+  dateFrom?: string | Date | null;
+  dateTo?: string | Date | null;
   sortBy: string | null;
   sortOrder: 'asc' | 'desc';
   search?: string | null;
   segment?: string | null;
   select?: string | null;
+  disabled?: boolean | null;
 }
 
 export interface RequestError {

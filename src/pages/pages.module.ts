@@ -18,6 +18,7 @@ import { LocationsModule } from '@pages/private/locations/locations.module';
 import { NotificationsModule } from '@pages/private/notifications/notifications.module';
 import { OrdersModule } from '@pages/private/orders/orders.module';
 import { PluginsModule } from '@pages/private/plugins/plugins.module';
+import { POSModule } from '@pages/private/pos/pos.module';
 import { ProductCategoriesModule } from '@pages/private/product-categories/product-categories.module';
 import { ProductsModule } from '@pages/private/products/products.module';
 import { ReportsModule } from '@pages/private/reports/reports.module';
@@ -65,6 +66,7 @@ const components: any[] = [];
     UsersModule,
     PluginsModule,
     StoreModule,
+    POSModule,
   ],
   declarations: components,
   exports: components,

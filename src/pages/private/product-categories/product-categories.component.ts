@@ -20,7 +20,7 @@ export class ProductCategoriesPageComponent extends HelperPage implements OnInit
  
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   get columns() {
@@ -28,11 +28,11 @@ export class ProductCategoriesPageComponent extends HelperPage implements OnInit
   }
 
   get rowCount() {
-    return this.facade.api.pagedProductCategories.value?.count ?? 0;
+    return this.facade.repo.pagedProductCategories.value?.count ?? 0;
   }
 
   get data() {
-    return this.facade.api.pagedProductCategories.value?.data ?? [];
+    return this.facade.repo.pagedProductCategories.value?.data ?? [];
   }
 
   /**

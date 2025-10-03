@@ -2,8 +2,10 @@
     [height]="isMobileOrTablet ? 'calc(-129px + 100vh)' : 'calc(var(--full-vh) - 0.25rem)'">
     <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" height="100%" width="100%">
         <menu width="100%">
-            <menu-item *roleShow="'1,3,4,5,6,7,8'" [collapsed]="collapsed" [icon]="'location_away'" [iconType]="'google'"
-                [label]="'Inicio'" [urlBase]="routes.Home" [link]="routes.Home" [level]="0" />
+            <menu-item *roleShow="'1,3,4,5,6,7,8'" [collapsed]="collapsed" [icon]="'location_away'"
+                [iconType]="'google'" [label]="'Inicio'" [urlBase]="routes.Home" [link]="routes.Home" [level]="0" />
+            <menu-item *roleShow="'1,3,4'" [collapsed]="collapsed" [icon]="'barcode_reader'" [iconType]="'google'"
+                [label]="'Punto de venta'" [urlBase]="routes.Pos" [link]="routes.Pos" [isGroup]="false" [level]="0" />
             <menu-item *roleShow="'1,3,4'" [collapsed]="collapsed" [icon]="'local_mall'" [iconType]="'google'"
                 [label]="'Pedidos'" [urlBase]="routes.Orders" [link]="routes.Orders" [isGroup]="false" [level]="0" />
             <menu-item *roleShow="'1,3,4'" [collapsed]="collapsed" [icon]="'group'" [iconType]="'google'"

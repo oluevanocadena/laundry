@@ -5,10 +5,10 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { StorageProp } from '@globals/types/storage.type';
 
 import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
-import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { IProductCategoriesRepository } from '../repository/product.categories.repository';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class ProductCategoriesDraftFacade extends FacadeBase {
   public selectedProductCategory = new StorageProp<ProductCategory>(null, 'PRODUCT_CATEGORY_EDITION');
 
   constructor(
-    public api: ProductCategoriesApiService,
+    public api: IProductCategoriesRepository,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
   ) {
@@ -64,12 +64,11 @@ export class ProductCategoriesDraftFacade extends FacadeBase {
       Name: value.Name?.toString() || '',
       OrganizationId: this.sessionService.organizationId,
     };
-    return this.api.saveProductCategory(productCategory);
+    return this.api.save(productCategory);
   }
 
   disableProductCategory(id: string, disabled: boolean) {
-    return this.api.disableProductCategory(id, disabled).then(() => {
-      this.api.getProductCategories();
+    return this.api.disable(id, disabled).then(() => {
       if (this.selectedProductCategory.value) {
         this.selectedProductCategory.value.Disabled = !this.selectedProductCategory.value.Disabled;
       }
@@ -77,8 +76,7 @@ export class ProductCategoriesDraftFacade extends FacadeBase {
   }
 
   deleteProductCategory(id: string) {
-    return this.api.deleteProductCategory(id).then(() => {
-      this.api.getProductCategories();
+    return this.api.delete(id).then(() => {
       if (this.selectedProductCategory.value) {
         this.selectedProductCategory.value.Deleted = true;
       }

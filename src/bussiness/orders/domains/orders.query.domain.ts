@@ -1,7 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import moment from 'moment';
 
-import { OrderItemStatusEnum } from '@bussiness/orders/enums/orders.enums';
+import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 import { Order } from '@bussiness/orders/interfaces/orders.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { OrderRequest } from '@bussiness/orders/repository/orders.repository';
@@ -147,5 +147,9 @@ export class OrdersQueryDomain {
 
   static buildDeleteOrderQuery(client: SupabaseClient, id: string) {
     return client.from(SupabaseTables.Orders).update({ Deleted: true }).eq('id', id).single();
+  }
+
+  static buildUpdateOrderStatusQuery(client: SupabaseClient, id: string, status: boolean) {
+    return client.from(SupabaseTables.Orders).update({ Disabled: status }).eq('id', id).select().single();
   }
 }

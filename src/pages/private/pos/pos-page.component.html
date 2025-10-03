@@ -1,0 +1,50 @@
+<layout>
+    <grid [gap]="[0,0]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'1fr 350px'">
+        <grid [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" class="baseline">
+            <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem'" class="baseline">
+                <grid [direction]="'column'" [template]="'1fr max-content'">
+                    <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'" class="baseline">
+                        <span class="fw-500 f-01 f-20" padding="0.25rem 0 0 0">
+                            Punto de Venta
+                        </span>
+                    </grid>
+                    <grid [direction]="'column'" [align]="'center-right'" [height]="'100%'">
+                        <button outline small flex icon-google>
+                            <span class="material-symbols-outlined f-20 f-lh-16 f-06">
+                                barcode_reader
+                            </span>
+                            Escanear
+                        </button>
+                    </grid>
+                </grid>
+            </grid>
+            <grid [direction]="'column'" [template]="'1fr'" [height]="'100%'" [padding]="'0 1rem'"
+                class="baseline brdr-top bg-02" [width]="'100%'" class="scroll-h">
+                <nz-tabset [nzSize]="'large'" [nzAnimated]="true" [nzSelectedIndex]="facade.tabIndex"
+                    (nzSelectedIndexChange)="facade.onTabIndexChange($event)">
+                    <ng-container *ngFor="let tab of tabsCategories">
+                        <nz-tab [nzTitle]="tab.Name"></nz-tab>
+                    </ng-container>
+                </nz-tabset>
+            </grid>
+        </grid>
+        <grid [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" [padding]="'1rem'"
+            class="baseline brdr-left bg-02">
+            <grid [direction]="'column'" [template]="'1fr'" [height]="'100%'" class="baseline">
+
+            </grid>
+            <button primary large full>
+                <grid [direction]="'column'" [template]="'1fr max-content'" [width]="'100%'"
+                    [padding]="'0.25rem 0 0 0'">
+                    <grid [direction]="'column'" [align]="'center-left'">
+                        PAGAR
+                    </grid>
+                    <grid [direction]="'column'" [align]="'center-right'">
+                        {{0 | numeralFormat: '$0,0.00'}}
+                    </grid>
+                </grid>
+            </button>
+        </grid>
+
+    </grid>
+</layout>

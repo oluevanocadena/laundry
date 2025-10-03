@@ -46,4 +46,50 @@ export class ProductCategoriesQueryDomain {
       return { data: [], error: null };
     });
   }
+
+  static buildGetAllQuery(client: SupabaseClient, sessionService: SessionService) {
+    return client
+      .from(SupabaseTables.ProductCategories)
+      .select('*')
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('Deleted', false);
+  }
+
+  static buildGetByIdQuery(client: SupabaseClient, sessionService: SessionService, id: string) {
+    return client
+      .from(SupabaseTables.ProductCategories)
+      .select('*')
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('Deleted', false)
+      .eq('Id', id)
+      .single();
+  }
+
+  static buildSaveOrUpdateQuery(client: SupabaseClient, productCategory: any) {
+    return client
+      .from(SupabaseTables.ProductCategories)
+      .upsert(productCategory)
+      .select()
+      .single();
+  }
+
+  static buildDisableQuery(client: SupabaseClient, sessionService: SessionService, id: string, state: boolean) {
+    return client
+      .from(SupabaseTables.ProductCategories)
+      .update({ Disabled: state })
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('id', id)
+      .select()
+      .single();
+  }
+
+  static buildDeleteQuery(client: SupabaseClient, sessionService: SessionService, id: string) {
+    return client
+      .from(SupabaseTables.ProductCategories)
+      .delete()
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('id', id)
+      .select()
+      .single();
+  }
 }

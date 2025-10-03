@@ -98,6 +98,17 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
     });
   }
 
+  disable(id: string, state: boolean): Promise<ResponseResult<SupportTicket>> {
+    return this.executeWithBusy(async () => {
+      const { data, error } = await SupportQueryDomain.buildUpdateTicketStatusQuery(
+        this.client,
+        id,
+        state as unknown as TicketStatusIdEnum,
+      );
+      return super.handleResponse<SupportTicket>(data as unknown as SupportTicket, error);
+    });
+  }
+
   deleteMany(ids: string[]): Promise<ResponseResult<void>> {
     return this.executeWithBusy(async () => {
       const query = SupportQueryDomain.buildDeleteTicketsQuery(this.client, ids);

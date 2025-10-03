@@ -3,6 +3,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { ProductCategoriesDraftFacade } from '@bussiness/product-categories/controllers/product-categories.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
+import { ProductCategoriesMonitorFacade } from '@bussiness/product-categories/controllers/product-categories.monitor.facade';
 
 @Component({
   selector: 'product-categories-drawer-draft',
@@ -29,7 +30,11 @@ export class ProductCategoriesDrawerDraftComponent extends HelperPage implements
   @Input() confirmLabel = 'Confirmar';
   @Input() confirmStyle: DrawerConfirmStyleButton = 'success';
 
-  constructor(public facade: ProductCategoriesDraftFacade, public nzMessageService: NzMessageService) {
+  constructor(
+    public facade: ProductCategoriesDraftFacade,
+    public facadeMonitor: ProductCategoriesMonitorFacade,
+    public nzMessageService: NzMessageService,
+  ) {
     super();
   }
 
@@ -53,7 +58,7 @@ export class ProductCategoriesDrawerDraftComponent extends HelperPage implements
 
     this.facade.submitForm().then((response) => {
       if (response?.success) {
-        this.facade.api.getProductCategories();
+        this.facadeMonitor.fetchProductCategories();
         this.close(true);
       } else {
         this.nzMessageService.error('¡Ocurrió un error al guardar los cambios!');
@@ -61,12 +66,12 @@ export class ProductCategoriesDrawerDraftComponent extends HelperPage implements
     });
   }
 
-  onDisableOrEnableClick() { 
+  onDisableOrEnableClick() {
     this.facade.showDisableModal = true;
   }
 
   onDeleteClick() {
-    if (this.facade.api.productCategories.value?.length === 1) {
+    if (this.facade.api.productCategories.value?.data?.length === 1) {
       this.nzMessageService.error('¡No se puede eliminar la única categoría!');
       return;
     }
@@ -114,7 +119,7 @@ export class ProductCategoriesDrawerDraftComponent extends HelperPage implements
   }
 
   get canDisableOrDelete(): boolean {
-    return this.facade.api.productCategories.value?.length !== 1;
+    return this.facade.api.productCategories.value?.data?.length !== 1;
   }
 
   /**

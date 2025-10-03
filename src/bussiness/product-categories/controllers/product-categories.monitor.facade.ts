@@ -8,7 +8,7 @@ import { ProductCategoriesPageTableColumns } from '@bussiness/product-categories
 import { ProductCategoriesDefaultTableFilter } from '@bussiness/product-categories/constants/product-categories.constants';
 import { ProductCategoriesDraftFacade } from '@bussiness/product-categories/controllers/product-categories.draft.facade';
 import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
-import { ProductCategoriesApiService } from '@bussiness/product-categories/services/product-categories.api.service';
+import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
@@ -54,12 +54,12 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
   ];
 
   constructor(
-    public api: ProductCategoriesApiService,
+    public repo: IProductCategoriesRepository,
     public draftFacade: ProductCategoriesDraftFacade,
     public storageService: StorageService,
     private nzMessageService: NzMessageService,
   ) {
-    super(api);
+    super(repo);
   }
 
   override initialize() {
@@ -81,7 +81,7 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
    */
 
   fetchProductCategories() {
-    this.api.getPagedProductCategories({
+    this.repo.getPaged({
       page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
       pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
       sortBy: this.tableFilter.value?.sortBy ?? null,
@@ -141,7 +141,7 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
 
   onDeleteProductCategories() {
     const ids = this.selectedRows.map((productCategory) => productCategory.id!.toString());
-    this.api.deleteProductCategories(ids).then((response) => {
+    this.repo.deleteMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Categorías eliminadas');
         this.fetchProductCategories();
@@ -154,7 +154,7 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
 
   onDisableProductCategories() {
     const ids = this.selectedRows.map((productCategory) => productCategory.id!.toString());
-    this.api.disableProductCategories(ids).then((response) => {
+    this.repo.toggleEnableMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Categorías deshabilitadas');
         this.fetchProductCategories();
@@ -178,6 +178,6 @@ export class ProductCategoriesMonitorFacade extends FacadeBase {
    */
 
   get selectedRows() {
-    return this.api.pagedProductCategories.value?.data.filter((productCategory) => productCategory.Checked) ?? [];
+    return this.repo.pagedProductCategories.value?.data.filter((productCategory) => productCategory.Checked) ?? [];
   }
 }

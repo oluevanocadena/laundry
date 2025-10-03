@@ -27,3 +27,7 @@ export interface IDeletable<T> extends IBusy {
   deleteMany(ids: string[]): Promise<ResponseResult<void>>;
   toggleEnableMany(ids: string[]): Promise<ResponseResult<void>>;
 }
+
+export interface IDisableable<T> extends IBusy {
+  disable(id: string, state: boolean): Promise<ResponseResult<T>>;
+}

@@ -19,6 +19,7 @@ export const routes = {
   ProductDraft: '/products/draft',
   ProductEdit: '/products/edit/:id',
   Products: '/products',
+  Pos: '/pos',
   Register: '/register',
   RegisterCompletion: '/register-completion',
   RegisterConfirm: '/register-confirmation',

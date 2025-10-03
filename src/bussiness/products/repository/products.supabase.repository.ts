@@ -68,11 +68,11 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
   }
 
   async save(product: Product): Promise<ResponseResult<Product>> {
-    return this.saveProductComplete(product);
+    return this.saveWithDependencies(product);
   }
 
   async update(product: Product): Promise<ResponseResult<Product>> {
-    return this.saveProductComplete(product);
+    return this.saveWithDependencies(product);
   }
 
   async disable(id: string, state: boolean): Promise<ResponseResult<Product>> {
@@ -108,7 +108,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
   }
 
   // Método para guardar producto completo con todas sus relaciones
-  async saveProductComplete(
+  async saveWithDependencies(
     product: Product,
     locations: any[] = [],
     locationPrices: any[] = [],

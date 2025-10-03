@@ -7,15 +7,15 @@ import { routes } from '@app/routes';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { StorageProp } from '@globals/types/storage.type';
+import { UtilsDomain } from '@globals/utils/utils.domain';
 
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
-import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/interfaces/products.interfaces';
-import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
-import { ProductsApiService } from '@bussiness/products/services/products.api.service';
-import { SessionService } from '@bussiness/session/services/session.service';
-import { UtilsDomain } from '@globals/utils/utils.domain';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
+import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/interfaces/products.interfaces';
+import { IProductsRepository } from '@bussiness/products/repository/products.repository';
+import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
+import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +47,7 @@ export class ProductsDraftFacade extends FacadeBase {
   public urlImages: string[] = [];
 
   constructor(
-    public api: ProductsApiService,
+    public repo: IProductsRepository,
     public repoUnitMeasures: IUnitMeasureRepository,
     public repoProdCat: IProductCategoriesRepository,
     public locationApi: LocationsApiService,
@@ -55,7 +55,7 @@ export class ProductsDraftFacade extends FacadeBase {
     public router: Router,
     public sessionService: SessionService,
   ) {
-    super(api);
+    super(repo);
   }
 
   override initialize() {
@@ -150,8 +150,8 @@ export class ProductsDraftFacade extends FacadeBase {
           return location;
         });
       }
-      this.api
-        .saveProduct(
+      this.repo
+        .saveWithDependencies(
           product,
           JSON.parse(JSON.stringify(this.locationAvailability)),
           JSON.parse(JSON.stringify(this.locationPrices)),
@@ -169,7 +169,7 @@ export class ProductsDraftFacade extends FacadeBase {
    */
 
   onSelectedImage(file: File) {
-    this.api.uploadProductImage(file).then((response) => {
+    this.repo.uploadtImage(file).then((response) => {
       if (response.success) {
         this.urlImages.push(response.data ?? '');
       }
@@ -184,7 +184,7 @@ export class ProductsDraftFacade extends FacadeBase {
   onDelete() {
     const product = this.product.value;
     if (product?.id) {
-      this.api.deleteProduct(product.id).then(() => {
+      this.repo.delete(product.id).then(() => {
         this.router.navigate([routes.Products]);
       });
     }
@@ -192,34 +192,22 @@ export class ProductsDraftFacade extends FacadeBase {
 
   onDisable() {
     const product = this.product.value;
-    if (product?.id) {
-      if (product.Disabled) {
-        this.api.enableProduct(product.id).then((response) => {
-          if (response.success) {
-            this.nzMessageService.success('Producto habilitado correctamente');
-            this.showDisableModal = false;
-            const product = UtilsDomain.clone(this.product.value!);
-            product.Disabled = false;
-            this.product.value = product;
-          } else {
-            this.nzMessageService.error('Ocurrió un error al habilitar el producto');
-          }
-        });
+    if (!product?.id) return;
+
+    const newDisabledState = !product.Disabled;
+    const successMsg = newDisabledState ? 'deshabilitado' : 'habilitado';
+
+    this.repo.disable(product.id, newDisabledState).then((response) => {
+      if (response.success) {
+        this.nzMessageService.success(`Producto ${successMsg} correctamente`);
+        const updatedProduct = UtilsDomain.clone(this.product.value!);
+        updatedProduct.Disabled = newDisabledState;
+        this.product.value = updatedProduct;
       } else {
-        this.api.disableProduct(product.id).then((response) => {
-          if (response.success) {
-            this.nzMessageService.success('Producto deshabilitado correctamente');
-            this.showDisableModal = false;
-            const product = UtilsDomain.clone(this.product.value!);
-            product.Disabled = true;
-            this.product.value = product;
-          } else {
-            this.nzMessageService.error('Ocurrió un error al deshabilitar el producto');
-          }
-          this.showDisableModal = false;
-        });
+        this.nzMessageService.error(`Ocurrió un error al ${successMsg} el producto`);
       }
-    }
+      this.showDisableModal = false;
+    });
   }
 
   openDisableModal() {

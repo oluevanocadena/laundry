@@ -36,7 +36,7 @@ export class ProductsHeaderComponent extends HelperPage {
    */
 
   get busy(): boolean {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   get dateCreated(): string {

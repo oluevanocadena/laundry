@@ -9,6 +9,6 @@ export abstract class IProductsRepository extends FullRepository<Product> {
   abstract pagedProducts: SubjectProp<PagedResults<Product>>;
 
   abstract search(search: string, page: number, pageSize: number, locationId: string): Promise<ResponseResult<Product[]>>;
-  abstract saveProductComplete(product: Product, locations?: any[], locationPrices?: any[], images?: string[]): Promise<ResponseResult<Product>>;
+  abstract saveWithDependencies(product: Product, locations?: any[], locationPrices?: any[], images?: string[]): Promise<ResponseResult<Product>>;
   abstract uploadtImage(file: File): Promise<ResponseResult<string>>;
 }

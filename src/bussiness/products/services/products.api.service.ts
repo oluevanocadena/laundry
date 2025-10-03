@@ -28,7 +28,7 @@ export class ProductsApiService extends SupabaseBaseApiService {
 
   getPagedProduct(request: ProductRequest) {
     return this.executeWithBusy(async () => {
-      const query = ProductsQueryDomain.buildQuery(request, this.client, this.sessionService);
+      const query = ProductsQueryDomain.buildPagedQuery(request, this.client, this.sessionService);
       const countQuery = ProductsQueryDomain.buildTotalCountQuery(request, this.client, this.sessionService);
 
       const [queryResult, totalCountResult] = await Promise.all([query, countQuery]);

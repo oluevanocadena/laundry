@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
+import { IProductsRepository } from '@bussiness/products/repository/products.repository';
 import { FacadeBase } from '@globals/types/facade.base';
 
 @Injectable({
@@ -8,8 +9,8 @@ import { FacadeBase } from '@globals/types/facade.base';
 export class PosFacade extends FacadeBase {
   tabIndex = 0;
 
-  constructor(public repo: IProductCategoriesRepository, public repoCategories: IProductCategoriesRepository) {
-    super(repo);
+  constructor(public repoProducts: IProductsRepository, public repoCategories: IProductCategoriesRepository) {
+    super(repoProducts);
   }
 
   override initialize() {

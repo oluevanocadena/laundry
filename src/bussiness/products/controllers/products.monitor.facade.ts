@@ -19,6 +19,7 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 import { StorageService } from '@services/common/storage.service';
+import { IProductsRepository } from '../repository/products.repository';
 
 @Injectable({
   providedIn: 'root',
@@ -58,12 +59,12 @@ export class ProductsMonitorFacade extends FacadeBase {
 
   constructor(
     public router: Router,
-    public api: ProductsApiService,
+    public repo: IProductsRepository,
     public draftFacade: ProductsDraftFacade,
     public storageService: StorageService,
     private nzMessageService: NzMessageService,
   ) {
-    super(api);
+    super(repo);
   }
 
   override initialize() {
@@ -80,7 +81,7 @@ export class ProductsMonitorFacade extends FacadeBase {
    * Api
    */
   fetchProducts() {
-    this.api.getPagedProduct({
+    this.repo.getPaged({
       page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
       pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
       sortBy: this.tableFilter.value?.sortBy ?? null,
@@ -140,7 +141,7 @@ export class ProductsMonitorFacade extends FacadeBase {
 
   onDeleteProducts() {
     const ids = this.selectedRows.map((product) => product.id!.toString());
-    this.api.deleteProducts(ids).then((response) => {
+    this.repo.deleteMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Productos eliminados');
         this.fetchProducts();
@@ -153,7 +154,7 @@ export class ProductsMonitorFacade extends FacadeBase {
 
   onDisableProducts() {
     const ids = this.selectedRows.map((product) => product.id!.toString());
-    this.api.disableProducts(ids).then((response) => {
+    this.repo.toggleEnableMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Productos deshabilitados');
         this.fetchProducts();
@@ -175,8 +176,8 @@ export class ProductsMonitorFacade extends FacadeBase {
   /**
    * Getters
    */
-  
+
   get selectedRows() {
-    return this.api.pagedProducts.value?.data.filter((product) => product.Checked) ?? [];
+    return this.repo.pagedProducts.value?.data.filter((product) => product.Checked) ?? [];
   }
 }

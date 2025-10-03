@@ -29,7 +29,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildGetAllQuery(this.client, this.sessionService);
       const { data, error } = await query;
-      data?.unshift({ id: '0', Name: 'Todas' });
+      data?.unshift({ id: '0', Name: 'Mas vendidos' });
       this.productCategories.value = super.handleResponse(data, error);
       return this.productCategories.value;
     }, 'Fetching Product Categories');

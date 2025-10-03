@@ -34,15 +34,15 @@ export class ProductsPageComponent extends HelperPage implements OnInit {
   }
 
   get data() {
-    return this.facade.api.pagedProducts.value?.data ?? [];
+    return this.facade.repo.pagedProducts.value?.data ?? [];
   }
 
   get rowCount() {
-    return this.facade.api.pagedProducts.value?.count ?? 0;
+    return this.facade.repo.pagedProducts.value?.count ?? 0;
   }
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   /**

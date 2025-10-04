@@ -19,8 +19,10 @@ export class PosPageComponent extends HelperPage implements AfterViewInit {
   /**
    * Getters
    */
- 
 
+  get products() {
+    return this.facade.repoProducts.products.value?.data ?? [];
+  }
   /**
    * Lifecycle
    */

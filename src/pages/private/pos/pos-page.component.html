@@ -17,6 +17,17 @@
                         </button>
                     </grid>
                 </grid>
+                <grid *ngIf="(products?.length ?? 0) > 0" [direction]="'column'" [gap]="[16,16]"
+                    [template]="'repeat(auto-fill, minmax(150px, 1fr))'" [height]="'100%'"
+                    class="wrap baseline scroll-v">
+                    <pos-product-card *ngFor="let product of products" [product]="product" />
+                </grid>
+                <grid *ngIf="(products?.length ?? 0) === 0" [direction]="'column'" [align]="'center-center'"
+                    [height]="'100%'" [padding]="'2rem'">
+                    <span class="f-14 fw-400 f-06 f-lh-17 t-center">
+                        No hay productos para mostrar en esta categoría
+                    </span>
+                </grid>
             </grid>
             <pos-category-tabs />
         </grid>

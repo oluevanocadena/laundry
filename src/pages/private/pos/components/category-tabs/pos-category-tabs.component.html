@@ -1,5 +1,5 @@
-<grid [direction]="'column'" [template]="'1fr'" [height]="'100%'" [padding]="'0 1rem'" class="baseline brdr-top bg-02"
-    [width]="'100%'" class="scroll-h">
+<grid [direction]="'column'" [template]="'1fr'" [height]="'100%'" [padding]="'0 1rem'" [width]="'100%'"
+    class="baseline brdr-top bg-02 scroll-h">
     <nz-tabset [nzSize]="'large'" [nzAnimated]="true" [nzSelectedIndex]="facade.tabIndex"
         (nzSelectedIndexChange)="facade.onTabIndexChange($event)">
         <ng-container *ngFor="let tab of tabsCategories">

@@ -74,9 +74,7 @@ export class ImageUploadComponent implements OnInit {
   private handleFile(file: File) {
     // Validar tamaño
     if (file.size > this.maxSizeMb * 1024 * 1024) {
-      this.nzMessageService.error(
-        `El archivo excede el tamaño máximo permitido de ${this.maxSizeMb}MB`
-      );
+      this.nzMessageService.error(`El archivo excede el tamaño máximo permitido de ${this.maxSizeMb}MB`);
       return;
     }
 
@@ -86,7 +84,6 @@ export class ImageUploadComponent implements OnInit {
       return;
     }
     this.file = file;
-    console.log('👉🏽 file', file);
     this.onSelected.emit(file);
   }
 
@@ -103,15 +100,12 @@ export class ImageUploadComponent implements OnInit {
       if (type.startsWith('.')) {
         return file.name.toLowerCase().endsWith(type.toLowerCase());
       }
-      return (
-        file.type === type || file.type.startsWith(type.replace('/*', '/'))
-      );
+      return file.type === type || file.type.startsWith(type.replace('/*', '/'));
     });
   }
 
   private showInvalidFileTypeError() {
-    const typeMessage =
-      this.accept === 'video/*' ? 'videos' : 'imágenes (JPEG, PNG)';
+    const typeMessage = this.accept === 'video/*' ? 'videos' : 'imágenes (JPEG, PNG)';
 
     this.nzMessageService.error(`Solo se permiten archivos de ${typeMessage}`);
   }

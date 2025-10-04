@@ -15,7 +15,7 @@ export class PosCategoryTabsComponent implements OnInit {
    */
 
   get tabsCategories() {
-    return this.facade.repoCategories.productCategories.value?.data ?? [];
+    return this.facade.categories.value ?? [];
   }
 
   ngOnInit() {}

@@ -176,8 +176,7 @@ export class ProductsDraftFacade extends FacadeBase {
     });
   }
 
-  onDeleteImage(url: string) {
-    console.log('📷 url', url);
+  onDeleteImage(url: string) { 
     this.urlImages = this.urlImages.filter((image) => image !== url);
   }
 

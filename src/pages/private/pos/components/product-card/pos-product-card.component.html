@@ -1,0 +1,15 @@
+<grid [direction]="'row'" [template]="'max-content 1fr max-content'" [height]="'150px'" [maxHeight]="'150px'"
+    [padding]="'1rem'" hoverable class="baseline brdr brdr-radius-8 bg-02 pointer">
+    <span class="f-14 fw-500 f-06 f-lh-17 t-center uppercase">
+        {{product.ProductCategory?.Name}}
+    </span>
+    <grid [direction]="'column'" [align]="'center-center'" [height]="'100%'">
+        <span class="f-16 fw-500 f-04 f-lh-17 t-center">
+            {{product.Name}}
+        </span>
+    </grid>
+    <span class="f-14 fw-600 f-04 f-lh-17 t-center">
+        {{product.Price | numeralFormat: '$0,0.00'}}
+    </span>
+
+</grid>

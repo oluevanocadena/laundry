@@ -13,8 +13,7 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./products-header.component.scss'],
 })
 export class ProductsHeaderComponent extends HelperPage {
-
-
+  override today = moment().locale('es').toDate().toString();
 
   constructor(public router: Router, public facade: ProductsDraftFacade) {
     super();
@@ -40,10 +39,7 @@ export class ProductsHeaderComponent extends HelperPage {
   }
 
   get dateCreated(): string {
-    return (
-      this.facade.product.value?.created_at ||
-      moment().locale('es').toDate().toString()
-    );
+    return this.facade.product.value?.created_at || this.today;
   }
 
   get productName(): string {
@@ -68,9 +64,7 @@ export class ProductsHeaderComponent extends HelperPage {
   get canSave(): boolean {
     return (
       this.facade.formGroup.valid &&
-      (this.facade.samePrice.value === false
-        ? this.facade.locationPrices.every((location) => location.Price > 0)
-        : true)
+      (this.facade.samePrice.value === false ? this.facade.locationPrices.every((location) => location.Price > 0) : true)
     );
   }
 

@@ -17,8 +17,7 @@
                         formControlName="description" [required]="true" />
 
                     <form-input [label]="'Categoría'" [type]="'select'" [placeholder]="'Seleccione una categoría'"
-                        formControlName="categoryId" [required]="true"
-                        [options]="facade.pcategoriesApi.productCategories.value" />
+                        formControlName="categoryId" [required]="true" [options]="producCategories" />
 
                     <form-input [label]="'Unidad de medida'" [type]="'select'" [placeholder]="'Seleccione'"
                         formControlName="unitMeasureId" [required]="true" [options]="unitMeasures" />

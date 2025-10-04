@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { ProductsQueryDomain } from '@bussiness/products/domains/products.query.domain';
 import { Product, ProductRequest } from '@bussiness/products/interfaces/products.interfaces';
 import { IProductsRepository } from '@bussiness/products/repository/products.repository';
+import { SupabaseBuckets } from '@globals/constants/supabase-tables.constants';
 
 import { ResponseResult } from '@globals/interfaces/requests.interface';
 import { PagedResults } from '@globals/interfaces/supabase.interface';
 import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { SubjectProp } from '@globals/types/subject.type';
+import { UtilsDomain } from '@globals/utils/utils.domain';
 
 @Injectable({
   providedIn: 'root',
@@ -38,9 +40,23 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     }, 'Fetching Product');
   }
 
-  search(search: string, page: number = 1, pageSize: number = 50, locationId: string, productCategoryId?: string): Promise<ResponseResult<Product[]>> {
+  search(
+    search: string,
+    page: number = 1,
+    pageSize: number = 50,
+    locationId: string,
+    productCategoryId?: string,
+  ): Promise<ResponseResult<Product[]>> {
     return this.executeWithBusy(async () => {
-      const query = ProductsQueryDomain.buildSearchQuery(this.client, this.sessionService, search, page, pageSize, locationId, productCategoryId);
+      const query = ProductsQueryDomain.buildSearchQuery(
+        this.client,
+        this.sessionService,
+        search,
+        page,
+        pageSize,
+        locationId,
+        productCategoryId,
+      );
       const { data, error } = await query;
       const result = super.handleResponse(data as unknown as Product[], error);
       this.products.value = result;
@@ -128,9 +144,17 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
 
   async uploadtImage(file: File): Promise<ResponseResult<string>> {
     return this.executeWithBusy(async () => {
-      // Implementación básica para subir imagen
-      // TODO: Implementar lógica de subida de archivos
-      return super.handleResponse('', null);
-    }, 'Uploading Image');
+      // Generar nombre único manteniendo la extensión original
+      const extension = file.name.split('.').pop();
+      const uniqueName = `${UtilsDomain.guid()}.${extension}`;
+
+      // Subir con ruta en carpeta "public" (por RLS)
+      const { data, error } = await this.client.storage.from(SupabaseBuckets.Products).upload(`public/${uniqueName}`, file);
+
+      // Obtener la URL pública
+      const { data: publicUrl } = this.client.storage.from(SupabaseBuckets.Products).getPublicUrl(`public/${uniqueName}`);
+
+      return super.handleResponse(publicUrl.publicUrl, error);
+    }, 'Uploading Product Image');
   }
 }

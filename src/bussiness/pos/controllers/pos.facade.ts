@@ -54,8 +54,7 @@ export class PosFacade extends FacadeBase {
 
   onTabIndexChange(index: number) {
     const locationId = this.sessionService.locationId;
-    const productCategoryId = this.categories.value?.[index]?.id?.toString();
-    console.log(productCategoryId);
+    const productCategoryId = this.categories.value?.[index]?.id?.toString(); 
     this.repoProducts.search('', 1, 20, locationId, productCategoryId === '0' ? undefined : productCategoryId);
   }
 }

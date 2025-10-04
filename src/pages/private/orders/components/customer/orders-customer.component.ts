@@ -15,6 +15,7 @@ export class OrdersCustomerComponent extends HelperPage implements OnInit {
   OrdersDomain = OrdersDomain;
   //Input
   @Input() edition: boolean = false;
+  @Input() collapsed: boolean = false;
 
   constructor(public facade: OrdersDraftFacade) {
     super();

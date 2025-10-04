@@ -1,8 +1,8 @@
 <grid [direction]="'row'" [gap]="[0,4]" [padding]="'0.125rem 0 0.5rem 0'">
     <grid [gap]="[4,8]" [direction]="'column'" [template]="isMobileOrTablet ? '1fr' : 'max-content 1fr'">
-        <status-badge *ngIf="ordersDomain.canProcessOrder(order) && isInstanceofOrderItem(item)" [label]="itemsDomain.statusName(item)"
-            [appearance]="itemsDomain.statusColor(item)" [size]="'m'" />
-        <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'"
+        <status-badge *ngIf="ordersDomain.canProcessOrder(order) && isInstanceofOrderItem(item)"
+            [label]="itemsDomain.statusName(item)" [appearance]="itemsDomain.statusColor(item)" [size]="'m'" />
+        <grid [direction]="'column'" [align]="'center-left'" [height]="'100%'" [width]="width"
             [padding]="isMobileOrTablet ? '0' : '0.125rem 0 0'">
             <tui-line-clamp [content]="titleClamp" [lineHeight]="18" [linesLimit]="1"
                 class="f-13 fw-400 f-lh-14 t-left" />

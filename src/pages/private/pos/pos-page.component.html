@@ -1,5 +1,5 @@
 <layout>
-    <grid [gap]="[0,0]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'1fr 350px'">
+    <grid [gap]="[0,0]" [direction]="'column'" [height]="'var(--full-vh)'" [template]="'1fr 368px'">
         <grid [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" class="baseline">
             <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem'" class="baseline">
                 <grid [direction]="'column'" [template]="'1fr max-content'">
@@ -18,9 +18,10 @@
                     </grid>
                 </grid>
                 <grid *ngIf="(products?.length ?? 0) > 0" [direction]="'column'" [gap]="[16,16]"
-                    [template]="'repeat(auto-fill, minmax(150px, 1fr))'" [height]="'100%'"
+                    [template]="'repeat(auto-fill, minmax(140px, 1fr))'" [height]="'100%'"
                     class="wrap baseline scroll-v">
-                    <pos-product-card *ngFor="let product of products" [product]="product" />
+                    <pos-product-card *ngFor="let product of products" [product]="product"
+                        (click)="facade.ordersDraftFacade.onSelectProduct(product, 1)" />
                 </grid>
                 <grid *ngIf="(products?.length ?? 0) === 0" [direction]="'column'" [align]="'center-center'"
                     [height]="'100%'" [padding]="'2rem'">
@@ -31,22 +32,29 @@
             </grid>
             <pos-category-tabs />
         </grid>
-        <grid [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" [padding]="'1rem'"
-            class="baseline brdr-left bg-02">
-            <grid [direction]="'column'" [template]="'1fr'" [height]="'100%'" class="baseline">
-
-            </grid>
-            <button primary large full>
-                <grid [direction]="'column'" [template]="'1fr max-content'" [width]="'100%'"
-                    [padding]="'0.25rem 0 0 0'">
-                    <grid [direction]="'column'" [align]="'center-left'">
-                        PAGAR
-                    </grid>
-                    <grid [direction]="'column'" [align]="'center-right'">
-                        {{0 | numeralFormat: '$0,0.00'}}
-                    </grid>
+        <grid [gap]="[8,16]" [direction]="'row'" [template]="'1fr max-content'" [height]="'100%'" [padding]="'1rem'"
+            class="baseline brdr-left bg-02 scroll-none">
+            <grid [gap]="[16,16]" [direction]="'row'" [template]="'1fr max-content'" [height]="'calc(100% - 1rem)'"
+                class="baseline scroll-v">
+                <grid [direction]="'row'" [gap]="[16,16]">
+                    <orders-customer [collapsed]="true" />
+                    <orders-items [showSearchProduct]="false" [widthDescription]="'130px'" />
                 </grid>
-            </button>
+                <orders-summary *ngIf="!isMobileOrTablet" />
+            </grid>
+            <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 0 0 0'" class="brdr-top">
+                <button primary large full [disabled]="!OrdersDomain.canCollectPayment(order)">
+                    <grid [direction]="'column'" [template]="'1fr max-content'" [width]="'100%'"
+                        [padding]="'0.25rem 0 0 0'">
+                        <grid [direction]="'column'" [align]="'center-left'">
+                            PAGAR
+                        </grid>
+                        <grid [direction]="'column'" [align]="'center-right'">
+                            {{totalOrder | numeralFormat: '$0,0.00'}}
+                        </grid>
+                    </grid>
+                </button>
+            </grid>
         </grid>
 
     </grid>

@@ -91,7 +91,7 @@ export class OrdersCollectPaymentComponent extends HelperPage {
 
   get cashMessage() {
     switch (this.deliveryType) {
-      case DeliveryTypesEnum.Showroom:
+      case DeliveryTypesEnum.StoreOrShowroom:
         return 'El total de la orden de se pagará en efectivo en mostrador.';
       case DeliveryTypesEnum.Delivery:
         return 'El total de la orden de se pagará en contra-entrega.';

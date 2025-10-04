@@ -1,4 +1,4 @@
-<tui-accordion-item class="container" [open]="true" [size]="'s'">
+<tui-accordion-item class="container" [open]="true" [size]="'s'" [open]="!collapsed">
     <span class="f-14 fw-500 f-05 f-lh-12">Cliente</span>
     <ng-template tuiAccordionItemContent>
         <grid *ngIf="hadCustomer === false" [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">

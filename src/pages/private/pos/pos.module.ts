@@ -16,6 +16,7 @@ import { PosCategoryTabsComponent } from '@pages/private/pos/components/category
 import { PosProductCardComponent } from '@pages/private/pos/components/product-card/pos-product-card.component';
 import { PosScannerModalComponent } from '@pages/private/pos/components/scanner-modal/pos-scanner-modal.component';
 import { PosPageComponent } from '@pages/private/pos/pos-page.component';
+import { OrdersModule } from '../orders/orders.module';
 
 const components = [PosPageComponent, PosScannerModalComponent, PosCategoryTabsComponent, PosProductCardComponent];
 
@@ -33,6 +34,7 @@ const components = [PosPageComponent, PosScannerModalComponent, PosCategoryTabsC
     NgZorroModule,
     TUIModule,
     NgZorroModule,
+    OrdersModule
   ],
   declarations: components,
   exports: components,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
@@ -18,6 +18,9 @@ import { UtilsDomain } from '@globals/utils/utils.domain';
   styleUrls: ['./orders-items.component.scss'],
 })
 export class OrdersItemsComponent extends HelperPage implements OnInit {
+  @Input() showSearchProduct: boolean = true;
+  @Input() widthDescription: string = '100%';
+
   utils = UtilsDomain;
   itemsDomain = OrdersItemsDomain;
   ordersDomain = OrdersDomain;

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 
 import { PosFacade } from '@bussiness/pos/controllers/pos.facade';
 import { HelperPage } from '@components/common/helper.page';
@@ -10,6 +11,8 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./pos-page.component.scss'],
 })
 export class PosPageComponent extends HelperPage implements AfterViewInit {
+  OrdersDomain = OrdersDomain;
+
   tabs = [1, 2, 3];
 
   constructor(public facade: PosFacade) {
@@ -23,6 +26,15 @@ export class PosPageComponent extends HelperPage implements AfterViewInit {
   get products() {
     return this.facade.repoProducts.products.value?.data ?? [];
   }
+
+  get totalOrder() {
+    return this.facade.ordersDraftFacade.orderTotals.value?.Total ?? 0;
+  }
+
+  get order() {
+    return this.facade.ordersDraftFacade.order.value;
+  }
+
   /**
    * Lifecycle
    */

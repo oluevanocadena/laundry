@@ -18,6 +18,10 @@
     display: none;
 }
 
+.scroll-none {
+    overflow: hidden;
+}
+
 .scroll-v {
     overflow-y: auto;
 }

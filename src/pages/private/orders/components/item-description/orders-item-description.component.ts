@@ -23,6 +23,7 @@ export class OrdersItemDescriptionComponent
 
   @Input() item: OrderItem | Product | null = null;
   @Input() order: Order | null = null;
+  @Input() width: string = '100%';
 
   constructor(public facade: OrdersDraftFacade) {
     super();

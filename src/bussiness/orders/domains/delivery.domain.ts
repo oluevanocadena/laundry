@@ -30,7 +30,7 @@ export class DeliveryDomain {
         return 'Recolección en sucursal';
       case DeliveryTypesEnum.Delivery:
         return 'Envío a domicilio';
-      case DeliveryTypesEnum.Showroom:
+      case DeliveryTypesEnum.StoreOrShowroom:
         return 'Venta de mostrador';
       default:
         return '';

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { CustomerForGeneralSale } from '@bussiness/customers/constants/customers.constants';
+import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
 import { IProductsRepository } from '@bussiness/products/repository/products.repository';
@@ -18,12 +20,15 @@ export class PosFacade extends FacadeBase {
     public repoProducts: IProductsRepository,
     public repoCategories: IProductCategoriesRepository,
     public sessionService: SessionService,
+    public ordersDraftFacade: OrdersDraftFacade,
   ) {
     super(repoProducts);
   }
 
   override initialize() {
     super.initialize();
+    this.ordersDraftFacade.initialize();
+    this.fillCustomer();
     this.repoCategories.getAll();
   }
 
@@ -49,12 +54,23 @@ export class PosFacade extends FacadeBase {
   }
 
   /**
+   * methods
+   */
+
+  fillCustomer() {
+    const customer = UtilsDomain.clone(CustomerForGeneralSale);
+    customer.Address = this.sessionService.sessionInfo.value?.Location?.Address;
+    customer.OrganizationId = this.sessionService.organizationId;
+    this.ordersDraftFacade.onSelectCustomer(customer);
+  }
+
+  /**
    * Events
    */
 
   onTabIndexChange(index: number) {
     const locationId = this.sessionService.locationId;
-    const productCategoryId = this.categories.value?.[index]?.id?.toString(); 
+    const productCategoryId = this.categories.value?.[index]?.id?.toString();
     this.repoProducts.search('', 1, 20, locationId, productCategoryId === '0' ? undefined : productCategoryId);
   }
 }

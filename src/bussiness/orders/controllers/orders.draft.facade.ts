@@ -239,7 +239,7 @@ export class OrdersDraftFacade extends FacadeBase {
       discountType: order?.DiscountType ?? DiscountTypesEnum.Amount,
     });
     this.orderDelivery.value = {
-      DeliveryType: order?.DeliveryType ?? DeliveryTypesEnum.Showroom,
+      DeliveryType: order?.DeliveryType ?? DeliveryTypesEnum.StoreOrShowroom,
       Date: order?.DeliveryDate
         ? (TuiDay.fromLocalNativeDate(moment(order.DeliveryDate).toDate()) as unknown as Date)
         : undefined,
@@ -304,7 +304,7 @@ export class OrdersDraftFacade extends FacadeBase {
         Date: undefined,
         Time: undefined,
         Cost: 0,
-        DeliveryType: DeliveryTypesEnum.Showroom,
+        DeliveryType: DeliveryTypesEnum.StoreOrShowroom,
       };
     }
   }

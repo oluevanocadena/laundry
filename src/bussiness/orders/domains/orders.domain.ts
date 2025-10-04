@@ -74,7 +74,7 @@ export class OrdersDomain {
   }
 
   static getOrderStatus(statusId: OrderStatusEnum, oderDeliveryType: DeliveryTypes): OrderStatusEnum {
-    if (oderDeliveryType === DeliveryTypesEnum.Showroom) {
+    if (oderDeliveryType === DeliveryTypesEnum.StoreOrShowroom) {
       return OrderStatusEnum.Completed;
     }
     if (statusId === OrderStatusEnum.Draft) {

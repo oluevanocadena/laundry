@@ -11,31 +11,27 @@
                     Aún no has agregado productos a este pedido.
                 </span>
             </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
-                class="border-top-02">
+            <grid *ngIf="showSearchProduct" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%"
+                padding="1rem 0 0 0" class="border-top-02">
                 <button *ngIf="ordersDomain.canSearchProduct(order)" secondary small
                     (click)="facade.showSearchProduct = true">
                     Buscar producto
                 </button>
             </grid>
         </grid>
-        <grid *ngIf="itemsCount > 0" [direction]="'row'" [gap]="[16,16]" [padding]="'0.5rem 0.25rem 0'">
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-left'" height="100%">
-                <span class="f-14 fw-500 f-06 f-lh-17">
-                    Articulos:
-                </span>
-            </grid>
+        <grid *ngIf="itemsCount > 0" [direction]="'row'" [gap]="[16,16]" [padding]="'0.5rem 0.25rem 0'"
+            [width]="'100%'">
             <grid *ngFor="let item of orderItems" [gap]="[0,16]" [direction]="'column'"
-                [template]="'max-content 1fr max-content'" width="100%">
+                [template]="'max-content 1fr max-content'" [width]="'100%'">
                 <grid [padding]="'0 0 0.5rem 0'">
                     <img src="{{item.ImageUrl}}" alt="{{item.Name}}" width="56" height="56"
                         (error)="utils.onImageError($event)" class="brdr-radius-4 img-cover" />
                 </grid>
-                <orders-item-description [item]="item" [order]="order" />
+                <orders-item-description [item]="item" [order]="order" [width]="widthDescription" />
                 <orders-item-pricing [item]="item" [order]="order" />
             </grid>
-            <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%" padding="1rem 0 0 0"
-                class="border-top-02">
+            <grid *ngIf="showSearchProduct" [gap]="[8,8]" [direction]="'column'" [align]="'center-right'" height="100%"
+                padding="1rem 0 0 0" class="border-top-02">
                 <button *ngIf="ordersDomain.canProcessOrder(order)" success small
                     (click)="facade.showItemsProcessing = true">
                     Procesar partidas

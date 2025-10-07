@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 
-import { NotificationsQueryDomain } from '@bussiness/notifications/domains/notifications.query.domain';
-import {
-  Notification as INotification,
-  Notification,
-  NotificationPagedResults,
-  NotificationRequest,
-} from '@bussiness/notifications/interfaces/notifications.interfaces';
-
-import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 import { LocalStorageCacheStore } from '@globals/strategies/cache/storage.cache.store';
 import { ICacheStore } from '@globals/types/cache.type';
 import { SubjectProp } from '@globals/types/subject.type';
+
+import { NotificationsQueryDomain } from '@bussiness/notifications/domains/notifications.query.domain';
+import {
+  Notification,
+  NotificationPagedResults,
+  NotificationRequest,
+} from '@bussiness/notifications/interfaces/notifications.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -94,7 +92,7 @@ export class NotificationsApiService extends SupabaseBaseApiService {
       const query = NotificationsQueryDomain.buildMarkAllAsReadQuery(this.client, this.accountId);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as INotification[], error);
+      return super.handleResponse(data as unknown as Notification[], error);
     });
   }
 
@@ -103,7 +101,7 @@ export class NotificationsApiService extends SupabaseBaseApiService {
       const query = NotificationsQueryDomain.buildMarkManyAsReadQuery(this.client, ids);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as INotification[], error);
+      return super.handleResponse(data as unknown as Notification[], error);
     });
   }
 
@@ -112,17 +110,16 @@ export class NotificationsApiService extends SupabaseBaseApiService {
       const query = NotificationsQueryDomain.buildMarkAsReadQuery(this.client, id);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as INotification[], error);
+      return super.handleResponse(data as unknown as Notification[], error);
     });
   }
 
   deleteNotifications(ids: string[]) {
     return this.executeWithBusy(async () => {
       const query = NotificationsQueryDomain.buildDeleteNotificationsQuery(this.client, ids);
-      const { data, error } = await query; 
+      const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as INotification[], error);
+      return super.handleResponse(data as unknown as Notification[], error);
     });
   }
-
 }

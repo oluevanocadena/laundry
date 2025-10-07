@@ -32,7 +32,7 @@ import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.typ
 import { PaymentMethods } from '@bussiness/orders/types/payments.type';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
-import { ProductsApiService } from '@bussiness/products/services/products.api.service';
+import { IProductsRepository } from '@bussiness/products/repository/products.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 const tuiToday = TuiDay.fromLocalNativeDate(moment().add(1, 'day').toDate());
@@ -95,7 +95,7 @@ export class OrdersDraftFacade extends FacadeBase {
   constructor(
     public repo: IOrdersRepository,
     public apiCustomers: CustomersApiService,
-    public apiProducts: ProductsApiService,
+    public repoProducts: IProductsRepository,
     public facadeProducts: ProductsDraftFacade,
     public nzMessageService: NzMessageService,
     public router: Router,
@@ -186,7 +186,7 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   fetchProducts(search: string) {
-    this.apiProducts.searchProducts(search, 1, 5, this.sessionService.locationId);
+    this.repoProducts.search(search, 1, 5, this.sessionService.locationId);
   }
 
   updateOrderItemStatus(status: OrderItemStatusEnum) {

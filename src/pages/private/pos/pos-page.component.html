@@ -43,7 +43,8 @@
                 <orders-summary *ngIf="!isMobileOrTablet" />
             </grid>
             <grid [direction]="'row'" [gap]="[16,16]" [padding]="'1rem 0 0 0'" class="brdr-top">
-                <button primary large full [disabled]="!OrdersDomain.canCollectPayment(order)">
+                <button (click)="facade.ordersDraftFacade.openCollectPaymentModal()" primary large full
+                    [disabled]="!OrdersDomain.canCollectPayment(order)">
                     <grid [direction]="'column'" [template]="'1fr max-content'" [width]="'100%'"
                         [padding]="'0.25rem 0 0 0'">
                         <grid [direction]="'column'" [align]="'center-left'">
@@ -59,3 +60,6 @@
 
     </grid>
 </layout>
+
+<orders-print [(show)]="facade.ordersDraftFacade.showPrintModal"
+    (onClose)="facade.ordersDraftFacade.showPrintModal = false" />

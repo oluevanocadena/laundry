@@ -75,12 +75,12 @@ export class OrdersSearchProductComponent extends HelperTablePage<Product> imple
    */
 
   get busy(): boolean {
-    return this.facade.apiProducts.busy.value;
+    return this.facade.repoProducts.busy.value;
   }
 
   get products(): Product[] {
     return (
-      this.facade.apiProducts.products.value?.filter((product) => {
+      this.facade.repoProducts.products.value?.data?.filter((product) => {
         return product.ProductLocationPrice?.find(
           (price) => price.LocationId === this.sessionService.sessionInfo.value?.Location?.id,
         );
@@ -101,7 +101,7 @@ export class OrdersSearchProductComponent extends HelperTablePage<Product> imple
    */
   ngOnInit() {
     this.facade.fetchProducts('');
-    this.facade.apiProducts.busy.onChange((value) => {
+    this.facade.repoProducts.busy.onChange((value) => {
       this.cdr.detectChanges();
     });
   }

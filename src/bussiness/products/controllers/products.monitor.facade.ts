@@ -9,7 +9,6 @@ import { ProductPageTableColumns } from '@bussiness/products/constants/product.c
 import { ProductsDefaultTableFilter } from '@bussiness/products/constants/product.constants';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
-import { ProductsApiService } from '@bussiness/products/services/products.api.service';
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 

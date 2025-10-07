@@ -53,7 +53,7 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
 
     this.facade.submitForm().then((response) => {
       if (response?.success) {
-        this.facade.api.getLocations();
+        this.facade.repo.getAll();
         this.close(true);
       } else {
         this.nzMessageService.error('¡Ocurrió un error al guardar los cambios!');
@@ -62,7 +62,7 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
   }
 
   onDisableOrEnableClick() {
-    if (this.facade.api.locations.value?.length === 1) {
+    if (this.facade.repo.locations.value?.length === 1) {
       this.nzMessageService.error('¡No se puede deshabilitar la única sucursal!');
       return;
     }
@@ -70,7 +70,7 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
   }
 
   onDeleteClick() {
-    if (this.facade.api.locations.value?.length === 1) {
+    if (this.facade.repo.locations.value?.length === 1) {
       this.nzMessageService.error('¡No se puede eliminar la única sucursal!');
       return;
     }
@@ -115,11 +115,11 @@ export class LocationsDrawerDraftComponent extends HelperPage implements OnInit 
   }
 
   get busy(): boolean {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   get canDisableOrDelete(): boolean {
-    return this.facade.api.locations.value?.length !== 1;
+    return this.facade.repo.locations.value?.length !== 1;
   }
 
   /**

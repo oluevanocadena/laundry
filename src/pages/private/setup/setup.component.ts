@@ -21,7 +21,7 @@ export class SetupPageComponent extends HelperPage {
     return (
       this.facade.accountApi.busy.value ||
       this.facade.organizationApi.busy.value ||
-      this.facade.locationsApi.busy.value
+      this.facade.repoLocations.busy.value
     );
   }
 

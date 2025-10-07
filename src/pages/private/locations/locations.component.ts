@@ -22,7 +22,7 @@ export class LocationsPageComponent extends HelperPage implements OnInit {
   }
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   get columns() {
@@ -30,11 +30,11 @@ export class LocationsPageComponent extends HelperPage implements OnInit {
   }
 
   get rowCount() {
-    return this.facade.api.pagedLocations.value?.count ?? 0;
+    return this.facade.repo.pagedLocations.value?.count ?? 0;
   }
 
   get data() {
-    return this.facade.api.pagedLocations.value?.data ?? [];
+    return this.facade.repo.pagedLocations.value?.data ?? [];
   }
 
   /**

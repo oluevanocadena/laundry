@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
+
 import { routes } from '@app/routes';
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
-import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
-import { OrganizationsApiService } from '@bussiness/session/services/organizations.api.service';
-import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
-import { SessionService } from '@bussiness/session/services/session.service';
-import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { system } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { NzMessageService } from 'ng-zorro-antd/message';
+
+import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
+import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
+import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
+import { OrganizationsApiService } from '@bussiness/session/services/organizations.api.service';
+import { SessionService } from '@bussiness/session/services/session.service';
+import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -43,14 +45,14 @@ export class SetupFacade extends FacadeBase {
   organization = new SubjectProp<Organization>(null);
 
   constructor(
-    public locationsApi: LocationsApiService,
+    public repoLocations: ILocationsRepository,
     public organizationApi: OrganizationsApiService,
     public accountApi: AccountsApiService,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
-    public router: Router
+    public router: Router,
   ) {
-    super(locationsApi);
+    super(repoLocations);
   }
 
   public override initialize(): void {
@@ -80,19 +82,17 @@ export class SetupFacade extends FacadeBase {
       let account = this.sessionService.sessionInfo.value?.Account;
       let organization = account?.Organization;
       if (organization && organization.id && account) {
-        const responseOrganization =
-          await this.organizationApi.saveOrganization({
-            ...organization,
-            Name: this.formGroup.value.organizationName!,
-          });
+        const responseOrganization = await this.organizationApi.saveOrganization({
+          ...organization,
+          Name: this.formGroup.value.organizationName!,
+        });
 
         if (responseOrganization.success === false) {
           throw new Error('Error al crear la organización');
         }
 
         organization = responseOrganization.data!;
-        const country =
-          this.formGroupLocation.value.country || system.defaultCountry;
+        const country = this.formGroupLocation.value.country || system.defaultCountry;
 
         const responseAccount = await this.accountApi.saveAccount({
           id: account.id,
@@ -116,7 +116,7 @@ export class SetupFacade extends FacadeBase {
           throw new Error('Error al crear la cuenta');
         }
 
-        const response = await this.locationsApi.saveLocation({
+        const response = await this.repoLocations.save({
           Name: this.formGroupLocation.value.name!,
           Phone: this.formGroupLocation.value.phone!,
           Country: country,
@@ -141,18 +141,14 @@ export class SetupFacade extends FacadeBase {
             ...account,
             Organization: organization,
           },
-          Location: response?.response,
+          Location: response?.data ?? null,
         } as SessionInfo;
 
-        this.nzMessageService.success(
-          'Se completó la configuración correctamente'
-        );
+        this.nzMessageService.success('Se completó la configuración correctamente');
         this.router.navigate([routes.Home]);
       }
     } catch (error: any) {
-      this.nzMessageService.error(
-        error.message || 'Ocurrió un error al completar el setup'
-      );
+      this.nzMessageService.error(error.message || 'Ocurrió un error al completar el setup');
     }
   }
 

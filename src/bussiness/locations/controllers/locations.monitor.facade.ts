@@ -8,7 +8,7 @@ import { LocationsPageTableColumns } from '@bussiness/locations/constants/locati
 import { LocationsDefaultTableFilter } from '@bussiness/locations/constants/locations.constants';
 import { LocationsDraftFacade } from '@bussiness/locations/controllers/locations.draft.facade';
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
+import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
@@ -50,12 +50,12 @@ export class LocationsMonitorFacade extends FacadeBase {
   ];
 
   constructor(
-    public api: LocationsApiService,
+    public repo: ILocationsRepository,
     public draftFacade: LocationsDraftFacade,
     public storageService: StorageService,
     private nzMessageService: NzMessageService,
   ) {
-    super(api);
+    super(repo);
   }
 
   override initialize() {
@@ -77,7 +77,7 @@ export class LocationsMonitorFacade extends FacadeBase {
    */
 
   fetchLocations() {
-    this.api.getPagedLocations({
+    this.repo.getPaged({
       page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
       pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
       dateFrom: this.tableFilter.value?.dateFrom ?? null,
@@ -95,7 +95,7 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   onTablePaginationChange(filter: UITablePagination) {
     this.tablePagination.value = filter;
-    this.api.cacheStore.clear();
+    this.repo.cacheStore.clear();
     this.fetchLocations();
   }
 
@@ -123,7 +123,7 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   onDeleteLocations() {
     const ids = this.selectedRows.map((location) => location.id!);
-    this.api.deleteLocations(ids).then((response) => {
+    this.repo.deleteMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Sucursales eliminadas');
         this.fetchLocations();
@@ -136,7 +136,7 @@ export class LocationsMonitorFacade extends FacadeBase {
 
   onDisableLocations() {
     const ids = this.selectedRows.map((location) => location.id!);
-    this.api.disableLocations(ids).then((response) => {
+    this.repo.toggleEnableMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Sucursales deshabilitadas');
         this.fetchLocations();
@@ -173,6 +173,6 @@ export class LocationsMonitorFacade extends FacadeBase {
   }
 
   get selectedRows() {
-    return this.api.pagedLocations.value?.data.filter((location) => location.Checked && location.Default === false) ?? [];
+    return this.repo.pagedLocations.value?.data.filter((location) => location.Checked && location.Default === false) ?? [];
   }
 }

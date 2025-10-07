@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { routes } from '@app/routes';
 
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
+import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
@@ -39,7 +39,7 @@ export class HomeFacade extends FacadeBase {
   constructor(
     public sessionService: SessionService,
     public api: SessionApiService,
-    public apiLocations: LocationsApiService,
+    public repoLocations: ILocationsRepository,
     public ordersDraftFacade: OrdersDraftFacade,
     public router: Router,
   ) {
@@ -50,7 +50,7 @@ export class HomeFacade extends FacadeBase {
     super.initialize();
     this.validateRoute();
     if (this.locations.value?.length === 0) {
-      this.apiLocations.getLocations().then((response) => {
+      this.repoLocations.getAll().then((response) => {
         this.locations.value = response.data ?? [];
       });
     }

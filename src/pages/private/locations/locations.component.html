@@ -42,7 +42,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="facade.api.busy.value">
+                    <tr *ngIf="busy">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">

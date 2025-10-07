@@ -4,6 +4,8 @@ import { CustomersSupabaseRepository } from '@bussiness/customers/repository/cus
 
 import { IFeedbackRepository } from '@bussiness/feedback/repository/feeback.repository';
 import { FeedbackSupabaseRepository } from '@bussiness/feedback/repository/feeback.supabase.repository';
+import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
+import { LocationsSupabaseRepository } from '@bussiness/locations/repository/locations.supabase.repository';
 import { IOrdersRepository } from '@bussiness/orders/repository/orders.repository';
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
@@ -24,6 +26,7 @@ import { SupportTicketSupabaseRepository } from '@bussiness/support/repository/s
  */
 export const repositoryProviders: Provider[] = [
   { provide: IFeedbackRepository, useClass: FeedbackSupabaseRepository },
+  { provide: ILocationsRepository, useClass: LocationsSupabaseRepository },
   { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
   { provide: ISupportModulesRepository, useClass: SupportModulesSupabaseRepository },
   { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },

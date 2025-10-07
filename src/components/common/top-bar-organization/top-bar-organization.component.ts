@@ -19,7 +19,7 @@ export class TopBarOrganizationComponent extends HelperPage implements OnInit {
    */
 
   get locations() {
-    return this.facade.apiLocations.locations.value?.filter(
+    return this.facade.repoLocations.locations.value?.filter(
       (location) => location.Deleted === false && location.Disabled === false,
     );
   }

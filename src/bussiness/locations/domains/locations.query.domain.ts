@@ -66,4 +66,48 @@ export class LocationsQueryDomain {
       return { data: [], error: null };
     });
   }
+
+  // Métodos adicionales para el repository
+  static buildGetAllQuery(client: SupabaseClient, sessionService: SessionService) {
+    return client
+      .from(SupabaseTables.Locations)
+      .select('*')
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('Deleted', false)
+      .eq('Disabled', false);
+  }
+
+  static buildGetByIdQuery(client: SupabaseClient, sessionService: SessionService, id: string) {
+    return client
+      .from(SupabaseTables.Locations)
+      .select('*')
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('id', id)
+      .eq('Deleted', false)
+      .single();
+  }
+
+  static buildSaveOrUpdateQuery(client: SupabaseClient, location: any) {
+    return client.from(SupabaseTables.Locations).upsert(location).select('*').single();
+  }
+
+  static buildDisableQuery(client: SupabaseClient, sessionService: SessionService, id: string, state: boolean) {
+    return client
+      .from(SupabaseTables.Locations)
+      .update({ Disabled: state })
+      .eq('id', id)
+      .eq('OrganizationId', sessionService.organizationId)
+      .select('*')
+      .single();
+  }
+
+  static buildDeleteQuery(client: SupabaseClient, sessionService: SessionService, id: string) {
+    return client
+      .from(SupabaseTables.Locations)
+      .delete()
+      .eq('id', id)
+      .eq('OrganizationId', sessionService.organizationId)
+      .select('*')
+      .single();
+  }
 }

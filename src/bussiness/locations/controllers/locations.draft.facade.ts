@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { FacadeBase } from '@globals/types/facade.base';
 import { StorageProp } from '@globals/types/storage.type';
 
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
+import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { system } from '@environments/environment';
-import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root',
@@ -37,11 +37,11 @@ export class LocationsDraftFacade extends FacadeBase {
   public selectedLocation = new StorageProp<Location>(null, 'LOCATION_EDITION');
 
   constructor(
-    public api: LocationsApiService,
+    public repo: ILocationsRepository,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
   ) {
-    super(api);
+    super(repo);
   }
 
   override initialize() {
@@ -87,12 +87,12 @@ export class LocationsDraftFacade extends FacadeBase {
       Default: this.selectedLocation.value?.Default || value.default || false,
       OrganizationId: this.sessionService.organizationId,
     };
-    return this.api.saveLocation(location);
+    return this.repo.save(location);
   }
 
   disableLocation(id: string, disabled: boolean) {
-    return this.api.disableLocation(id, disabled).then(() => {
-      this.api.getLocations();
+    return this.repo.disable(id, disabled).then(() => {
+      this.repo.getAll();
       if (this.selectedLocation.value) {
         this.selectedLocation.value.Disabled = !this.selectedLocation.value.Disabled;
       }
@@ -100,8 +100,8 @@ export class LocationsDraftFacade extends FacadeBase {
   }
 
   deleteLocation(id: string) {
-    return this.api.deleteLocation(id).then(() => {
-      this.api.getLocations();
+    return this.repo.delete(id).then(() => {
+      this.repo.getAll();
       if (this.selectedLocation.value) {
         this.selectedLocation.value.Deleted = true;
       }

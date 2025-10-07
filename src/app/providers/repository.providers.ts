@@ -6,6 +6,8 @@ import { IFeedbackRepository } from '@bussiness/feedback/repository/feeback.repo
 import { FeedbackSupabaseRepository } from '@bussiness/feedback/repository/feeback.supabase.repository';
 import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 import { LocationsSupabaseRepository } from '@bussiness/locations/repository/locations.supabase.repository';
+import { INotificationsRepository } from '@bussiness/notifications/repository/notifications.repository';
+import { NotificationsSupabaseRepository } from '@bussiness/notifications/repository/notifications.supabase.repository';
 import { IOrdersRepository } from '@bussiness/orders/repository/orders.repository';
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
@@ -27,6 +29,7 @@ import { SupportTicketSupabaseRepository } from '@bussiness/support/repository/s
 export const repositoryProviders: Provider[] = [
   { provide: IFeedbackRepository, useClass: FeedbackSupabaseRepository },
   { provide: ILocationsRepository, useClass: LocationsSupabaseRepository },
+  { provide: INotificationsRepository, useClass: NotificationsSupabaseRepository },
   { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
   { provide: ISupportModulesRepository, useClass: SupportModulesSupabaseRepository },
   { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },

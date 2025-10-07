@@ -82,4 +82,32 @@ export class NotificationsQueryDomain {
   static buildDeleteNotificationsQuery(client: SupabaseClient, ids: string[]) {
     return client.from(SupabaseTables.Notifications).delete().in('id', ids).select();
   }
+
+  // Métodos adicionales para el repository
+  static buildGetAllQuery(client: SupabaseClient, accountId: string) {
+    return client
+      .from(SupabaseTables.Notifications)
+      .select('*')
+      .eq('AccountId', accountId)
+      .order('created_At', { ascending: false });
+  }
+
+  static buildGetByIdQuery(client: SupabaseClient, accountId: string, id: string) {
+    return client
+      .from(SupabaseTables.Notifications)
+      .select('*')
+      .eq('AccountId', accountId)
+      .eq('id', id)
+      .single();
+  }
+
+  static buildDeleteQuery(client: SupabaseClient, accountId: string, id: string) {
+    return client
+      .from(SupabaseTables.Notifications)
+      .delete()
+      .eq('AccountId', accountId)
+      .eq('id', id)
+      .select('*')
+      .single();
+  }
 }

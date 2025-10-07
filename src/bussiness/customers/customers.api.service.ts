@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Customer, CustomerPagedResults, CustomerRequest } from '@bussiness/customers/customers.interfaces';
+import { Customer, CustomerPagedResults, CustomerRequest } from '@bussiness/customers/interfaces/customers.interfaces';
 import { CustomersQueryDomain } from '@bussiness/customers/domains/customer.query.domain';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';

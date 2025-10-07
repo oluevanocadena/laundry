@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { routes } from '@app/routes';
 
+import { StorageService } from '@services/common/storage.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
@@ -9,6 +10,7 @@ import { ProductPageTableColumns } from '@bussiness/products/constants/product.c
 import { ProductsDefaultTableFilter } from '@bussiness/products/constants/product.constants';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { Product } from '@bussiness/products/interfaces/products.interfaces';
+import { IProductsRepository } from '@bussiness/products/repository/products.repository';
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
@@ -17,8 +19,6 @@ import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } f
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
-import { StorageService } from '@services/common/storage.service';
-import { IProductsRepository } from '../repository/products.repository';
 
 @Injectable({
   providedIn: 'root',

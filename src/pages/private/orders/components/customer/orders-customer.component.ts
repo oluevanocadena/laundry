@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { HelperPage } from '@components/common/helper.page';

@@ -9,7 +9,7 @@ import { CustomerPageTableColumns } from '@bussiness/customers/constants/custome
 import { CustomerDefaultTableFilter } from '@bussiness/customers/constants/customers.constants';
 import { CustomersDraftFacade } from '@bussiness/customers/controllers/customers.draft.facade';
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';

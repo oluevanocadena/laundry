@@ -7,7 +7,7 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { StorageProp } from '@globals/types/storage.type';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { system } from '@environments/environment';
 import { FormProp } from '@globals/types/form.type';

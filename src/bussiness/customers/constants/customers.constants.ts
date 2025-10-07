@@ -1,4 +1,4 @@
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { UIDefaultTableFilter } from '@globals/constants/supabase-tables.constants';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 import { UtilsDomain } from '@globals/utils/utils.domain';

@@ -13,8 +13,6 @@ import { HelperPage } from '@components/common/helper.page';
 export class PosPageComponent extends HelperPage implements AfterViewInit {
   OrdersDomain = OrdersDomain;
 
-  tabs = [1, 2, 3];
-
   constructor(public facade: PosFacade) {
     super();
   }

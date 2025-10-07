@@ -21,7 +21,7 @@ import { PaymentMethodsEnum, PaymentStatusIdEnum } from '@bussiness/orders/enums
 import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 
 import { CustomersApiService } from '@bussiness/customers/customers.api.service';
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { OrdersCartDomain } from '@bussiness/orders/domains/orders.cart.domain';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 import { OrdersPaymentDomain } from '@bussiness/orders/domains/orders.payment.domain';

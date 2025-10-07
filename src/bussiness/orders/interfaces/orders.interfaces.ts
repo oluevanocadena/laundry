@@ -1,4 +1,4 @@
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces';
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
 import { PaymentMethods } from '@bussiness/orders/types/payments.type';

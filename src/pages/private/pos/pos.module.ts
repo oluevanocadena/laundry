@@ -12,11 +12,11 @@ import { NgZorroModule } from '@components/ng-zorro.module';
 import { TUIModule } from '@components/tui.module';
 import { UIModule } from '@components/ui.module';
 
+import { OrdersModule } from '@pages/private/orders/orders.module';
 import { PosCategoryTabsComponent } from '@pages/private/pos/components/category-tabs/pos-category-tabs.component';
 import { PosProductCardComponent } from '@pages/private/pos/components/product-card/pos-product-card.component';
 import { PosScannerModalComponent } from '@pages/private/pos/components/scanner-modal/pos-scanner-modal.component';
 import { PosPageComponent } from '@pages/private/pos/pos-page.component';
-import { OrdersModule } from '../orders/orders.module';
 
 const components = [PosPageComponent, PosScannerModalComponent, PosCategoryTabsComponent, PosProductCardComponent];
 
@@ -34,7 +34,7 @@ const components = [PosPageComponent, PosScannerModalComponent, PosCategoryTabsC
     NgZorroModule,
     TUIModule,
     NgZorroModule,
-    OrdersModule
+    OrdersModule,
   ],
   declarations: components,
   exports: components,

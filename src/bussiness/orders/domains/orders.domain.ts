@@ -1,7 +1,7 @@
 import { TuiAppearanceOptions } from '@taiga-ui/core';
 import moment from 'moment';
 
-import { Customer } from '@bussiness/customers/customers.interfaces';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { DeliveryTypesEnum } from '@bussiness/orders/enums/order.delivery.enums';
 import { DiscountTypesEnum } from '@bussiness/orders/enums/order.discount.enums';
 import { PaymentMethodsEnum, PaymentStatusIdEnum, PaymentStatusNameEnum } from '@bussiness/orders/enums/order.payment.enums';

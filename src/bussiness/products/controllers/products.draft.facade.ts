@@ -10,7 +10,7 @@ import { StorageProp } from '@globals/types/storage.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
+import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
 import { Product, ProductLocation, ProductLocationPrice } from '@bussiness/products/interfaces/products.interfaces';
 import { IProductsRepository } from '@bussiness/products/repository/products.repository';
@@ -50,7 +50,7 @@ export class ProductsDraftFacade extends FacadeBase {
     public repo: IProductsRepository,
     public repoUnitMeasures: IUnitMeasureRepository,
     public repoProdCat: IProductCategoriesRepository,
-    public locationApi: LocationsApiService,
+    public repoLocations: ILocationsRepository,
     public nzMessageService: NzMessageService,
     public router: Router,
     public sessionService: SessionService,
@@ -62,12 +62,12 @@ export class ProductsDraftFacade extends FacadeBase {
     super.initialize();
     this.repoUnitMeasures.getAll();
     this.repoProdCat.getAll();
-    this.locationApi.getLocations();
+    this.repoLocations.getAll();
     this.fillForm();
   }
 
   bindEvents() {
-    this.locationApi.locations.onChange((locations) => {
+    this.repoLocations.locations.onChange((locations) => {
       const prices = this.product.value?.ProductLocationPrice || [];
       const availability = this.product.value?.ProductLocations || [];
       this.locationPrices =
@@ -176,7 +176,7 @@ export class ProductsDraftFacade extends FacadeBase {
     });
   }
 
-  onDeleteImage(url: string) { 
+  onDeleteImage(url: string) {
     this.urlImages = this.urlImages.filter((image) => image !== url);
   }
 

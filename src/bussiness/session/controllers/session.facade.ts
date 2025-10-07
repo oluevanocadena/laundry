@@ -5,7 +5,7 @@ import { routes } from '@app/routes';
 import { createClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { LocationsApiService } from '@bussiness/locations/services/locations.api.service';
+import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
@@ -37,7 +37,7 @@ export class SessionFacade extends FacadeBase {
     public realTimeNotifications: NotificationsRealtimeService,
     public apiOrders: OrdersSupabaseRepository,
     public apiAccounts: AccountsApiService,
-    public apiLocations: LocationsApiService,
+    public repoLocations: ILocationsRepository,
     public nzMessageService: NzMessageService,
     public sessionService: SessionService,
     public router: Router,
@@ -81,11 +81,11 @@ export class SessionFacade extends FacadeBase {
       if (!roles) {
         throw new Error(genericError);
       }
-      const responseLocation = await this.apiLocations.getDefaultLocation(responseAccount.data!.OrganizationId);
+      const responseLocation = await this.repoLocations.getDefaultLocation(responseAccount.data!.OrganizationId);
       const sessionInfo: SessionInfo = {
         Session: responseSession.data!,
         Account: responseAccount.data!,
-        Location: responseLocation.data ?? null,
+        Location: responseLocation.data!,
         Roles: roles.data ?? [],
       };
       this.sessionService.sessionInfo.value = sessionInfo;

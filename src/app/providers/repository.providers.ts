@@ -1,4 +1,6 @@
 import { Provider } from '@angular/core';
+import { ICustomersRepository } from '@bussiness/customers/repository/customers.repository';
+import { CustomersSupabaseRepository } from '@bussiness/customers/repository/customers.supabase.repository';
 
 import { IFeedbackRepository } from '@bussiness/feedback/repository/feeback.repository';
 import { FeedbackSupabaseRepository } from '@bussiness/feedback/repository/feeback.supabase.repository';
@@ -29,4 +31,5 @@ export const repositoryProviders: Provider[] = [
   { provide: IOrganizationsRepository, useClass: OrganizationsSupabaseRepository },
   { provide: IProductCategoriesRepository, useClass: ProductCategoriesSupabaseRepository },
   { provide: IProductsRepository, useClass: ProductsSupabaseRepository },
+  { provide: ICustomersRepository, useClass: CustomersSupabaseRepository },
 ];

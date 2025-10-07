@@ -53,4 +53,52 @@ export class CustomersQueryDomain {
       return { data: [], error: null };
     });
   }
+
+  static buildGetAllQuery(client: SupabaseClient, sessionService: SessionService) {
+    return client
+      .from(SupabaseTables.Customers)
+      .select('*')
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('Deleted', false)
+      .eq('Disabled', false);
+  }
+
+  static buildGetByIdQuery(client: SupabaseClient, sessionService: SessionService, id: string) {
+    return client
+      .from(SupabaseTables.Customers)
+      .select('*')
+      .eq('OrganizationId', sessionService.organizationId)
+      .eq('id', id)
+      .eq('Deleted', false)
+      .single();
+  }
+
+  static buildSaveOrUpdateQuery(client: SupabaseClient, customer: any) {
+    return client
+      .from(SupabaseTables.Customers)
+      .upsert(customer)
+      .select('*')
+      .single();
+  }
+
+  static buildDisableQuery(client: SupabaseClient, sessionService: SessionService, id: string, state: boolean) {
+    return client
+      .from(SupabaseTables.Customers)
+      .update({ Disabled: state })
+      .eq('id', id)
+      .eq('OrganizationId', sessionService.organizationId)
+      .select('*')
+      .single();
+  }
+
+  static buildDeleteQuery(client: SupabaseClient, sessionService: SessionService, id: string) {
+    return client
+      .from(SupabaseTables.Customers)
+      .update({ Deleted: true })
+      .eq('id', id)
+      .eq('OrganizationId', sessionService.organizationId)
+      .select('*')
+      .single();
+  }
+
 }

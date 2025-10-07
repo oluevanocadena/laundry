@@ -69,11 +69,11 @@ export class OrdersSearchCustomerComponent
    */
 
   get busy(): boolean {
-    return this.facade.apiCustomers.busy.value;
+    return this.facade.repoCustomers.busy.value;
   }
 
   get customers(): Customer[] {
-    return this.facade.apiCustomers.customers.value ?? [];
+    return this.facade.repoCustomers.pagedCustomers.value?.data ?? [];
   }
 
   get canSave(): boolean {

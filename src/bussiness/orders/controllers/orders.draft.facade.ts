@@ -20,7 +20,7 @@ import { DiscountTypesEnum } from '@bussiness/orders/enums/order.discount.enums'
 import { PaymentMethodsEnum, PaymentStatusIdEnum } from '@bussiness/orders/enums/order.payment.enums';
 import { OrderItemStatusEnum, OrderStatusEnum } from '@bussiness/orders/enums/orders.enums';
 
-import { CustomersApiService } from '@bussiness/customers/customers.api.service';
+import { ICustomersRepository } from '@bussiness/customers/repository/customers.repository';
 import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
 import { OrdersCartDomain } from '@bussiness/orders/domains/orders.cart.domain';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
@@ -94,7 +94,7 @@ export class OrdersDraftFacade extends FacadeBase {
 
   constructor(
     public repo: IOrdersRepository,
-    public apiCustomers: CustomersApiService,
+    public repoCustomers: ICustomersRepository,
     public repoProducts: IProductsRepository,
     public facadeProducts: ProductsDraftFacade,
     public nzMessageService: NzMessageService,
@@ -182,7 +182,13 @@ export class OrdersDraftFacade extends FacadeBase {
    */
 
   fetchCustomers(search: string) {
-    this.apiCustomers.getCustomers(search, 1, 5);
+    this.repoCustomers.getPaged({
+      page: 1,
+      pageSize: 5,
+      search: search,
+      sortBy: 'created_at',
+      sortOrder: 'asc',
+    });
   }
 
   fetchProducts(search: string) {

@@ -22,7 +22,7 @@ export class CustomersPageComponent extends HelperPage implements OnInit {
    */
 
   get rowCount() {
-    return this.facade.api.pagedCustomers.value?.count ?? 0;
+    return this.facade.repo.pagedCustomers.value?.count ?? 0;
   }
 
   get columns() {
@@ -30,11 +30,11 @@ export class CustomersPageComponent extends HelperPage implements OnInit {
   }
 
   get data() {
-    return this.facade.api.pagedCustomers.value?.data ?? [];
+    return this.facade.repo.pagedCustomers.value?.data ?? [];
   }
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   /**

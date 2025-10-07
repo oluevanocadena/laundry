@@ -8,8 +8,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { CustomerPageTableColumns } from '@bussiness/customers/constants/customer.columns.constant';
 import { CustomerDefaultTableFilter } from '@bussiness/customers/constants/customers.constants';
 import { CustomersDraftFacade } from '@bussiness/customers/controllers/customers.draft.facade';
-import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
+import { ICustomersRepository } from '@bussiness/customers/repository/customers.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
@@ -51,14 +51,14 @@ export class CustomersMonitorFacade extends FacadeBase {
   ];
 
   constructor(
-    public api: CustomersApiService,
+    public repo: ICustomersRepository,
     public draftFacade: CustomersDraftFacade,
     public router: Router,
     public sessionService: SessionService,
     public storageService: StorageService,
     private nzMessageService: NzMessageService,
   ) {
-    super(api);
+    super(repo);
     this.columns = this.storageService.get('CUSTOMERS_COLUMNS') || UtilsDomain.clone(CustomerPageTableColumns);
     this.fetchCustomers();
     this.bindEvents();
@@ -71,7 +71,7 @@ export class CustomersMonitorFacade extends FacadeBase {
   bindEvents() {}
 
   clearState() {
-    this.api.pagedCustomers.value = null;
+    this.repo.pagedCustomers.value = null;
   }
 
   submitForm() {}
@@ -84,10 +84,9 @@ export class CustomersMonitorFacade extends FacadeBase {
     const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
     const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
 
-    this.api.getPagedCustomers({
+    this.repo.getPaged({
       page: pagination?.page ?? UITableConstants.DefaultPage,
       pageSize: pagination?.pageSize ?? UITableConstants.DefaultPageSize,
-      locationId: this.sessionService?.locationId ?? null,
       dateFrom: starDate!,
       dateTo: endDate!,
       select: this.tableFilter.value?.select ?? null,
@@ -129,7 +128,7 @@ export class CustomersMonitorFacade extends FacadeBase {
 
   onDeleteCustomers() {
     const ids = this.selectedRows.map((customer) => customer.id!.toString());
-    this.api.deleteCustomers(ids).then((response) => {
+    this.repo.deleteMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Clientes eliminados');
         this.fetchCustomers();
@@ -142,7 +141,7 @@ export class CustomersMonitorFacade extends FacadeBase {
 
   onDisableCustomers() {
     const ids = this.selectedRows.map((customer) => customer.id!.toString());
-    this.api.disableCustomers(ids).then((response) => {
+    this.repo.toggleEnableMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Clientes deshabilitados');
         this.fetchCustomers();
@@ -165,6 +164,6 @@ export class CustomersMonitorFacade extends FacadeBase {
    * Getters
    */
   get selectedRows() {
-    return this.api.pagedCustomers.value?.data.filter((customer) => customer.Checked) ?? [];
+    return this.repo.pagedCustomers.value?.data.filter((customer) => customer.Checked) ?? [];
   }
 }

@@ -3,14 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { routes } from '@app/routes';
+import { system } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
+import { FormProp } from '@globals/types/form.type';
 import { StorageProp } from '@globals/types/storage.type';
 
-import { CustomersApiService } from '@bussiness/customers/customers.api.service';
 import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
+import { ICustomersRepository } from '@bussiness/customers/repository/customers.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { system } from '@environments/environment';
-import { FormProp } from '@globals/types/form.type';
 
 @Injectable({
   providedIn: 'root',
@@ -41,8 +41,8 @@ export class CustomersDraftFacade extends FacadeBase {
   public customer = new StorageProp<Customer>(null, 'CUSTOMER_EDITION');
   public phone = new FormProp<string>(this.formGroup, 'phone');
 
-  constructor(public api: CustomersApiService, public router: Router, public sessionService: SessionService) {
-    super(api);
+  constructor(public repo: ICustomersRepository, public router: Router, public sessionService: SessionService) {
+    super(repo);
   }
 
   override initialize() {
@@ -131,7 +131,7 @@ export class CustomersDraftFacade extends FacadeBase {
       OrganizationId: this.sessionService.organizationId,
     };
 
-    this.api.saveCustomer(customer).then(() => {
+    this.repo.save(customer).then(() => {
       this.router.navigate([routes.Customers]);
     });
   }
@@ -143,7 +143,7 @@ export class CustomersDraftFacade extends FacadeBase {
   onDelete() {
     const customer = this.customer.value;
     if (customer?.id) {
-      this.api.deleteCustomer(customer.id).then(() => {
+      this.repo.delete(customer.id).then(() => {
         this.router.navigate([routes.Customers]);
       });
     }
@@ -152,19 +152,12 @@ export class CustomersDraftFacade extends FacadeBase {
   onDisable() {
     const customer = this.customer.value;
     if (customer?.id) {
-      if (customer.Disabled) {
-        this.api.enableCustomer(customer.id).then(() => {
-          if (this.customer.value) {
-            this.customer.value.Disabled = false;
-          }
-        });
-      } else {
-        this.api.disableCustomer(customer.id).then(() => {
-          if (this.customer.value) {
-            this.customer.value.Disabled = true;
-          }
-        });
-      }
+      const newDisabledState = !customer.Disabled;
+      this.repo.disable(customer.id, newDisabledState).then(() => {
+        if (this.customer.value) {
+          this.customer.value.Disabled = newDisabledState;
+        }
+      });
     }
   }
 }

@@ -51,7 +51,7 @@ export class CustomersHeaderComponent extends HelperPage implements OnInit {
   }
 
   get busy(): boolean {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   get customerStatus(): string {

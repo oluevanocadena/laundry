@@ -50,7 +50,7 @@ export class NotificationsRealtimeService extends SupabaseBaseApiService {
 
   public stopListening() {
     if (this.channel) {
-      this.nzMessageService.warning('⚠️ El canal de notificaciones ha sido desconectado, reintentando conectar...');
+      this.errorHandler.warning('⚠️ El canal de notificaciones ha sido desconectado, reintentando conectar...');
       this.client.removeChannel(this.channel);
       console.log('👉 unsubscribed from notifications');
       this.channel = null;

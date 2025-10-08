@@ -65,6 +65,7 @@ export class PosFacade extends FacadeBase {
     const result = await this.repoCustomers.getPosCustomer(this.sessionService.organizationId, true);
     if (result?.success && result.data) {
       this.posCustomer.value = result.data;
+      console.log('👉🏽 result', result.data);
       this.ordersDraftFacade.onSelectCustomer(result.data);
     }
   }

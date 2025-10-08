@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Inject } from '@angular/core';
 import { Session } from '@supabase/supabase-js';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { firstValueFrom } from 'rxjs';
 
 import { SessionService } from '@bussiness/session/services/session.service';
@@ -14,6 +13,7 @@ import { ICacheStore } from '@globals/types/cache.type';
 import { FacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { ResponseResult } from '@globals/interfaces/requests.interface';
+import { ErrorHandlerService } from '@globals/services/error-handler.service';
 
 export class SupabaseBaseApiService implements FacadeApiBase {
   public busy = new BusyProp(false);
@@ -22,8 +22,8 @@ export class SupabaseBaseApiService implements FacadeApiBase {
   public session = new SubjectProp<Session | null>(null);
 
   //Injects
-  @Inject(NzMessageService)
-  public nzMessageService: NzMessageService = inject(NzMessageService);
+  @Inject(ErrorHandlerService)
+  public errorHandler: ErrorHandlerService = inject(ErrorHandlerService);
 
   @Inject(HttpClient)
   public http: HttpClient = inject(HttpClient);
@@ -49,21 +49,20 @@ export class SupabaseBaseApiService implements FacadeApiBase {
     return new MemoryCacheStore();
   }
 
-  protected async executeWithBusy<T>(fn: () => Promise<ResponseResult<T>>, message?: string): Promise<ResponseResult<T>> {
+  protected async executeWithBusy<T>(fn: () => Promise<ResponseResult<T>>, context?: string): Promise<ResponseResult<T>> {
     this.busy.value = true;
     try {
       return await fn();
     } catch (error) {
-      this.nzMessageService.error('Ocurrió un error al realizar la acción');
-      console.error('⛔ Error:', error);
+      this.errorHandler.handleError(error, context || 'SupabaseBaseApiService');
       return {
         data: null,
         success: false,
         error: {
-          message: 'Ocurrió un error al realizar la acción',
+          message: this.errorHandler.getUserFriendlyMessage(error),
           raw: error,
           details: error,
-          code: '500',
+          code: (error as any)?.code?.toString() ?? '500',
         },
       };
     } finally {
@@ -106,20 +105,23 @@ export class SupabaseBaseApiService implements FacadeApiBase {
     }
   }
 
-  protected handleResponse<T>(data: T | null, error: any, message?: string, count?: number | null): ResponseResult<T> {
+  protected handleResponse<T>(data: T | null, error: any, context?: string, count?: number | null): ResponseResult<T> {
     if (error) {
-      console.error('⛔ Error:', error);
+      // Log del error sin mostrar mensaje (executeWithBusy ya lo mostró)
+      this.errorHandler.debug('Error en handleResponse', error, context || 'SupabaseBaseApiService');
     }
     return {
       data: data as T | null,
       success: !error ? true : false,
       count: count ?? 0,
-      error: {
-        message: message || 'Ocurrió un error al realizar la acción',
-        raw: error,
-        details: error,
-        code: error?.code?.toString() ?? '500',
-      },
+      error: error
+        ? {
+            message: this.errorHandler.getUserFriendlyMessage(error),
+            raw: error,
+            details: error,
+            code: error?.code?.toString() ?? '500',
+          }
+        : null,
     };
   }
 

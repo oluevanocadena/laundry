@@ -1,6 +1,6 @@
-import { Role } from '@bussiness/accounts/interfaces/users.roles.interfaces';
+import { Role } from '@bussiness/roles/interfaces/roles.interfaces';
 import { Organization } from '@bussiness/organizations/interfaces/organizations.interface';
-import { PagedRequest } from '@globals/interfaces/supabase.interface';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 
 export interface Account {

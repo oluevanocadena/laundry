@@ -1,5 +1,5 @@
 import { UIButtonAppearance } from '@globals/types/ui.button.type';
-import { PagedRequest } from '@globals/interfaces/supabase.interface';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
 
 export interface UITableColumn {
   label: string;
@@ -16,16 +16,6 @@ export interface UITablePagination {
   totalPages: number;
 }
 
-export interface UITableFilterBase {
-  dateFrom: string | Date | null;
-  dateTo: string | Date | null;
-  sortBy: string | null;
-  sortOrder: 'asc' | 'desc';
-  select?: string | null;
-  search?: string | null;
-  segment?: string | null;
-}
-
 export interface UITableActions {
   label: string;
   icon?: string;
@@ -33,4 +23,4 @@ export interface UITableActions {
   action: () => void;
 }
 
-export interface UITableFilter extends PagedRequest, UITableFilterBase {}
+export interface UITableFilter extends PagedRequest {}

@@ -105,4 +105,8 @@ export class HomeComponent extends HelperPage {
       this.cdr.detectChanges();
     });
   }
+
+  ngOnDestroy(): void {
+    this.facade.unbindEvents();
+  }
 }

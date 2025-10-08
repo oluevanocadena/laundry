@@ -5,12 +5,13 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { AccountsPageTableColumns } from '@bussiness/accounts/constants/accounts.columns.constant';
 import { AccountsDefaultTableFilter } from '@bussiness/accounts/constants/accounts.constants';
-import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Account } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
+import { UITableActions, UITableColumn, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { StorageProp } from '@globals/types/storage.type';
 import { SubjectProp } from '@globals/types/subject.type';
@@ -42,7 +43,7 @@ export class AccountsMonitorFacade extends FacadeBase {
   ];
 
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
-  tableFilter = new SubjectProp<UITableFilterBase>(AccountsDefaultTableFilter);
+  tableFilter = new SubjectProp<PagedRequest>(AccountsDefaultTableFilter);
   columns = AccountsPageTableColumns;
   selectedAccount = new StorageProp<Account>(null, 'ACCOUNT_SELECTED');
 
@@ -91,9 +92,9 @@ export class AccountsMonitorFacade extends FacadeBase {
     this.columns = UtilsDomain.clone(columns);
   }
 
-  onFiltersChange(filter: UITableFilterBase) {
+  onFiltersChange(filter: PagedRequest) {
     console.log('👉🏽 filter', filter);
-    this.tableFilter.value = filter as UITableFilterBase;
+    this.tableFilter.value = filter as PagedRequest;
     this.fetchUsers();
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Role } from '@bussiness/accounts/interfaces/users.roles.interfaces';
+import { Role } from '@bussiness/roles/interfaces/roles.interfaces';
 import { RolesQueryDomain } from '@bussiness/roles/domains/roles.query.domain';
 import { IRolesRepository } from '@bussiness/roles/repository/roles.repository';
 import { ResponseResult } from '@globals/interfaces/requests.interface';

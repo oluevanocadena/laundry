@@ -57,11 +57,13 @@ export class HomeFacade extends FacadeBase {
   }
 
   bindEvents(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.validateRoute();
-      }
-    });
+    this.subscriptions.add(
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.validateRoute();
+        }
+      }),
+    );
   }
 
   clearState(): void {}

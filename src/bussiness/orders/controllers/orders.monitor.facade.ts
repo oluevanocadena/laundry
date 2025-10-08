@@ -15,7 +15,8 @@ import { SessionService } from '@bussiness/session/services/session.service';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
+import { UITableActions, UITableColumn, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -37,7 +38,7 @@ export class OrdersMonitorFacade extends FacadeBase {
   };
 
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
-  tableFilter = new SubjectProp<UITableFilterBase>(OrderDefaultTableFilter);
+  tableFilter = new SubjectProp<PagedRequest>(OrderDefaultTableFilter);
   columns: UITableColumn[] = [];
 
   actions: UITableActions[] = [
@@ -112,8 +113,8 @@ export class OrdersMonitorFacade extends FacadeBase {
     this.columns = UtilsDomain.clone(columns);
   }
 
-  onFiltersChange(filter: UITableFilterBase) {
-    this.tableFilter.value = filter as UITableFilterBase;
+  onFiltersChange(filter: PagedRequest) {
+    this.tableFilter.value = filter as PagedRequest;
     this.fetchOrders();
   }
 

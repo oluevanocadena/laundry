@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SupportDraftFacade } from '@bussiness/support/controllers/support.draft.facade';
 import { SupportTicketComment } from '@bussiness/support/interfaces/support.interfaces';
-import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Account } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import moment from 'moment';
 
 @Component({

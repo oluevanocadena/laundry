@@ -3,7 +3,7 @@ import { OrderItem } from '@bussiness/orders/interfaces/orders.items.interfaces'
 import { DeliveryTypes, DiscountTypes } from '@bussiness/orders/types/orders.types';
 import { PaymentMethods } from '@bussiness/orders/types/payments.type';
 import { Organization } from '@bussiness/organizations/interfaces/organizations.interface';
-import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Account } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { PagedResults } from '@globals/interfaces/supabase.interface';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 

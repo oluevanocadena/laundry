@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AccountsQueryDomain } from '@bussiness/accounts/domains/accounts.query.domain';
-import { Account, AccountRequest, AccountRole, InviteUserRequest } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Account, AccountRequest, AccountRole, InviteUserRequest } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { IAccountsRepository, SaveAccountOptions } from '@bussiness/accounts/repository/accounts.repository';
 import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
 import { ResponseResult } from '@globals/interfaces/requests.interface';

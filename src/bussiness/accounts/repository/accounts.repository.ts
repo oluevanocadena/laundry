@@ -1,5 +1,5 @@
 import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
-import { Account, AccountRole, InviteUserRequest } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Account, AccountRole, InviteUserRequest } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { SemiFullRepository } from '@globals/interfaces/repository.definitions';
 import { EdgeFunctionResponse } from '@globals/interfaces/supabase.interface';
 import { ResponseResult } from '@globals/interfaces/requests.interface';

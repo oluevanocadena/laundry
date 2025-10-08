@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { Subscription } from 'rxjs';
 
+import { routes } from '@app/routes';
+import {
+  ReadOnlyRepository,
+  ReportRepository,
+  SemiFullRepository,
+  WritableRepository,
+} from '@globals/interfaces/repository.definitions';
 import { BusyProp } from '@globals/types/busy.type';
 import { SubjectProp } from '@globals/types/subject.type';
-import {
-  SemiFullRepository,
-  ReadOnlyRepository,
-  WritableRepository,
-  ReportRepository,
-} from '@globals/interfaces/repository.definitions';
 
 @Injectable()
 export abstract class FacadeBase implements LifecycleStrategy {
-  // public routes = Routes;
+  public routes = routes;
   // public strings = Strings;
+  protected subscriptions = new Subscription();
 
   constructor(
     api: IFacadeApiBase | SemiFullRepository<any> | WritableRepository<any> | ReadOnlyRepository<any> | ReportRepository<any>,
@@ -33,6 +36,10 @@ export abstract class FacadeBase implements LifecycleStrategy {
 
   // Submit form for save data
   public abstract submitForm(): void;
+
+  public unbindEvents(): void {
+    this.subscriptions.unsubscribe();
+  }
 }
 
 export abstract class FacadeStepFormBase implements LifecycleStrategyStepForm {

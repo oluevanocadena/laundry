@@ -6,8 +6,9 @@ import { UISelectOption } from '@components/atoms/form-input/form-input.componen
 import { HelperPage } from '@components/common/helper.page';
 import { ModalColumnsSort } from '@components/common/modal-columns-sort/modal-columns-sort.component';
 import { UIDefaultTableFilter } from '@globals/constants/supabase-tables.constants';
-import { UITableColumn, UITableFilterBase } from '@globals/interfaces/ui.interfaces';
+import { UITableColumn } from '@globals/interfaces/ui.interfaces';
 import { FormProp } from '@globals/types/form.type';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
 
 @Component({
   selector: 'table-filters',
@@ -38,8 +39,8 @@ export class TableFiltersComponent extends HelperPage {
   };
   @Input() defaultSortBy: string | null = null;
 
-  private _tableFilter: UITableFilterBase | null = UIDefaultTableFilter;
-  @Input() set tableFilter(value: UITableFilterBase | null) {
+  private _tableFilter: PagedRequest | null = UIDefaultTableFilter;
+  @Input() set tableFilter(value: PagedRequest | null) {
     this._tableFilter = value;
   }
   get tableFilter() {
@@ -47,7 +48,7 @@ export class TableFiltersComponent extends HelperPage {
   }
 
   @Output() onCtaClick: EventEmitter<void> = new EventEmitter<void>();
-  @Output() onFiltersChange = new EventEmitter<UITableFilterBase>();
+  @Output() onFiltersChange = new EventEmitter<PagedRequest>();
 
   //FormGroup
   formGroup = new FormGroup({
@@ -69,7 +70,7 @@ export class TableFiltersComponent extends HelperPage {
     this.date.onChange((dateRange) => {
       if (dateRange) {
         this.onFiltersChange.emit({
-          ...(this.tableFilter as UITableFilterBase),
+          ...(this.tableFilter as PagedRequest),
           dateFrom: dateRange[0],
           dateTo: dateRange[1],
         });
@@ -78,7 +79,7 @@ export class TableFiltersComponent extends HelperPage {
     this.select.onChange((select) => {
       if (select) {
         this.onFiltersChange.emit({
-          ...(this.tableFilter as UITableFilterBase),
+          ...(this.tableFilter as PagedRequest),
           select: select,
         });
       }
@@ -91,7 +92,7 @@ export class TableFiltersComponent extends HelperPage {
 
   onSortChange(sort: ModalColumnsSort) {
     this.onFiltersChange.emit({
-      ...(this.tableFilter as UITableFilterBase),
+      ...(this.tableFilter as PagedRequest),
       sortBy: sort.column,
       sortOrder: sort.order,
     });
@@ -99,14 +100,14 @@ export class TableFiltersComponent extends HelperPage {
 
   onSearchChange(search: string) {
     this.onFiltersChange.emit({
-      ...(this.tableFilter as UITableFilterBase),
+      ...(this.tableFilter as PagedRequest),
       search: search,
     });
   }
 
   onSegmentChange(value: string | number) {
     this.onFiltersChange.emit({
-      ...(this.tableFilter as UITableFilterBase),
+      ...(this.tableFilter as PagedRequest),
       segment: value.toString(),
     });
   }

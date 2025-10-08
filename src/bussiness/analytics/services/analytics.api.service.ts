@@ -4,7 +4,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { SessionService } from '@bussiness/session/services/session.service';
-import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Account } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { BusyProp } from '@globals/types/busy.type';
 import { IFacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';

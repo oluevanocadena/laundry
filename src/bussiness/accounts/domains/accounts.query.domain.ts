@@ -1,7 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 
-import { AccountRequest } from '@bussiness/accounts/interfaces/users.interfaces';
-import { Account, AccountRole } from '@bussiness/accounts/interfaces/users.interfaces';
+import { AccountRequest } from '@bussiness/accounts/interfaces/accounts.interfaces';
+import { Account, AccountRole } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 export class AccountsQueryDomain {

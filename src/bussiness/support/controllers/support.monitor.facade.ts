@@ -7,7 +7,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { routes } from '@app/routes';
 
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
-import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
+import { UITableActions, UITableColumn, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
@@ -37,7 +38,9 @@ export class SupportMonitorFacade extends FacadeBase {
   };
 
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
-  tableFilter = new SubjectProp<UITableFilterBase>({
+  tableFilter = new SubjectProp<PagedRequest>({
+    page: UITableConstants.DefaultPage,
+    pageSize: UITableConstants.DefaultPageSize,
     dateFrom: moment().toDate(),
     dateTo: moment().toDate(),
     select: null,
@@ -113,8 +116,8 @@ export class SupportMonitorFacade extends FacadeBase {
     this.columns = UtilsDomain.clone(columns);
   }
 
-  onFiltersChange(filter: UITableFilterBase) {
-    this.tableFilter.value = filter as UITableFilterBase;
+  onFiltersChange(filter: PagedRequest) {
+    this.tableFilter.value = filter as PagedRequest;
     this.fetchTickets();
   }
 

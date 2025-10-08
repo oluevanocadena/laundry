@@ -1,5 +1,5 @@
 import { Location } from '@bussiness/locations/interfaces/locations.interfaces';
-import { Account, AccountRole } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Account, AccountRole } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { Session } from '@supabase/supabase-js';
 
 export interface SessionInfo {

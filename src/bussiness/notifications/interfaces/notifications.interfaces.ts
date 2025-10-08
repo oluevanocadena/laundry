@@ -1,8 +1,9 @@
+import { Account } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { NotificationsEntitiesEnum, NotificationsEventsEnum } from '@bussiness/notifications/enums/notifications.enums';
 import { Organization } from '@bussiness/organizations/interfaces/organizations.interface';
-import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
 
-import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
+import { PagedRequest } from '@globals/interfaces/requests.interface';
+import { PagedResults } from '@globals/interfaces/supabase.interface';
 
 export interface Notification {
   id?: string;

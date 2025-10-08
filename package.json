@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:portal": "node dist/portal/server/server.mjs",
+    "test:e2e:ui": "playwright test --ui",
     "test:e2e": "playwright test",
     "test:e2e:report": "playwright show-report"
   },

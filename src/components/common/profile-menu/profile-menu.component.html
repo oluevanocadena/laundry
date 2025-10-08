@@ -2,7 +2,7 @@
     nzTrigger="click" [nzDropdownMenu]="menu" /> -->
 <grid [direction]="'column'" [align]="'center-right'" [height]="'100%'">
     <nz-avatar [nzText]="userLetter" nzShape="square" [nzGap]="0" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu"
-        class="bg-primary-hsl" />
+        class="bg-primary-hsl" [attr.data-testid]="'profile-menu'" />
 </grid>
 
 <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -28,7 +28,7 @@
                 Configuración
             </button>
             <button flat small flex [width]="'100%'" class="f-03 {{isMobileOrTablet ? 'f-16' : 'f-13'}}"
-                (click)="facade.signOut()">
+                (click)="facade.signOut()" [attr.data-testid]="'logout'">
                 <tui-icon icon="@tui.log-out" class="fw-100 f-error {{isMobileOrTablet ? 'f-16' : 'f-13'}}" />
                 Cerrar sesión
             </button>

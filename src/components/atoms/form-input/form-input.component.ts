@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Injector, Input, Output, ViewChild, forwardRef, inject } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormGroupDirective, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { InputDateDropdownComponent } from '@components/atoms/input-date-dropdown/input-date-dropdown.component';
 import { type MaskitoTimeMode } from '@maskito/kit';
 import { TUI_IS_IOS, TuiBooleanHandler, TuiDay, TuiIdentityMatcher, TuiStringHandler } from '@taiga-ui/cdk';
@@ -40,6 +40,8 @@ export class FormInputComponent implements ControlValueAccessor {
   @Input() maxRows: number = 6;
   @Input() prefixIcon: string = 'hash';
   @Input() timeMask: MaskitoTimeMode = 'HH:MM';
+
+  controlName?: string;
 
   //Options
   private _options: (UISelectOption | any)[] | null = [];
@@ -151,6 +153,18 @@ export class FormInputComponent implements ControlValueAccessor {
 
   ngAfterContentInit() {
     const ngControl = this.injector.get(NgControl, null);
+    const formGroupDir = this.injector.get(FormGroupDirective, null);
+
+    if (ngControl && formGroupDir) {
+      // Busca el nombre del control recorriendo el FormGroup
+      for (const [name, control] of Object.entries(formGroupDir.form.controls)) {
+        if (control === ngControl.control) {
+          this.controlName = name;
+          break;
+        }
+      }
+    }
+
     if (ngControl?.control) {
       // ✅ usa únicamente los validadores del padre
       this.valueControl.setValidators(ngControl.control.validator ?? null);

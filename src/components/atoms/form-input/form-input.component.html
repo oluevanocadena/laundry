@@ -5,7 +5,8 @@
         <ng-container [ngSwitch]="orientation">
             <ng-container *ngSwitchCase="'horizontal'">
                 <grid [gap]="[6,8]" [direction]="'column'" [align]="'center-left'">
-                    <input [formControl]="valueControl" tuiSwitch type="checkbox" [size]="'s'" />
+                    <input [formControl]="valueControl" tuiSwitch type="checkbox" [size]="'s'"
+                        [attr.data-testid]="controlName" />
                     <span *ngIf="label" class="f-12 f-lh-14 fw-500 f-04 w-content pdd-0">
                         {{ label }}
                         <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
@@ -17,7 +18,8 @@
                     {{ label }}
                     <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
                 </span>
-                <input [formControl]="valueControl" tuiSwitch type="checkbox" [size]="'s'" />
+                <input [formControl]="valueControl" tuiSwitch type="checkbox" [size]="'s'"
+                    [attr.data-testid]="controlName" />
             </ng-container>
         </ng-container>
     </grid>
@@ -31,7 +33,8 @@
         </span>
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
-            <input [formControl]="valueControl" type="text" [placeholder]="placeholder" tuiTextfield />
+            <input [formControl]="valueControl" type="text" [placeholder]="placeholder" tuiTextfield
+                [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -44,7 +47,8 @@
         </span>
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="outerLabel"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
-            <input [formControl]="valueControl" type="text" [placeholder]="placeholder" tuiTextfield />
+            <input [formControl]="valueControl" type="text" [placeholder]="placeholder" tuiTextfield
+                [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -58,7 +62,7 @@
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
             class="{{hadError ? 't-input_error' : ''}}">
             <input [formControl]="valueControl" type="text" autocomplete="tel" [mask]="countryCode + '### ###-##-##'"
-                [placeholder]="placeholder" tuiInputPhone />
+                [placeholder]="placeholder" tuiInputPhone [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -71,7 +75,8 @@
         </span>
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
             class="{{hadError ? 't-input_error' : ''}}">
-            <input [placeholder]="placeholder" tuiTextfield type="password" [formControl]="valueControl" />
+            <input [placeholder]="placeholder" tuiTextfield type="password" [formControl]="valueControl"
+                [attr.data-testid]="controlName" />
             <tui-icon tuiPassword icon="@tui.eye" />
         </tui-textfield>
     </grid>
@@ -85,7 +90,8 @@
         </span>
         <tui-textfield iconStart="@tui.dollar-sign" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
-            <input tuiInputNumber [min]="min" [formControl]="valueControl" [tuiNumberFormat]="{precision: 2}" />
+            <input tuiInputNumber [min]="min" [formControl]="valueControl" [tuiNumberFormat]="{precision: 2}"
+                [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -98,7 +104,7 @@
         </span>
         <tui-textfield [tuiTextfieldLabelOutside]="outerLabel" [tuiTextfieldSize]="size">
             <textarea [placeholder]="placeholder" tuiTextarea [formControl]="valueControl" [min]="maxRows"
-                [max]="maxRows"></textarea>
+                [max]="maxRows" [attr.data-testid]="controlName"></textarea>
         </tui-textfield>
     </grid>
 
@@ -111,8 +117,8 @@
         </span>
         <tui-textfield iconStart="@tui.{{prefixIcon}}" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
-            <input tuiInputNumber [min]="min" [max]="max" [step]="step" [postfix]="postFix"
-                [formControl]="valueControl" />
+            <input tuiInputNumber [min]="min" [max]="max" [step]="step" [postfix]="postFix" [formControl]="valueControl"
+                [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -126,7 +132,7 @@
         <tui-textfield iconStart="@tui.hash" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
             <input tuiInputNumber [min]="min" [max]="max" [step]="0.1" [postfix]="postFix" [quantum]="0.01"
-                [formControl]="valueControl" />
+                [formControl]="valueControl" [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -140,8 +146,8 @@
         <tui-textfield tuiChevron [tuiTextfieldSize]="size" [tuiTextfieldCleaner]="clearable"
             [content]="stringifyContent" [stringify]="stringify" [identityMatcher]="identityMatcher"
             [disabledItemHandler]="disabledItemHandler" class="{{hadError ? 't-input_error' : ''}}">
-            <input *ngIf="(options || []).length > 0" tuiSelect [placeholder]="placeholder"
-                [formControl]="valueControl" />
+            <input *ngIf="(options || []).length > 0" tuiSelect [placeholder]="placeholder" [formControl]="valueControl"
+                [attr.data-testid]="controlName" />
             <tui-data-list-wrapper *tuiTextfieldDropdown new [items]="options" />
         </tui-textfield>
     </grid>
@@ -155,7 +161,8 @@
         </span>
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
             class="{{hadError ? 't-input_error' : ''}}">
-            <input tuiInputDate [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
+            <input tuiInputDate [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl"
+                [attr.data-testid]="controlName" />
             <tui-calendar *tuiTextfieldDropdown />
         </tui-textfield>
     </grid>
@@ -169,7 +176,8 @@
         </span>
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
             class="{{hadError ? 't-input_error' : ''}}">
-            <input tuiInputDateRange [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl" />
+            <input tuiInputDateRange [placeholder]="placeholder" [min]="minDate" [formControl]="valueControl"
+                [attr.data-testid]="controlName" />
             <tui-calendar-range *tuiTextfieldDropdown />
         </tui-textfield>
     </grid>
@@ -183,7 +191,8 @@
         </span>
         <tui-textfield [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true" [tuiTextfieldCleaner]="clearable"
             class="{{hadError ? 't-input_error' : ''}}">
-            <input tuiInputTime [placeholder]="placeholder" [formControl]="valueControl" />
+            <input tuiInputTime [placeholder]="placeholder" [formControl]="valueControl"
+                [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -197,7 +206,7 @@
         <tui-textfield iconStart="@tui.search" [tuiTextfieldSize]="size" [tuiTextfieldLabelOutside]="true"
             [tuiTextfieldCleaner]="clearable" class="{{hadError ? 't-input_error' : ''}}">
             <input [attr.placeholder]="placeholder" tuiTextfield [formControl]="valueControl"
-                (input)="onInputSearch($event.target)" />
+                (input)="onInputSearch($event.target)" [attr.data-testid]="controlName" />
         </tui-textfield>
     </grid>
 
@@ -207,7 +216,8 @@
         [template]="orientation === 'horizontal' ? 'max-content 1fr' : 'fr'">
         <label>
             <grid [gap]="[6, 8]" [direction]="'column'" [align]="'center-left'">
-                <input size="s" tuiCheckbox type="checkbox" [formControl]="valueControl" />
+                <input size="s" tuiCheckbox type="checkbox" [formControl]="valueControl"
+                    [attr.data-testid]="controlName" />
                 <span *ngIf="label" class="f-13 fw-500 f-01" class="w-content">
                     {{ label }}
                     <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
@@ -223,6 +233,6 @@
             {{ label }}
             <span *ngIf="required" class="f-13 fw-500 f-error">*</span>
         </span>
-        <input-date-dropdown [formControl]="valueControl" />
+        <input-date-dropdown [formControl]="valueControl" [attr.data-testid]="controlName" />
     </grid>
 </ng-container>

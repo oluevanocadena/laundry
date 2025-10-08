@@ -30,7 +30,7 @@
             </grid>
         </form>
         <grid [gap]="[16,24]" [direction]="'row'" width="100%">
-            <button (click)="facade.login()" primary large full>
+            <button (click)="facade.login()" primary large full [attr.data-testid]="'submit-login'">
                 Iniciar sesión
             </button>
             <grid [direction]="'row'" [gap]="[8,16]">

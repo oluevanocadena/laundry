@@ -39,7 +39,7 @@
                             padding="1rem 0 0 0">
                             <button (click)="facade.register()" large full primary
                                 [disabled]="!facade.canRegister || facade.api.busy.value"
-                                [showLoader]="facade.api.busy.value">
+                                [showLoader]="facade.api.busy.value" [attr.data-testid]="'submit-register'">
                                 Registrarme
                             </button>
                         </grid>
@@ -74,7 +74,7 @@
                 </span>
             </grid>
             <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
-                <button large full primary [routerLink]="routes.Login">
+                <button large full primary [routerLink]="routes.Login" [attr.data-testid]="'login-link'">
                     Iniciar sesión
                 </button>
             </grid>

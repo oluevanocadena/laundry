@@ -1,6 +1,5 @@
-// tests/auth/login.spec.ts
 import { test, expect } from '@playwright/test';
-import { loginAs, logout } from './login.helpers';
+import { loginAs, logout } from './auth.helpers';
 
 test.describe('Login funcional', () => {
   test('El administrador puede iniciar sesión', async ({ page }) => {

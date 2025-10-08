@@ -8,3 +8,11 @@ export const loginData = {
     password: 'Brikerr5341#',
   },
 };
+
+export const registerData = {
+  admin: {
+    email: 'oscar.cadena.test@gmail.com',
+    password: 'Brikerr5341#',
+    confirmPassword: 'Brikerr5341#',
+  },
+};

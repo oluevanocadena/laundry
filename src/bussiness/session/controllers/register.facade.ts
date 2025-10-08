@@ -12,6 +12,7 @@ import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.rep
 import { IOrganizationsRepository } from '@bussiness/organizations/repository/organizations.repository';
 import { RoleEnum } from '@bussiness/session/enums/role.enums';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
+import { ErrorHandlerService } from '@globals/services/error-handler.service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,7 @@ export class RegisterFacade extends FacadeBase {
     public repoOrganizations: IOrganizationsRepository,
     public router: Router,
     public nzMessageService: NzMessageService,
+    public errorHandler: ErrorHandlerService,
   ) {
     super(api);
   }
@@ -67,7 +69,11 @@ export class RegisterFacade extends FacadeBase {
   async register() {
     try {
       // Auth Register User
-      await this._registerAccount();
+      const responseSignUp = await this._registerAccount();
+      if (responseSignUp?.success === false) {
+        this.errorHandler.handleError(responseSignUp?.error?.raw);
+        return;
+      }
 
       // Check if account already exists and red
       const accountResponse = await this.repoAccounts.getByEmail(this.formGroup.value.email!);
@@ -120,9 +126,6 @@ export class RegisterFacade extends FacadeBase {
 
   async _registerAccount() {
     const signUpResponse = await this.api.registerUser(this.formGroup.value.email!, this.formGroup.value.password!);
-    if (signUpResponse?.success === false) {
-      throw new Error(signUpResponse?.error?.message);
-    }
     return signUpResponse;
   }
 

@@ -176,6 +176,8 @@ export class ErrorHandlerService {
     // Errores HTTP
     if (error?.status) {
       switch (error.status) {
+        case 400:
+          return 'El correo electrónico ingresado no es válido';
         case 401:
           return 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente';
         case 403:

@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { loginData } from './login.data';
+import { loginData, registerData } from '../data/login.data';
 
 const URL_BASE = 'http://localhost:4200';
 
@@ -16,6 +16,19 @@ export async function loginAs(page: Page, role: keyof typeof loginData) {
 
   // Espera que la navegación ocurra correctamente
   await expect(page).toHaveURL(/home|inicio/);
+}
+
+export async function registerAs(page: Page, role: keyof typeof registerData) {
+  const { email, password, confirmPassword } = registerData[role];
+  await page.goto(`${URL_BASE}/login`);
+  await page.getByTestId('register-link').click();
+  await page.getByTestId('email').fill(email);
+  await page.getByTestId('password').fill(password);
+  await page.getByTestId('confirmPassword').fill(confirmPassword);
+  await page.getByTestId('submit-register').click();
+
+  // Espera a que aparezca el mensaje de registro exitoso
+  await expect(page.getByText('Registro exitoso')).toBeVisible();
 }
 
 /**

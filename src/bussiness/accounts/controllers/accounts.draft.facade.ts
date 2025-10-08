@@ -5,7 +5,7 @@ import { routes } from '@app/routes';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
-import { RolesApiService } from '@bussiness/session/services/roles.api.service';
+import { IRolesRepository } from '@bussiness/roles/repository/roles.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
 import { Role } from '@bussiness/accounts/interfaces/users.roles.interfaces';
@@ -55,7 +55,7 @@ export class AccountsDraftFacade extends FacadeBase {
 
   constructor(
     public repoAccounts: IAccountsRepository,
-    public rolesApi: RolesApiService,
+    public rolesRepo: IRolesRepository,
     public router: Router,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
@@ -166,7 +166,7 @@ export class AccountsDraftFacade extends FacadeBase {
    */
 
   fetchRoles() {
-    this.rolesApi.getRoles().then((response) => {
+    this.rolesRepo.getAll().then((response) => {
       response.data?.forEach((role) => {
         role.Checked = this.account.value?.AccountRoles?.some(
           (accountRole) => accountRole.RoleId.toString() === role.id?.toString(),

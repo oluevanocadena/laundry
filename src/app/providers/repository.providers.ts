@@ -20,6 +20,8 @@ import { IProductsRepository } from '@bussiness/products/repository/products.rep
 import { ProductsSupabaseRepository } from '@bussiness/products/repository/products.supabase.repository';
 import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
 import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
+import { IRolesRepository } from '@bussiness/roles/repository/roles.repository';
+import { RolesSupabaseRepository } from '@bussiness/roles/repository/roles.supabase.repository';
 import { ISupportModulesRepository } from '@bussiness/support/repository/support.modules.repository';
 import { SupportModulesSupabaseRepository } from '@bussiness/support/repository/support.modules.supabase.repository';
 import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';
@@ -38,6 +40,7 @@ export const repositoryProviders: Provider[] = [
   { provide: IOrganizationsRepository, useClass: OrganizationsSupabaseRepository },
   { provide: IProductCategoriesRepository, useClass: ProductCategoriesSupabaseRepository },
   { provide: IProductsRepository, useClass: ProductsSupabaseRepository },
+  { provide: IRolesRepository, useClass: RolesSupabaseRepository },
   { provide: ISupportModulesRepository, useClass: SupportModulesSupabaseRepository },
   { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },
   { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },

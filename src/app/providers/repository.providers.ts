@@ -10,14 +10,14 @@ import { INotificationsRepository } from '@bussiness/notifications/repository/no
 import { NotificationsSupabaseRepository } from '@bussiness/notifications/repository/notifications.supabase.repository';
 import { IOrdersRepository } from '@bussiness/orders/repository/orders.repository';
 import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
+import { IOrganizationsRepository } from '@bussiness/organizations/repository/organizations.repository';
+import { OrganizationsSupabaseRepository } from '@bussiness/organizations/repository/organizations.supabase.repository';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
 import { ProductCategoriesSupabaseRepository } from '@bussiness/product-categories/repository/product.categories.supabase.repository';
 import { IProductsRepository } from '@bussiness/products/repository/products.repository';
 import { ProductsSupabaseRepository } from '@bussiness/products/repository/products.supabase.repository';
 import { IUnitMeasureRepository } from '@bussiness/products/repository/unit.measure.repository';
 import { UnitMeasureSupabaseRepository } from '@bussiness/products/repository/unit.measure.supabase.repository';
-import { IOrganizationsRepository } from '@bussiness/settings/repository/organizations.repository';
-import { OrganizationsSupabaseRepository } from '@bussiness/settings/repository/organizations.supabase.repository';
 import { ISupportModulesRepository } from '@bussiness/support/repository/support.modules.repository';
 import { SupportModulesSupabaseRepository } from '@bussiness/support/repository/support.modules.supabase.repository';
 import { ISupportTicketRepository } from '@bussiness/support/repository/support.repository';

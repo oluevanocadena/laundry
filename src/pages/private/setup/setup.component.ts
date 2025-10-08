@@ -20,7 +20,7 @@ export class SetupPageComponent extends HelperPage {
   get showLoader() {
     return (
       this.facade.accountApi.busy.value ||
-      this.facade.organizationApi.busy.value ||
+      this.facade.repoOrganization.busy.value ||
       this.facade.repoLocations.busy.value
     );
   }

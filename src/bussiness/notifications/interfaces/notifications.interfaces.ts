@@ -1,5 +1,5 @@
 import { NotificationsEntitiesEnum, NotificationsEventsEnum } from '@bussiness/notifications/enums/notifications.enums';
-import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
+import { Organization } from '@bussiness/organizations/interfaces/organizations.interface';
 import { Account } from '@bussiness/users/interfaces/users.interfaces';
 
 import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';

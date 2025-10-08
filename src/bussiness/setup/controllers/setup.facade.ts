@@ -9,11 +9,11 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
 import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
+import { Organization } from '@bussiness/organizations/interfaces/organizations.interface';
+import { IOrganizationsRepository } from '@bussiness/organizations/repository/organizations.repository';
 import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
-import { OrganizationsApiService } from '@bussiness/session/services/organizations.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,7 @@ export class SetupFacade extends FacadeBase {
 
   constructor(
     public repoLocations: ILocationsRepository,
-    public organizationApi: OrganizationsApiService,
+    public repoOrganization: IOrganizationsRepository,
     public accountApi: AccountsApiService,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
@@ -82,7 +82,7 @@ export class SetupFacade extends FacadeBase {
       let account = this.sessionService.sessionInfo.value?.Account;
       let organization = account?.Organization;
       if (organization && organization.id && account) {
-        const responseOrganization = await this.organizationApi.saveOrganization({
+        const responseOrganization = await this.repoOrganization.save({
           ...organization,
           Name: this.formGroup.value.organizationName!,
         });

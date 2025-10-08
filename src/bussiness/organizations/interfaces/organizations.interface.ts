@@ -5,4 +5,5 @@ export interface Organization {
   created_at?: string; // ISO date string
   Deleted?: boolean;
   Disabled?: boolean;
+  Checked?: boolean; // Para selección múltiple en UI
 }

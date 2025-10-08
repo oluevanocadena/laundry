@@ -114,7 +114,10 @@
                     Últimos pedidos
                 </span>
                 <span class="fw-500 f-lh-15 f-06 {{isMobileOrTablet ? 'f-14' : 'f-12'}}">
-                    Top 10 de pedidos de ventas.
+                    Top órdenes de ventas de
+                    <span *ngIf="dateInput.dateDropdown" class="f-02">
+                        {{dateInput.dateDropdown.inlineLabel | lowercase}}
+                    </span>
                 </span>
             </grid>
 

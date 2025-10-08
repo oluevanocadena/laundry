@@ -101,13 +101,11 @@ export class ProductsMonitorFacade extends FacadeBase {
   }
 
   onColumnsChange(columns: UITableColumn[]) {
-    console.log('👉🏽 save columns', columns);
     this.storageService.set('PRODUCTS_COLUMNS', columns);
     this.columns = UtilsDomain.clone(columns);
   }
 
   onFiltersChange(filter: PagedRequest) {
-    console.log('👉🏽 filter', filter);
     this.tableFilter.value = filter as PagedRequest;
     this.fetchProducts();
   }

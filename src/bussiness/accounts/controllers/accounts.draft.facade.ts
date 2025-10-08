@@ -121,7 +121,6 @@ export class AccountsDraftFacade extends FacadeBase {
         AccountId: this.account.value?.id as string,
         OrganizationId: this.sessionService.organizationId,
       }));
-    console.log('accountRoles to save', accountRoles);
     this.repoAccounts.save(account, accountRoles).then((response) => {
       if (response.success) {
         this.router.navigate([routes.Users]);
@@ -158,7 +157,6 @@ export class AccountsDraftFacade extends FacadeBase {
         this.clearState();
       }, 1);
     }
-    console.log(this.formGroup.controls);
   }
 
   /**

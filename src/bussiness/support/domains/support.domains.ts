@@ -7,8 +7,6 @@ import { SessionService } from '@bussiness/session/services/session.service';
 
 export class SupportDomain {
   static buildTicket(ticket: SupportTicket, sessionService: SessionService): SupportTicket {
-    console.log('👉🏽 ticket', ticket);
-    console.log('👉🏽 sessionService', sessionService.sessionInfo.value);
     const ticketToSave: SupportTicket = {
       AccountId: ticket.AccountId || sessionService.sessionInfo.value?.Account.id || '',
       AssignedTo: ticket.AssignedTo ?? null,
@@ -29,7 +27,6 @@ export class SupportDomain {
     if (!ticketToSave.id) {
       delete ticketToSave.id;
     }
-    console.log('👉🏽 ticketToSave', ticketToSave);
     return ticketToSave;
   }
 

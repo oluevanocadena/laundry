@@ -15,6 +15,7 @@ import { supabase } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { validators } from '@globals/types/validators.type';
+import { ErrorHandlerService } from '@globals/services/error-handler.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,8 +36,8 @@ export class SessionFacade extends FacadeBase {
     public api: SessionApiService,
     public realTimeNotifications: NotificationsRealtimeService,
     public repoAccounts: IAccountsRepository,
-    public repoLocations: ILocationsRepository, 
-    public nzMessageService: NzMessageService,
+    public repoLocations: ILocationsRepository,
+    public errorHandlerService: ErrorHandlerService,
     public sessionService: SessionService,
     public router: Router,
   ) {
@@ -60,7 +61,7 @@ export class SessionFacade extends FacadeBase {
   async login() {
     const genericError = 'Usuario y/o contraseña incorrectos';
     if (!this.formGroup.valid) {
-      this.nzMessageService.warning('Por favor, complete todos los campos.');
+      this.errorHandlerService.warning('Por favor, complete todos los campos.');
       return;
     }
 
@@ -92,7 +93,10 @@ export class SessionFacade extends FacadeBase {
     } catch (error: any) {
       console.error(error);
       this.signOut();
-      this.nzMessageService.error(error?.message || 'Ocurrió un error al iniciar sesión, intenta nuevamente.');
+      this.errorHandlerService.handleError(
+        error?.message || 'Ocurrió un error al iniciar sesión, intenta nuevamente.',
+        'Session Facade',
+      );
     }
   }
 

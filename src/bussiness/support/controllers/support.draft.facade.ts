@@ -115,8 +115,6 @@ export class SupportDraftFacade extends FacadeBase {
     };
     const ticket = SupportDomain.buildTicket(ticketToSave, this.sessionService);
     const ticketImages = this.ticketImages.value || [];
-    console.log('👉🏽 ticket', ticket);
-    console.log('👉🏽 ticketImages', ticketImages);
     this.repo.save(ticket, ticketImages).then((response) => {
       if (response.success === false) {
         this.nzMessageService.error('Ocurrió un error al guardar el ticket, intente nuevamente.');
@@ -203,7 +201,6 @@ export class SupportDraftFacade extends FacadeBase {
 
   onSelectedImage(file: File) {
     this.repo.uploadImage(file, this.ticket.value!.id!, this.sessionService.organizationId, this.edition).then((response) => {
-      console.log('👉🏽 response', response);
       if (response.success && response.data) {
         this.ticketImages.value = [...(this.ticketImages.value || []), response.data];
         this.nzMessageService.success('Imagen cargada correctamente');

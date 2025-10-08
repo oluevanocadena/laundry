@@ -101,8 +101,7 @@ export class CustomersMonitorFacade extends FacadeBase {
    * UI Events
    */
 
-  onColumnsChange(columns: UITableColumn[]) {
-    console.log('👉🏽 save columns', columns);
+  onColumnsChange(columns: UITableColumn[]) { 
     this.storageService.set('CUSTOMERS_COLUMNS', columns);
     this.columns = UtilsDomain.clone(columns);
   }

@@ -150,12 +150,14 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
       if (error) throw error;
 
       if (orderSaved.id) {
-        orderItems.forEach(async (item) => {
-          item.OrderId = orderSaved.id;
-          const { data: itemSaved, error } = await OrdersQueryDomain.buildUpdateOrderItemQuery(this.client, item);
-          if (error) throw error;
-          return itemSaved;
-        });
+        const savedItems = await Promise.all(
+          orderItems.map(async (item) => {
+            item.OrderId = orderSaved.id;
+            const { data: itemSaved, error } = await OrdersQueryDomain.buildUpdateOrderItemQuery(this.client, item);
+            if (error) throw error;
+            return itemSaved;
+          }),
+        );
       } else {
         throw new Error('Ocurrió un error al guardar el pedido, intente nuevamente.');
       }

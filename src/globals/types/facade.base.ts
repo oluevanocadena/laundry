@@ -65,12 +65,10 @@ export abstract class FacadeStepFormBase implements LifecycleStrategyStepForm {
     current.onExit?.();
 
     const nextIndex = (this.stepIndex.value ?? 0) + 1;
-    console.log('nextIndex', nextIndex);
     if (nextIndex < this.steps.length) {
       this.stepIndex.value = nextIndex;
       this.currentStep.onEnter?.();
       if (this.onNextPage) this.onNextPage();
-      console.log('stepIndex.value changed', this.stepIndex.value);
     } else {
       this.submitForm();
     }

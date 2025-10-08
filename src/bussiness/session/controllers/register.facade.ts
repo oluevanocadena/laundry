@@ -99,11 +99,8 @@ export class RegisterFacade extends FacadeBase {
   }
 
   confirmEmail(email: string, date: string) {
-    console.log('👉🏽 email', email);
-    console.log('👉🏽 date', date);
     if (moment(moment()).isSameOrBefore(date)) {
       this.api.confirmEmail(email).then((result) => {
-        console.log('👉🏽 result', result);
         if (result?.error) {
           this.confirmedSuccess = false;
         } else {

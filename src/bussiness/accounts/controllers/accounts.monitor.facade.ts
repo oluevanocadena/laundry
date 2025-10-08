@@ -87,13 +87,11 @@ export class AccountsMonitorFacade extends FacadeBase {
   }
 
   onColumnsChange(columns: UITableColumn[]) {
-    console.log('👉🏽 save columns', columns);
     this.storageService.set('USERS_COLUMNS', columns);
     this.columns = UtilsDomain.clone(columns);
   }
 
   onFiltersChange(filter: PagedRequest) {
-    console.log('👉🏽 filter', filter);
     this.tableFilter.value = filter as PagedRequest;
     this.fetchUsers();
   }
@@ -108,9 +106,7 @@ export class AccountsMonitorFacade extends FacadeBase {
     this.router.navigate([routes.UserDraft]);
   }
 
-  onDeleteUsers() {
-    console.log('👉🏽 delete users', this.selectedRows);
-  }
+  onDeleteUsers() {}
 
   openDeleteUsersModal() {
     this.showDeleteUsersModal = true;

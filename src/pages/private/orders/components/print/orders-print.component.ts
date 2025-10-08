@@ -31,7 +31,6 @@ export class OrdersPrintComponent extends HelperPage {
    * Ui events
    */
   printTicket() {
-    console.log('printTicket');
     const printContents = document.getElementById('ticket-content')?.innerHTML;
     if (!printContents) return;
 

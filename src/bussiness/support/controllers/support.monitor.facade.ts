@@ -111,7 +111,6 @@ export class SupportMonitorFacade extends FacadeBase {
    */
 
   onColumnsChange(columns: UITableColumn[]) {
-    console.log('👉🏽 save columns', columns);
     this.storageService.set('SUPPORT_COLUMNS', columns);
     this.columns = UtilsDomain.clone(columns);
   }
@@ -134,7 +133,6 @@ export class SupportMonitorFacade extends FacadeBase {
   onNewTicket() {
     this.draftFacade.clearState();
     this.router.navigate([routes.SupportDraft]);
-    console.log('New ticket');
   }
 
   onDeleteTickets() {

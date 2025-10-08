@@ -60,8 +60,7 @@ export class LocationsMonitorFacade extends FacadeBase {
   }
 
   override initialize() {
-    super.initialize();
-    console.log('👉🏽 initialize', this.storageService.get('LOCATIONS_COLUMNS'));
+    super.initialize(); 
     this.columns = this.storageService.get('LOCATIONS_COLUMNS') || UtilsDomain.clone(LocationsPageTableColumns);
     this.fetchLocations();
     this.bindEvents();
@@ -100,14 +99,12 @@ export class LocationsMonitorFacade extends FacadeBase {
     this.fetchLocations();
   }
 
-  onColumnsChange(columns: UITableColumn[]) {
-    console.log('👉🏽 save columns', columns);
+  onColumnsChange(columns: UITableColumn[]) { 
     this.storageService.set('LOCATIONS_COLUMNS', columns);
     this.columns = UtilsDomain.clone(columns);
   }
 
-  onFiltersChange(filter: PagedRequest) {
-    console.log('👉🏽 filter', filter);
+  onFiltersChange(filter: PagedRequest) { 
     this.tableFilter.value = filter as PagedRequest;
     this.fetchLocations();
   }

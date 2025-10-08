@@ -1,4 +1,4 @@
-import { PagedRequest, ResponseResult } from '@globals/interfaces/requests.interface';
+import { PagedRequest, ReportRequest, ResponseResult } from '@globals/interfaces/requests.interface';
 import { BusyProp } from '@globals/types/busy.type';
 
 export interface IBusy {
@@ -30,4 +30,12 @@ export interface IDeletable<T> extends IBusy {
 
 export interface IDisableable<T> extends IBusy {
   disable(id: string, state: boolean): Promise<ResponseResult<T>>;
+}
+
+export interface IReportable<T> extends IBusy {
+  getReport(request: ReportRequest): Promise<ResponseResult<T[]>>;
+}
+
+export interface IChartable<T> extends IBusy {
+  getChart(request: ReportRequest): Promise<ResponseResult<T[]>>;
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { FormControl, FormGroup } from '@angular/forms';
-import { ReportsApiService } from '@bussiness/reports/services/reports.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { UISelectOption } from '@components/atoms/form-input/form-input.component';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { SubjectProp } from '@globals/types/subject.type';
+import { IReportsRepository } from '../repository/reports.repository';
 
 @Injectable({
   providedIn: 'root',
@@ -26,11 +26,8 @@ export class ReportsFacade extends FacadeBase {
   period = new FormProp(this.formGroup, 'period', '1');
   locations = new SubjectProp<Location[]>([]);
 
-  constructor(
-    public api: ReportsApiService,
-    public sessionService: SessionService
-  ) {
-    super(api);
+  constructor(public repo: IReportsRepository, public sessionService: SessionService) {
+    super(repo);
   }
 
   override initialize() {}
@@ -46,7 +43,10 @@ export class ReportsFacade extends FacadeBase {
    */
 
   fetchStatistics() {
-    this.api.getStatistics();
+    this.repo.getReport({
+      dateFrom: new Date().toISOString(),
+      dateTo: new Date().toISOString(),
+    });
   }
 
   /**

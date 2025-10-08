@@ -19,6 +19,11 @@ export interface PagedRequest {
   disabled?: boolean | null;
 }
 
+export interface ReportRequest {
+  dateFrom?: string | Date | null;
+  dateTo?: string | Date | null;
+}
+
 export interface RequestError {
   message: string; // Mensaje de error legible
   code?: string; // Código de error (ej: "401", "PGRST116")

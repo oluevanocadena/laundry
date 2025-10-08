@@ -5,9 +5,10 @@ import {
   IPaginable,
   IReadable,
   IReadableAll,
+  IReportable,
   IWritable,
 } from '@globals/interfaces/repository.interfaces';
-import { PagedRequest, ResponseResult } from '@globals/interfaces/requests.interface';
+import { PagedRequest, ReportRequest, ResponseResult } from '@globals/interfaces/requests.interface';
 import { BusyProp } from '@globals/types/busy.type';
 
 export abstract class SemiFullRepository<T>
@@ -26,6 +27,11 @@ export abstract class SemiFullRepository<T>
 export abstract class FullRepository<T> extends SemiFullRepository<T> implements IReadableAll<T>, IDisableable<T> {
   abstract getAll(): Promise<ResponseResult<T[]>>;
   abstract disable(id: string, state: boolean): Promise<ResponseResult<T>>;
+}
+
+export abstract class ReportRepository<T> implements IReportable<T> {
+  abstract busy: BusyProp;
+  abstract getReport(request: ReportRequest): Promise<ResponseResult<T[]>>;
 }
 
 export abstract class ReadOnlyRepository<T> implements IReadable<T>, IReadableAll<T>, IBusy {

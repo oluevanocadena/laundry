@@ -7,6 +7,8 @@ import { ResponseResult } from '@globals/interfaces/requests.interface';
 import { PagedResults } from '@globals/interfaces/supabase.interface';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
+import { LocalStorageCacheStore } from '@globals/strategies/cache/storage.cache.store';
+import { ICacheStore } from '@globals/types/cache.type';
 import { SubjectProp } from '@globals/types/subject.type';
 
 @Injectable({
@@ -19,6 +21,10 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
 
   constructor() {
     super();
+  }
+
+  protected override getCacheStore(): ICacheStore {
+    return new LocalStorageCacheStore();
   }
 
   getAll(): Promise<ResponseResult<Customer[]>> {
@@ -144,6 +150,19 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
       const { error } = await this.client.from(SupabaseTables.Customers).update({ Disabled: false }).eq('id', id);
       return super.handleResponse({} as Customer, error, undefined, 1);
     }, 'enabling customer');
+  }
+
+  getPosCustomer(organizationId: string, useCache: boolean = true): Promise<ResponseResult<Customer>> {
+    const cacheKey = this.buildCacheKey(`posCustomer:${organizationId}`, {});
+    return this.getWithCache(
+      cacheKey,
+      async () => {
+        const query = CustomersQueryDomain.buildGetPosCustomerQuery(this.client, organizationId);
+        const { data, error } = await query;
+        return super.handleResponse(data as Customer, error);
+      },
+      useCache ? 3_600_000 : 0, // TTL de 1 hora (3,600,000 ms)
+    );
   }
 
   private _saveOrUpdate(customer: Customer) {

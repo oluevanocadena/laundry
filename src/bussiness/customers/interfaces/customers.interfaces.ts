@@ -27,6 +27,7 @@ export interface Customer {
   OrganizationId: string;
   Deleted?: boolean;
   Disabled?: boolean;
+  Deletable?: boolean; // Si false, el cliente no puede ser eliminado (ej: cliente POS)
   Checked?: boolean; //Only for UI
 }
 

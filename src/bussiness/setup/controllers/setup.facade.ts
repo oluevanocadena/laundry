@@ -14,6 +14,7 @@ import { Organization } from '@bussiness/organizations/interfaces/organizations.
 import { IOrganizationsRepository } from '@bussiness/organizations/repository/organizations.repository';
 import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { SessionService } from '@bussiness/session/services/session.service';
+import { ICustomersRepository } from '@bussiness/customers/repository/customers.repository';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,7 @@ export class SetupFacade extends FacadeBase {
     public repoLocations: ILocationsRepository,
     public repoOrganization: IOrganizationsRepository,
     public repoAccounts: IAccountsRepository,
+    public repoCustomers: ICustomersRepository,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
     public router: Router,
@@ -94,12 +96,7 @@ export class SetupFacade extends FacadeBase {
         organization = responseOrganization.data!;
         const country = this.formGroupLocation.value.country || system.defaultCountry;
 
-        const responseAccount = await this.repoAccounts.save({
-          id: account.id,
-          Email: account.Email,
-          FirstName: this.formGroup.value.firstName!,
-          LastName: this.formGroup.value.lastName!,
-          Phone: this.formGroup.value.phone!,
+        const commonAddressFields = {
           ExtNumber: this.formGroupLocation.value.externalNumber!,
           IntNumber: this.formGroupLocation.value.internalNumber!,
           Street: this.formGroupLocation.value.street!,
@@ -107,9 +104,18 @@ export class SetupFacade extends FacadeBase {
           Municipality: this.formGroupLocation.value.municipality!,
           State: this.formGroupLocation.value.state!,
           ZipCode: this.formGroupLocation.value.zipCode!,
-          IsOwner: true,
           Country: country,
+        };
+
+        const responseAccount = await this.repoAccounts.save({
+          id: account.id,
+          Email: account.Email,
+          FirstName: this.formGroup.value.firstName!,
+          LastName: this.formGroup.value.lastName!,
+          Phone: this.formGroup.value.phone!,
+          IsOwner: true,
           OrganizationId: organization.id!,
+          ...commonAddressFields,
         });
 
         if (responseAccount.success === false) {
@@ -119,20 +125,32 @@ export class SetupFacade extends FacadeBase {
         const response = await this.repoLocations.save({
           Name: this.formGroupLocation.value.name!,
           Phone: this.formGroupLocation.value.phone!,
-          Country: country,
-          ExtNumber: this.formGroupLocation.value.externalNumber!,
-          IntNumber: this.formGroupLocation.value.internalNumber!,
-          Street: this.formGroupLocation.value.street!,
-          Neighborhood: this.formGroupLocation.value.neighborhood!,
-          Municipality: this.formGroupLocation.value.municipality!,
-          State: this.formGroupLocation.value.state!,
-          ZipCode: this.formGroupLocation.value.zipCode!,
           Default: true,
           OrganizationId: organization.id!,
+          ...commonAddressFields,
+        });
+
+        // Crear cliente POS para ventas generales
+        const responseCustomer = await this.repoCustomers.save({
+          Email: 'cliente@ventageneral.com',
+          FirstName: 'Cliente',
+          LastName: 'General',
+          FullName: 'Cliente público en general',
+          Phone: '0000000000',
+          OrganizationId: organization.id!,
+          Disabled: false,
+          Deleted: false,
+          Deletable: false, // Cliente no eliminable - solo para POS
+          TotalOrders: 0,
+          ...commonAddressFields,
         });
 
         if (response?.success === false) {
           throw new Error('Error al crear la ubicación');
+        }
+
+        if (responseCustomer?.success === false) {
+          throw new Error('Error al crear el cliente POS');
         }
 
         this.sessionService.sessionInfo.value = {

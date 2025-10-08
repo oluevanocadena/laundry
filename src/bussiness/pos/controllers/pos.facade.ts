@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { CustomerForGeneralSale } from '@bussiness/customers/constants/customers.constants';
+import { Customer } from '@bussiness/customers/interfaces/customers.interfaces';
+import { ICustomersRepository } from '@bussiness/customers/repository/customers.repository';
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
 import { ProductCategory } from '@bussiness/product-categories/interfaces/product-categories.interfaces';
 import { IProductCategoriesRepository } from '@bussiness/product-categories/repository/product.categories.repository';
 import { IProductsRepository } from '@bussiness/products/repository/products.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { FacadeBase } from '@globals/types/facade.base';
+import { StorageProp } from '@globals/types/storage.type';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 
@@ -15,10 +17,12 @@ import { UtilsDomain } from '@globals/utils/utils.domain';
 export class PosFacade extends FacadeBase {
   tabIndex = 0;
   categories = new SubjectProp<ProductCategory[]>([]);
+  posCustomer = new StorageProp<Customer | null>(null, 'POS_CUSTOMER');
 
   constructor(
     public repoProducts: IProductsRepository,
     public repoCategories: IProductCategoriesRepository,
+    public repoCustomers: ICustomersRepository,
     public sessionService: SessionService,
     public ordersDraftFacade: OrdersDraftFacade,
   ) {
@@ -28,7 +32,7 @@ export class PosFacade extends FacadeBase {
   override initialize() {
     super.initialize();
     this.ordersDraftFacade.initialize();
-    this.fillCustomer();
+    this.fetchPosCustomer();
     this.repoCategories.getAll();
   }
 
@@ -57,11 +61,12 @@ export class PosFacade extends FacadeBase {
    * methods
    */
 
-  fillCustomer() {
-    const customer = UtilsDomain.clone(CustomerForGeneralSale);
-    customer.Address = this.sessionService.sessionInfo.value?.Location?.Address;
-    customer.OrganizationId = this.sessionService.organizationId;
-    this.ordersDraftFacade.onSelectCustomer(customer);
+  async fetchPosCustomer() {
+    const result = await this.repoCustomers.getPosCustomer(this.sessionService.organizationId, true);
+    if (result?.success && result.data) {
+      this.posCustomer.value = result.data;
+      this.ordersDraftFacade.onSelectCustomer(result.data);
+    }
   }
 
   /**

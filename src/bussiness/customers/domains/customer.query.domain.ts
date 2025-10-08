@@ -101,4 +101,18 @@ export class CustomersQueryDomain {
       .single();
   }
 
+  static buildGetPosCustomerQuery(client: SupabaseClient, organizationId: string) {
+    return client
+      .from(SupabaseTables.Customers)
+      .select('*')
+      .eq('OrganizationId', organizationId)
+      .eq('Deletable', false)
+      .eq('Deleted', false)
+      .maybeSingle();
+  }
+
+  static buildCreatePosCustomerQuery(client: SupabaseClient, customer: any) {
+    return client.from(SupabaseTables.Customers).insert(customer).select('*').single();
+  }
+
 }

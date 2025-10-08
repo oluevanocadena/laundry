@@ -14,7 +14,7 @@ export abstract class SemiFullRepository<T>
   implements IWritable<T>, IReadable<T>, Partial<IReadableAll<T>>, IDeletable<T>, IPaginable<T>, IBusy
 {
   abstract busy: BusyProp;
-  abstract getPaged(request: PagedRequest): Promise<ResponseResult<T[]>>;
+  abstract getPaged<R extends PagedRequest>(request: R | PagedRequest): Promise<ResponseResult<T[]>>;
   abstract getById(id: string): Promise<ResponseResult<T> | null>;
   abstract save(entity: T, options?: any): Promise<ResponseResult<T>>;
   abstract update(entity: T, options?: any): Promise<ResponseResult<T>>;

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 
-import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { INotificationsRepository } from '@bussiness/notifications/repository/notifications.repository';
 import { HelperPage } from '@components/common/helper.page';
 import { UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { MenuService } from '@globals/services/menu.service';
@@ -12,7 +12,7 @@ import { MenuService } from '@globals/services/menu.service';
   styleUrls: ['./menu-content.component.scss'],
 })
 export class MenuContentComponent extends HelperPage implements AfterViewInit {
-  constructor(public notificationsApi: NotificationsApiService, public menuService: MenuService) {
+  constructor(public notificationsApi: INotificationsRepository, public menuService: MenuService) {
     super();
   }
 
@@ -30,7 +30,7 @@ export class MenuContentComponent extends HelperPage implements AfterViewInit {
 
   ngAfterViewInit() {
     if ((this.notificationsApi.pagedNotifications.value?.data?.length ?? 0) > 0 === false) {
-      this.notificationsApi.getPagedNotifications({
+      this.notificationsApi.getPaged({
         page: UITableConstants.DefaultPage,
         pageSize: UITableConstants.DefaultPageSize,
         dateFrom: '',

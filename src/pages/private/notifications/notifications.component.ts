@@ -21,7 +21,7 @@ export class NotificationsPageComponent extends HelperPage implements AfterViewI
    */
 
   get data() {
-    return this.facade.api.pagedNotifications.value?.data ?? [];
+    return this.facade.repo.pagedNotifications.value?.data ?? [];
   }
 
   get columns() {
@@ -29,11 +29,11 @@ export class NotificationsPageComponent extends HelperPage implements AfterViewI
   }
 
   get rowCount() {
-    return this.facade.api.pagedNotifications.value?.count ?? 0;
+    return this.facade.repo.pagedNotifications.value?.count ?? 0;
   }
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   /**

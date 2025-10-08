@@ -9,7 +9,9 @@ export interface UITableColumn {
   selected?: boolean;
 }
 
-export interface UITablePagination extends PagedRequest {
+export interface UITablePagination {
+  pageSize: number;
+  page: number;
   rowCount: number;
   totalPages: number;
 }
@@ -31,4 +33,4 @@ export interface UITableActions {
   action: () => void;
 }
 
-export interface UITableFilter extends UITableFilterBase, PagedRequest {}
+export interface UITableFilter extends PagedRequest, UITableFilterBase {}

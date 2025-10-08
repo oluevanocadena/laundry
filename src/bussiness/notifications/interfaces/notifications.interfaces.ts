@@ -2,8 +2,7 @@ import { NotificationsEntitiesEnum, NotificationsEventsEnum } from '@bussiness/n
 import { Organization } from '@bussiness/settings/interfaces/organizations.interface';
 import { Account } from '@bussiness/users/interfaces/users.interfaces';
 
-import { PagedResults } from '@globals/interfaces/supabase.interface';
-import { UITableFilter } from '@globals/interfaces/ui.interfaces';
+import { PagedRequest, PagedResults } from '@globals/interfaces/supabase.interface';
 
 export interface Notification {
   id?: string;
@@ -33,7 +32,7 @@ export interface NotificationMetadata {
   createdBy: string; // uuid with "Accounts" table campo id:string
 }
 
-export interface NotificationRequest extends UITableFilter {
+export interface NotificationRequest extends PagedRequest {
   readed?: boolean | null;
 }
 

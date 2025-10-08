@@ -6,8 +6,8 @@ import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
 import { NotificationsPageTableColumns } from '@bussiness/notifications/constants/notifications.columns.constant';
 import { NotificationsDefaultTableFilter } from '@bussiness/notifications/constants/notifications.constants';
-import { Notification } from '@bussiness/notifications/interfaces/notifications.interfaces';
-import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { Notification, NotificationRequest } from '@bussiness/notifications/interfaces/notifications.interfaces';
+import { INotificationsRepository } from '@bussiness/notifications/repository/notifications.repository';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
@@ -49,13 +49,13 @@ export class NotificationsMonitorFacade extends FacadeBase {
   columns = NotificationsPageTableColumns;
 
   constructor(
-    public api: NotificationsApiService,
+    public repo: INotificationsRepository,
     public router: Router,
     public nzMessageService: NzMessageService,
     public sessionService: SessionService,
     public storageService: StorageService,
   ) {
-    super(api);
+    super(repo);
   }
 
   override initialize() {
@@ -80,7 +80,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
     const starDate = moment(this.tableFilter.value?.dateFrom).format('YYYY-MM-DD');
     const endDate = moment(this.tableFilter.value?.dateTo).format('YYYY-MM-DD');
 
-    this.api.getPagedNotifications({
+    this.repo.getPaged({
       page: pagination?.page ?? UITableConstants.DefaultPage,
       pageSize: pagination?.pageSize ?? UITableConstants.DefaultPageSize,
       dateFrom: starDate!,
@@ -90,7 +90,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
       search: this.tableFilter.value?.search ?? null,
       sortBy: this.tableFilter.value?.sortBy ?? null,
       sortOrder: this.tableFilter.value?.sortOrder ?? 'asc',
-    });
+    } as NotificationRequest);
   }
 
   /**
@@ -99,7 +99,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
 
   onTablePaginationChange(filter: UITablePagination) {
     this.tablePagination.value = filter;
-    this.api.cacheStore.clear();
+    this.repo.cacheStore.clear();
     this.fetchNotifications();
   }
 
@@ -114,7 +114,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
   }
 
   onMarkAllAsReadClick() {
-    this.api.markAllAsRead().then((response) => {
+    this.repo.markAllAsRead().then((response) => {
       if (response.success) {
         this.nzMessageService.success('Notificaciones actualizadas');
         this.fetchNotifications();
@@ -128,7 +128,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
     const ids = this.selectedRows
       .filter((notification) => notification.Readed === false)
       .map((notification) => notification.id!);
-    this.api.markManyAsRead(ids).then((response) => {
+    this.repo.markManyAsRead(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Notificaciones actualizadas');
         this.fetchNotifications();
@@ -140,7 +140,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
 
   onNotificationClick(notification: Notification) {
     if (notification.Readed === false) {
-      this.api.markAsRead(notification?.id!).then((response) => {
+      this.repo.markAsRead(notification?.id!).then((response) => {
         if (response.success) {
           this.nzMessageService.success('Notificación marcada como leída');
           this.fetchNotifications();
@@ -157,7 +157,7 @@ export class NotificationsMonitorFacade extends FacadeBase {
 
   onDeleteNotifications() {
     const ids = this.selectedRows.map((notification) => notification.id!);
-    this.api.deleteNotifications(ids).then((response) => {
+    this.repo.deleteMany(ids).then((response) => {
       if (response.success) {
         this.nzMessageService.success('Notificaciones eliminadas');
         this.fetchNotifications();
@@ -177,6 +177,6 @@ export class NotificationsMonitorFacade extends FacadeBase {
    */
 
   get selectedRows() {
-    return this.api.pagedNotifications.value?.data.filter((notification) => notification.Checked) ?? [];
+    return this.repo.pagedNotifications.value?.data.filter((notification) => notification.Checked) ?? [];
   }
 }

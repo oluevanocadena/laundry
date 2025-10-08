@@ -41,8 +41,8 @@ export class DrawerNotificationsComponent extends HelperPage {
    */
   refresh(segment: string | number = '0', showMessage = false) {
     this.selectedSegment = segment;
-    this.facade.api
-      .getPagedNotifications({
+    this.facade.repo
+      .getPaged({
         page: UITableConstants.DefaultPage,
         pageSize: UITableConstants.DefaultPageSize,
         dateFrom: '',
@@ -61,7 +61,7 @@ export class DrawerNotificationsComponent extends HelperPage {
   }
 
   markAllAsRead() {
-    this.facade.api.markAllAsRead().then((response) => {
+    this.facade.repo.markAllAsRead().then((response) => {
       if (response.success) {
         this.refresh();
       }
@@ -76,11 +76,11 @@ export class DrawerNotificationsComponent extends HelperPage {
    * Getters
    */
   get notifications() {
-    return this.facade.api.pagedNotifications.value?.data ?? [];
+    return this.facade.repo.pagedNotifications.value?.data ?? [];
   }
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repo.busy.value;
   }
 
   /**

@@ -40,7 +40,7 @@ export const UITableConstants = {
   DefaultPageSize: 50,
 };
 
-export const UIDefaultTablePagination: UITablePagination = {
+export const UIDefaultTablePagination: Pick<UITablePagination, 'page' | 'pageSize' | 'rowCount' | 'totalPages'> = {
   page: UITableConstants.DefaultPage,
   pageSize: UITableConstants.DefaultPageSize,
   rowCount: 0,

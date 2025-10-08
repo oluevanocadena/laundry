@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FeedbackDraftFacade } from '@bussiness/feedback/controllers/feeback.draft.facade';
 
-import { NotificationsApiService } from '@bussiness/notifications/services/notifications.api.services';
+import { INotificationsRepository } from '@bussiness/notifications/repository/notifications.repository';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({
@@ -20,7 +20,7 @@ export class TopBarButtonsComponent extends HelperPage {
   // Properties
   unReadCount: number = 0;
 
-  constructor(public notifService: NotificationsApiService, public facade: FeedbackDraftFacade) {
+  constructor(public notifService: INotificationsRepository, public facade: FeedbackDraftFacade) {
     super();
   }
 
@@ -49,7 +49,7 @@ export class TopBarButtonsComponent extends HelperPage {
    */
   ngAfterViewInit() {
     this.notifService.getUnReadCount().then((res) => {
-      this.unReadCount = res.count ?? 0;
+      this.unReadCount = res.data ?? 0;
     });
   }
 }

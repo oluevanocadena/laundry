@@ -14,6 +14,13 @@ export interface PagedResults<T> {
 export interface PagedRequest {
   page: number;
   pageSize: number;
+  dateFrom: string | Date | null;
+  dateTo: string | Date | null;
+  sortBy: string | null;
+  sortOrder: 'asc' | 'desc';
+  select?: string | null;
+  search?: string | null;
+  segment?: string | null;
 }
 
 export interface EdgeFunctionResponse {

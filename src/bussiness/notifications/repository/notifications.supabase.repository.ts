@@ -49,7 +49,47 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
   }
 
   getPaged(request: NotificationRequest) {
-    return this.getPagedNotifications(request, true);
+    const cacheKey = this.buildCacheKey(`pagedNotifications:${this.accountId}`, request);
+    const useCache = true;
+    return this.getWithCache(
+      cacheKey,
+      async () => {
+        // Inicializar query base
+        let query = NotificationsQueryDomain.buildQuery(request, this.client, this.accountId);
+        let totalCountQuery = NotificationsQueryDomain.buildTotalCountQuery(request, this.client, this.accountId);
+        const unReadCountQuery = NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
+
+        // Ejecutar consultas
+        const [queryResult, totalCountResult, unReadCountResult] = await Promise.all([
+          query,
+          totalCountQuery,
+          unReadCountQuery,
+        ]);
+
+        // Obtener resultados
+        const { data, error } = queryResult;
+        const totalCount = totalCountResult.count;
+        const unReadCount = unReadCountResult.count;
+        (data as unknown as Notification[]).forEach((notification) => {
+          notification.Checked = false;
+        });
+        // Actualizar observable
+        this.pagedNotifications.value = {
+          data: data ?? [],
+          count: totalCount ?? 0,
+          unReadCount: unReadCount ?? 0,
+        };
+        return super.handleResponse(data, error, undefined, totalCount);
+      },
+      useCache ? 60_000 : 0, // TTL de 1 minuto,
+      (cachedData) => {
+        this.pagedNotifications.value = {
+          data: cachedData,
+          count: Array.isArray(cachedData) ? cachedData.length : 0,
+          unReadCount: 0, // opcional: si quieres conservar el último
+        };
+      },
+    );
   }
 
   async save(notification: Notification): Promise<ResponseResult<Notification>> {
@@ -98,52 +138,6 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
       // Las notificaciones no tienen estado de habilitado/deshabilitado
       throw new Error('ToggleEnableMany operation not supported for notifications');
     }, 'ToggleEnableMany Notification');
-  }
-
-  // Métodos específicos de notifications (migrados del API service)
-  getPagedNotifications(request: NotificationRequest, useCache = true): Promise<ResponseResult<Notification[]>> {
-    const cacheKey = this.buildCacheKey(`pagedNotifications:${this.accountId}`, request);
-
-    return this.getWithCache(
-      cacheKey,
-      async () => {
-        // Inicializar query base
-        let query = NotificationsQueryDomain.buildQuery(request, this.client, this.accountId);
-        let totalCountQuery = NotificationsQueryDomain.buildTotalCountQuery(request, this.client, this.accountId);
-        const unReadCountQuery = NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
-
-        // Ejecutar consultas
-        const [queryResult, totalCountResult, unReadCountResult] = await Promise.all([
-          query,
-          totalCountQuery,
-          unReadCountQuery,
-        ]);
-
-        // Obtener resultados
-        const { data, error } = queryResult;
-        const totalCount = totalCountResult.count;
-        const unReadCount = unReadCountResult.count;
-        (data as unknown as Notification[]).forEach((notification) => {
-          notification.Checked = false;
-        });
-        // Actualizar observable
-        this.pagedNotifications.value = {
-          data: data ?? [],
-          count: totalCount ?? 0,
-          unReadCount: unReadCount ?? 0,
-        };
-
-        return super.handleResponse(data, error, undefined, totalCount);
-      },
-      useCache ? 60_000 : 0, // TTL de 1 minuto,
-      (cachedData) => {
-        this.pagedNotifications.value = {
-          data: cachedData,
-          count: Array.isArray(cachedData) ? cachedData.length : 0,
-          unReadCount: 0, // opcional: si quieres conservar el último
-        };
-      },
-    );
   }
 
   getUnReadCount(useCache = true): Promise<ResponseResult<number>> {

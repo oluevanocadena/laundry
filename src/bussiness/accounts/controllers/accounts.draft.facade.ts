@@ -73,13 +73,15 @@ export class AccountsDraftFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.phone.onChange((value) => {
-      if (value && value.length > 0) {
-        this.formGroup.controls.Phone.setValidators([Validators.required, Validators.minLength(10)]);
-      } else {
-        this.formGroup.controls.Phone.clearValidators();
-      }
-    });
+    this.subscriptions.add(
+      this.phone.onChange((value) => {
+        if (value && value.length > 0) {
+          this.formGroup.controls.Phone.setValidators([Validators.required, Validators.minLength(10)]);
+        } else {
+          this.formGroup.controls.Phone.clearValidators();
+        }
+      }),
+    );
   }
 
   clearState() {

@@ -82,11 +82,13 @@ export class SupportDraftFacade extends FacadeBase {
 
   bindEvents() {
     // Eventos para cambios en el ticket
-    this.ticket.onChange((ticket) => {
-      if (ticket) {
-        this.fillFormTicket(ticket);
-      }
-    });
+    this.subscriptions.add(
+      this.ticket.onChange((ticket) => {
+        if (ticket) {
+          this.fillFormTicket(ticket);
+        }
+      }),
+    );
   }
 
   clearState() {

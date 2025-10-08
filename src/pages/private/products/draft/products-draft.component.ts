@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ProductsDraftFacade } from '@bussiness/products/controllers/products.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
 
@@ -8,7 +8,7 @@ import { HelperPage } from '@components/common/helper.page';
   templateUrl: './products-draft.component.html',
   styleUrls: ['./products-draft.component.scss'],
 })
-export class ProductsDraftComponent extends HelperPage {
+export class ProductsDraftComponent extends HelperPage implements OnDestroy {
   constructor(public facade: ProductsDraftFacade) {
     super();
   }
@@ -23,5 +23,9 @@ export class ProductsDraftComponent extends HelperPage {
 
   ngOnInit() {
     this.facade.initialize();
+  }
+
+  ngOnDestroy(): void {
+    this.facade.unbindEvents();
   }
 }

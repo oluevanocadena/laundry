@@ -37,16 +37,18 @@ export class PosFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.repoCategories.productCategories.onChange((categories) => {
-      const categoriesClone: ProductCategory[] = UtilsDomain.clone(categories?.data ?? []);
-      categoriesClone.unshift({
-        id: '0',
-        Name: 'Mas vendidos',
-        OrganizationId: this.sessionService.organizationId,
-      });
-      this.categories.value = categoriesClone;
-      this.tabIndex = 0;
-    });
+    this.subscriptions.add(
+      this.repoCategories.productCategories.onChange((categories) => {
+        const categoriesClone: ProductCategory[] = UtilsDomain.clone(categories?.data ?? []);
+        categoriesClone.unshift({
+          id: '0',
+          Name: 'Mas vendidos',
+          OrganizationId: this.sessionService.organizationId,
+        });
+        this.categories.value = categoriesClone;
+        this.tabIndex = 0;
+      }),
+    );
   }
 
   clearState() {

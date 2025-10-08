@@ -70,9 +70,11 @@ export class OrdersMonitorFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.sessionService.sessionInfo.onChange((session) => {
-      this.fetchOrders();
-    });
+    this.subscriptions.add(
+      this.sessionService.sessionInfo.onChange((session) => {
+        this.fetchOrders();
+      }),
+    );
   }
 
   submitForm() {}

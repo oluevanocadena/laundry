@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { OrdersDomain } from '@bussiness/orders/domains/orders.domain';
 
 import { PosFacade } from '@bussiness/pos/controllers/pos.facade';
@@ -10,7 +10,7 @@ import { HelperPage } from '@components/common/helper.page';
   templateUrl: './pos-page.component.html',
   styleUrls: ['./pos-page.component.scss'],
 })
-export class PosPageComponent extends HelperPage implements AfterViewInit {
+export class PosPageComponent extends HelperPage implements AfterViewInit, OnDestroy {
   OrdersDomain = OrdersDomain;
 
   constructor(public facade: PosFacade) {
@@ -39,5 +39,9 @@ export class PosPageComponent extends HelperPage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.facade.initialize();
+  }
+
+  ngOnDestroy(): void {
+    this.facade.unbindEvents();
   }
 }

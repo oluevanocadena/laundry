@@ -74,9 +74,11 @@ export class SupportMonitorFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.sessionService.sessionInfo.onChange((session) => {
-      this.fetchTickets();
-    });
+    this.subscriptions.add(
+      this.sessionService.sessionInfo.onChange((session) => {
+        this.fetchTickets();
+      }),
+    );
   }
 
   submitForm() {}

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { HelperPage } from '@components/common/helper.page';
 
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
@@ -17,7 +17,7 @@ import { UITableColumn } from '@globals/interfaces/ui.interfaces';
   styleUrls: ['./orders-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrdersPageComponent extends HelperPage implements AfterViewInit {
+export class OrdersPageComponent extends HelperPage implements AfterViewInit, OnDestroy {
   //Domains
   ordersDomain = OrdersDomain;
   deliveryDomain = DeliveryDomain;
@@ -89,5 +89,9 @@ export class OrdersPageComponent extends HelperPage implements AfterViewInit {
     this.notificationsRealtimeService.onReceiveNotification.onChange((value) => {
       this.facade.fetchOrders();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.facade.unbindEvents();
   }
 }

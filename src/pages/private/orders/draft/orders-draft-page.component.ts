@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 
 import { OrdersDraftFacade } from '@bussiness/orders/controllers/orders.draft.facade';
@@ -10,10 +10,7 @@ import { HelperPage } from '@components/common/helper.page';
   templateUrl: './orders-draft-page.component.html',
   styleUrls: ['./orders-draft-page.component.scss'],
 })
-export class OrdersDraftPageComponent
-  extends HelperPage
-  implements CanDeactivate<OrdersDraftPageComponent>
-{
+export class OrdersDraftPageComponent extends HelperPage implements CanDeactivate<OrdersDraftPageComponent>, OnDestroy {
   constructor(public facade: OrdersDraftFacade) {
     super();
   }
@@ -29,18 +26,21 @@ export class OrdersDraftPageComponent
   /**
    * Life cycle method
    */
-  ngAfterViewInit() {
-    this.facade.initialize();
-  }
 
   canDeactivate(): boolean {
     if (this.facade.canExit === false) {
-      const response = confirm(
-        'Tienes cambios sin guardar. ¿Seguro que quieres salir?'
-      );
+      const response = confirm('Tienes cambios sin guardar. ¿Seguro que quieres salir?');
       this.facade.clearState();
       return response;
     }
     return true;
+  }
+
+  ngAfterViewInit() {
+    this.facade.initialize();
+  }
+
+  ngOnDestroy(): void {
+    this.facade.unbindEvents();
   }
 }

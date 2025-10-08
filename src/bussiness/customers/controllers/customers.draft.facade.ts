@@ -51,13 +51,15 @@ export class CustomersDraftFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.phone.onChange((value) => {
-      if (value && value.length > 0) {
-        this.formGroup.controls.phone.setValidators([Validators.required, Validators.minLength(10)]);
-      } else {
-        this.formGroup.controls.phone.clearValidators();
-      }
-    });
+    this.subscriptions.add(
+      this.phone.onChange((value) => {
+        if (value && value.length > 0) {
+          this.formGroup.controls.phone.setValidators([Validators.required, Validators.minLength(10)]);
+        } else {
+          this.formGroup.controls.phone.clearValidators();
+        }
+      }),
+    );
   }
 
   clearState() {

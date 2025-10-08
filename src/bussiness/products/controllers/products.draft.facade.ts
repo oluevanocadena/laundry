@@ -67,39 +67,42 @@ export class ProductsDraftFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.repoLocations.locations.onChange((locations) => {
-      const prices = this.product.value?.ProductLocationPrice || [];
-      const availability = this.product.value?.ProductLocations || [];
-      this.locationPrices =
-        locations.map((location: Location) => {
-          const price = prices.find((productLocationPrice) => productLocationPrice.LocationId === location.id);
-          return {
-            LocationId: location.id || '',
-            ProductId: this.product.value?.id || '',
-            Price: price?.Price ?? 0,
-            Location: location,
-          };
-        }) || [];
-      this.locationAvailability =
-        locations?.map((loc) => {
-          const avaiLoc = availability.find((avaiLoc) => avaiLoc.LocationId === loc.id);
-          return {
-            IsEnabled: avaiLoc?.IsEnabled ?? true,
-            LocationId: loc.id || '',
-            ProductId: this.product.value?.id || '',
-            Location: loc,
-          };
-        }) || [];
-    });
-
-    this.price.onChange((value) => {
-      if (this.samePrice.value === true) {
-        this.locationPrices = Array.from(this.locationPrices).map((location) => {
-          location.Price = this.price.value ?? 0;
-          return location;
-        });
-      }
-    });
+    this.subscriptions.add(
+      this.repoLocations.locations.onChange((locations) => {
+        const prices = this.product.value?.ProductLocationPrice || [];
+        const availability = this.product.value?.ProductLocations || [];
+        this.locationPrices =
+          locations.map((location: Location) => {
+            const price = prices.find((productLocationPrice) => productLocationPrice.LocationId === location.id);
+            return {
+              LocationId: location.id || '',
+              ProductId: this.product.value?.id || '',
+              Price: price?.Price ?? 0,
+              Location: location,
+            };
+          }) || [];
+        this.locationAvailability =
+          locations?.map((loc) => {
+            const avaiLoc = availability.find((avaiLoc) => avaiLoc.LocationId === loc.id);
+            return {
+              IsEnabled: avaiLoc?.IsEnabled ?? true,
+              LocationId: loc.id || '',
+              ProductId: this.product.value?.id || '',
+              Location: loc,
+            };
+          }) || [];
+      }),
+    );
+    this.subscriptions.add(
+      this.price.onChange((value) => {
+        if (this.samePrice.value === true) {
+          this.locationPrices = Array.from(this.locationPrices).map((location) => {
+            location.Price = this.price.value ?? 0;
+            return location;
+          });
+        }
+      }),
+    );
   }
 
   clearState() {

@@ -117,9 +117,11 @@ export class OrdersDraftFacade extends FacadeBase {
   }
 
   bindEvents() {
-    this.orderItems.onChange((items) => {
-      this.calcTotals();
-    });
+    this.subscriptions.add(
+      this.orderItems.onChange((items) => {
+        this.calcTotals();
+      }),
+    );
   }
 
   clearState() {

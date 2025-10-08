@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RoleEnum } from '@bussiness/session/enums/role.enums';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { AccountsDraftFacade } from '@bussiness/users/controllers/users.draft.facade';
-import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
+import { AccountsDraftFacade } from '@bussiness/accounts/controllers/accounts.draft.facade';
+import { Role } from '@bussiness/accounts/interfaces/users.roles.interfaces';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({

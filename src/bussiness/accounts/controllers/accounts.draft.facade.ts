@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { routes } from '@app/routes';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
+import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
 import { RolesApiService } from '@bussiness/session/services/roles.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { Account } from '@bussiness/users/interfaces/users.interfaces';
-import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
-import { AccountsApiService } from '@bussiness/users/services/users.api.service';
+import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
+import { Role } from '@bussiness/accounts/interfaces/users.roles.interfaces';
 import { system } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
@@ -54,13 +54,13 @@ export class AccountsDraftFacade extends FacadeBase {
   public roles = new SubjectProp<Role[]>([]);
 
   constructor(
-    public api: AccountsApiService,
+    public repoAccounts: IAccountsRepository,
     public rolesApi: RolesApiService,
     public router: Router,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
   ) {
-    super(api);
+    super(repoAccounts);
   }
 
   override initialize() {
@@ -122,7 +122,7 @@ export class AccountsDraftFacade extends FacadeBase {
         OrganizationId: this.sessionService.organizationId,
       }));
     console.log('accountRoles to save', accountRoles);
-    this.api.saveAccount(account, accountRoles).then((response) => {
+    this.repoAccounts.save(account, accountRoles).then((response) => {
       if (response.success) {
         this.router.navigate([routes.Users]);
         this.nzMessageService.success('Usuario guardado correctamente');
@@ -184,7 +184,7 @@ export class AccountsDraftFacade extends FacadeBase {
       nzAnimate: true,
     });
     if (account?.id) {
-      this.api.inviteUser({ action: 'resend', email: account.Email }).then((response) => {
+      this.repoAccounts.inviteUser({ action: 'resend', email: account.Email }).then((response) => {
         this.nzMessageService.remove(message.messageId);
         if (response.success) {
           this.nzMessageService.success('Invitación reenviada correctamente');
@@ -199,7 +199,7 @@ export class AccountsDraftFacade extends FacadeBase {
     const error = 'Ocurrió un error al intentar borrar el usuario, intenta nuevamente.';
     const account = this.account.value;
     if (account?.Email) {
-      this.api.deleteAccount(account.Email).then((response) => {
+      this.repoAccounts.hardDelete(account.Email).then((response) => {
         if (response?.success) {
           this.router.navigate([routes.Users]);
         } else {
@@ -215,7 +215,7 @@ export class AccountsDraftFacade extends FacadeBase {
     const user = this.account.value;
     if (user?.id) {
       if (user.Disabled) {
-        this.api.enableAccount(user.Email).then((response) => {
+        this.repoAccounts.enable(user.Email).then((response) => {
           if (response.success) {
             this.nzMessageService.success('Usuario habilitado correctamente');
             this.router.navigate([routes.Users]);
@@ -225,7 +225,7 @@ export class AccountsDraftFacade extends FacadeBase {
           }
         });
       } else {
-        this.api.disableAccount(user.Email).then((response) => {
+        this.repoAccounts.disable(user.Email).then((response) => {
           if (response.success) {
             this.nzMessageService.success('Usuario deshabilitado correctamente');
             this.router.navigate([routes.Users]);
@@ -241,7 +241,7 @@ export class AccountsDraftFacade extends FacadeBase {
   async onChangePassword() {
     const account = this.account.value;
     if (account?.id) {
-      this.api.changePassword({ userId: account.UserId, password: this.password.value! }).then((response) => {
+      this.repoAccounts.changePassword({ userId: account.UserId, password: this.password.value! }).then((response) => {
         if (response.success) {
           this.nzMessageService.success('Contraseña cambiada correctamente');
         } else {

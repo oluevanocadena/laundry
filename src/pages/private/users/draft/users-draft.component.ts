@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountsDraftFacade } from '@bussiness/users/controllers/users.draft.facade';
+import { AccountsDraftFacade } from '@bussiness/accounts/controllers/accounts.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { AccountsMonitorFacade } from '@bussiness/users/controllers/users.monitor.facade';
+import { AccountsMonitorFacade } from '@bussiness/accounts/controllers/accounts.monitor.facade';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({
@@ -17,7 +17,7 @@ export class UsersPageComponent extends HelperPage implements AfterViewInit {
    */
 
   get rowCount() {
-    return this.facade.api.pagedUsers.value?.count ?? 0;
+    return this.facade.repoAccounts.pagedAccounts.value?.count ?? 0;
   }
 
   get columns() {
@@ -25,11 +25,11 @@ export class UsersPageComponent extends HelperPage implements AfterViewInit {
   }
 
   get data() {
-    return this.facade.api.pagedUsers.value?.data ?? [];
+    return this.facade.repoAccounts.pagedAccounts.value?.data ?? [];
   }
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repoAccounts.busy.value;
   }
 
   /**

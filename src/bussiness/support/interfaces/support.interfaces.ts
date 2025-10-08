@@ -1,5 +1,5 @@
 import { SupportTicketPriorityEnum, TicketStatusIdEnum } from '@bussiness/support/enums/support.enums';
-import { Account } from '@bussiness/users/interfaces/users.interfaces';
+import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
 
 export interface SupportTicket {
   id?: string;

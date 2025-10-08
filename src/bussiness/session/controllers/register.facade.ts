@@ -8,9 +8,9 @@ import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { validators } from '@globals/types/validators.type';
 
+import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
 import { IOrganizationsRepository } from '@bussiness/organizations/repository/organizations.repository';
 import { RoleEnum } from '@bussiness/session/enums/role.enums';
-import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 
 @Injectable({
@@ -39,7 +39,7 @@ export class RegisterFacade extends FacadeBase {
 
   constructor(
     public api: SessionApiService,
-    public apiAccounts: AccountsApiService,
+    public repoAccounts: IAccountsRepository,
     public repoOrganizations: IOrganizationsRepository,
     public router: Router,
     public nzMessageService: NzMessageService,
@@ -70,8 +70,8 @@ export class RegisterFacade extends FacadeBase {
       await this._registerAccount();
 
       // Check if account already exists and red
-      const accountResponse = await this.apiAccounts.getAccount(this.formGroup.value.email!);
-      this.accountId = accountResponse.data?.id ?? '';
+      const accountResponse = await this.repoAccounts.getByEmail(this.formGroup.value.email!);
+      this.accountId = accountResponse?.data?.id ?? '';
       if (this.accountId) {
         const message = 'No se puede crear la cuenta, ya existe una cuenta con esta cuenta de correo.';
         this.nzMessageService.error(message);
@@ -91,9 +91,9 @@ export class RegisterFacade extends FacadeBase {
       this.registeredSuccess = true;
       this.nzMessageService.success('Felicidades, se completó el registro correctamente');
     } catch (error: any) {
-      this.apiAccounts.deleteAccount(this.formGroup.value.email!);
+      this.repoAccounts.delete(this.formGroup.value.email!);
       this.repoOrganizations.delete(this.organizationId);
-      this.apiAccounts.deleteAccountRoles(this.accountRoleIds);
+      this.repoAccounts.deleteAccountRoles(this.accountRoleIds);
       this.nzMessageService.error(error?.message || 'Ocurrió un error al crear la cuenta, intenta nuevamente.');
     }
   }
@@ -142,7 +142,7 @@ export class RegisterFacade extends FacadeBase {
   }
 
   async _createNewAccountRoles() {
-    const rolesResponse = await this.apiAccounts.saveAccountRoles([
+    const rolesResponse = await this.repoAccounts.saveAccountRoles([
       {
         AccountId: this.accountId,
         RoleId: RoleEnum.Owner,
@@ -161,7 +161,7 @@ export class RegisterFacade extends FacadeBase {
   }
 
   async _createNewAccount() {
-    const responseAccount = await this.apiAccounts.saveAccount({
+    const responseAccount = await this.repoAccounts.save({
       Email: this.formGroup.value.email!,
       OrganizationId: this.organizationId,
       FirstName: '',

@@ -1,4 +1,6 @@
 import { Provider } from '@angular/core';
+import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
+import { AccountsSupabaseRepository } from '@bussiness/accounts/repository/accounts.supabase.repository';
 import { ICustomersRepository } from '@bussiness/customers/repository/customers.repository';
 import { CustomersSupabaseRepository } from '@bussiness/customers/repository/customers.supabase.repository';
 
@@ -27,15 +29,16 @@ import { SupportTicketSupabaseRepository } from '@bussiness/support/repository/s
  * Providers para todos los repositorios de la aplicación
  */
 export const repositoryProviders: Provider[] = [
+  { provide: IAccountsRepository, useClass: AccountsSupabaseRepository },
+  { provide: ICustomersRepository, useClass: CustomersSupabaseRepository },
   { provide: IFeedbackRepository, useClass: FeedbackSupabaseRepository },
   { provide: ILocationsRepository, useClass: LocationsSupabaseRepository },
   { provide: INotificationsRepository, useClass: NotificationsSupabaseRepository },
   { provide: IOrdersRepository, useClass: OrdersSupabaseRepository },
-  { provide: ISupportModulesRepository, useClass: SupportModulesSupabaseRepository },
-  { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },
-  { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
   { provide: IOrganizationsRepository, useClass: OrganizationsSupabaseRepository },
   { provide: IProductCategoriesRepository, useClass: ProductCategoriesSupabaseRepository },
   { provide: IProductsRepository, useClass: ProductsSupabaseRepository },
-  { provide: ICustomersRepository, useClass: CustomersSupabaseRepository },
+  { provide: ISupportModulesRepository, useClass: SupportModulesSupabaseRepository },
+  { provide: ISupportTicketRepository, useClass: SupportTicketSupabaseRepository },
+  { provide: IUnitMeasureRepository, useClass: UnitMeasureSupabaseRepository },
 ];

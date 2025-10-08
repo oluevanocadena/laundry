@@ -1,5 +1,6 @@
+import { Role } from '@bussiness/accounts/interfaces/users.roles.interfaces';
 import { Organization } from '@bussiness/organizations/interfaces/organizations.interface';
-import { Role } from '@bussiness/users/interfaces/users.roles.interfaces';
+import { PagedRequest } from '@globals/interfaces/supabase.interface';
 import { UITableFilter } from '@globals/interfaces/ui.interfaces';
 
 export interface Account {
@@ -54,4 +55,10 @@ export interface UsersRequest extends Omit<UITableFilter, 'dateFrom' | 'dateTo'>
 export interface InviteUserRequest {
   action: 'invite' | 'resend';
   email: string;
+}
+
+export interface AccountRequest extends PagedRequest {
+  search?: string;
+  disabled?: boolean;
+  organizationId?: string;
 }

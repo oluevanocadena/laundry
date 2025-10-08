@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import moment from 'moment';
 
-import { AccountsDraftFacade } from '@bussiness/users/controllers/users.draft.facade';
+import { AccountsDraftFacade } from '@bussiness/accounts/controllers/accounts.draft.facade';
 import { HelperPage } from '@components/common/helper.page';
 
 @Component({
@@ -22,7 +22,7 @@ export class UsersHeaderComponent extends HelperPage implements OnInit {
    */
 
   get busy() {
-    return this.facade.api.busy.value;
+    return this.facade.repoAccounts.busy.value;
   }
 
   get account() {

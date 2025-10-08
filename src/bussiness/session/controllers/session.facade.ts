@@ -5,13 +5,12 @@ import { routes } from '@app/routes';
 import { createClient } from '@supabase/supabase-js';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
+import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
 import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 import { NotificationsRealtimeService } from '@bussiness/notifications/services/notifications.realtime.service';
-import { OrdersSupabaseRepository } from '@bussiness/orders/repository/orders.supabase.repository';
-import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
+import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
-import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
 import { supabase } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
@@ -35,9 +34,8 @@ export class SessionFacade extends FacadeBase {
   constructor(
     public api: SessionApiService,
     public realTimeNotifications: NotificationsRealtimeService,
-    public apiOrders: OrdersSupabaseRepository,
-    public apiAccounts: AccountsApiService,
-    public repoLocations: ILocationsRepository,
+    public repoAccounts: IAccountsRepository,
+    public repoLocations: ILocationsRepository, 
     public nzMessageService: NzMessageService,
     public sessionService: SessionService,
     public router: Router,
@@ -72,12 +70,12 @@ export class SessionFacade extends FacadeBase {
         throw new Error(genericError);
       }
 
-      const responseAccount = await this.apiAccounts.getAccount(responseSession.data!.user?.email!);
+      const responseAccount = await this.repoAccounts.getByEmail(responseSession.data!.user?.email!);
       if (!responseAccount?.data?.id) {
         throw new Error(genericError);
       }
 
-      const roles = await this.apiAccounts.getAccountRoles(responseAccount.data!.id!);
+      const roles = await this.repoAccounts.getAccountRoles(responseAccount.data!.id!);
       if (!roles) {
         throw new Error(genericError);
       }

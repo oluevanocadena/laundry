@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AccountsDraftFacade } from '@bussiness/users/controllers/users.draft.facade';
+import { AccountsDraftFacade } from '@bussiness/accounts/controllers/accounts.draft.facade';
 
 @Component({
   selector: 'users-change-password-modal',

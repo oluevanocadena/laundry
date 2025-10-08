@@ -3,19 +3,19 @@ import { Router } from '@angular/router';
 import { routes } from '@app/routes';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
 
-import { UsersPageTableColumns } from '@bussiness/users/constants/users.columns.constant';
-import { UsersDefaultTableFilter } from '@bussiness/users/constants/users.constants';
-import { Account } from '@bussiness/users/interfaces/users.interfaces';
-import { AccountsApiService } from '@bussiness/users/services/users.api.service';
+import { AccountsPageTableColumns } from '@bussiness/accounts/constants/accounts.columns.constant';
+import { AccountsDefaultTableFilter } from '@bussiness/accounts/constants/accounts.constants';
+import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
 import { UITypeFilterShow } from '@components/common/table-filters/table-filters.component';
 
+import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
 import { UIDefaultTablePagination, UITableConstants } from '@globals/constants/supabase-tables.constants';
 import { UITableActions, UITableColumn, UITableFilterBase, UITablePagination } from '@globals/interfaces/ui.interfaces';
 import { FacadeBase } from '@globals/types/facade.base';
+import { StorageProp } from '@globals/types/storage.type';
 import { SubjectProp } from '@globals/types/subject.type';
 import { UtilsDomain } from '@globals/utils/utils.domain';
 import { StorageService } from '@services/common/storage.service';
-import { StorageProp } from '@globals/types/storage.type';
 
 @Injectable({
   providedIn: 'root',
@@ -42,13 +42,13 @@ export class AccountsMonitorFacade extends FacadeBase {
   ];
 
   tablePagination = new SubjectProp<UITablePagination>(UIDefaultTablePagination);
-  tableFilter = new SubjectProp<UITableFilterBase>(UsersDefaultTableFilter);
-  columns = UsersPageTableColumns;
+  tableFilter = new SubjectProp<UITableFilterBase>(AccountsDefaultTableFilter);
+  columns = AccountsPageTableColumns;
   selectedAccount = new StorageProp<Account>(null, 'ACCOUNT_SELECTED');
 
-  constructor(public api: AccountsApiService, public router: Router, public storageService: StorageService) {
-    super(api);
-    this.columns = this.storageService.get('USERS_COLUMNS') || UtilsDomain.clone(UsersPageTableColumns);
+  constructor(public repoAccounts: IAccountsRepository, public router: Router, public storageService: StorageService) {
+    super(repoAccounts);
+    this.columns = this.storageService.get('USERS_COLUMNS') || UtilsDomain.clone(AccountsPageTableColumns);
     this.fetchUsers();
     this.bindEvents();
   }
@@ -66,7 +66,7 @@ export class AccountsMonitorFacade extends FacadeBase {
    */
 
   fetchUsers() {
-    this.api.getPagedUsers({
+    this.repoAccounts.getPaged({
       page: this.tablePagination.value?.page ?? UITableConstants.DefaultPage,
       pageSize: this.tablePagination.value?.pageSize ?? UITableConstants.DefaultPageSize,
       sortBy: this.tableFilter.value?.sortBy ?? null,
@@ -120,7 +120,7 @@ export class AccountsMonitorFacade extends FacadeBase {
    */
 
   get selectedRows() {
-    return this.api.pagedUsers.value?.data.filter((user) => user.Checked) ?? [];
+    return this.repoAccounts.pagedAccounts.value?.data.filter((account) => account.Checked) ?? [];
   }
 
   getSegmentDisabled(segment: string): boolean | null {

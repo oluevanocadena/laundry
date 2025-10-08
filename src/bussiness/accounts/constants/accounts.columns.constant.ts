@@ -1,6 +1,6 @@
 import { UITableColumn } from '@globals/interfaces/ui.interfaces';
 
-export const UsersPageTableColumns: UITableColumn[] = [ 
+export const AccountsPageTableColumns: UITableColumn[] = [ 
   { label: 'Fecha', key: 'created_at', width: '150px', sortable: true, selected: true },
   { label: 'Nombre', key: 'FullName', width: 'auto', sortable: true, selected: true },
   { label: 'Email', key: 'Email', width: 'auto', sortable: true, selected: true },

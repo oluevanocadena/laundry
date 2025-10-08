@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="facade.api.busy.value">
+                    <tr *ngIf="busy">
                         <td colspan="9">
                             <grid [direction]="'column'" [align]="'center-center'" padding="2rem 0">
                                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'" class="f-03">
@@ -65,7 +65,7 @@
                             <td>{{item.created_at || '' | dateFormat:'DD MMMM[,] YYYY' | capitalization }}</td>
                             <td>{{item.FullName}}</td>
                             <td>{{item.Email}}</td>
-                            <td>{{item.Phone}}</td>
+                            <td>{{item.Phone || '-'}}</td>
                             <td>
                                 <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-center'" width="100%">
                                     <status-badge [label]="item?.IsOwner ? 'Propietario' : 'Staff'"

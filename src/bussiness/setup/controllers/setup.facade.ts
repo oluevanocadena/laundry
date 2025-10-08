@@ -8,11 +8,11 @@ import { system } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 
+import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.repository';
 import { ILocationsRepository } from '@bussiness/locations/repository/locations.repository';
 import { Organization } from '@bussiness/organizations/interfaces/organizations.interface';
 import { IOrganizationsRepository } from '@bussiness/organizations/repository/organizations.repository';
 import { SessionInfo } from '@bussiness/session/interfaces/session.interface';
-import { AccountsApiService } from '@bussiness/session/services/accounts.api.service';
 import { SessionService } from '@bussiness/session/services/session.service';
 
 @Injectable({
@@ -47,7 +47,7 @@ export class SetupFacade extends FacadeBase {
   constructor(
     public repoLocations: ILocationsRepository,
     public repoOrganization: IOrganizationsRepository,
-    public accountApi: AccountsApiService,
+    public repoAccounts: IAccountsRepository,
     public sessionService: SessionService,
     public nzMessageService: NzMessageService,
     public router: Router,
@@ -94,7 +94,7 @@ export class SetupFacade extends FacadeBase {
         organization = responseOrganization.data!;
         const country = this.formGroupLocation.value.country || system.defaultCountry;
 
-        const responseAccount = await this.accountApi.saveAccount({
+        const responseAccount = await this.repoAccounts.save({
           id: account.id,
           Email: account.Email,
           FirstName: this.formGroup.value.firstName!,

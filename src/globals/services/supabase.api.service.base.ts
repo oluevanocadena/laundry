@@ -10,12 +10,12 @@ import { supabaseClient } from '@globals/singleton/supabase.client';
 import { MemoryCacheStore } from '@globals/strategies/cache/memory.cache.store';
 import { BusyProp } from '@globals/types/busy.type';
 import { ICacheStore } from '@globals/types/cache.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
+import { IFacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { ResponseResult } from '@globals/interfaces/requests.interface';
 import { ErrorHandlerService } from '@globals/services/error-handler.service';
 
-export class SupabaseBaseApiService implements FacadeApiBase {
+export class SupabaseBaseApiService implements IFacadeApiBase {
   public busy = new BusyProp(false);
   public client = supabaseClient;
   public cacheStore: ICacheStore;

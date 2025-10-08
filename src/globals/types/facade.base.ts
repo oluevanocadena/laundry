@@ -17,7 +17,7 @@ export abstract class FacadeBase implements LifecycleStrategy {
   // public strings = Strings;
 
   constructor(
-    api: FacadeApiBase | SemiFullRepository<any> | WritableRepository<any> | ReadOnlyRepository<any> | ReportRepository<any>,
+    api: IFacadeApiBase | SemiFullRepository<any> | WritableRepository<any> | ReadOnlyRepository<any> | ReportRepository<any>,
   ) {}
 
   //Initialize facade state and get data from api
@@ -40,7 +40,7 @@ export abstract class FacadeStepFormBase implements LifecycleStrategyStepForm {
   public edition = new SubjectProp<boolean>(false);
   public stepIndex = new SubjectProp<number>(0);
 
-  constructor(api: FacadeApiBase) {
+  constructor(api: IFacadeApiBase) {
     setTimeout(() => {
       this.bindEvents();
     });
@@ -119,7 +119,7 @@ export interface LifecycleStrategyStepForm<T extends { [key: string]: any } = an
   get canNext(): boolean;
 }
 
-export interface FacadeApiBase {
+export interface IFacadeApiBase {
   busy: BusyProp;
   client: SupabaseClient;
 }

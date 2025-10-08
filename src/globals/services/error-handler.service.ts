@@ -2,23 +2,6 @@ import { Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { system } from '@environments/environment';
 
-export enum LogLevel {
-  Debug = 0,
-  Info = 1,
-  Warning = 2,
-  Error = 3,
-  Critical = 4,
-}
-
-export interface ErrorLog {
-  timestamp: Date;
-  level: LogLevel;
-  message: string;
-  context?: string;
-  details?: any;
-  stackTrace?: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -234,4 +217,21 @@ export class ErrorHandlerService {
     //   });
     // }
   }
+}
+
+export enum LogLevel {
+  Debug = 0,
+  Info = 1,
+  Warning = 2,
+  Error = 3,
+  Critical = 4,
+}
+
+export interface ErrorLog {
+  timestamp: Date;
+  level: LogLevel;
+  message: string;
+  context?: string;
+  details?: any;
+  stackTrace?: string;
 }

@@ -6,14 +6,14 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { SessionService } from '@bussiness/session/services/session.service';
 import { Account } from '@bussiness/accounts/interfaces/users.interfaces';
 import { BusyProp } from '@globals/types/busy.type';
-import { FacadeApiBase } from '@globals/types/facade.base';
+import { IFacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AnalyticsApiService implements FacadeApiBase {
+export class AnalyticsApiService implements IFacadeApiBase {
     public busy = new BusyProp(false);
     public client: SupabaseClient;
   

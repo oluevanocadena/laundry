@@ -14,13 +14,28 @@
       "404": "No se encontró el recurso solicitado",
       "500": "Error en el servidor. Por favor, intenta nuevamente",
       "503": "El servicio no está disponible temporalmente",
-      "default": "Ocurrió un error al realizar la acción",
-      "unknown": "Error desconocido. Por favor, intenta nuevamente"
+      "default": "Ocurrió un error al intentar conectar con el servidor"
+    },
+    "general": {
+      "error": "Ocurrió un error. Por favor, intenta nuevamente"
+    },
+    "wofloo": {
+      "default": "Error un error inesperado, intenta más tarde",
+      "syncFailed": "No se pudo sincronizar por ahora, intenta más tarde",
+      "emailAlreadyExists": "No se puede crear la cuenta, ya existe una cuenta con este correo electrónico"
     },
     "auth": {
       "Invalid login credentials": "Usuario y/o contraseña incorrectos",
       "Email not confirmed": "Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!",
-      "Email Already Exists": "El correo electrónico ya está en uso"
+      "Email Already Exists": "No se puede crear la cuenta, ya existe una cuenta con este correo electrónico"
+    }
+  },
+  "messages": {
+    "success": {
+      "accountCreated": "Cuenta creada correctamente, se enviará un correo para confirmar tu cuenta"
+    },
+    "warning": {
+      "formIncomplete": "Por favor, complete todos los campos"
     }
   },
   "ui": {
@@ -29,7 +44,41 @@
       "cancel": "Cancelar"
     },
     "titles": {
+      "wofloo": "Wofloo",
       "dashboard": "Panel de Control"
+    },
+    "modules": {
+      "session": {
+        "login": {
+          "form": {
+            "email": "Correo electrónico",
+            "password": "Contraseña"
+          },
+          "title": "Accede a tu cuenta",
+          "description": "Inicia sesión en tu cuenta para continuar",
+          "loginText": "Iniciar sesión",
+          "orAccessWith": "o acceder con:",
+          "registerLink": "¿No tienes una cuenta?",
+          "registerLinkText": "Crear una cuenta",
+          "forgotPasswordLink": "¿Olvidaste tu contraseña?",
+          "google": "Google"
+        },
+        "register": {
+          "form": {
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "confirmPassword": "Confirmar contraseña"
+          },
+          "title": "Registro de cuenta",
+          "description": "Crea una cuenta para comenzar a usar Wofloo",
+          "registerText": "Registrarme",
+          "loginLink": "¿Ya tienes una cuenta?",
+          "loginLinkText": "Iniciar sesión",
+          "passwordInstructions": "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial.",
+          "passwordNotMatch": "Las contraseñas no coinciden",
+          "success": "Tu cuenta ha sido creada exitosamente. Por favor revisa tu correo electrónico para confirmar tu cuenta."
+        }
+      }
     }
   }
 }

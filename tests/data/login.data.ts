@@ -10,8 +10,18 @@ export const loginData = {
 };
 
 export const registerData = {
-  admin: {
+  valid: {
+    email: 'oscar_lue@outlook.com',
+    password: 'Brikerr5341#',
+    confirmPassword: 'Brikerr5341#',
+  },
+  invalid: {
     email: 'oscar.cadena.test@gmail.com',
+    password: 'Brikerr5341#',
+    confirmPassword: 'Brikerr5341#',
+  },
+  existing: {
+    email: 'oscar.luevano.cadena@gmail.com',
     password: 'Brikerr5341#',
     confirmPassword: 'Brikerr5341#',
   },

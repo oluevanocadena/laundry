@@ -11,11 +11,7 @@ import { LoggerService } from '@globals/services/logger.service';
   providedIn: 'root',
 })
 export class ErrorHandlerService {
-  constructor(
-    private nzMessageService: NzMessageService,
-    private i18nService: I18nService,
-    private logger: LoggerService
-  ) {}
+  constructor(private nzMessageService: NzMessageService, private i18nService: I18nService, private logger: LoggerService) {}
 
   /**
    * Maneja un error y muestra un mensaje al usuario
@@ -33,10 +29,9 @@ export class ErrorHandlerService {
   handleCriticalError(error: any, context?: string, userMessage?: string): void {
     this.logger.critical(error, context);
 
-    const message = userMessage || 'Ocurrió un error crítico. Por favor, contacte al soporte.';
+    const message = userMessage || this.i18nService.t('errors.general.error');
     this.nzMessageService.error(message, { nzDuration: 5000 });
   }
-
 
   /**
    * Obtiene un mensaje amigable para el usuario basado en el error
@@ -47,12 +42,14 @@ export class ErrorHandlerService {
       switch (error.type) {
         case ErrorTypeEnum.Wofloo:
           switch (error.code) {
-            case 'INVALID_CUSTOMER':
-              return 'El cliente no existe o no está activo';
+            case 'EMAIL_ALREADY_EXISTS':
+              return this.i18nService.t('errors.wofloo.emailAlreadyExists');
             case 'SYNC_FAILED':
-              return 'No se pudo sincronizar con Wofloo, intenta más tarde';
+              return this.i18nService.t('errors.wofloo.syncFailed');
+            case 'DEFAULT':
+              return this.i18nService.t('errors.wofloo.default');
             default:
-              return error.friendlyMessage || 'Error en el sistema Wofloo';
+              return error.friendlyMessage || this.i18nService.t('errors.wofloo.default');
           }
 
         case ErrorTypeEnum.CustomAuth:
@@ -90,7 +87,7 @@ export class ErrorHandlerService {
       return this.mapHttpError(error.status);
     }
 
-    return error?.message || 'Ocurrió un error al realizar la acción';
+    return error?.message || this.i18nService.t('errors.general.error');
   }
 
   /**
@@ -107,7 +104,7 @@ export class ErrorHandlerService {
       case '42501':
         return 'No tienes permisos para realizar esta acción';
       default:
-        return 'Ocurrió un error en la base de datos';
+        return this.i18nService.t('errors.database.default');
     }
   }
 

@@ -1,8 +1,9 @@
 import { Page, expect } from '@playwright/test';
 import { loginData, registerData } from '../data/login.data';
+import es from '../../public/assets/i18n/es.json';
+import { supabaseClient } from '@globals/singleton/supabase.client';
 
 const URL_BASE = 'http://localhost:4200';
-
 /**
  * Inicia sesión con credenciales específicas.
  */
@@ -18,17 +19,42 @@ export async function loginAs(page: Page, role: keyof typeof loginData) {
   await expect(page).toHaveURL(/home|inicio/);
 }
 
-export async function registerAs(page: Page, role: keyof typeof registerData) {
+async function fillRegisterForm(page: Page, role: keyof typeof registerData) {
   const { email, password, confirmPassword } = registerData[role];
+  console.log('🚩 [fillRegisterForm] Filling register form for role:', role);
+  
   await page.goto(`${URL_BASE}/login`);
   await page.getByTestId('register-link').click();
   await page.getByTestId('email').fill(email);
   await page.getByTestId('password').fill(password);
   await page.getByTestId('confirmPassword').fill(confirmPassword);
   await page.getByTestId('submit-register').click();
+}
 
-  // Espera a que aparezca el mensaje de registro exitoso
-  await expect(page.getByText('Registro exitoso')).toBeVisible();
+export async function registerAs(page: Page, role: keyof typeof registerData) {
+  await fillRegisterForm(page, role);
+  await expect(page.getByText(es.messages.success.accountCreated)).toBeVisible();
+}
+
+export async function registerIValidAccountEmail(page: Page, role: keyof typeof registerData) {
+  await hardDeleteAccount(role);
+  await fillRegisterForm(page, role);
+  await expect(page.getByText(es.messages.success.accountCreated)).toBeVisible();
+}
+
+export async function registerExistingAccountEmail(page: Page, role: keyof typeof registerData) {
+  await fillRegisterForm(page, role);
+  await expect(page.getByText(es.errors.wofloo.emailAlreadyExists)).toBeVisible();
+}
+
+export async function hardDeleteAccount(role: keyof typeof registerData) {
+  const { email } = registerData[role];
+  const { data, error } = await supabaseClient.functions.invoke('delete-user', {
+    body: { email },
+  });
+  if (error) throw error;
+  console.log('🚩 [hardDeleteAccount] Usuario eliminado', data);
+  return data;
 }
 
 /**

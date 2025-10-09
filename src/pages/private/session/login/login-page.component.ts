@@ -11,6 +11,8 @@ import { SessionFacade } from '@bussiness/session/controllers/session.facade';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent extends HelperPage {
+
+  languageModulePath = 'ui.modules.session.login';
   constructor(public facade: SessionFacade) {
     super();
   }

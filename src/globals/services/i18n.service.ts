@@ -11,6 +11,7 @@ export class I18nService {
 
   async load(lang: string) {
     try {
+      console.log('🚩 [load] lang', lang);
       const res = await fetch(`/assets/i18n/${lang}.json`);
       const json = await res.json();
       this.dictionary.set(json);
@@ -21,8 +22,9 @@ export class I18nService {
   }
 
   t(path: string): string {
+    if (!this.dictionary() || Object.keys(this.dictionary()).length === 0) return '';
     const keys = path.split('.');
     const value = keys.reduce((acc, key) => acc?.[key], this.dictionary());
-    return typeof value === 'string' ? value : path;
+    return value?.toString();
   }
 }

@@ -3,8 +3,9 @@ import moment from 'moment';
 
 import { routes } from '@app/routes';
 import { system } from '@environments/environment';
-import { BrowserService } from '@services/common/browser.service';
 import { I18nService } from '@globals/services/i18n.service';
+import { LoggerService } from '@globals/services/logger.service';
+import { BrowserService } from '@services/common/browser.service';
 
 @Component({
   template: '<ng-content></ng-content>',
@@ -28,11 +29,11 @@ export class HelperPage {
   public heightWindow: number = 0;
 
   private _lastWidth: number = 0;
-  private browserService = inject(BrowserService);
-  private i18nService = inject(I18nService);
+  private browserService: BrowserService = inject(BrowserService);
+  private logger: LoggerService = inject(LoggerService);
+  public i18nService: I18nService = inject(I18nService);
 
   constructor() {
-    this.i18nService.load(this.i18nService.currentLang());
     if (this.browserService.isBrowser()) {
       this.widthWindow = window.innerWidth;
       this.heightWindow = window.innerHeight;

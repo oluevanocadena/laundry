@@ -5,34 +5,37 @@
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
                 <logo />
                 <span class="f-19 f-03 fw-600">
-                    Wofloo
+                    {{ i18nService.t('ui.titles.wofloo') }}
                 </span>
             </grid>
             <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
                 <span class="f-20 fw-600">
-                    Registro de cuenta <span class="f-03 f-12 f-error">*</span>
+                    {{ i18nService.t(languageModulePath + '.title') }}
+                    <span class="f-03 f-12 f-error">*</span>
                 </span>
                 <span class="f-14 f-06">
-                    Crea una cuenta para comenzar a usar Wofloo
+                    {{ i18nService.t(languageModulePath + '.description') }}
                 </span>
             </grid>
 
             <form [formGroup]="facade.formGroup">
                 <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
                     <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
-                        <form-input [label]="'Correo electrónico'" [type]="'email'" [placeholder]="'Correo electrónico'"
+                        <form-input [label]="i18nService.t(languageModulePath + '.form.email')" [type]="'email'"
+                            [placeholder]="i18nService.t(languageModulePath + '.form.email')"
                             [formControlName]="'email'" [required]="true" />
-                        <form-input [label]="'Contraseña'" [type]="'password'" [placeholder]="'Contraseña'"
+                        <form-input [label]="i18nService.t(languageModulePath + '.form.password')" [type]="'password'"
+                            [placeholder]="i18nService.t(languageModulePath + '.form.password')"
                             [formControlName]="'password'" [required]="true" />
-                        <form-input [label]="'Confirmar contraseña'" [type]="'password'"
-                            [placeholder]="'Confirmar contraseña'" [formControlName]="'confirmPassword'"
-                            [required]="true" />
+                        <form-input [label]="i18nService.t(languageModulePath + '.form.confirmPassword')"
+                            [type]="'password'"
+                            [placeholder]="i18nService.t(languageModulePath + '.form.confirmPassword')"
+                            [formControlName]="'confirmPassword'" [required]="true" />
                         <span *ngIf="showInstructions" class="f-05 f-13">
-                            La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un
-                            caracter especial.
+                            {{ i18nService.t(languageModulePath + '.passwordInstructions') }}
                         </span>
                         <span class="f-03 f-13 f-error" *ngIf="passwordNotMatch">
-                            Las contraseñas no coinciden
+                            {{ i18nService.t(languageModulePath + '.passwordNotMatch') }}
                         </span>
 
                         <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'" width="100%"
@@ -40,7 +43,7 @@
                             <button (click)="facade.register()" large full primary
                                 [disabled]="!facade.canRegister || facade.api.busy.value"
                                 [showLoader]="facade.api.busy.value" [attr.data-testid]="'submit-register'">
-                                Registrarme
+                                {{ i18nService.t(languageModulePath + '.registerText') }}
                             </button>
                         </grid>
                     </grid>
@@ -50,9 +53,9 @@
 
             <grid [direction]="'column'" [align]="'center-center'" [padding]="'2rem 0 0 0'">
                 <span class="f-03 f-14">
-                    ¿Ya tienes una cuenta?
+                    {{ i18nService.t(languageModulePath + '.loginLink') }}
                     <a [routerLink]="routes.Login" class="f-primary f-15 fw-500 link">
-                        Iniciar sesión
+                        {{ i18nService.t(languageModulePath + '.loginLinkText') }}
                     </a>
                 </span>
             </grid>
@@ -61,21 +64,20 @@
             <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
                 <logo />
                 <span class="f-19 f-03 fw-600">
-                    Wofloo
+                    {{ i18nService.t('ui.titles.wofloo') }}
                 </span>
             </grid>
             <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
                 <span class="f-20 fw-600">
-                    Registro exitoso
+                    {{ i18nService.t(languageModulePath + '.success') }}
                 </span>
                 <span class="f-14 f-06">
-                    Tu cuenta ha sido creada exitosamente. Por favor revisa tu correo electrónico para confirmar tu
-                    cuenta.
+                    {{ i18nService.t(languageModulePath + '.success') }}
                 </span>
             </grid>
             <grid [gap]="[16,16]" [direction]="'column'" [template]="'1fr'">
                 <button large full primary [routerLink]="routes.Login" [attr.data-testid]="'login-link'">
-                    Iniciar sesión
+                    {{ i18nService.t(languageModulePath + '.loginLinkText') }}
                 </button>
             </grid>
         </ng-container>

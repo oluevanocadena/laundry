@@ -9,6 +9,7 @@ import { HelperPage } from '@components/common/helper.page';
   styleUrls: ['./register-page.component.scss'],
 })
 export class RegisterPageComponent extends HelperPage {
+  languageModulePath = 'ui.modules.session.register';
   constructor(public facade: RegisterFacade) {
     super();
   }

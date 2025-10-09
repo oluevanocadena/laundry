@@ -76,17 +76,17 @@ export class SessionFacade extends FacadeBase {
 
       const responseAccount = await this.repoAccounts.getByEmail(responseSession.data!.user?.email!);
       if (responseAccount && responseAccount.error) {
-        throw new Error(responseAccount.error?.raw);
+        throw responseAccount.error?.raw;
       }
 
       const rolesResponse = await this.repoAccounts.getAccountRoles(responseAccount?.data!.id!);
       if (rolesResponse?.error) {
-        throw new Error(rolesResponse.error?.raw);
+        throw rolesResponse.error?.raw;
       }
 
       const responseLocation = await this.repoLocations.getDefaultLocation(responseAccount?.data!.OrganizationId!);
       if (responseLocation?.error) {
-        throw new Error(responseLocation.error?.raw);
+        throw responseLocation.error?.raw;
       }
 
       const sessionInfo: SessionInfo = {

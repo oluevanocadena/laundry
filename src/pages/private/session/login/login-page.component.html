@@ -4,44 +4,45 @@
         <grid [gap]="[8,8]" [direction]="'column'" [align]="'center-right'">
             <logo [size]="'medium'" />
             <span class="f-19 f-03 fw-600">
-                Wofloo
+                {{ i18nService.t('ui.titles.wofloo') }}
             </span>
         </grid>
         <grid [gap]="[8,16]" [direction]="'column'" [template]="'1fr'">
             <span class="f-20 fw-600">
-                Accede a tu cuenta
+                {{ i18nService.t(languageModulePath + '.title') }}
             </span>
             <span class="f-14 f-06">
-                Inicia sesión en tu cuenta para continuar
+                {{ i18nService.t(languageModulePath + '.description') }}
             </span>
         </grid>
 
         <form [formGroup]="facade.formGroup">
             <grid [gap]="[16,24]" [direction]="'column'" [template]="'1fr'">
-                <form-input [label]="'Correo electrónico'" [type]="'email'" [placeholder]="'Correo electrónico'"
-                    [formControlName]="'email'" />
-                <form-input [label]="'Contraseña'" [type]="'password'" [placeholder]="'Contraseña'"
+                <form-input [label]="i18nService.t(languageModulePath + '.form.email')" [type]="'email'"
+                    [placeholder]="i18nService.t(languageModulePath + '.form.email')" [formControlName]="'email'" />
+                <form-input [label]="i18nService.t(languageModulePath + '.form.password')" [type]="'password'"
+                    [placeholder]="i18nService.t(languageModulePath + '.form.password')"
                     [formControlName]="'password'" />
                 <grid [direction]="'column'" [align]="'center-right'">
                     <a class="f-13 f-primary fw-500 link">
-                        ¿Olvidaste tu contraseña?
+                        {{ i18nService.t(languageModulePath + '.forgotPasswordLink') }}
                     </a>
                 </grid>
             </grid>
         </form>
         <grid [gap]="[16,24]" [direction]="'row'" width="100%">
             <button (click)="facade.login()" primary large full [attr.data-testid]="'submit-login'">
-                Iniciar sesión
+                {{ i18nService.t(languageModulePath + '.loginText') }}
             </button>
             <grid [direction]="'row'" [gap]="[8,16]">
                 <span class="f-06 t-center f-12">
-                    o acceder con:
+                    {{ i18nService.t(languageModulePath + '.orAccessWith') }}
                 </span>
                 <grid [gap]="[16,8]" [direction]="'column'" [template]="'1fr'" width="100%">
                     <button outline large center>
                         <img src="assets/google.png" alt="google" class="icon w-16" />
                         <span class="f-14 f-01">
-                            Google
+                            {{ i18nService.t(languageModulePath + '.google') }}
                         </span>
                     </button>
                     <!-- <button outline medium center>
@@ -57,10 +58,10 @@
         <grid [direction]="'column'" [align]="'center-center'">
             <grid [direction]="'row'" [gap]="[4,16]">
                 <span class="f-03 f-13 t-center">
-                    ¿No tienes una cuenta?&nbsp;
+                    {{ i18nService.t(languageModulePath + '.registerLink') }}&nbsp;
                     <a [routerLink]="routes.Register" [attr.data-testid]="'register-link'"
                         class=" f-13 f-primary fw-500 link t-center">
-                        Crear una cuenta
+                        {{ i18nService.t(languageModulePath + '.registerLinkText') }}
                     </a>
                 </span>
             </grid>

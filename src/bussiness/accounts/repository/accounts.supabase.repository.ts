@@ -27,7 +27,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildGetAllQuery(this.client, this.sessionService.organizationId);
       const { data, error } = await query;
-      this.accounts.value = super.handleResponse(data as unknown as Account[], error);
+      this.accounts.value = super.buildReponse(data as unknown as Account[], error);
       return this.accounts.value;
     }, 'Fetching Accounts');
   }
@@ -36,7 +36,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildGetByIdQuery(this.client, id);
       const { data, error } = await query;
-      this.account.value = super.handleResponse(data as unknown as Account, error);
+      this.account.value = super.buildReponse(data as unknown as Account, error);
       return this.account.value;
     }, 'Fetching Account');
   }
@@ -45,7 +45,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildGetByEmailQuery(this.client, email);
       const { data, error } = await query;
-      this.account.value = super.handleResponse(data as unknown as Account, error);
+      this.account.value = super.buildReponse(data as unknown as Account, error);
       return this.account.value;
     }, 'Fetching Account');
   }
@@ -68,7 +68,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildDeleteQuery(this.client, id);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as Account, error);
+      return super.buildReponse(data as unknown as Account, error);
     }, 'Deleting Account');
   }
 
@@ -91,7 +91,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
         count: totalCount,
       };
 
-      return super.handleResponse(data as unknown as Account[], error, undefined, totalCount);
+      return super.buildReponse(data as unknown as Account[], error, undefined, totalCount);
     }, 'Fetching Accounts');
   }
 
@@ -99,7 +99,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildDeleteManyQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     }, 'Deleting Accounts');
   }
 
@@ -108,7 +108,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
       const query = AccountsQueryDomain.buildToggleEnableManyQuery(this.client, ids);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -116,7 +116,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildGetAccountRolesQuery(this.client, accountId);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as AccountRole[], error);
+      return super.buildReponse(data as unknown as AccountRole[], error);
     }, 'Fetching Account Roles');
   }
 
@@ -124,7 +124,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildUpsertAccountRolesQuery(this.client, accountRoles);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as AccountRole[], error);
+      return super.buildReponse(data as unknown as AccountRole[], error);
     }, 'Saving Account Roles');
   }
 
@@ -132,7 +132,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildDeleteAccountRolesQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     }, 'Deleting Account Roles');
   }
 
@@ -170,7 +170,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
             error = response.error;
             // Eliminar la cuenta si falla el envío de invitación
             await AccountsQueryDomain.buildHardDeleteQuery(this.client, accountId!);
-            return super.handleResponse(null as unknown as Account, response.error);
+            return super.buildReponse(null as unknown as Account, response.error);
           }
         }
       }
@@ -198,7 +198,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
       }
 
       this.clearAllCaches();
-      return super.handleResponse({ id: accountId } as Account, error ?? null);
+      return super.buildReponse({ id: accountId } as Account, error ?? null);
     }, 'Saving Account');
   }
 
@@ -207,7 +207,7 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
       const query = AccountsQueryDomain.buildSaveOrUpdateQuery(this.client, account);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Saving Account');
   }
 

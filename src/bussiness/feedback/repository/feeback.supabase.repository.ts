@@ -29,7 +29,7 @@ export class FeedbackSupabaseRepository extends SupabaseBaseApiService implement
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
 
-      this.pagedFeebacks.value = super.handleResponse<Feedback[]>(data as unknown as Feedback[], error, undefined, totalCount);
+      this.pagedFeebacks.value = super.buildReponse<Feedback[]>(data as unknown as Feedback[], error, undefined, totalCount);
       return this.pagedFeebacks.value;
     }, 'Fetching Feedbacks');
   }
@@ -45,14 +45,14 @@ export class FeedbackSupabaseRepository extends SupabaseBaseApiService implement
   delete(id: string): Promise<ResponseResult<Feedback>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await OrdersQueryDomain.buildDeleteOrderQuery(this.client, id);
-      return super.handleResponse<Feedback>(data as unknown as Feedback, error);
+      return super.buildReponse<Feedback>(data as unknown as Feedback, error);
     });
   }
 
   getById(id: string): Promise<ResponseResult<Feedback> | null> {
     return this.executeWithBusy(async () => {
       const { data, error } = await OrdersQueryDomain.buildGetSingleOrderQuery(this.client, id);
-      return super.handleResponse<Feedback>(data as unknown as Feedback, error);
+      return super.buildReponse<Feedback>(data as unknown as Feedback, error);
     }, 'Fetching Feedback');
   }
 
@@ -60,7 +60,7 @@ export class FeedbackSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = OrdersQueryDomain.buildDeleteOrdersQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse<void>(data as unknown as void, error);
+      return super.buildReponse<void>(data as unknown as void, error);
     });
   }
 
@@ -68,7 +68,7 @@ export class FeedbackSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = OrdersQueryDomain.buildToggleOrdersQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse<void>(data as unknown as void, error);
+      return super.buildReponse<void>(data as unknown as void, error);
     });
   }
 
@@ -79,7 +79,7 @@ export class FeedbackSupabaseRepository extends SupabaseBaseApiService implement
       }
       const { data: feedbackSaved, error } = await FeedbackQueryDomain.buildUpdateFeedbackQuery(this.client, feedback);
 
-      return super.handleResponse<Feedback>(feedbackSaved as unknown as Feedback, error);
+      return super.buildReponse<Feedback>(feedbackSaved as unknown as Feedback, error);
     }, 'Updating Feedback');
   }
 }

@@ -21,7 +21,7 @@ export class SupportModulesSupabaseRepository extends SupabaseBaseApiService imp
   getAll(): Promise<ResponseResult<SupportTicketModule[]>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.from(SupabaseTables.SupportTicketModules).select('*').eq('Deleted', false);
-      this.supportModules.value = super.handleResponse(data, error);
+      this.supportModules.value = super.buildReponse(data, error);
       return this.supportModules.value;
     }, 'Fetching Unit Measures');
   }
@@ -34,7 +34,7 @@ export class SupportModulesSupabaseRepository extends SupabaseBaseApiService imp
         .eq('Deleted', false)
         .eq('Id', id)
         .single();
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Support Module');
   }
 }

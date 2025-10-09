@@ -30,7 +30,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
 
-      this.supportTicketsPaged.value = super.handleResponse<SupportTicket[]>(
+      this.supportTicketsPaged.value = super.buildReponse<SupportTicket[]>(
         data as unknown as SupportTicket[],
         error,
         undefined,
@@ -43,7 +43,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
   deleteImage(id: string): Promise<ResponseResult<SupportTicketImage>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await SupportQueryDomain.buildDeleteTicketImageQuery(this.client, id);
-      return super.handleResponse<SupportTicketImage>(data as unknown as SupportTicketImage, error);
+      return super.buildReponse<SupportTicketImage>(data as unknown as SupportTicketImage, error);
     });
   }
 
@@ -61,7 +61,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
         this.sessionService,
         isTicketEdition,
       );
-      return super.handleResponse<SupportTicketImage>(
+      return super.buildReponse<SupportTicketImage>(
         uploadImageResponse.data as unknown as SupportTicketImage,
         uploadImageResponse.error,
       );
@@ -71,7 +71,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
   getAll(): Promise<ResponseResult<SupportTicket[]>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await SupportQueryDomain.buildGetAllTicketsQuery(this.client);
-      this.supportTickets.value = super.handleResponse(data, error);
+      this.supportTickets.value = super.buildReponse(data, error);
       return this.supportTickets.value;
     }, 'Fetching Support Tickets');
   }
@@ -79,7 +79,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
   getById(id: string): Promise<ResponseResult<SupportTicket> | null> {
     return this.executeWithBusy(async () => {
       const { data, error } = await SupportQueryDomain.buildGetTicketByIdQuery(this.client, id);
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Support Ticket');
   }
 
@@ -94,7 +94,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
   delete(id: string): Promise<ResponseResult<SupportTicket>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await SupportQueryDomain.buildDeleteTicketQuery(this.client, id);
-      return super.handleResponse<SupportTicket>(data as unknown as SupportTicket, error);
+      return super.buildReponse<SupportTicket>(data as unknown as SupportTicket, error);
     });
   }
 
@@ -105,7 +105,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
         id,
         state as unknown as TicketStatusIdEnum,
       );
-      return super.handleResponse<SupportTicket>(data as unknown as SupportTicket, error);
+      return super.buildReponse<SupportTicket>(data as unknown as SupportTicket, error);
     });
   }
 
@@ -113,7 +113,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = SupportQueryDomain.buildDeleteTicketsQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse<void>(data as unknown as void, error);
+      return super.buildReponse<void>(data as unknown as void, error);
     });
   }
 
@@ -121,21 +121,21 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = SupportQueryDomain.buildToggleTicketsQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse<void>(data as unknown as void, error);
+      return super.buildReponse<void>(data as unknown as void, error);
     });
   }
 
   updateStatus(id: string, status: TicketStatusIdEnum): Promise<ResponseResult<SupportTicket>> {
     return this.executeWithBusy(async () => {
       const { data: ticketSaved, error } = await SupportQueryDomain.buildUpdateTicketStatusQuery(this.client, id, status);
-      return super.handleResponse<SupportTicket>(ticketSaved, error);
+      return super.buildReponse<SupportTicket>(ticketSaved, error);
     }, 'Updating SupportTicket Status');
   }
 
   addComment(comment: SupportTicketComment, ticketId: string): Promise<ResponseResult<SupportTicketComment>> {
     return this.executeWithBusy(async () => {
       const { data: commentSaved, error } = await SupportQueryDomain.buildAddCommentQuery(this.client, comment, ticketId);
-      return super.handleResponse<SupportTicketComment>(commentSaved, error);
+      return super.buildReponse<SupportTicketComment>(commentSaved, error);
     }, 'Adding SupportTicket Comment');
   }
 
@@ -167,7 +167,7 @@ export class SupportTicketSupabaseRepository extends SupabaseBaseApiService impl
       } else {
         throw new Error('Ocurrió un error al guardar el ticket de soporte, intente nuevamente.');
       }
-      return super.handleResponse<SupportTicket>(ticketSaved, error);
+      return super.buildReponse<SupportTicket>(ticketSaved, error);
     }, 'Updating SupportTicket');
   }
 }

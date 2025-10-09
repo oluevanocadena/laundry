@@ -4,6 +4,7 @@ import moment from 'moment';
 import { routes } from '@app/routes';
 import { system } from '@environments/environment';
 import { BrowserService } from '@services/common/browser.service';
+import { I18nService } from '@globals/services/i18n.service';
 
 @Component({
   template: '<ng-content></ng-content>',
@@ -28,7 +29,10 @@ export class HelperPage {
 
   private _lastWidth: number = 0;
   private browserService = inject(BrowserService);
+  private i18nService = inject(I18nService);
+
   constructor() {
+    this.i18nService.load(this.i18nService.currentLang());
     if (this.browserService.isBrowser()) {
       this.widthWindow = window.innerWidth;
       this.heightWindow = window.innerHeight;

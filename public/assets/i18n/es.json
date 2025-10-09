@@ -1,0 +1,35 @@
+{
+  "errors": {
+    "database": {
+      "PGRST116": "No se encontró el registro solicitado",
+      "23505": "Ya existe un registro con esos datos",
+      "23503": "No se puede eliminar porque está siendo usado",
+      "42501": "No tienes permisos para realizar esta acción",
+      "default": "Ocurrió un error en la base de datos"
+    },
+    "http": {
+      "400": "Parámetros inválidos",
+      "401": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente",
+      "403": "No tienes permisos para realizar esta acción",
+      "404": "No se encontró el recurso solicitado",
+      "500": "Error en el servidor. Por favor, intenta nuevamente",
+      "503": "El servicio no está disponible temporalmente",
+      "default": "Ocurrió un error al realizar la acción",
+      "unknown": "Error desconocido. Por favor, intenta nuevamente"
+    },
+    "auth": {
+      "Invalid login credentials": "Usuario y/o contraseña incorrectos",
+      "Email not confirmed": "Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!",
+      "Email Already Exists": "El correo electrónico ya está en uso"
+    }
+  },
+  "ui": {
+    "buttons": {
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "titles": {
+      "dashboard": "Panel de Control"
+    }
+  }
+}

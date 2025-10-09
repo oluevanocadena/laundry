@@ -32,7 +32,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
       const { data, error } = queryResult;
       const totalCount = totalCountResult.count ?? 0;
 
-      this.pagedOrders.value = super.handleResponse<Order[]>(data as unknown as Order[], error, undefined, totalCount);
+      this.pagedOrders.value = super.buildReponse<Order[]>(data as unknown as Order[], error, undefined, totalCount);
       return this.pagedOrders.value;
     }, 'Fetching Orders');
   }
@@ -48,21 +48,21 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
   delete(id: string): Promise<ResponseResult<Order>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await OrdersQueryDomain.buildDeleteOrderQuery(this.client, id);
-      return super.handleResponse<Order>(data as unknown as Order, error);
+      return super.buildReponse<Order>(data as unknown as Order, error);
     });
   }
 
   disable(id: string, state: boolean): Promise<ResponseResult<Order>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await OrdersQueryDomain.buildUpdateOrderStatusQuery(this.client, id, state);
-      return super.handleResponse<Order>(data as unknown as Order, error);
+      return super.buildReponse<Order>(data as unknown as Order, error);
     });
   }
 
   getById(id: string): Promise<ResponseResult<Order> | null> {
     return this.executeWithBusy(async () => {
       const { data, error } = await OrdersQueryDomain.buildGetSingleOrderQuery(this.client, id);
-      return super.handleResponse<Order>(data as unknown as Order, error);
+      return super.buildReponse<Order>(data as unknown as Order, error);
     }, 'Fetching Order');
   }
 
@@ -70,7 +70,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
     return this.executeWithBusy(async () => {
       const query = OrdersQueryDomain.buildDeleteOrdersQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse<void>(data as unknown as void, error);
+      return super.buildReponse<void>(data as unknown as void, error);
     });
   }
 
@@ -78,7 +78,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
     return this.executeWithBusy(async () => {
       const query = OrdersQueryDomain.buildToggleOrdersQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse<void>(data as unknown as void, error);
+      return super.buildReponse<void>(data as unknown as void, error);
     });
   }
 
@@ -90,7 +90,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
         .eq('id', id)
         .select()
         .single();
-      return super.handleResponse<Order>(orderSaved, error);
+      return super.buildReponse<Order>(orderSaved, error);
     }, 'Updating Order Status');
   }
 
@@ -101,7 +101,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
         .upsert(orderItem)
         .select()
         .single();
-      return super.handleResponse<OrderItem>(orderItemSaved, error);
+      return super.buildReponse<OrderItem>(orderItemSaved, error);
     }, 'Updating Order Item');
   }
 
@@ -113,7 +113,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
         .eq('id', id)
         .single<OrderItem>();
       const result = await this.getById(orderItemSaved?.OrderId ?? '');
-      return super.handleResponse<Order>(result?.data as unknown as Order, error || result?.error);
+      return super.buildReponse<Order>(result?.data as unknown as Order, error || result?.error);
     }, 'Updating Order Item Status');
   }
 
@@ -137,7 +137,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
       }
       const rspOrder = await this.getById(orderId);
       if (rspOrder?.success) {
-        return super.handleResponse<Order>(rspOrder.data as unknown as Order, error);
+        return super.buildReponse<Order>(rspOrder.data as unknown as Order, error);
       } else {
         throw new Error(errorMessage);
       }
@@ -161,7 +161,7 @@ export class OrdersSupabaseRepository extends SupabaseBaseApiService implements 
       } else {
         throw new Error('Ocurrió un error al guardar el pedido, intente nuevamente.');
       }
-      return super.handleResponse<Order>(orderSaved, error);
+      return super.buildReponse<Order>(orderSaved, error);
     }, 'Updating Order');
   }
 }

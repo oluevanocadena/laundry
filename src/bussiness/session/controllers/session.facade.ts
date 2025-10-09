@@ -15,7 +15,8 @@ import { supabase } from '@environments/environment';
 import { FacadeBase } from '@globals/types/facade.base';
 import { FormProp } from '@globals/types/form.type';
 import { validators } from '@globals/types/validators.type';
-import { ErrorHandlerService } from '@globals/services/error-handler.service';
+import { ErrorHandlerService } from '@globals/bussiness/error/services/error.handler.service';
+import { LoggerService } from '@globals/services/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,8 @@ export class SessionFacade extends FacadeBase {
     public errorHandlerService: ErrorHandlerService,
     public sessionService: SessionService,
     public router: Router,
+    private nzMessageService: NzMessageService,
+    private logger: LoggerService,
   ) {
     super(api);
   }
@@ -59,44 +62,45 @@ export class SessionFacade extends FacadeBase {
    */
 
   async login() {
-    const genericError = 'Usuario y/o contraseña incorrectos';
     if (!this.formGroup.valid) {
-      this.errorHandlerService.warning('Por favor, complete todos los campos.');
+      this.logger.warn('Intento de login con campos incompletos', 'SessionFacade');
+      this.nzMessageService.warning('Por favor, complete todos los campos.');
       return;
     }
 
     try {
       const responseSession = await this.api.signIn(this.email.value!, this.password.value!);
-      if (!responseSession?.data?.user) {
-        throw new Error(genericError);
+      if (responseSession?.error) {
+        throw responseSession.error?.raw;
       }
 
       const responseAccount = await this.repoAccounts.getByEmail(responseSession.data!.user?.email!);
-      if (!responseAccount?.data?.id) {
-        throw new Error(genericError);
+      if (responseAccount && responseAccount.error) {
+        throw new Error(responseAccount.error?.raw);
       }
 
-      const roles = await this.repoAccounts.getAccountRoles(responseAccount.data!.id!);
-      if (!roles) {
-        throw new Error(genericError);
+      const rolesResponse = await this.repoAccounts.getAccountRoles(responseAccount?.data!.id!);
+      if (rolesResponse?.error) {
+        throw new Error(rolesResponse.error?.raw);
       }
-      const responseLocation = await this.repoLocations.getDefaultLocation(responseAccount.data!.OrganizationId);
+
+      const responseLocation = await this.repoLocations.getDefaultLocation(responseAccount?.data!.OrganizationId!);
+      if (responseLocation?.error) {
+        throw new Error(responseLocation.error?.raw);
+      }
+
       const sessionInfo: SessionInfo = {
         Session: responseSession.data!,
-        Account: responseAccount.data!,
+        Account: responseAccount?.data!,
         Location: responseLocation.data!,
-        Roles: roles.data ?? [],
+        Roles: rolesResponse.data ?? [],
       };
       this.sessionService.sessionInfo.value = sessionInfo;
       this.realTimeNotifications.initialize();
       this.router.navigate([routes.Home]);
     } catch (error: any) {
-      console.error(error);
       this.signOut();
-      this.errorHandlerService.handleError(
-        error?.message || 'Ocurrió un error al iniciar sesión, intenta nuevamente.',
-        'Session Facade',
-      );
+      this.errorHandlerService.handleError(error, 'Session Facade');
     }
   }
 

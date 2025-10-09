@@ -30,7 +30,7 @@ export class ReportsSupabaseRepository extends SupabaseBaseApiService implements
     return this.executeWithBusy(async () => {
       const query = ReportsQueryDomain.buildGetReportQuery(this.client, this.sessionService, request);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Location');
   }
 }

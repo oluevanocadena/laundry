@@ -21,7 +21,7 @@ export class UnitMeasureSupabaseRepository extends SupabaseBaseApiService implem
   getAll(): Promise<ResponseResult<UnitMeasure[]>> {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.from(SupabaseTables.UnitMeasures).select('*').eq('Deleted', false);
-      this.unitMeasures.value = super.handleResponse(data, error);
+      this.unitMeasures.value = super.buildReponse(data, error);
       return this.unitMeasures.value;
     }, 'Fetching Unit Measures');
   }
@@ -34,7 +34,7 @@ export class UnitMeasureSupabaseRepository extends SupabaseBaseApiService implem
         .eq('Deleted', false)
         .eq('Id', id)
         .single();
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Unit Measure');
   }
 }

@@ -35,7 +35,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = LocationsQueryDomain.buildGetByIdQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Location');
   }
 
@@ -58,7 +58,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
           data: (data as unknown as Location[]) ?? [],
           count: totalCount,
         };
-        return super.handleResponse(data, error, undefined, totalCount);
+        return super.buildReponse(data, error, undefined, totalCount);
       },
       useCache ? 60_000 : 0, // TTL de 1 minuto,
       (cachedData) => {
@@ -83,7 +83,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
       const query = LocationsQueryDomain.buildDisableQuery(this.client, this.sessionService, id, state);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Disabling Location');
   }
 
@@ -92,7 +92,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
       const query = LocationsQueryDomain.buildDeleteQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Deleting Location');
   }
 
@@ -101,7 +101,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
       const query = LocationsQueryDomain.buildDeleteLocationsQuery(this.client, ids);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -110,7 +110,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
       const query = LocationsQueryDomain.buildToggleLocationsQuery(this.client, ids);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -125,7 +125,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
         const query = LocationsQueryDomain.buildLocationsQuery(disabled, this.client, this.sessionService);
         const { data, error } = await query;
         this.locations.value = data;
-        return super.handleResponse(data, error);
+        return super.buildReponse(data, error);
       },
       useCache ? 60_000 : 0, // TTL de 1 minuto
       (cachedData) => {
@@ -141,7 +141,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
       async () => {
         const query = LocationsQueryDomain.buildDefaultLocationQuery(organizationId, this.client);
         const { data, error } = await query;
-        return super.handleResponse(data, error);
+        return super.buildReponse(data, error);
       },
       useCache ? 60_000 : 0, // TTL de 1 minuto
     );
@@ -152,7 +152,7 @@ export class LocationsSupabaseRepository extends SupabaseBaseApiService implemen
       const query = LocationsQueryDomain.buildSaveOrUpdateQuery(this.client, location);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     });
   }
 }

@@ -36,7 +36,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = NotificationsQueryDomain.buildGetAllQuery(this.client, this.accountId);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Notifications');
   }
 
@@ -44,7 +44,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = NotificationsQueryDomain.buildGetByIdQuery(this.client, this.accountId, id);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Notification');
   }
 
@@ -79,7 +79,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
           count: totalCount ?? 0,
           unReadCount: unReadCount ?? 0,
         };
-        return super.handleResponse(data, error, undefined, totalCount);
+        return super.buildReponse(data, error, undefined, totalCount);
       },
       useCache ? 60_000 : 0, // TTL de 1 minuto,
       (cachedData) => {
@@ -120,7 +120,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = NotificationsQueryDomain.buildDeleteQuery(this.client, this.accountId, id);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Deleting Notification');
   }
 
@@ -129,7 +129,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = NotificationsQueryDomain.buildDeleteNotificationsQuery(this.client, ids);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -147,7 +147,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
       cacheKey,
       async () => {
         const { data, error } = await NotificationsQueryDomain.buildUnReadCountQuery(this.client, this.accountId);
-        return super.handleResponse(data as unknown as number, error);
+        return super.buildReponse(data as unknown as number, error);
       },
       useCache ? 60_000 : 0, // TTL de 1 minuto
     );
@@ -158,7 +158,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = NotificationsQueryDomain.buildMarkAllAsReadQuery(this.client, this.accountId);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as Notification[], error);
+      return super.buildReponse(data as unknown as Notification[], error);
     });
   }
 
@@ -167,7 +167,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = NotificationsQueryDomain.buildMarkAsReadQuery(this.client, id);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as Notification, error);
+      return super.buildReponse(data as unknown as Notification, error);
     });
   }
 
@@ -176,7 +176,7 @@ export class NotificationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = NotificationsQueryDomain.buildMarkManyAsReadQuery(this.client, ids);
       const { data, error } = await query;
       this.clearAllCaches();
-      return super.handleResponse(data as unknown as Notification[], error);
+      return super.buildReponse(data as unknown as Notification[], error);
     });
   }
 }

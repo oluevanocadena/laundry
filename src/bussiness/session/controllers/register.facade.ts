@@ -12,7 +12,7 @@ import { IAccountsRepository } from '@bussiness/accounts/repository/accounts.rep
 import { IOrganizationsRepository } from '@bussiness/organizations/repository/organizations.repository';
 import { RoleEnum } from '@bussiness/session/enums/role.enums';
 import { SessionApiService } from '@bussiness/session/services/session.api.service';
-import { ErrorHandlerService } from '@globals/services/error-handler.service';
+import { ErrorHandlerService } from '@globals/bussiness/error/services/error.handler.service';
 
 @Injectable({
   providedIn: 'root',

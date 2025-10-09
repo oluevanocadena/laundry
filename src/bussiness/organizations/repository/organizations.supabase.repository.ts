@@ -28,7 +28,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = OrganizationsQueryDomain.buildGetAllQuery(this.client);
       const { data, error } = await query;
-      this.organizations.value = super.handleResponse(data as Organization[], error);
+      this.organizations.value = super.buildReponse(data as Organization[], error);
       return this.organizations.value;
     }, 'Fetching Organizations');
   }
@@ -37,7 +37,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = OrganizationsQueryDomain.buildGetByIdQuery(this.client, id);
       const { data, error } = await query;
-      this.organization.value = super.handleResponse(data as Organization, error);
+      this.organization.value = super.buildReponse(data as Organization, error);
       return this.organization.value;
     }, 'Fetching Organization');
   }
@@ -47,9 +47,9 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = OrganizationsQueryDomain.buildInsertQuery(this.client, organization);
       const { data, error } = await query;
       if (!error && data) {
-        this.organization.value = super.handleResponse(data as Organization, error);
+        this.organization.value = super.buildReponse(data as Organization, error);
       }
-      return super.handleResponse(data as Organization, error);
+      return super.buildReponse(data as Organization, error);
     }, 'Saving Organization');
   }
 
@@ -58,9 +58,9 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = OrganizationsQueryDomain.buildUpdateQuery(this.client, organization);
       const { data, error } = await query;
       if (!error && data) {
-        this.organization.value = super.handleResponse(data as Organization, error);
+        this.organization.value = super.buildReponse(data as Organization, error);
       }
-      return super.handleResponse(data as Organization, error);
+      return super.buildReponse(data as Organization, error);
     }, 'Updating Organization');
   }
 
@@ -68,7 +68,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = OrganizationsQueryDomain.buildDeleteQuery(this.client, id);
       const { data, error } = await query;
-      return super.handleResponse(data as Organization, error);
+      return super.buildReponse(data as Organization, error);
     }, 'Deleting Organization');
   }
 
@@ -76,7 +76,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = OrganizationsQueryDomain.buildHardDeleteQuery(this.client, id);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     }, 'Deleting Organization permanently');
   }
 
@@ -85,7 +85,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
       async () => {
         const query = OrganizationsQueryDomain.buildDisableQuery(this.client, id, state);
         const { data, error } = await query;
-        return super.handleResponse(data as Organization, error);
+        return super.buildReponse(data as Organization, error);
       },
       state ? 'Disabling Organization' : 'Enabling Organization',
     );
@@ -110,7 +110,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
         count: totalCount,
       };
 
-      return super.handleResponse(data, error, undefined, totalCount);
+      return super.buildReponse(data, error, undefined, totalCount);
     }, 'Fetching Organizations');
   }
 
@@ -118,7 +118,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
     return this.executeWithBusy(async () => {
       const query = OrganizationsQueryDomain.buildDeleteManyQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     }, 'Deleting Organizations');
   }
 
@@ -128,7 +128,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
       const { data: organizations, error: fetchError } = await query;
 
       if (fetchError || !organizations) {
-        return super.handleResponse(undefined as unknown as void, fetchError);
+        return super.buildReponse(undefined as unknown as void, fetchError);
       }
 
       const updates = (organizations as unknown as Organization[]).map((org) => ({
@@ -139,7 +139,7 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
       const updateQuery = OrganizationsQueryDomain.buildUpdateDisabledStatesQuery(this.client, updates);
       const { data, error } = await updateQuery;
 
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     }, 'Toggling Organizations');
   }
 
@@ -148,9 +148,9 @@ export class OrganizationsSupabaseRepository extends SupabaseBaseApiService impl
       const query = OrganizationsQueryDomain.buildUpsertQuery(this.client, organization);
       const { data, error } = await query;
       if (!error && data) {
-        this.organization.value = super.handleResponse(data as Organization, error);
+        this.organization.value = super.buildReponse(data as Organization, error);
       }
-      return super.handleResponse(data as Organization, error);
+      return super.buildReponse(data as Organization, error);
     }, 'Saving Organization');
   }
 }

@@ -5,15 +5,17 @@ import { firstValueFrom } from 'rxjs';
 
 import { SessionService } from '@bussiness/session/services/session.service';
 import { supabase } from '@environments/environment';
+import { ErrorHandlerService } from '@globals/bussiness/error/services/error.handler.service';
+import { ResponseResult } from '@globals/interfaces/requests.interface';
 import { EdgeFunctionResponse } from '@globals/interfaces/supabase.interface';
+import { I18nService } from '@globals/services/i18n.service';
+import { LoggerService } from '@globals/services/logger.service';
 import { supabaseClient } from '@globals/singleton/supabase.client';
 import { MemoryCacheStore } from '@globals/strategies/cache/memory.cache.store';
 import { BusyProp } from '@globals/types/busy.type';
 import { ICacheStore } from '@globals/types/cache.type';
 import { IFacadeApiBase } from '@globals/types/facade.base';
 import { SubjectProp } from '@globals/types/subject.type';
-import { ResponseResult } from '@globals/interfaces/requests.interface';
-import { ErrorHandlerService } from '@globals/services/error-handler.service';
 
 export class SupabaseBaseApiService implements IFacadeApiBase {
   public busy = new BusyProp(false);
@@ -30,6 +32,12 @@ export class SupabaseBaseApiService implements IFacadeApiBase {
 
   @Inject(SessionService)
   public sessionService: SessionService = inject(SessionService);
+
+  @Inject(I18nService)
+  public i18nService: I18nService = inject(I18nService);
+
+  @Inject(LoggerService)
+  public logger: LoggerService = inject(LoggerService);
 
   constructor() {
     this.cacheStore = this.getCacheStore();
@@ -53,16 +61,16 @@ export class SupabaseBaseApiService implements IFacadeApiBase {
     this.busy.value = true;
     try {
       return await fn();
-    } catch (error) {
-      this.errorHandler.handleError(error, context || 'SupabaseBaseApiService');
+    } catch (error: any) {
+      const errorCode = error?.code?.toString() ?? '500';
       return {
         data: null,
         success: false,
         error: {
-          message: this.errorHandler.getUserFriendlyMessage(error),
+          message: this.i18nService.t(`errors.http.${errorCode}`),
           raw: error,
           details: error,
-          code: (error as any)?.code?.toString() ?? '500',
+          code: errorCode,
         },
       };
     } finally {
@@ -78,48 +86,40 @@ export class SupabaseBaseApiService implements IFacadeApiBase {
       const headers: Record<string, string> = { 'Content-Type': 'application/json' };
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
-      // Llamada HTTP al endpoint de Supabase Edge Function
-      const response = await firstValueFrom(
+      // Convierte un observable a una promesa
+      return await firstValueFrom<EdgeFunctionResponse>(
         this.http.post<EdgeFunctionResponse>(`${supabase.url}/functions/v1/${endpoint}`, body, { headers }),
       );
-
-      // Siempre devolver la respuesta de la función
-      return (
-        response ?? {
-          success: false,
-          error: true,
-          message: 'No se recibió respuesta del servidor',
-          statusCode: 500,
-        }
-      );
-    } catch (err: any) {
+    } catch (error: any) {
       // Error de red o HTTP
+      const errorCode = error?.status?.toString() || '500';
       return {
         success: false,
-        error: true,
-        message: err?.message || 'Error desconocido',
-        statusCode: err?.status || 500,
+        error: error,
+        message: this.i18nService.t(`errors.http.${errorCode}`) || this.i18nService.t('errors.http.default'),
+        statusCode: error?.status || 500,
       };
     } finally {
       this.busy.value = false;
     }
   }
 
-  protected handleResponse<T>(data: T | null, error: any, context?: string, count?: number | null): ResponseResult<T> {
+  protected buildReponse<T>(data: T | null, error: any, context?: string, count?: number | null): ResponseResult<T> {
+    //Debug Log
     if (error) {
-      // Log del error sin mostrar mensaje (executeWithBusy ya lo mostró)
-      this.errorHandler.debug('Error en handleResponse', error, context || 'SupabaseBaseApiService');
+      this.logger.debug('Error en handleResponse', error, context || 'SupabaseBaseApiService');
     }
+    const errorCode = error?.code?.toString() ?? '500';
     return {
       data: data as T | null,
       success: !error ? true : false,
       count: count ?? 0,
       error: error
         ? {
-            message: this.errorHandler.getUserFriendlyMessage(error),
+            message: this.i18nService.t(`errors.http.${errorCode}`),
             raw: error,
             details: error,
-            code: error?.code?.toString() ?? '500',
+            code: errorCode,
           }
         : null,
     };

@@ -21,7 +21,7 @@ export class RolesSupabaseRepository extends SupabaseBaseApiService implements I
     return this.executeWithBusy(async () => {
       const query = RolesQueryDomain.buildGetAllQuery(this.client);
       const { data, error } = await query;
-      this.roles.value = super.handleResponse(data as unknown as Role[], error);
+      this.roles.value = super.buildReponse(data as unknown as Role[], error);
       return this.roles.value;
     }, 'Fetching Roles');
   }
@@ -30,7 +30,7 @@ export class RolesSupabaseRepository extends SupabaseBaseApiService implements I
     return this.executeWithBusy(async () => {
       const query = RolesQueryDomain.buildGetByIdQuery(this.client, Number(id));
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as Role, error);
+      return super.buildReponse(data as unknown as Role, error);
     }, 'Fetching Role');
   }
 }

@@ -31,7 +31,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildGetAllQuery(this.client, this.sessionService);
       const { data, error } = await query;
-      this.customers.value = super.handleResponse(data, error);
+      this.customers.value = super.buildReponse(data, error);
       return this.customers.value;
     }, 'Fetching Customers');
   }
@@ -40,7 +40,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildGetByIdQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Customer');
   }
 
@@ -59,7 +59,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
         data: (data as unknown as Customer[]) ?? [],
         count: totalCount,
       };
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Customers');
   }
 
@@ -75,7 +75,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildDisableQuery(this.client, this.sessionService, id, state);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Disabling Customer');
   }
 
@@ -83,7 +83,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildDeleteQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Deleting Customer');
   }
 
@@ -91,7 +91,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildDeleteCustomersQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -99,7 +99,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildToggleCustomersQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -118,7 +118,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
       }
       query = query.range((page - 1) * pageSize, page * pageSize);
       const { data, error } = await query;
-      this.customers.value = super.handleResponse(data, error);
+      this.customers.value = super.buildReponse(data, error);
       return this.customers.value;
     }, 'fetching customers');
   }
@@ -127,28 +127,28 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildSaveOrUpdateQuery(this.client, customer);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'saving customer');
   }
 
   async deleteCustomer(id: string): Promise<ResponseResult<Customer>> {
     return this.executeWithBusy(async () => {
       const { error } = await this.client.from(SupabaseTables.Customers).update({ Deleted: true }).eq('id', id);
-      return super.handleResponse({} as Customer, error, undefined, 1);
+      return super.buildReponse({} as Customer, error, undefined, 1);
     }, 'deleting customer');
   }
 
   async disableCustomer(id: string): Promise<ResponseResult<Customer>> {
     return this.executeWithBusy(async () => {
       const { error } = await this.client.from(SupabaseTables.Customers).update({ Disabled: true }).eq('id', id);
-      return super.handleResponse({} as Customer, error, undefined, 1);
+      return super.buildReponse({} as Customer, error, undefined, 1);
     }, 'disabling customer');
   }
 
   async enableCustomer(id: string): Promise<ResponseResult<Customer>> {
     return this.executeWithBusy(async () => {
       const { error } = await this.client.from(SupabaseTables.Customers).update({ Disabled: false }).eq('id', id);
-      return super.handleResponse({} as Customer, error, undefined, 1);
+      return super.buildReponse({} as Customer, error, undefined, 1);
     }, 'enabling customer');
   }
 
@@ -159,7 +159,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
       async () => {
         const query = CustomersQueryDomain.buildGetPosCustomerQuery(this.client, organizationId);
         const { data, error } = await query;
-        return super.handleResponse(data as Customer, error);
+        return super.buildReponse(data as Customer, error);
       },
       useCache ? 3_600_000 : 0, // TTL de 1 hora (3,600,000 ms)
     );
@@ -169,7 +169,7 @@ export class CustomersSupabaseRepository extends SupabaseBaseApiService implemen
     return this.executeWithBusy(async () => {
       const query = CustomersQueryDomain.buildSaveOrUpdateQuery(this.client, customer);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     });
   }
 }

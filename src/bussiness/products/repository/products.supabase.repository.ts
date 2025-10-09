@@ -27,7 +27,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = ProductsQueryDomain.buildGetAllQuery(this.client, this.sessionService);
       const { data, error } = await query;
-      this.products.value = super.handleResponse(data as unknown as Product[], error);
+      this.products.value = super.buildReponse(data as unknown as Product[], error);
       return this.products.value;
     }, 'Fetching Products');
   }
@@ -36,7 +36,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = ProductsQueryDomain.buildGetByIdQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as Product, error);
+      return super.buildReponse(data as unknown as Product, error);
     }, 'Fetching Product');
   }
 
@@ -58,7 +58,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
         productCategoryId,
       );
       const { data, error } = await query;
-      const result = super.handleResponse(data as unknown as Product[], error);
+      const result = super.buildReponse(data as unknown as Product[], error);
       this.products.value = result;
       return result;
     }, 'Fetching Products');
@@ -79,7 +79,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
         data: (data as unknown as Product[]) ?? [],
         count: totalCount,
       };
-      return super.handleResponse(data as unknown as Product[], error);
+      return super.buildReponse(data as unknown as Product[], error);
     }, 'Fetching Product Categories');
   }
 
@@ -95,7 +95,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = ProductsQueryDomain.buildDisableQuery(this.client, this.sessionService, id, state);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Disabling Product');
   }
 
@@ -103,7 +103,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = ProductsQueryDomain.buildDeleteQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Deleting Product');
   }
 
@@ -111,7 +111,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = ProductsQueryDomain.buildDeleteProductsQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -119,7 +119,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
     return this.executeWithBusy(async () => {
       const query = ProductsQueryDomain.buildToggleProductsQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -138,7 +138,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
         locationPrices,
         images,
       );
-      return super.handleResponse(result.data, result.error);
+      return super.buildReponse(result.data, result.error);
     }, 'Saving Product Complete');
   }
 
@@ -154,7 +154,7 @@ export class ProductsSupabaseRepository extends SupabaseBaseApiService implement
       // Obtener la URL pública
       const { data: publicUrl } = this.client.storage.from(SupabaseBuckets.Products).getPublicUrl(`public/${uniqueName}`);
 
-      return super.handleResponse(publicUrl.publicUrl, error);
+      return super.buildReponse(publicUrl.publicUrl, error);
     }, 'Uploading Product Image');
   }
 }

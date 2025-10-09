@@ -29,7 +29,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildGetAllQuery(this.client, this.sessionService);
       const { data, error } = await query;
-      this.productCategories.value = super.handleResponse(data, error);
+      this.productCategories.value = super.buildReponse(data, error);
       return this.productCategories.value;
     }, 'Fetching Product Categories');
   }
@@ -38,7 +38,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildGetByIdQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Product Category');
   }
 
@@ -57,7 +57,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
         data: (data as unknown as ProductCategory[]) ?? [],
         count: totalCount,
       };
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Fetching Product Categories');
   }
 
@@ -73,7 +73,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildDisableQuery(this.client, this.sessionService, id, state);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Disabling Product Category');
   }
 
@@ -81,7 +81,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildDeleteQuery(this.client, this.sessionService, id);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     }, 'Deleting Product Category');
   }
 
@@ -89,7 +89,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildDeleteProductCategoriesQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -97,7 +97,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildToggleProductCategoriesQuery(this.client, ids);
       const { data, error } = await query;
-      return super.handleResponse(data as unknown as void, error);
+      return super.buildReponse(data as unknown as void, error);
     });
   }
 
@@ -105,7 +105,7 @@ export class ProductCategoriesSupabaseRepository extends SupabaseBaseApiService 
     return this.executeWithBusy(async () => {
       const query = ProductCategoriesQueryDomain.buildSaveOrUpdateQuery(this.client, productCategory);
       const { data, error } = await query;
-      return super.handleResponse(data, error);
+      return super.buildReponse(data, error);
     });
   }
 }

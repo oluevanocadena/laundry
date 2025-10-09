@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { routes } from '@app/routes';
-import { Session } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 
-import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
+import { Account } from '@bussiness/accounts/interfaces/accounts.interfaces';
 import { SetPasswordRequest } from '@bussiness/session/interfaces/session.interface';
 import { SupabaseTables } from '@globals/constants/supabase-tables.constants';
+import { SupabaseBaseApiService } from '@globals/services/supabase.api.service.base';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +22,7 @@ export class SessionApiService extends SupabaseBaseApiService {
         email,
         password,
       });
-      return super.handleResponse(
-        data as unknown as Session,
-        error,
-        error?.message === 'Email not confirmed'
-          ? '¡Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!'
-          : '¡Usuario y/o contraseña incorrectos!',
-      );
+      return super.buildReponse<Session>(data?.session, error);
     }, 'Signing in');
   }
 
@@ -41,7 +36,7 @@ export class SessionApiService extends SupabaseBaseApiService {
           emailRedirectTo: window.location.origin + routes.RegisterConfirm,
         },
       });
-      return super.handleResponse(data as unknown as Session, error, 'Ocurrió un error al crear la cuenta');
+      return super.buildReponse<Session>(data?.session, error);
     }, 'Signing up');
   }
 
@@ -52,7 +47,7 @@ export class SessionApiService extends SupabaseBaseApiService {
         .from(SupabaseTables.Accounts)
         .update({ VerifiedEmail: true, UserId: data.user?.id })
         .eq('Email', email);
-      return super.handleResponse(account, error || accountError, 'Ocurrió un error al confirmar el email');
+      return super.buildReponse<Account>(account, error || accountError);
     }, 'Confirming email');
   }
 
@@ -60,7 +55,7 @@ export class SessionApiService extends SupabaseBaseApiService {
   async signOut() {
     return this.executeWithBusy(async () => {
       const { error } = await this.client.auth.signOut();
-      return super.handleResponse(null, error, 'Ocurrió un error al cerrar sesión');
+      return super.buildReponse<null>(null, error);
     }, 'Signing out');
   }
 
@@ -69,7 +64,7 @@ export class SessionApiService extends SupabaseBaseApiService {
       const { data, error } = await this.client.auth.signInWithOAuth({
         provider,
       });
-      return super.handleResponse(data, error, 'Ocurrió un error al iniciar sesión con proveedor');
+      return super.buildReponse(data, error);
     }, 'Signing in with provider');
   }
 
@@ -77,7 +72,7 @@ export class SessionApiService extends SupabaseBaseApiService {
   async getUser() {
     return this.executeWithBusy(async () => {
       const { data, error } = await this.client.auth.getUser();
-      return super.handleResponse(data, error, 'Ocurrió un error al obtener el usuario');
+      return super.buildReponse<User>(data?.user, error);
     }, 'Getting user');
   }
 
@@ -86,7 +81,7 @@ export class SessionApiService extends SupabaseBaseApiService {
       const { data, error } = await this.client.auth.getSession();
       console.log('🔑 Sesión obtenida:', data);
       console.log('🔑 Error:', error);
-      return super.handleResponse(data, error, 'Ocurrió un error al obtener la sesión');
+      return super.buildReponse<Session>(data?.session, error);
     }, 'Getting session');
   }
 

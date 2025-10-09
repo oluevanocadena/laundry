@@ -41,6 +41,14 @@ export class AccountsSupabaseRepository extends SupabaseBaseApiService implement
     }, 'Fetching Account');
   }
 
+  deleteByEmail(email: string): Promise<ResponseResult<void>> {
+    return this.executeWithBusy(async () => {
+      const query = AccountsQueryDomain.buildDeleteByEmailQuery(this.client, email);
+      const { data, error } = await query;
+      return super.buildReponse(data as unknown as void, error);
+    }, 'Deleting Account');
+  }
+
   getByEmail(email: string): Promise<ResponseResult<Account> | null> {
     return this.executeWithBusy(async () => {
       const query = AccountsQueryDomain.buildGetByEmailQuery(this.client, email);

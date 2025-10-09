@@ -19,8 +19,8 @@ export class ErrorHandlerService {
   handleError(error: any, context?: string, userMessage?: string): void {
     this.logger.logError(error, context);
 
-    const message = userMessage || this.getUserFriendlyMessage(error);
-    this.nzMessageService.error(message);
+    const message = userMessage ?? this.getUserFriendlyMessage(error) ?? this.i18nService.t('errors.general.error');
+    this.nzMessageService.error(message, { nzDuration: 3000 });
   }
 
   /**
@@ -74,6 +74,8 @@ export class ErrorHandlerService {
     }
 
     if (error?.constructor?.name === 'AuthApiError') {
+      error.message = error.message.replace(/"/g, '').replace(/\s+/g, ' ').trim().replace(/\s/g, '_').toLowerCase();
+      this.logger.log('🔹Auth error message:', error.message);
       return this.i18nService.t(`errors.auth.${error.message}`);
     }
 

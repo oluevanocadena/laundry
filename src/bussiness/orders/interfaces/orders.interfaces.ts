@@ -69,9 +69,6 @@ export interface Order {
   OrganizationId?: string;
   Organization?: Organization; // For UI only
 
-  AccountId?: string; //Created by account id
-  Account?: Account; // For UI only
-
   Deleted: boolean;
   CreatedBy?: string;
   Checked?: boolean; //Only for UI

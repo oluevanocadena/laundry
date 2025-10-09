@@ -22,7 +22,7 @@ export const routes = {
   Pos: '/pos',
   Register: '/register',
   RegisterCompletion: '/register-completion',
-  RegisterConfirm: '/register-confirmation',
+  InvitationConfirm: '/invitation-confirmation',
   Reports: '/reports',
   Settings: '/settings',
   Store: '/store',

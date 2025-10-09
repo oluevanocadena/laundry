@@ -19,6 +19,7 @@ export abstract class IAccountsRepository extends SemiFullRepository<Account> {
   abstract currentAccount: StorageProp<Account | null>;
 
   // Métodos específicos de Accounts
+  abstract deleteByEmail(email: string): Promise<ResponseResult<void>>;
   abstract getByEmail(email: string): Promise<ResponseResult<Account> | null>;
 
   // Métodos para AccountRoles

@@ -33,9 +33,16 @@ export class SessionApiService extends SupabaseBaseApiService {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin + routes.RegisterConfirm,
+          emailRedirectTo: window.location.origin + routes.InvitationConfirm,
         },
       });
+      if (error && error.message) {
+        error.message = error.message
+          .replaceAll(email, '') // 🔹 Elimina el email si aparece
+          .replace(/"/g, '') // 🔹 Quita comillas dobles
+          .replace(/\s+/g, ' ') // 🔹 Reemplaza espacios múltiples por uno solo
+          .trim(); // 🔹 Elimina espacios al inicio/final
+      }
       return super.buildReponse<Session>(data?.session, error);
     }, 'Signing up');
   }

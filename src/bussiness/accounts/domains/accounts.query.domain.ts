@@ -14,6 +14,10 @@ export class AccountsQueryDomain {
       .single();
   }
 
+  static buildDeleteByEmailQuery(client: SupabaseClient, email: string) {
+    return client.from(SupabaseTables.Accounts).delete().eq('Email', email).select().single();
+  }
+
   static buildGetByEmailQuery(client: SupabaseClient, email: string) {
     return client
       .from(SupabaseTables.Accounts)

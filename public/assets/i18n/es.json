@@ -22,12 +22,14 @@
     "wofloo": {
       "default": "Error un error inesperado, intenta más tarde",
       "syncFailed": "No se pudo sincronizar por ahora, intenta más tarde",
-      "emailAlreadyExists": "No se puede crear la cuenta, ya existe una cuenta con este correo electrónico"
+      "emailAlreadyExists": "No se puede crear la cuenta, ya existe una cuenta con este correo electrónico",
+      "emailInvalid": "El correo electrónico no es válido, por favor ingresa un correo electrónico válido"
     },
     "auth": {
-      "Invalid login credentials": "Usuario y/o contraseña incorrectos",
-      "Email not confirmed": "Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!",
-      "Email Already Exists": "No se puede crear la cuenta, ya existe una cuenta con este correo electrónico"
+      "invalid_login_credentials": "Usuario y/o contraseña incorrectos",
+      "email_address_is_invalid": "El correo electrónico no es válido, por favor ingresa un correo electrónico válido",
+      "email_not_confirmed": "Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!",
+      "email_already_exists": "No se puede crear la cuenta, ya existe una cuenta con este correo electrónico"
     }
   },
   "messages": {

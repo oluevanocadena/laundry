@@ -12,10 +12,9 @@ import { DirectivesModule } from '@directives/directives.module';
 
 import { InvitationConfirmComponent } from '@pages/private/session/invitation-confirm/invitation-confirm.component';
 import { LoginPageComponent } from '@pages/private/session/login/login-page.component';
-import { RegisterConfirmComponent } from '@pages/private/session/register-confirm/register-confirm.component';
 import { RegisterPageComponent } from '@pages/private/session/register/register-page.component';
 
-const components = [LoginPageComponent, RegisterPageComponent, RegisterConfirmComponent, InvitationConfirmComponent];
+const components = [LoginPageComponent, RegisterPageComponent, InvitationConfirmComponent];
 
 @NgModule({
   imports: [

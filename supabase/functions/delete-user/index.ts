@@ -23,14 +23,14 @@ async function deleteUser(email: string) {
   }
 
   if (account.IsOwner) {
-    throw { message: 'El usuario no puede ser eliminado', status: 400 };
+    throw { message: 'El usuario no puede ser eliminado', status: 500 };
   }
 
   // 2. Borrar roles en AccountRoles
   const { error: rolesError } = await supabase.from(SupabaseTables.AccountRoles).delete().eq('AccountId', account.id);
 
   if (rolesError) {
-    throw { message: 'Error al borrar roles', status: 400 };
+    throw { message: 'Error al borrar roles', status: 500 };
   }
 
   // 3. Borrar el registro en Accounts
@@ -38,7 +38,8 @@ async function deleteUser(email: string) {
   const { error: accountDeleteError } = await supabase.from(SupabaseTables.Accounts).delete().eq('id', account.id);
 
   if (accountDeleteError) {
-    throw { message: 'Error al borrar de Accounts', status: 400 };
+    console.log('⛔ [delete-user] Error al borrar en la tabla Accounts', accountDeleteError);
+    throw { message: 'Error al borrar en la tabla Accounts', status: 500 };
   }
 
   // 4. Borrar el usuario en Auth

@@ -30,7 +30,7 @@ export class HelperPage {
 
   private _lastWidth: number = 0;
   private browserService: BrowserService = inject(BrowserService);
-  private logger: LoggerService = inject(LoggerService);
+  public logger: LoggerService = inject(LoggerService);
   public i18nService: I18nService = inject(I18nService);
 
   constructor() {

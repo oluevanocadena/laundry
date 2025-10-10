@@ -78,7 +78,8 @@
           "loginLinkText": "Iniciar sesión",
           "passwordInstructions": "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial.",
           "passwordNotMatch": "Las contraseñas no coinciden",
-          "success": "Tu cuenta ha sido creada exitosamente. Por favor revisa tu correo electrónico para confirmar tu cuenta."
+          "success": "Tu cuenta ha sido creada exitosamente.",
+          "emailNotConfirmed": "Revisa tu correo para confirmar tu cuenta, antes de iniciar sesión!"
         }
       }
     }

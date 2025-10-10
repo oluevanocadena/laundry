@@ -37,7 +37,7 @@ async function fillRegisterForm(page: Page, role: keyof typeof registerData) {
 export async function registerAs(page: Page, role: keyof typeof registerData) {
   await hardDeleteAccount(role);
   await fillRegisterForm(page, role);
-  await expect(page.getByText(es.messages.success.accountCreated)).toBeVisible();
+  await expect(page.getByText(es.ui.modules.session.register.success)).toBeVisible();
 }
 
 export async function registerIValidAccountEmail(page: Page, role: keyof typeof registerData) {
